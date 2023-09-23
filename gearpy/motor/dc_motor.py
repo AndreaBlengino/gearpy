@@ -53,6 +53,14 @@ class DCMotor(MotorBase):
         return self.__maximum_torque
 
     @property
+    def torque(self):
+        return super().torque
+
+    @torque.setter
+    def torque(self, torque):
+        super(DCMotor, type(self)).torque.fset(self, torque)
+
+    @property
     def inertia(self):
         return super().inertia
 

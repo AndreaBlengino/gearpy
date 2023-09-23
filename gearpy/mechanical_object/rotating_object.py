@@ -10,6 +10,7 @@ class RotatingObject(MechanicalObject):
         self.__angle = None
         self.__speed = None
         self.__acceleration = None
+        self.__torque = None
         self.__inertia = inertia
 
     @property
@@ -41,6 +42,16 @@ class RotatingObject(MechanicalObject):
     @abstractmethod
     def acceleration(self, acceleration):
         self.__acceleration = acceleration
+
+    @property
+    @abstractmethod
+    def torque(self):
+        return self.__torque
+
+    @torque.setter
+    @abstractmethod
+    def torque(self, torque):
+        self.__torque = torque
 
     @property
     @abstractmethod
