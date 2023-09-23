@@ -55,3 +55,6 @@ class DCMotor(MotorBase):
     @property
     def inertia(self):
         return super().inertia
+
+    def compute_torque(self):
+        return (1 - self.speed/self.__no_load_speed)*self.__maximum_torque

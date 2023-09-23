@@ -18,3 +18,6 @@ class MotorBase(RotatingObject):
     @abstractmethod
     def drives(self, drives):
         self.__drives = drives
+
+    @abstractmethod
+    def compute_torque(self): ...
