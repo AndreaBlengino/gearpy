@@ -3,8 +3,8 @@ from .motor import MotorBase
 
 class DCMotor(MotorBase):
 
-    def __init__(self, name, no_load_speed, maximum_torque):
-        super().__init__(name = name)
+    def __init__(self, name, inertia, no_load_speed, maximum_torque):
+        super().__init__(name = name, inertia = inertia)
         self.__no_load_speed = no_load_speed
         self.__maximum_torque = maximum_torque
 
@@ -51,3 +51,7 @@ class DCMotor(MotorBase):
     @property
     def maximum_torque(self):
         return self.__maximum_torque
+
+    @property
+    def inertia(self):
+        return super().inertia

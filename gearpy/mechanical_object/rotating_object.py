@@ -5,11 +5,12 @@ from .mechanical_object import MechanicalObject
 class RotatingObject(MechanicalObject):
 
     @abstractmethod
-    def __init__(self, name):
+    def __init__(self, name, inertia):
         super().__init__(name = name)
         self.__angle = None
         self.__speed = None
         self.__acceleration = None
+        self.__inertia = inertia
 
     @property
     @abstractmethod
@@ -40,3 +41,8 @@ class RotatingObject(MechanicalObject):
     @abstractmethod
     def acceleration(self, acceleration):
         self.__acceleration = acceleration
+
+    @property
+    @abstractmethod
+    def inertia(self):
+        return self.__inertia

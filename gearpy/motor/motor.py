@@ -5,8 +5,8 @@ from gearpy.mechanical_object.rotating_object import RotatingObject
 class MotorBase(RotatingObject):
 
     @abstractmethod
-    def __init__(self, name):
-        super().__init__(name = name)
+    def __init__(self, name, inertia):
+        super().__init__(name = name, inertia = inertia)
         self.__drives = None
 
     @property

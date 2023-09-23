@@ -3,8 +3,8 @@ from .gear import GearBase
 
 class SpurGear(GearBase):
 
-    def __init__(self, name, n_teeth):
-        super().__init__(name = name, n_teeth = n_teeth)
+    def __init__(self, name, n_teeth, inertia):
+        super().__init__(name = name, n_teeth = n_teeth, inertia = inertia)
 
     @property
     def name(self):
@@ -61,3 +61,7 @@ class SpurGear(GearBase):
     @acceleration.setter
     def acceleration(self, acceleration):
         super(SpurGear, type(self)).acceleration.fset(self, acceleration)
+
+    @property
+    def inertia(self):
+        return super().inertia
