@@ -12,6 +12,10 @@ class RotatingObject(MechanicalObject):
         self.__acceleration = None
         self.__torque = None
         self.__inertia = inertia
+        self.__time_variables = {'angle': [],
+                                 'speed': [],
+                                 'acceleration': [],
+                                 'torque': []}
 
     @property
     @abstractmethod
@@ -57,3 +61,15 @@ class RotatingObject(MechanicalObject):
     @abstractmethod
     def inertia(self):
         return self.__inertia
+
+    @property
+    @abstractmethod
+    def time_variables(self):
+        return self.__time_variables
+
+    @abstractmethod
+    def update_time_variables(self):
+        self.__time_variables['angle'].append(self.__angle)
+        self.__time_variables['speed'].append(self.__speed)
+        self.__time_variables['acceleration'].append(self.__acceleration)
+        self.__time_variables['torque'].append(self.__torque)

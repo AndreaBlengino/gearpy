@@ -66,3 +66,10 @@ class DCMotor(MotorBase):
 
     def compute_torque(self):
         return (1 - self.speed/self.__no_load_speed)*self.__maximum_torque
+
+    @property
+    def time_variables(self):
+        return super().time_variables
+
+    def update_time_variables(self):
+        super().update_time_variables()

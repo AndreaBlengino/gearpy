@@ -81,3 +81,10 @@ class SpurGear(GearBase):
     @external_torque.setter
     def external_torque(self, external_torque):
         super(SpurGear, type(self)).external_torque.fset(self, external_torque)
+
+    @property
+    def time_variables(self):
+        return super().time_variables
+
+    def update_time_variables(self):
+        super().update_time_variables()
