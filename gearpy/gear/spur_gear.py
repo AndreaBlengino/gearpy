@@ -71,6 +71,22 @@ class SpurGear(GearBase):
         super(SpurGear, type(self)).torque.fset(self, torque)
 
     @property
+    def driving_torque(self):
+        return super().driving_torque
+
+    @driving_torque.setter
+    def driving_torque(self, driving_torque):
+        super(SpurGear, type(self)).driving_torque.fset(self, driving_torque)
+
+    @property
+    def load_torque(self):
+        return super().load_torque
+
+    @load_torque.setter
+    def load_torque(self, load_torque):
+        super(SpurGear, type(self)).load_torque.fset(self, load_torque)
+
+    @property
     def inertia(self):
         return super().inertia
 
