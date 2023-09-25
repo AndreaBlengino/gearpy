@@ -10,25 +10,28 @@ class Solver:
         self.transmission = transmission
         self.time = []
 
+        self.transmission_inertia = self.transmission[0].inertia
+        for item in self.transmission[1:]:
+            self.transmission_inertia *= item.master_gear_ratio
+            self.transmission_inertia += item.inertia
+
     def run(self):
 
         for k in np.arange(0, self.simulation_time + self.time_discretization, self.time_discretization):
 
             self.time.append(k)
 
-            self._update_time_variables()
             self._compute_kinematic_variables()
             self._compute_driving_torque()
             self._compute_load_torque()
             self._compute_torque()
             self._time_integration()
-
+            self._update_time_variables()
 
     def _update_time_variables(self):
 
         for item in self.transmission:
             item.update_time_variables()
-
 
     def _compute_kinematic_variables(self):
 
@@ -61,6 +64,6 @@ class Solver:
 
     def _time_integration(self):
 
-        self.transmission[-1].acceleration = self.transmission[-1].torque/self.transmission[-1].inertia
+        self.transmission[-1].acceleration = self.transmission[-1].torque/self.transmission_inertia
         self.transmission[-1].speed += self.transmission[-1].acceleration*self.time_discretization
         self.transmission[-1].angle += self.transmission[-1].speed*self.time_discretization
