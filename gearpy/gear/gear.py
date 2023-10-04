@@ -11,6 +11,7 @@ class GearBase(RotatingObject):
         self.__driven_by = None
         self.__drives = None
         self.__master_gear_ratio = None
+        self.__master_gear_efficiency = 1
         self.__external_torque = 0
 
     @property
@@ -47,6 +48,16 @@ class GearBase(RotatingObject):
     @abstractmethod
     def master_gear_ratio(self, master_gear_ratio):
         self.__master_gear_ratio = master_gear_ratio
+
+    @property
+    @abstractmethod
+    def master_gear_efficiency(self):
+        return self.__master_gear_efficiency
+
+    @master_gear_efficiency.setter
+    @abstractmethod
+    def master_gear_efficiency(self, master_gear_efficiency):
+        self.__master_gear_efficiency = master_gear_efficiency
 
     @property
     @abstractmethod

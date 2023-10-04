@@ -78,7 +78,7 @@ class Solver:
 
         for i in range(1, len(self.transmission)):
             gear_ratio = self.transmission[i].master_gear_ratio
-            self.transmission[i].driving_torque = gear_ratio*self.transmission[i - 1].driving_torque
+            self.transmission[i].driving_torque = gear_ratio*self.transmission[i].master_gear_efficiency*self.transmission[i - 1].driving_torque
 
     def _compute_load_torque(self):
 

@@ -39,6 +39,14 @@ class SpurGear(GearBase):
         super(SpurGear, type(self)).master_gear_ratio.fset(self, master_gear_ratio)
 
     @property
+    def master_gear_efficiency(self):
+        return super().master_gear_efficiency
+
+    @master_gear_efficiency.setter
+    def master_gear_efficiency(self, master_gear_efficiency):
+        super(SpurGear, type(self)).master_gear_efficiency.fset(self, master_gear_efficiency)
+
+    @property
     def angle(self):
         return super().angle
 
