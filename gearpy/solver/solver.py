@@ -13,6 +13,7 @@ class Solver:
     def run(self):
 
         self._compute_transmission_inertia()
+        self._compute_transmission_initial_state()
 
         for k in np.arange(0, self.simulation_time + self.time_discretization, self.time_discretization):
 
@@ -32,6 +33,23 @@ class Solver:
             self.transmission_inertia *= item.master_gear_ratio
             self.transmission_inertia += item.inertia
 
+    def _compute_transmission_initial_state(self):
+
+        for i in range(len(self.transmission) - 2, -1, -1):
+            gear_ratio = self.transmission[i + 1].master_gear_ratio
+            self._compute_angle(gear_ratio = gear_ratio, i = i)
+            self._compute_speed(gear_ratio = gear_ratio, i = i)
+
+        self._compute_driving_torque()
+        self._compute_load_torque()
+        self._compute_torque()
+
+        self.transmission[-1].acceleration = self.transmission[-1].torque/self.transmission_inertia
+
+        for i in range(len(self.transmission) - 2, -1, -1):
+            gear_ratio = self.transmission[i + 1].master_gear_ratio
+            self._compute_acceleration(gear_ratio = gear_ratio, i = i)
+
     def _update_time_variables(self):
 
         for item in self.transmission:
@@ -41,9 +59,18 @@ class Solver:
 
         for i in range(len(self.transmission) - 2, -1, -1):
             gear_ratio = self.transmission[i + 1].master_gear_ratio
-            self.transmission[i].angle = gear_ratio*self.transmission[i + 1].angle
-            self.transmission[i].speed = gear_ratio*self.transmission[i + 1].speed
-            self.transmission[i].acceleration = gear_ratio*self.transmission[i + 1].acceleration
+            self._compute_angle(gear_ratio = gear_ratio, i = i)
+            self._compute_speed(gear_ratio = gear_ratio, i = i)
+            self._compute_acceleration(gear_ratio = gear_ratio, i = i)
+
+    def _compute_angle(self, gear_ratio, i):
+        self.transmission[i].angle = gear_ratio*self.transmission[i + 1].angle
+
+    def _compute_speed(self, gear_ratio, i):
+        self.transmission[i].speed = gear_ratio*self.transmission[i + 1].speed
+
+    def _compute_acceleration(self, gear_ratio, i):
+        self.transmission[i].acceleration = gear_ratio*self.transmission[i + 1].acceleration
 
     def _compute_driving_torque(self):
 
