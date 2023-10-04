@@ -8,14 +8,13 @@ class Solver:
         self.time_discretization = time_discretization
         self.simulation_time = simulation_time
         self.transmission = transmission
-        self.time = []
+        self.time = [0]
 
     def run(self):
 
         self._compute_transmission_inertia()
         self._compute_transmission_initial_state()
         self._update_time_variables()
-        self.time.append(0)
 
         for k in np.arange(self.time_discretization, self.simulation_time + self.time_discretization, self.time_discretization):
 
