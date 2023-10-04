@@ -5,7 +5,7 @@ from gearpy.mechanical_object.rotating_object import RotatingObject
 class MotorBase(RotatingObject):
 
     @abstractmethod
-    def __init__(self, name, inertia):
+    def __init__(self, name: str, inertia: float):
         super().__init__(name = name, inertia = inertia)
         self.__drives = None
 
@@ -16,7 +16,10 @@ class MotorBase(RotatingObject):
 
     @drives.setter
     @abstractmethod
-    def drives(self, drives):
+    def drives(self, drives: RotatingObject):
+        if not isinstance(drives, RotatingObject):
+            raise TypeError("Parameter 'drives' must be a RotatingObject")
+
         self.__drives = drives
 
     @abstractmethod
