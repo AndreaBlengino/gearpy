@@ -1,5 +1,5 @@
-from .motor import MotorBase
 from gearpy.mechanical_object.rotating_object import RotatingObject
+from .motor import MotorBase
 
 
 class DCMotor(MotorBase):

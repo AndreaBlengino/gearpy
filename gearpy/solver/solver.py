@@ -1,9 +1,38 @@
+from gearpy.mechanical_object.rotating_object import RotatingObject
+from gearpy.motor.motor import MotorBase
 import numpy as np
 
 
 class Solver:
 
-    def __init__(self, time_discretization, simulation_time, transmission):
+    def __init__(self, time_discretization: float, simulation_time: float, transmission: list):
+        if not isinstance(time_discretization, float) and not isinstance(time_discretization, int):
+            raise TypeError("Parameter 'time_discretization' must be a float or an integer.")
+
+        if not isinstance(simulation_time, float) and not isinstance(simulation_time, int):
+            raise TypeError("Parameter 'simulation_time' must be a float or an integer.")
+
+        if not isinstance(transmission, list):
+            raise TypeError("Parameter 'transmission' must be a list.")
+
+        if time_discretization <= 0:
+            raise ValueError("Parameter 'time_discretization' must be positive.")
+
+        if simulation_time <= 0:
+            raise ValueError("Parameter 'time_simulation' must be positive.")
+
+        if time_discretization >= simulation_time:
+            raise ValueError("Parameter 'time_discretization' cannot be greater or equal to 'simulation_time'.")
+
+        if not transmission:
+            raise ValueError("Parameter 'transmission' cannot be an empty list.")
+
+        if not isinstance(transmission[0], MotorBase):
+            raise TypeError("First element in 'transmission' must be an instance of MotorBase.")
+
+        if not all([isinstance(item, RotatingObject) for item in transmission]):
+            raise TypeError("All elements of 'transmission' must be instances of RotatingObject.")
+
 
         self.time_discretization = time_discretization
         self.simulation_time = simulation_time
