@@ -11,7 +11,7 @@ class MotorBase(RotatingObject):
 
     @property
     @abstractmethod
-    def drives(self):
+    def drives(self) -> RotatingObject:
         return self.__drives
 
     @drives.setter
