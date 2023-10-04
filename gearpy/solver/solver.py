@@ -14,8 +14,10 @@ class Solver:
 
         self._compute_transmission_inertia()
         self._compute_transmission_initial_state()
+        self._update_time_variables()
+        self.time.append(0)
 
-        for k in np.arange(0, self.simulation_time + self.time_discretization, self.time_discretization):
+        for k in np.arange(self.time_discretization, self.simulation_time + self.time_discretization, self.time_discretization):
 
             self.time.append(k)
 
@@ -83,8 +85,10 @@ class Solver:
     def _compute_load_torque(self):
 
         for i in range(len(self.transmission) - 1, 0, -1):
-            if self.transmission[i].external_torque != 0:
-                self.transmission[i].load_torque = self.transmission[i].external_torque
+            if self.transmission[i].external_torque is not None:
+                self.transmission[i].load_torque = self.transmission[i].external_torque(time = self.time[-1],
+                                                                                        angle = self.transmission[i].angle,
+                                                                                        speed = self.transmission[i].speed)
             gear_ratio = self.transmission[i].master_gear_ratio
             self.transmission[i - 1].load_torque = self.transmission[i].load_torque/gear_ratio
 

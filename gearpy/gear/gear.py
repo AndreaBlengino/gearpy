@@ -12,7 +12,7 @@ class GearBase(RotatingObject):
         self.__drives = None
         self.__master_gear_ratio = None
         self.__master_gear_efficiency = 1
-        self.__external_torque = 0
+        self.__external_torque = None
 
     @property
     @abstractmethod
