@@ -56,3 +56,21 @@ def dc_motor_speed_type_error(request):
                    and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
 def dc_motor_acceleration_type_error(request):
     return request.param
+
+
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
+                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
+def dc_motor_torque_type_error(request):
+    return request.param
+
+
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
+                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
+def dc_motor_driving_torque_type_error(request):
+    return request.param
+
+
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
+                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
+def dc_motor_load_torque_type_error(request):
+    return request.param
