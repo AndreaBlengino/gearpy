@@ -1,10 +1,12 @@
 from gearpy.mechanical_object.rotating_object import RotatingObject
 from .motor import MotorBase
+from typing import Union
 
 
 class DCMotor(MotorBase):
 
-    def __init__(self, name: str, inertia: float, no_load_speed: float, maximum_torque: float):
+    def __init__(self, name: str, inertia: Union[float, int], no_load_speed: Union[float, int],
+                 maximum_torque: Union[float, int]):
         super().__init__(name = name, inertia = inertia)
 
         if not isinstance(no_load_speed, float) and not isinstance(no_load_speed, int):
@@ -35,66 +37,66 @@ class DCMotor(MotorBase):
         super(DCMotor, type(self)).drives.fset(self, drives)
 
     @property
-    def angle(self) -> float:
+    def angle(self) -> Union[float, int]:
         return super().angle
 
     @angle.setter
-    def angle(self, angle: float):
+    def angle(self, angle: Union[float, int]):
         super(DCMotor, type(self)).angle.fset(self, angle)
 
     @property
-    def speed(self) -> float:
+    def speed(self) -> Union[float, int]:
         return super().speed
 
     @speed.setter
-    def speed(self, speed: float):
+    def speed(self, speed: Union[float, int]):
         super(DCMotor, type(self)).speed.fset(self, speed)
 
     @property
-    def acceleration(self) -> float:
+    def acceleration(self) -> Union[float, int]:
         return super().acceleration
 
     @acceleration.setter
-    def acceleration(self, acceleration: float):
+    def acceleration(self, acceleration: Union[float, int]):
         super(DCMotor, type(self)).acceleration.fset(self, acceleration)
 
     @property
-    def no_load_speed(self) -> float:
+    def no_load_speed(self) -> Union[float, int]:
         return self.__no_load_speed
 
     @property
-    def maximum_torque(self) -> float:
+    def maximum_torque(self) -> Union[float, int]:
         return self.__maximum_torque
 
     @property
-    def torque(self) -> float:
+    def torque(self) -> Union[float, int]:
         return super().torque
 
     @torque.setter
-    def torque(self, torque: float):
+    def torque(self, torque: Union[float, int]):
         super(DCMotor, type(self)).torque.fset(self, torque)
 
     @property
-    def driving_torque(self) -> float:
+    def driving_torque(self) -> Union[float, int]:
         return super().driving_torque
 
     @driving_torque.setter
-    def driving_torque(self, driving_torque: float):
+    def driving_torque(self, driving_torque: Union[float, int]):
         super(DCMotor, type(self)).driving_torque.fset(self, driving_torque)
 
     @property
-    def load_torque(self) -> float:
+    def load_torque(self) -> Union[float, int]:
         return super().load_torque
 
     @load_torque.setter
-    def load_torque(self, load_torque: float):
+    def load_torque(self, load_torque: Union[float, int]):
         super(DCMotor, type(self)).load_torque.fset(self, load_torque)
 
     @property
-    def inertia(self) -> float:
+    def inertia(self) -> Union[float, int]:
         return super().inertia
 
-    def compute_torque(self) -> float:
+    def compute_torque(self) -> Union[float, int]:
         return (1 - self.speed/self.__no_load_speed)*self.__maximum_torque
 
     @property

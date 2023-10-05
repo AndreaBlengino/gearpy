@@ -1,11 +1,12 @@
 from gearpy.mechanical_object.rotating_object import RotatingObject
 from gearpy.motor.motor import MotorBase
 import numpy as np
+from typing import Union
 
 
 class Solver:
 
-    def __init__(self, time_discretization: float, simulation_time: float, transmission: list):
+    def __init__(self, time_discretization: Union[float, int], simulation_time: Union[float, int], transmission: list):
         if not isinstance(time_discretization, float) and not isinstance(time_discretization, int):
             raise TypeError("Parameter 'time_discretization' must be a float or an integer.")
 

@@ -1,11 +1,12 @@
 from abc import abstractmethod
 from .mechanical_object import MechanicalObject
+from typing import Union
 
 
 class RotatingObject(MechanicalObject):
 
     @abstractmethod
-    def __init__(self, name: str, inertia: float):
+    def __init__(self, name: str, inertia: Union[float, int]):
         super().__init__(name = name)
 
         if not isinstance(inertia, float) and not isinstance(inertia, int):
@@ -30,12 +31,12 @@ class RotatingObject(MechanicalObject):
 
     @property
     @abstractmethod
-    def angle(self) -> float:
+    def angle(self) -> Union[float, int]:
         return self.__angle
 
     @angle.setter
     @abstractmethod
-    def angle(self, angle: float):
+    def angle(self, angle: Union[float, int]):
         if not isinstance(angle, float) and not isinstance(angle, int):
             raise TypeError("Parameter 'angle' must be a float or an integer.")
 
@@ -43,12 +44,12 @@ class RotatingObject(MechanicalObject):
 
     @property
     @abstractmethod
-    def speed(self) -> float:
+    def speed(self) -> Union[float, int]:
         return self.__speed
 
     @speed.setter
     @abstractmethod
-    def speed(self, speed: float):
+    def speed(self, speed: Union[float, int]):
         if not isinstance(speed, float) and not isinstance(speed, int):
             raise TypeError("Parameter 'speed' must be a float or an integer.")
 
@@ -56,12 +57,12 @@ class RotatingObject(MechanicalObject):
 
     @property
     @abstractmethod
-    def acceleration(self) -> float:
+    def acceleration(self) -> Union[float, int]:
         return self.__acceleration
 
     @acceleration.setter
     @abstractmethod
-    def acceleration(self, acceleration: float):
+    def acceleration(self, acceleration: Union[float, int]):
         if not isinstance(acceleration, float) and not isinstance(acceleration, int):
             raise TypeError("Parameter 'acceleration' must be a float or an integer.")
 
@@ -69,12 +70,12 @@ class RotatingObject(MechanicalObject):
 
     @property
     @abstractmethod
-    def torque(self) -> float:
+    def torque(self) -> Union[float, int]:
         return self.__torque
 
     @torque.setter
     @abstractmethod
-    def torque(self, torque: float):
+    def torque(self, torque: Union[float, int]):
         if not isinstance(torque, float) and not isinstance(torque, int):
             raise TypeError("Parameter 'torque' must be a float or an integer.")
 
@@ -82,12 +83,12 @@ class RotatingObject(MechanicalObject):
 
     @property
     @abstractmethod
-    def driving_torque(self) -> float:
+    def driving_torque(self) -> Union[float, int]:
         return self.__driving_torque
 
     @driving_torque.setter
     @abstractmethod
-    def driving_torque(self, driving_torque: float):
+    def driving_torque(self, driving_torque: Union[float, int]):
         if not isinstance(driving_torque, float) and not isinstance(driving_torque, int):
             raise TypeError("Parameter 'driving_torque' must be a float or an integer.")
 
@@ -95,12 +96,12 @@ class RotatingObject(MechanicalObject):
 
     @property
     @abstractmethod
-    def load_torque(self) -> float:
+    def load_torque(self) -> Union[float, int]:
         return self.__load_torque
 
     @load_torque.setter
     @abstractmethod
-    def load_torque(self, load_torque: float):
+    def load_torque(self, load_torque: Union[float, int]):
         if not isinstance(load_torque, float) and not isinstance(load_torque, int):
             raise TypeError("Parameter 'load_torque' must be a float or an integer.")
 
@@ -108,7 +109,7 @@ class RotatingObject(MechanicalObject):
 
     @property
     @abstractmethod
-    def inertia(self) -> float:
+    def inertia(self) -> Union[float, int]:
         return self.__inertia
 
     @property

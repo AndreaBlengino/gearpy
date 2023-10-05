@@ -1,11 +1,12 @@
 from abc import abstractmethod
 from gearpy.mechanical_object.rotating_object import RotatingObject
+from typing import Union
 
 
 class MotorBase(RotatingObject):
 
     @abstractmethod
-    def __init__(self, name: str, inertia: float):
+    def __init__(self, name: str, inertia: Union[float, int]):
         super().__init__(name = name, inertia = inertia)
         self.__drives = None
 

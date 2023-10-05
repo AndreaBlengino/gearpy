@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from gearpy.mechanical_object.rotating_object import RotatingObject
-from typing import Callable
+from typing import Callable, Union
 
 
 class GearBase(RotatingObject):
@@ -62,12 +62,12 @@ class GearBase(RotatingObject):
 
     @property
     @abstractmethod
-    def master_gear_efficiency(self) -> float:
+    def master_gear_efficiency(self) -> Union[float, int]:
         return self.__master_gear_efficiency
 
     @master_gear_efficiency.setter
     @abstractmethod
-    def master_gear_efficiency(self, master_gear_efficiency: float):
+    def master_gear_efficiency(self, master_gear_efficiency: Union[float, int]):
         if not isinstance(master_gear_efficiency, float) and not isinstance(master_gear_efficiency, int):
             raise TypeError("Parameter 'master_gear_efficiency' must be a float or an integer.")
 
