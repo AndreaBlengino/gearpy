@@ -1,8 +1,12 @@
+from gearpy import DCMotor
 import numpy as np
 from pytest import fixture
 
 
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0])]
+
+
+basic_dc_motor = DCMotor(name = 'name', inertia = 1, no_load_speed = 1, maximum_torque = 1)
 
 
 dc_motor_init_type_error_1 = [{'name': type_to_check, 'inertia': 1, 'no_load_speed': 1, 'maximum_torque': 1}
@@ -33,4 +37,22 @@ def dc_motor_init_type_error(request):
                    {'name': 'motor', 'inertia': 1, 'no_load_speed': -1, 'maximum_torque': 1},
                    {'name': 'motor', 'inertia': 1, 'no_load_speed': 1, 'maximum_torque': -1}])
 def dc_motor_init_value_error(request):
+    return request.param
+
+
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
+                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
+def dc_motor_angle_type_error(request):
+    return request.param
+
+
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
+                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
+def dc_motor_speed_type_error(request):
+    return request.param
+
+
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
+                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
+def dc_motor_acceleration_type_error(request):
     return request.param
