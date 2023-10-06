@@ -64,6 +64,9 @@ class GearBase(RotatingObject):
         if not isinstance(master_gear_ratio, float):
             raise TypeError("Parameter 'master_gear_ratio' must be a float.")
 
+        if master_gear_ratio <= 0:
+            raise ValueError("Parameter 'master_gear_ratio' must be positive.")
+
         self.__master_gear_ratio = master_gear_ratio
 
     @property
