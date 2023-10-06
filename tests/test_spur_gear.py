@@ -93,3 +93,60 @@ class TestSpurGearAcceleration:
     def test_raises_type_error(self, spur_gear_acceleration_type_error):
         with raises(TypeError):
             basic_spur_gear.acceleration = spur_gear_acceleration_type_error
+
+
+@mark.spur_gear
+class TestSpurGearTorque:
+
+
+    @mark.genuine
+    @given(torque = floats(allow_nan = False, allow_infinity = False))
+    @settings(max_examples = 100)
+    def test_property(self, torque):
+        basic_spur_gear.torque = torque
+
+        assert torque == basic_spur_gear.torque
+
+
+    @mark.error
+    def test_raises_type_error(self, spur_gear_torque_type_error):
+        with raises(TypeError):
+            basic_spur_gear.torque = spur_gear_torque_type_error
+
+
+@mark.spur_gear
+class TestSpurGearDrivingTorque:
+
+
+    @mark.genuine
+    @given(driving_torque = floats(allow_nan = False, allow_infinity = False))
+    @settings(max_examples = 100)
+    def test_property(self, driving_torque):
+        basic_spur_gear.driving_torque = driving_torque
+
+        assert driving_torque == basic_spur_gear.driving_torque
+
+
+    @mark.error
+    def test_raises_type_error(self, spur_gear_driving_torque_type_error):
+        with raises(TypeError):
+            basic_spur_gear.driving_torque = spur_gear_driving_torque_type_error
+
+
+@mark.spur_gear
+class TestSpurGearLoadTorque:
+
+
+    @mark.genuine
+    @given(load_torque = floats(allow_nan = False, allow_infinity = False))
+    @settings(max_examples = 100)
+    def test_property(self, load_torque):
+        basic_spur_gear.load_torque = load_torque
+
+        assert load_torque == basic_spur_gear.load_torque
+
+
+    @mark.error
+    def test_raises_type_error(self, spur_gear_load_torque_type_error):
+        with raises(TypeError):
+            basic_spur_gear.load_torque = spur_gear_load_torque_type_error
