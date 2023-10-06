@@ -150,3 +150,49 @@ class TestSpurGearLoadTorque:
     def test_raises_type_error(self, spur_gear_load_torque_type_error):
         with raises(TypeError):
             basic_spur_gear.load_torque = spur_gear_load_torque_type_error
+
+
+@mark.spur_gear
+class TestSpurGearTimeVariables:
+
+
+    @mark.genuine
+    def test_property(self):
+        time_variables = basic_spur_gear.time_variables
+
+        assert isinstance(time_variables, dict)
+        assert ['angle', 'speed', 'acceleration', 'torque', 'driving torque', 'load torque'] == list(time_variables.keys())
+        assert all([value == [] for value in time_variables.values()])
+
+
+@mark.spur_gear
+class TestSpurGearUpdateTimeVariables:
+
+
+    @mark.genuine
+    @given(angle = floats(allow_nan = False, allow_infinity = False),
+           speed = floats(allow_nan = False, allow_infinity = False),
+           acceleration = floats(allow_nan = False, allow_infinity = False),
+           torque = floats(allow_nan = False, allow_infinity = False),
+           driving_torque = floats(allow_nan = False, allow_infinity = False),
+           load_torque = floats(allow_nan = False, allow_infinity = False))
+    def test_method(self, angle, speed, acceleration, torque, driving_torque, load_torque):
+        gear = SpurGear(name = 'name', n_teeth = 10, inertia = 1)
+        gear.angle = angle
+        gear.speed = speed
+        gear.acceleration = acceleration
+        gear.torque = torque
+        gear.driving_torque = driving_torque
+        gear.load_torque = load_torque
+
+        gear.update_time_variables()
+        time_variables = gear.time_variables
+
+        assert isinstance(time_variables, dict)
+        assert ['angle', 'speed', 'acceleration', 'torque', 'driving torque', 'load torque'] == list(time_variables.keys())
+        assert time_variables['angle'][-1] == angle
+        assert time_variables['speed'][-1] == speed
+        assert time_variables['acceleration'][-1] == acceleration
+        assert time_variables['torque'][-1] == torque
+        assert time_variables['driving torque'][-1] == driving_torque
+        assert time_variables['load torque'][-1] == load_torque
