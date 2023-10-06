@@ -35,6 +35,9 @@ class GearBase(RotatingObject):
     @driven_by.setter
     @abstractmethod
     def driven_by(self, driven_by: RotatingObject):
+        if not isinstance(driven_by, RotatingObject):
+            raise TypeError("Parameter 'drives' must be a RotatingObject")
+
         self.__driven_by = driven_by
 
     @property
@@ -45,6 +48,9 @@ class GearBase(RotatingObject):
     @drives.setter
     @abstractmethod
     def drives(self, drives: RotatingObject):
+        if not isinstance(drives, RotatingObject):
+            raise TypeError("Parameter 'drives' must be a RotatingObject")
+
         self.__drives = drives
 
     @property
