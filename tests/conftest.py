@@ -97,6 +97,16 @@ def spur_gear_init_value_error(request):
     return request.param
 
 
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)])
+def spur_gear_driven_by_type_error(request):
+    return request.param
+
+
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)])
+def spur_gear_drives_type_error(request):
+    return request.param
+
+
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
                    and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
 def spur_gear_angle_type_error(request):

@@ -1,4 +1,4 @@
-from gearpy import SpurGear
+from gearpy import DCMotor, SpurGear
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, integers
 from pytest import mark, raises
@@ -36,6 +36,45 @@ class TestSpurGearInit:
             SpurGear(name = spur_gear_init_value_error['name'],
                      n_teeth = spur_gear_init_value_error['n_teeth'],
                      inertia = spur_gear_init_value_error['inertia'])
+
+
+@mark.spur_gear
+class TestSpurGearDrivenBy:
+
+
+    @mark.genuine
+    def test_property(self):
+        motor = DCMotor(name = 'motor', inertia = 1, no_load_speed = 1, maximum_torque = 1)
+        gear = SpurGear(name = 'gear', n_teeth = 10, inertia = 1)
+
+        for master in [motor, gear]:
+            basic_spur_gear.driven_by = master
+
+            assert master == basic_spur_gear.driven_by
+
+
+    @mark.error
+    def test_raises_type_error(self, spur_gear_driven_by_type_error):
+        with raises(TypeError):
+            basic_spur_gear.driven_by = spur_gear_driven_by_type_error
+
+
+@mark.spur_gear
+class TestSpurGearDrives:
+
+
+    @mark.genuine
+    def test_property(self):
+        gear = SpurGear(name = 'gear', n_teeth = 10, inertia = 1)
+        basic_spur_gear.drives = gear
+
+        assert gear == basic_spur_gear.drives
+
+
+    @mark.error
+    def test_raises_type_error(self, spur_gear_drives_type_error):
+        with raises(TypeError):
+            basic_spur_gear.drives = spur_gear_drives_type_error
 
 
 @mark.spur_gear
