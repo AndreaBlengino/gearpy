@@ -1,6 +1,6 @@
 from gearpy import SpurGear, add_gear_mating, add_fixed_joint
-from hypothesis.strategies import composite, text, integers, floats
 from hypothesis import given, settings
+from hypothesis.strategies import composite, text, integers, floats
 from pytest import mark, raises
 
 
