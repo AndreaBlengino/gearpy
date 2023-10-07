@@ -11,6 +11,11 @@ class Transmission:
             raise ValueError("Parameter 'motor' is not connected to any other element. Call 'add_fixed_joint' "
                              "to join 'motor' with a GearBase's instance.")
 
-        self.chain = [motor]
-        while self.chain[-1].drives is not None:
-            self.chain.append(self.chain[-1].drives)
+        self.__chain = [motor]
+        while self.__chain[-1].drives is not None:
+            self.__chain.append(self.__chain[-1].drives)
+
+
+    @property
+    def chain(self):
+        return self.__chain
