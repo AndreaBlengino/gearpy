@@ -1,5 +1,6 @@
-from gearpy import DCMotor
-from gearpy import SpurGear
+from gearpy import DCMotor, SpurGear
+from gearpy.gear.gear import GearBase
+from gearpy.motor.motor import MotorBase
 from gearpy.mechanical_object.rotating_object import RotatingObject
 import numpy as np
 from pytest import fixture
@@ -162,4 +163,38 @@ def spur_gear_load_torque_type_error(request):
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Callable)])
 def spur_gear_external_torque_type_error(request):
+    return request.param
+
+
+add_gear_mating_type_error_1 = [{'gear 1': type_to_check, 'gear 2': basic_spur_gear, 'efficiency': 0.5}
+                                for type_to_check in types_to_check if not isinstance(type_to_check, GearBase)]
+
+add_gear_mating_type_error_2 = [{'gear 1': basic_spur_gear, 'gear 2': type_to_check, 'efficiency': 0.5}
+                                for type_to_check in types_to_check if not isinstance(type_to_check, GearBase)]
+
+add_gear_mating_type_error_3 = [{'gear 1': basic_spur_gear, 'gear 2': basic_spur_gear, 'efficiency': type_to_check}
+                                for type_to_check in types_to_check if not isinstance(type_to_check, float)
+                                and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)]
+
+@fixture(params = [*add_gear_mating_type_error_1,
+                   *add_gear_mating_type_error_2,
+                   *add_gear_mating_type_error_3])
+def add_gear_mating_type_error(request):
+    return request.param
+
+
+@fixture(params = [-1, 2])
+def add_gear_mating_value_error(request):
+    return request.param
+
+
+add_fixed_joint_type_error_1 = [{'master': type_to_check, 'slave': basic_spur_gear} for type_to_check in types_to_check
+                                if not isinstance(type_to_check, GearBase) and not isinstance(type_to_check, MotorBase)]
+
+add_fixed_joint_type_error_2 = [{'master': basic_spur_gear, 'slave': type_to_check}
+                                for type_to_check in types_to_check if not isinstance(type_to_check, GearBase)]
+
+@fixture(params = [*add_fixed_joint_type_error_1,
+                   *add_fixed_joint_type_error_2])
+def add_fixed_joint_type_error(request):
     return request.param
