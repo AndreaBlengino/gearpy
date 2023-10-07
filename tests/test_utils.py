@@ -1,16 +1,8 @@
 from gearpy import SpurGear, add_gear_mating, add_fixed_joint
 from hypothesis import given, settings
-from hypothesis.strategies import composite, text, integers, floats
+from hypothesis.strategies import floats
 from pytest import mark, raises
-
-
-@composite
-def spur_gears(draw):
-    name = draw(text(min_size = 1))
-    n_teeth = draw(integers(min_value = 1))
-    inertia = draw(floats(min_value = 0, exclude_min = True))
-
-    return SpurGear(name = name, n_teeth = n_teeth, inertia = inertia)
+from tests.conftest import spur_gears
 
 
 @mark.utils

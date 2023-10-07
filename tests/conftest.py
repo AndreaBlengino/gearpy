@@ -2,6 +2,7 @@ from gearpy import DCMotor, SpurGear
 from gearpy.gear.gear import GearBase
 from gearpy.motor.motor import MotorBase
 from gearpy.mechanical_object.rotating_object import RotatingObject
+from hypothesis.strategies import composite, text, integers, floats
 import numpy as np
 from pytest import fixture
 from typing import Callable
@@ -13,6 +14,25 @@ types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, 
 basic_dc_motor = DCMotor(name = 'name', inertia = 1, no_load_speed = 1, maximum_torque = 1)
 basic_spur_gear = SpurGear(name = 'gear', n_teeth = 10, inertia = 1)
 basic_rotating_objects = [basic_dc_motor, basic_spur_gear]
+
+
+@composite
+def dc_motors(draw):
+    name = draw(text(min_size = 1))
+    inertia = draw(floats(min_value = 0, exclude_min = True))
+    no_load_speed = draw(floats(min_value = 0, exclude_min = True))
+    maximum_torque = draw(floats(min_value = 0, exclude_min = True))
+
+    return DCMotor(name = name, inertia = inertia, no_load_speed = no_load_speed, maximum_torque = maximum_torque)
+
+
+@composite
+def spur_gears(draw):
+    name = draw(text(min_size = 1))
+    n_teeth = draw(integers(min_value = 1))
+    inertia = draw(floats(min_value = 0, exclude_min = True))
+
+    return SpurGear(name = name, n_teeth = n_teeth, inertia = inertia)
 
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
@@ -162,4 +182,9 @@ add_fixed_joint_type_error_2 = [{'master': basic_spur_gear, 'slave': type_to_che
 @fixture(params = [*add_fixed_joint_type_error_1,
                    *add_fixed_joint_type_error_2])
 def add_fixed_joint_type_error(request):
+    return request.param
+
+
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, MotorBase)])
+def transmission_init_type_error(request):
     return request.param

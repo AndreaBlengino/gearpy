@@ -1,7 +1,7 @@
-from tests.conftest import basic_rotating_objects
 from hypothesis import given, settings
 from hypothesis.strategies import floats
 from pytest import mark, raises
+from tests.conftest import basic_rotating_objects
 
 
 @mark.rotating_object
