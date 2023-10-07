@@ -18,10 +18,10 @@ class TestDCMotorInit:
     def test_method(self, name, inertia, no_load_speed, maximum_torque):
         motor = DCMotor(name = name, inertia = inertia, no_load_speed = no_load_speed, maximum_torque = maximum_torque)
 
-        assert name == motor.name
-        assert inertia == motor.inertia
-        assert no_load_speed == motor.no_load_speed
-        assert maximum_torque == motor.maximum_torque
+        assert motor.name == name
+        assert motor.inertia == inertia
+        assert motor.no_load_speed == no_load_speed
+        assert motor.maximum_torque == maximum_torque
 
 
     @mark.error
@@ -51,7 +51,7 @@ class TestDCMotorDrives:
         gear = SpurGear(name = 'gear', n_teeth = 10, inertia = 1)
         basic_dc_motor.drives = gear
 
-        assert gear == basic_dc_motor.drives
+        assert basic_dc_motor.drives == gear
 
 
     @mark.error

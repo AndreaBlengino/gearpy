@@ -17,9 +17,9 @@ class TestSpurGearInit:
     def test_method(self, name, n_teeth, inertia):
         gear = SpurGear(name = name, n_teeth = n_teeth, inertia = inertia)
 
-        assert name == gear.name
-        assert n_teeth == gear.n_teeth
-        assert inertia == gear.inertia
+        assert gear.name == name
+        assert gear.n_teeth == n_teeth
+        assert gear.inertia == inertia
 
 
     @mark.error
@@ -50,7 +50,7 @@ class TestSpurGearDrivenBy:
         for master in [motor, gear]:
             basic_spur_gear.driven_by = master
 
-            assert master == basic_spur_gear.driven_by
+            assert basic_spur_gear.driven_by == master
 
 
     @mark.error
@@ -68,7 +68,7 @@ class TestSpurGearDrives:
         gear = SpurGear(name = 'gear', n_teeth = 10, inertia = 1)
         basic_spur_gear.drives = gear
 
-        assert gear == basic_spur_gear.drives
+        assert basic_spur_gear.drives == gear
 
 
     @mark.error
@@ -87,7 +87,7 @@ class TestSpurGearMasterGearRatio:
     def test_property(self, master_gear_ratio):
         basic_spur_gear.master_gear_ratio = master_gear_ratio
 
-        assert master_gear_ratio == basic_spur_gear.master_gear_ratio
+        assert basic_spur_gear.master_gear_ratio == master_gear_ratio
 
 
     @mark.error
@@ -112,7 +112,7 @@ class TestSpurGearMasterGearEfficiency:
     def test_property(self, master_gear_efficiency):
         basic_spur_gear.master_gear_efficiency = master_gear_efficiency
 
-        assert master_gear_efficiency == basic_spur_gear.master_gear_efficiency
+        assert basic_spur_gear.master_gear_efficiency == master_gear_efficiency
 
     @mark.error
     def test_raises_type_error(self, spur_gear_master_gear_efficiency_type_error):
@@ -135,7 +135,7 @@ class TestSpurGearExternalTorque:
     def test_property(self, external_torque):
         basic_spur_gear.external_torque = external_torque
 
-        assert external_torque == basic_spur_gear.external_torque
+        assert basic_spur_gear.external_torque == external_torque
 
     @mark.error
     def test_raises_type_error(self, spur_gear_external_torque_type_error):

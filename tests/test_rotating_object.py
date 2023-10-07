@@ -15,7 +15,7 @@ class TestRotatingObjectAngle:
         for rotating_object in basic_rotating_objects:
             rotating_object.angle = angle
 
-            assert angle == rotating_object.angle
+            assert rotating_object.angle == angle
 
 
     @mark.error
@@ -36,7 +36,7 @@ class TestRotatingObjectSpeed:
         for rotating_object in basic_rotating_objects:
             rotating_object.speed = speed
 
-            assert speed == rotating_object.speed
+            assert rotating_object.speed == speed
 
 
     @mark.error
@@ -57,7 +57,7 @@ class TestRotatingObjectAcceleration:
         for rotating_object in basic_rotating_objects:
             rotating_object.acceleration = acceleration
 
-            assert acceleration == rotating_object.acceleration
+            assert rotating_object.acceleration == acceleration
 
 
     @mark.error
@@ -78,7 +78,7 @@ class TestRotatingObjectTorque:
         for rotating_object in basic_rotating_objects:
             rotating_object.torque = torque
 
-            assert torque == rotating_object.torque
+            assert rotating_object.torque == torque
 
 
     @mark.error
@@ -99,7 +99,7 @@ class TestRotatingObjectDrivingTorque:
         for rotating_object in basic_rotating_objects:
             rotating_object.driving_torque = driving_torque
 
-            assert driving_torque == rotating_object.driving_torque
+            assert rotating_object.driving_torque == driving_torque
 
 
     @mark.error
@@ -120,7 +120,7 @@ class TestRotatingObjectLoadTorque:
         for rotating_object in basic_rotating_objects:
             rotating_object.load_torque = load_torque
 
-            assert load_torque == rotating_object.load_torque
+            assert rotating_object.load_torque == load_torque
 
 
     @mark.error
