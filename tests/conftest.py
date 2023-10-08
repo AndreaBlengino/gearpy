@@ -211,6 +211,19 @@ gear_transmission_solver_init_type_error = SpurGear(name = 'gear', n_teeth = 10,
 add_fixed_joint(master = motor_transmission_solver_init_type_error, slave = gear_transmission_solver_init_type_error)
 transmission_solver_init_type_error = Transmission(motor = motor_transmission_solver_init_type_error)
 
+class TransmissionFake(Transmission):
+
+    def __init__(self, chain: list):
+        self.__chain = chain
+
+    @property
+    def chain(self):
+        return self.__chain
+
+    @chain.setter
+    def chain(self, chain):
+        self.__chain = chain
+
 solver_init_type_error_1 = [{'time_discretization': type_to_check, 'simulation_time': 1,
                              'transmission': transmission_solver_init_type_error} for type_to_check in types_to_check
                             if not isinstance(type_to_check, float) and not isinstance(type_to_check, int)
@@ -225,29 +238,13 @@ solver_init_type_error_3 = [{'time_discretization': 1, 'simulation_time': 5,
                              'transmission': type_to_check} for type_to_check in types_to_check
                             if not isinstance(type_to_check, Transmission)]
 
-motor_gear_pairs_4 = {DCMotor(name = 'motor', inertia = 1, no_load_speed = 1, maximum_torque = 1):
-                      SpurGear(name = 'motor', n_teeth = 10, inertia = 1)
-                      for type_to_check in types_to_check if not isinstance(type_to_check, MotorBase)}
-for motor, gear in motor_gear_pairs_4.items():
-    add_fixed_joint(master = motor, slave = gear)
-transmissions_4 = [Transmission(motor) for motor in motor_gear_pairs_4.keys()]
-for transmission_4, type_to_check in zip(transmissions_4, types_to_check):
-    if not isinstance(type_to_check, MotorBase):
-        transmission_4.chain[0] = type_to_check
-solver_init_type_error_4 = [{'time_discretization': 1, 'simulation_time': 5, 'transmission': transmission_4}
-                            for transmission_4 in transmissions_4]
+solver_init_type_error_4 = [{'time_discretization': 1, 'simulation_time': 5,
+                             'transmission': TransmissionFake([type_to_check, basic_spur_gear])}
+                            for type_to_check in types_to_check if not isinstance(type_to_check, MotorBase)]
 
-motor_gear_pairs_5 = {DCMotor(name = 'motor', inertia = 1, no_load_speed = 1, maximum_torque = 1):
-                      SpurGear(name = 'motor', n_teeth = 10, inertia = 1)
-                      for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)}
-for motor, gear in motor_gear_pairs_5.items():
-    add_fixed_joint(master = motor, slave = gear)
-transmissions_5 = [Transmission(motor) for motor in motor_gear_pairs_5.keys()]
-for transmission_5, type_to_check in zip(transmissions_5, types_to_check):
-    if not isinstance(type_to_check, RotatingObject):
-        transmission_5.chain[1] = type_to_check
-solver_init_type_error_5 = [{'time_discretization': 1, 'simulation_time': 5, 'transmission': transmission_5}
-                            for transmission_5 in transmissions_5]
+solver_init_type_error_5 = [{'time_discretization': 1, 'simulation_time': 5,
+                             'transmission': TransmissionFake([basic_dc_motor, type_to_check])}
+                            for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)]
 
 @fixture(params = [*solver_init_type_error_1,
                    *solver_init_type_error_2,
@@ -257,22 +254,15 @@ solver_init_type_error_5 = [{'time_discretization': 1, 'simulation_time': 5, 'tr
 def solver_init_type_error(request):
     return request.param
 
-motor_transmission_solver_init_value_error_1 = DCMotor(name = 'name', inertia = 1,
+motor_transmission_solver_init_value_error = DCMotor(name = 'name', inertia = 1,
                                                        no_load_speed = 1, maximum_torque = 1)
-gear_transmission_solver_init_value_error_1 = SpurGear(name = 'gear', n_teeth = 10, inertia = 1)
-add_fixed_joint(master = motor_transmission_solver_init_value_error_1, slave = gear_transmission_solver_init_value_error_1)
-transmission_solver_init_value_error_1 = Transmission(motor = motor_transmission_solver_init_value_error_1)
+gear_transmission_solver_init_value_error = SpurGear(name = 'gear', n_teeth = 10, inertia = 1)
+add_fixed_joint(master = motor_transmission_solver_init_value_error, slave = gear_transmission_solver_init_value_error)
+transmission_solver_init_value_error = Transmission(motor = motor_transmission_solver_init_value_error)
 
-motor_transmission_solver_init_value_error_2 = DCMotor(name = 'name', inertia = 1,
-                                                       no_load_speed = 1, maximum_torque = 1)
-gear_transmission_solver_init_value_error_2 = SpurGear(name = 'gear', n_teeth = 10, inertia = 1)
-add_fixed_joint(master = motor_transmission_solver_init_value_error_2, slave = gear_transmission_solver_init_value_error_2)
-transmission_solver_init_value_error_2 = Transmission(motor = motor_transmission_solver_init_value_error_2)
-transmission_solver_init_value_error_2.chain.clear()
-
-@fixture(params = [{'time_discretization': -1, 'simulation_time': 5, 'transmission': transmission_solver_init_value_error_1},
-                   {'time_discretization': 1, 'simulation_time': -1, 'transmission': transmission_solver_init_value_error_1},
-                   {'time_discretization': 6, 'simulation_time': 5, 'transmission': transmission_solver_init_value_error_1},
-                   {'time_discretization': 1, 'simulation_time': 5, 'transmission': transmission_solver_init_value_error_2}])
+@fixture(params = [{'time_discretization': -1, 'simulation_time': 5, 'transmission': transmission_solver_init_value_error},
+                   {'time_discretization': 1, 'simulation_time': -1, 'transmission': transmission_solver_init_value_error},
+                   {'time_discretization': 6, 'simulation_time': 5, 'transmission': transmission_solver_init_value_error},
+                   {'time_discretization': 1, 'simulation_time': 5, 'transmission': TransmissionFake([])}])
 def solver_init_value_error(request):
     return request.param

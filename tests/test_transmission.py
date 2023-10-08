@@ -24,7 +24,7 @@ class TestTransmissionInit:
 
         transmission = Transmission(motor = motor)
 
-        assert isinstance(transmission.chain, list)
+        assert isinstance(transmission.chain, tuple)
         assert transmission.chain
         assert len(transmission.chain) == len(gears) + 1
         assert transmission.chain[0] == motor
