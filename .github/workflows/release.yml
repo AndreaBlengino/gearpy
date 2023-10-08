@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  release-job:
+    runs-on: ubuntu-latest
+    env:
+      PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.7
+    - name: Install release tooling
+      run: |
+        pip install twine wheel
+    - name: Build package
+      run: |
+        python setup.py sdist bdist_wheel
+    - name: Publish to PyPI
+      run: |
+        twine check dist/*
+        twine upload --repository pypi --username __token__ --password ${PYPI_TOKEN} dist/*
+  test-install-job:
+    needs: release-job
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '>=3.9 <=3.11'
+    - name: Give PyPI a chance to update the index
+      run: sleep 150
+    - name: Install from PyPI
+      run: |
+        pip install gearpy
