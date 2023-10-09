@@ -1,4 +1,4 @@
-from gearpy import Solver
+from gearpy.solver import Solver
 from hypothesis import given, settings
 from hypothesis.strategies import floats, integers
 import numpy as np

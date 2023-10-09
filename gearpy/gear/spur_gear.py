@@ -1,5 +1,5 @@
-from .gear import GearBase
-from gearpy.mechanical_object.rotating_object import RotatingObject
+from gearpy.gear import GearBase
+from gearpy.mechanical_object import RotatingObject
 from typing import Callable, Union
 
 

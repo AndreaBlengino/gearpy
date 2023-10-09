@@ -1,4 +1,6 @@
-from gearpy import DCMotor, Transmission, add_gear_mating, add_fixed_joint
+from gearpy.motor import DCMotor
+from gearpy.transmission import Transmission
+from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings
 from hypothesis.strategies import lists
 from pytest import mark, raises

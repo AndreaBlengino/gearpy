@@ -1,5 +1,5 @@
-from gearpy.mechanical_object.rotating_object import RotatingObject
-from .motor import MotorBase
+from gearpy.mechanical_object import RotatingObject
+from gearpy.motor import MotorBase
 from typing import Union
 
 

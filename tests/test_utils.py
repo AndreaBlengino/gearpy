@@ -1,4 +1,5 @@
-from gearpy import SpurGear, add_gear_mating, add_fixed_joint
+from gearpy.gear import SpurGear
+from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings
 from hypothesis.strategies import floats
 from pytest import mark, raises

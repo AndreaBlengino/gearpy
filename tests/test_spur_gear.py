@@ -1,4 +1,5 @@
-from gearpy import DCMotor, SpurGear
+from gearpy.gear import SpurGear
+from gearpy.motor import DCMotor
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, integers, functions
 from pytest import mark, raises

@@ -1,7 +1,8 @@
-from gearpy import DCMotor, SpurGear, Transmission, add_fixed_joint, add_gear_mating
-from gearpy.gear.gear import GearBase
-from gearpy.motor.motor import MotorBase
-from gearpy.mechanical_object.rotating_object import RotatingObject
+from gearpy.gear import GearBase, SpurGear
+from gearpy.mechanical_object import RotatingObject
+from gearpy.motor import MotorBase, DCMotor
+from gearpy.transmission import Transmission
+from gearpy.utils import add_fixed_joint, add_gear_mating
 from hypothesis.strategies import composite, text, integers, floats, lists
 import numpy as np
 from pytest import fixture

@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from gearpy.mechanical_object.rotating_object import RotatingObject
+from gearpy.mechanical_object import RotatingObject
 from typing import Callable, Union
 
 

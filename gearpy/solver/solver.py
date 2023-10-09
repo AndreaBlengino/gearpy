@@ -1,6 +1,6 @@
-from gearpy.mechanical_object.rotating_object import RotatingObject
-from gearpy.motor.motor import MotorBase
-from gearpy.transmission.transmission import Transmission
+from gearpy.mechanical_object import RotatingObject
+from gearpy.motor import MotorBase
+from gearpy.transmission import Transmission
 import numpy as np
 from typing import Union
 

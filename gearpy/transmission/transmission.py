@@ -1,4 +1,4 @@
-from gearpy.motor.motor import MotorBase
+from gearpy.motor import MotorBase
 
 
 class Transmission:
