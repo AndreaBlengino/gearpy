@@ -1,15 +1,25 @@
-Welcome to gearpy's documentation!
-==================================
+********************
+gearpy documentation
+********************
+
+
+**Date**: |today|
+
+**Version**: |version|
+
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :hidden:
+   :caption: Module
 
+   gearpy
+
+
+.. mdinclude:: ../../README.md
 
 
 Indices and tables
 ==================
 
-* :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
