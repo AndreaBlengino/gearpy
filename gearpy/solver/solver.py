@@ -1,28 +1,26 @@
 from gearpy.mechanical_object import RotatingObject
 from gearpy.motor import MotorBase
 from gearpy.transmission import Transmission
+from gearpy.units import Time
 import numpy as np
-from typing import Union
 
 
 class Solver:
 
-    def __init__(self, time_discretization: Union[float, int],
-                 simulation_time: Union[float, int],
-                 transmission: Transmission):
-        if not isinstance(time_discretization, float) and not isinstance(time_discretization, int):
-            raise TypeError("Parameter 'time_discretization' must be a float or an integer.")
+    def __init__(self, time_discretization: Time, simulation_time: Time, transmission: Transmission):
+        if not isinstance(time_discretization, Time):
+            raise TypeError("Parameter 'time_discretization' must be an instance of Time.")
 
-        if not isinstance(simulation_time, float) and not isinstance(simulation_time, int):
-            raise TypeError("Parameter 'simulation_time' must be a float or an integer.")
+        if not isinstance(simulation_time, Time):
+            raise TypeError("Parameter 'simulation_time' must be an instance of Time.")
 
         if not isinstance(transmission, Transmission):
             raise TypeError("Parameter 'transmission' must be an instance of Transmission.")
 
-        if time_discretization <= 0:
+        if time_discretization.value <= 0:
             raise ValueError("Parameter 'time_discretization' must be positive.")
 
-        if simulation_time <= 0:
+        if simulation_time.value <= 0:
             raise ValueError("Parameter 'time_simulation' must be positive.")
 
         if time_discretization >= simulation_time:
@@ -40,7 +38,7 @@ class Solver:
         self.time_discretization = time_discretization
         self.simulation_time = simulation_time
         self.transmission_chain = transmission.chain
-        self.time = [0]
+        self.time = [Time(value = 0, unit = time_discretization.unit)]
 
     def run(self):
 
@@ -48,9 +46,9 @@ class Solver:
         self._compute_transmission_initial_state()
         self._update_time_variables()
 
-        for k in np.arange(self.time_discretization, self.simulation_time, self.time_discretization):
+        for k in np.arange(self.time_discretization.value, self.simulation_time.value, self.time_discretization.value):
 
-            self.time.append(k)
+            self.time.append(Time(value = float(k), unit = self.time_discretization.unit))
 
             self._compute_kinematic_variables()
             self._compute_driving_torque()
