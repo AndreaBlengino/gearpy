@@ -66,6 +66,67 @@ class Time(UnitBase):
         else:
             return Time(value = self.__value/other, unit = self.__unit)
 
+    def __eq__(self, other: 'Time') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Time):
+            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+
+        angle = Time(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value == angle.value
+
+    def __ne__(self, other: 'Time') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Time):
+            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+
+
+        angle = Time(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value != angle.value
+
+    def __gt__(self, other: 'Time') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Time):
+            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+
+        angle = Time(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value > angle.value
+
+    def __ge__(self, other: 'Time') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Time):
+            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+
+        angle = Time(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value >= angle.value
+
+    def __lt__(self, other: 'Time') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Time):
+            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+
+        angle = Time(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value < angle.value
+
+    def __le__(self, other: 'Time') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Time):
+            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+
+        angle = Time(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value <= angle.value
+
     @property
     def value(self) -> Union[float, int]:
         return self.__value

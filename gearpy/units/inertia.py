@@ -78,6 +78,66 @@ class Inertia(UnitBase):
         else:
             return Inertia(value = self.__value/other, unit = self.__unit)
 
+    def __eq__(self, other: 'Inertia') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Inertia):
+            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+
+        angle = Inertia(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value == angle.value
+
+    def __ne__(self, other: 'Inertia') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Inertia):
+            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+
+        angle = Inertia(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value != angle.value
+
+    def __gt__(self, other: 'Inertia') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Inertia):
+            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+
+        angle = Inertia(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value > angle.value
+
+    def __ge__(self, other: 'Inertia') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Inertia):
+            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+
+        angle = Inertia(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value >= angle.value
+
+    def __lt__(self, other: 'Inertia') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Inertia):
+            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+
+        angle = Inertia(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value < angle.value
+
+    def __le__(self, other: 'Inertia') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Inertia):
+            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+
+        angle = Inertia(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value <= angle.value
+
     @property
     def value(self) -> Union[float, int]:
         return self.__value

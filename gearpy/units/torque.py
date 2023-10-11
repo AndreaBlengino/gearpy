@@ -76,6 +76,66 @@ class Torque(UnitBase):
         else:
             return Torque(value = self.__value/other, unit = self.__unit)
 
+    def __eq__(self, other: 'Torque') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Torque):
+            raise TypeError(f'Cannot compare Torque and {other.__class__.__name__}')
+
+        angle = Torque(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value == angle.value
+
+    def __ne__(self, other: 'Torque') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Torque):
+            raise TypeError(f'Cannot compare Torque and {other.__class__.__name__}')
+
+        angle = Torque(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value != angle.value
+
+    def __gt__(self, other: 'Torque') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Torque):
+            raise TypeError(f'Cannot compare Torque and {other.__class__.__name__}')
+
+        angle = Torque(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value > angle.value
+
+    def __ge__(self, other: 'Torque') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Torque):
+            raise TypeError(f'Cannot compare Torque and {other.__class__.__name__}')
+
+        angle = Torque(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value >= angle.value
+
+    def __lt__(self, other: 'Torque') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Torque):
+            raise TypeError(f'Cannot compare Torque and {other.__class__.__name__}')
+
+        angle = Torque(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value < angle.value
+
+    def __le__(self, other: 'Torque') -> bool:
+        super().__eq__(other = other)
+
+        if not isinstance(other, Torque):
+            raise TypeError(f'Cannot compare Torque and {other.__class__.__name__}')
+
+        angle = Torque(value = other.value, unit = other.unit)
+        angle.to(self.__unit)
+        return self.__value <= angle.value
+
     @property
     def value(self) -> Union[float, int]:
         return self.__value

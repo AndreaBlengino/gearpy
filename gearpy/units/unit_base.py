@@ -37,9 +37,27 @@ class UnitBase(ABC):
         if isinstance(other, UnitBase):
             if other.value == 0:
                 raise ZeroDivisionError('It is not allowed to divide a Unit by zero.')
+        else:
+            if other == 0:
+                raise ZeroDivisionError('It is not allowed to divide a Unit by zero.')
 
-        if other == 0:
-            raise ZeroDivisionError('It is not allowed to divide a Unit by zero.')
+    @abstractmethod
+    def __eq__(self, other: 'UnitBase') -> None: ...
+
+    @abstractmethod
+    def __ne__(self, other: 'UnitBase') -> None: ...
+
+    @abstractmethod
+    def __gt__(self, other: 'UnitBase') -> None: ...
+
+    @abstractmethod
+    def __ge__(self, other: 'UnitBase') -> None: ...
+
+    @abstractmethod
+    def __lt__(self, other: 'UnitBase') -> None: ...
+
+    @abstractmethod
+    def __le__(self, other: 'UnitBase') -> None: ...
 
     @property
     @abstractmethod
