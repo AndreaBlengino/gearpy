@@ -17,6 +17,30 @@ class UnitBase(ABC):
     @abstractmethod
     def __repr__(self): ...
 
+    @abstractmethod
+    def __add__(self, other: 'UnitBase') -> None: ...
+
+    @abstractmethod
+    def __sub__(self, other: 'UnitBase') -> None: ...
+
+    @abstractmethod
+    def __mul__(self, other: Union[float, int]) -> None: ...
+
+    @abstractmethod
+    def __rmul__(self, other: Union[float, int]) -> None: ...
+
+    @abstractmethod
+    def __truediv__(self, other: Union['UnitBase', float, int]) -> None:
+        if not isinstance(other, UnitBase) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide a Unit by a {other.__class__.__name__}.')
+
+        if isinstance(other, UnitBase):
+            if other.value == 0:
+                raise ZeroDivisionError('It is not allowed to divide a Unit by zero.')
+
+        if other == 0:
+            raise ZeroDivisionError('It is not allowed to divide a Unit by zero.')
+
     @property
     @abstractmethod
     def value(self) -> None: ...

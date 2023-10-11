@@ -1,3 +1,5 @@
+from .acceleration import Acceleration
+from .inertia import Inertia
 from typing import Union
 from .unit_base import UnitBase
 
@@ -22,6 +24,57 @@ class Torque(UnitBase):
 
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
+
+    def __add__(self, other: 'Torque') -> 'Torque':
+        super().__add__(other = other)
+
+        if not isinstance(other, Torque):
+            raise TypeError(f'It is not allowed to sum a Torque and a {other.__class__.__name__}.')
+
+        return Torque(value = self.__value + other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
+                      unit = self.__unit)
+
+    def __sub__(self, other: 'Torque') -> 'Torque':
+        super().__sub__(other = other)
+
+        if not isinstance(other, Torque):
+            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from a Torque.')
+
+        return Torque(value = self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
+                      unit = self.__unit)
+
+    def __mul__(self, other: Union[float, int]) -> 'Torque':
+        super().__mul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a Torque by a {other.__class__.__name__}.')
+
+        return Torque(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Torque':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by a Torque.')
+
+        return Torque(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Torque', float, int]) -> Union['Torque', 'Acceleration', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Torque) and not isinstance(other, float) and not isinstance(other, int) \
+                and not isinstance(other, Inertia):
+            raise TypeError(f'It is not allowed to divide a Torque by a {other.__class__.__name__}.')
+
+        if isinstance(other, Torque):
+            return self.__value/(other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit])
+        if isinstance(other, Inertia):
+            inertia = Inertia(value = other.value, unit = other.unit)
+            inertia.to('kgm^2')
+            return Acceleration(value = self.__value*self.__UNITS[self.__unit]/self.__UNITS['Nm']/inertia.value,
+                                unit = 'rad/s^2')
+        else:
+            return Torque(value = self.__value/other, unit = self.__unit)
 
     @property
     def value(self) -> Union[float, int]:

@@ -21,6 +21,51 @@ class Time(UnitBase):
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
 
+    def __add__(self, other: 'Time') -> 'Time':
+        super().__add__(other = other)
+
+        if not isinstance(other, Time):
+            raise TypeError(f'It is not allowed to sum a Time and a {other.__class__.__name__}.')
+
+        return Time(value = self.__value + other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
+                     unit = self.__unit)
+
+    def __sub__(self, other: 'Time') -> 'Time':
+        super().__sub__(other = other)
+
+        if not isinstance(other, Time):
+            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an Time.')
+
+        return Time(value = self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
+                     unit = self.__unit)
+
+    def __mul__(self, other: Union[float, int]) -> 'Time':
+        super().__mul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a Time by a {other.__class__.__name__}.')
+
+        return Time(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Time':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by a Time.')
+
+        return Time(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Time', float, int]) -> Union['Time', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide a Time by a {other.__class__.__name__}.')
+
+        if isinstance(other, Time):
+            return self.__value/(other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit])
+        else:
+            return Time(value = self.__value/other, unit = self.__unit)
+
     @property
     def value(self) -> Union[float, int]:
         return self.__value

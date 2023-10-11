@@ -24,6 +24,60 @@ class Inertia(UnitBase):
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
 
+    def __add__(self, other: 'Inertia') -> 'Inertia':
+        super().__add__(other = other)
+
+        if not isinstance(other, Inertia):
+            raise TypeError(f'It is not allowed to sum an Inertia and a {other.__class__.__name__}.')
+
+        return Inertia(value = self.__value + other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
+                       unit = self.__unit)
+
+    def __sub__(self, other: 'Inertia') -> 'Inertia':
+        super().__sub__(other = other)
+
+        if not isinstance(other, Inertia):
+            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an Inertia.')
+
+        if self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit] <= 0:
+            raise ValueError('Cannot perform the subtraction because the result is not positive.')
+
+        return Inertia(value = self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
+                       unit = self.__unit)
+
+    def __mul__(self, other: Union[float, int]) -> 'Inertia':
+        super().__mul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply an Inertia by a {other.__class__.__name__}.')
+
+        if other <= 0:
+            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+
+        return Inertia(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Inertia':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an Inertia.')
+
+        if other <= 0:
+            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+
+        return Inertia(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Inertia', float, int]) -> Union['Inertia', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Inertia) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide an Inertia by a {other.__class__.__name__}.')
+
+        if isinstance(other, Inertia):
+            return self.__value/(other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit])
+        else:
+            return Inertia(value = self.__value/other, unit = self.__unit)
+
     @property
     def value(self) -> Union[float, int]:
         return self.__value
