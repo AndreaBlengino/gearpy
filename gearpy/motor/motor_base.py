@@ -1,12 +1,12 @@
 from abc import abstractmethod
 from gearpy.mechanical_object import RotatingObject
-from typing import Union
+from gearpy.units import Acceleration, Angle, Inertia, Speed, Torque
 
 
 class MotorBase(RotatingObject):
 
     @abstractmethod
-    def __init__(self, name: str, inertia: Union[float, int]):
+    def __init__(self, name: str, inertia: Inertia):
         super().__init__(name = name, inertia = inertia)
         self.__drives = None
 
@@ -25,62 +25,62 @@ class MotorBase(RotatingObject):
 
     @property
     @abstractmethod
-    def angle(self) -> Union[float, int]:
+    def angle(self) -> Angle:
         return super().angle
 
     @angle.setter
     @abstractmethod
-    def angle(self, angle: Union[float, int]):
+    def angle(self, angle: Angle):
         super(MotorBase, type(self)).angle.fset(self, angle)
 
     @property
     @abstractmethod
-    def speed(self) -> Union[float, int]:
+    def speed(self) -> Speed:
         return super().speed
 
     @speed.setter
     @abstractmethod
-    def speed(self, speed: Union[float, int]):
+    def speed(self, speed: Speed):
         super(MotorBase, type(self)).speed.fset(self, speed)
 
     @property
     @abstractmethod
-    def acceleration(self) -> Union[float, int]:
+    def acceleration(self) -> Acceleration:
         return super().acceleration
 
     @acceleration.setter
     @abstractmethod
-    def acceleration(self, acceleration: Union[float, int]):
+    def acceleration(self, acceleration: Acceleration):
         super(MotorBase, type(self)).acceleration.fset(self, acceleration)
 
     @property
     @abstractmethod
-    def torque(self) -> Union[float, int]:
+    def torque(self) -> Torque:
         return super().torque
 
     @torque.setter
     @abstractmethod
-    def torque(self, torque: Union[float, int]):
+    def torque(self, torque: Torque):
         super(MotorBase, type(self)).torque.fset(self, torque)
 
     @property
     @abstractmethod
-    def driving_torque(self) -> Union[float, int]:
+    def driving_torque(self) -> Torque:
         return super().driving_torque
 
     @driving_torque.setter
     @abstractmethod
-    def driving_torque(self, driving_torque: Union[float, int]):
+    def driving_torque(self, driving_torque: Torque):
         super(MotorBase, type(self)).driving_torque.fset(self, driving_torque)
 
     @property
     @abstractmethod
-    def load_torque(self) -> Union[float, int]:
+    def load_torque(self) -> Torque:
         return super().load_torque
 
     @load_torque.setter
     @abstractmethod
-    def load_torque(self, load_torque: Union[float, int]):
+    def load_torque(self, load_torque: Torque):
         super(MotorBase, type(self)).load_torque.fset(self, load_torque)
 
     @abstractmethod

@@ -1,11 +1,12 @@
 from gearpy.gear import GearBase
 from gearpy.mechanical_object import RotatingObject
+from gearpy.units import Acceleration, Angle, Inertia, Speed, Torque
 from typing import Callable, Union
 
 
 class SpurGear(GearBase):
 
-    def __init__(self, name: str, n_teeth: int, inertia: float):
+    def __init__(self, name: str, n_teeth: int, inertia: Inertia):
         super().__init__(name = name, n_teeth = n_teeth, inertia = inertia)
 
     @property
@@ -49,55 +50,55 @@ class SpurGear(GearBase):
         super(SpurGear, type(self)).master_gear_efficiency.fset(self, master_gear_efficiency)
 
     @property
-    def angle(self) -> Union[float, int]:
+    def angle(self) -> Angle:
         return super().angle
 
     @angle.setter
-    def angle(self, angle: Union[float, int]):
+    def angle(self, angle: Angle):
         super(SpurGear, type(self)).angle.fset(self, angle)
 
     @property
-    def speed(self) -> Union[float, int]:
+    def speed(self) -> Speed:
         return super().speed
 
     @speed.setter
-    def speed(self, speed: Union[float, int]):
+    def speed(self, speed: Speed):
         super(SpurGear, type(self)).speed.fset(self, speed)
 
     @property
-    def acceleration(self) -> Union[float, int]:
+    def acceleration(self) -> Acceleration:
         return super().acceleration
 
     @acceleration.setter
-    def acceleration(self, acceleration: Union[float, int]):
+    def acceleration(self, acceleration: Acceleration):
         super(SpurGear, type(self)).acceleration.fset(self, acceleration)
 
     @property
-    def torque(self) -> Union[float, int]:
+    def torque(self) -> Torque:
         return super().torque
 
     @torque.setter
-    def torque(self, torque: Union[float, int]):
+    def torque(self, torque: Torque):
         super(SpurGear, type(self)).torque.fset(self, torque)
 
     @property
-    def driving_torque(self) -> Union[float, int]:
+    def driving_torque(self) -> Torque:
         return super().driving_torque
 
     @driving_torque.setter
-    def driving_torque(self, driving_torque: Union[float, int]):
+    def driving_torque(self, driving_torque: Torque):
         super(SpurGear, type(self)).driving_torque.fset(self, driving_torque)
 
     @property
-    def load_torque(self) -> Union[float, int]:
+    def load_torque(self) -> Torque:
         return super().load_torque
 
     @load_torque.setter
-    def load_torque(self, load_torque: Union[float, int]):
+    def load_torque(self, load_torque: Torque):
         super(SpurGear, type(self)).load_torque.fset(self, load_torque)
 
     @property
-    def inertia(self) -> Union[float, int]:
+    def inertia(self) -> Inertia:
         return super().inertia
 
     @property
