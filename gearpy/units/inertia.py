@@ -30,8 +30,7 @@ class Inertia(UnitBase):
         if not isinstance(other, Inertia):
             raise TypeError(f'It is not allowed to sum an {self.__class__.__name__} and a {other.__class__.__name__}.')
 
-        return Inertia(value = self.__value + other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
-                       unit = self.__unit)
+        return Inertia(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
     def __sub__(self, other: 'Inertia') -> 'Inertia':
         super().__sub__(other = other)
@@ -40,11 +39,10 @@ class Inertia(UnitBase):
             raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an '
                             f'{self.__class__.__name__}.')
 
-        if self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit] <= 0:
+        if self.__value - other.to(self.__unit).value <= 0:
             raise ValueError('Cannot perform the subtraction because the result is not positive.')
 
-        return Inertia(value = self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
-                       unit = self.__unit)
+        return Inertia(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
     def __mul__(self, other: Union[float, int]) -> 'Inertia':
         super().__mul__(other = other)
@@ -78,7 +76,7 @@ class Inertia(UnitBase):
                             f'{other.__class__.__name__}.')
 
         if isinstance(other, Inertia):
-            return self.__value/(other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit])
+            return self.__value/other.to(self.__unit).value
         else:
             return Inertia(value = self.__value/other, unit = self.__unit)
 
@@ -88,9 +86,7 @@ class Inertia(UnitBase):
         if not isinstance(other, Inertia):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Inertia(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value == angle.value
+        return self.__value == other.to(self.__unit).value
 
     def __ne__(self, other: 'Inertia') -> bool:
         super().__eq__(other = other)
@@ -98,9 +94,7 @@ class Inertia(UnitBase):
         if not isinstance(other, Inertia):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Inertia(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value != angle.value
+        return self.__value != other.to(self.__unit).value
 
     def __gt__(self, other: 'Inertia') -> bool:
         super().__eq__(other = other)
@@ -108,9 +102,7 @@ class Inertia(UnitBase):
         if not isinstance(other, Inertia):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Inertia(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value > angle.value
+        return self.__value > other.to(self.__unit).value
 
     def __ge__(self, other: 'Inertia') -> bool:
         super().__eq__(other = other)
@@ -118,9 +110,7 @@ class Inertia(UnitBase):
         if not isinstance(other, Inertia):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Inertia(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value >= angle.value
+        return self.__value >= other.to(self.__unit).value
 
     def __lt__(self, other: 'Inertia') -> bool:
         super().__eq__(other = other)
@@ -128,9 +118,7 @@ class Inertia(UnitBase):
         if not isinstance(other, Inertia):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Inertia(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value < angle.value
+        return self.__value < other.to(self.__unit).value
 
     def __le__(self, other: 'Inertia') -> bool:
         super().__eq__(other = other)
@@ -138,9 +126,7 @@ class Inertia(UnitBase):
         if not isinstance(other, Inertia):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Inertia(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value <= angle.value
+        return self.__value <= other.to(self.__unit).value
 
     @property
     def value(self) -> Union[float, int]:
@@ -150,14 +136,18 @@ class Inertia(UnitBase):
     def unit(self) -> str:
         return self.__unit
 
-    def to(self, target_unit: str) -> 'Inertia':
-        super().to(target_unit = target_unit)
+    def to(self, target_unit: str, inplace: bool = False) -> 'Inertia':
+        super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
-        self.__value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
-        self.__unit = target_unit
+        target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
 
-        return self
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Inertia(value = target_value, unit = target_unit)

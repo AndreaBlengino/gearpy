@@ -68,6 +68,9 @@ class UnitBase(ABC):
     def unit(self) -> None: ...
 
     @abstractmethod
-    def to(self, target_unit: str) -> None:
+    def to(self, target_unit: str, inplace: bool) -> None:
         if not isinstance(target_unit, str):
             raise TypeError("Parameter 'target_unit' must be a string.")
+
+        if not isinstance(inplace, bool):
+            raise TypeError("Parameter 'inplace' must be a bool.")

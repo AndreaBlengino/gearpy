@@ -29,8 +29,7 @@ class Acceleration(UnitBase):
         if not isinstance(other, Acceleration):
             raise TypeError(f'It is not allowed to sum an {self.__class__.__name__} and a {other.__class__.__name__}.')
 
-        return Acceleration(value = self.__value + other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
-                            unit = self.__unit)
+        return Acceleration(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
     def __sub__(self, other: 'Acceleration') -> 'Acceleration':
         super().__sub__(other = other)
@@ -39,8 +38,7 @@ class Acceleration(UnitBase):
             raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an '
                             f'{self.__class__.__name__}.')
 
-        return Acceleration(value = self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
-                            unit = self.__unit)
+        return Acceleration(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
     def __mul__(self, other: Union[Time, float, int]) -> Union[Speed, 'Acceleration']:
         super().__mul__(other = other)
@@ -50,11 +48,9 @@ class Acceleration(UnitBase):
                             f'{other.__class__.__name__}.')
 
         if isinstance(other, Time):
-            time = Time(value = other.value, unit = other.unit)
-            time.to('sec')
-            return Speed(value = self.__value*self.__UNITS[self.__unit]/self.__UNITS['rad/s^2']*time.value,
-                         unit = 'rad/s')
-        return Acceleration(value = self.__value*other, unit = self.__unit)
+            return Speed(value = self.to('rad/s^2').value*other.to('sec').value, unit = 'rad/s')
+        else:
+            return Acceleration(value = self.__value*other, unit = self.__unit)
 
     def __rmul__(self, other: Union[Time, float, int]) -> Union[Speed, 'Acceleration']:
         super().__rmul__(other = other)
@@ -64,11 +60,9 @@ class Acceleration(UnitBase):
                             f'{self.__class__.__name__}.')
 
         if isinstance(other, Time):
-            time = Time(value = other.value, unit = other.unit)
-            time.to('sec')
-            return Speed(value = self.__value*self.__UNITS[self.__unit]/self.__UNITS['rad/s^2']*time.value,
-                         unit = 'rad/s')
-        return Acceleration(value = self.__value*other, unit = self.__unit)
+            return Speed(value = self.to('rad/s^2').value*other.to('sec').value, unit = 'rad/s')
+        else:
+            return Acceleration(value = self.__value*other, unit = self.__unit)
 
     def __truediv__(self, other: Union['Acceleration', float, int]) -> Union['Acceleration', float]:
         super().__truediv__(other = other)
@@ -78,7 +72,7 @@ class Acceleration(UnitBase):
                             f'{other.__class__.__name__}.')
 
         if isinstance(other, Acceleration):
-            return self.__value/(other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit])
+            return self.__value/other.to(self.__unit).value
         else:
             return Acceleration(value = self.__value/other, unit = self.__unit)
 
@@ -88,9 +82,7 @@ class Acceleration(UnitBase):
         if not isinstance(other, Acceleration):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Acceleration(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value == angle.value
+        return self.__value == other.to(self.__unit).value
 
     def __ne__(self, other: 'Acceleration') -> bool:
         super().__eq__(other = other)
@@ -98,9 +90,7 @@ class Acceleration(UnitBase):
         if not isinstance(other, Acceleration):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Acceleration(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value != angle.value
+        return self.__value != other.to(self.__unit).value
 
     def __gt__(self, other: 'Acceleration') -> bool:
         super().__eq__(other = other)
@@ -108,9 +98,7 @@ class Acceleration(UnitBase):
         if not isinstance(other, Acceleration):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Acceleration(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value > angle.value
+        return self.__value > other.to(self.__unit).value
 
     def __ge__(self, other: 'Acceleration') -> bool:
         super().__eq__(other = other)
@@ -118,9 +106,7 @@ class Acceleration(UnitBase):
         if not isinstance(other, Acceleration):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Acceleration(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value >= angle.value
+        return self.__value >= other.to(self.__unit).value
 
     def __lt__(self, other: 'Acceleration') -> bool:
         super().__eq__(other = other)
@@ -128,9 +114,7 @@ class Acceleration(UnitBase):
         if not isinstance(other, Acceleration):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Acceleration(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value < angle.value
+        return self.__value < other.to(self.__unit).value
 
     def __le__(self, other: 'Acceleration') -> bool:
         super().__eq__(other = other)
@@ -138,9 +122,7 @@ class Acceleration(UnitBase):
         if not isinstance(other, Acceleration):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Acceleration(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value <= angle.value
+        return self.__value <= other.to(self.__unit).value
 
     @property
     def value(self) -> Union[float, int]:
@@ -150,14 +132,18 @@ class Acceleration(UnitBase):
     def unit(self) -> str:
         return self.__unit
 
-    def to(self, target_unit: str) -> 'Acceleration':
-        super().to(target_unit = target_unit)
+    def to(self, target_unit: str, inplace: bool = False) -> 'Acceleration':
+        super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
-        self.__value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
-        self.__unit = target_unit
+        target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
 
-        return self
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Acceleration(value = target_value, unit = target_unit)

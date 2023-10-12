@@ -31,8 +31,7 @@ class Torque(UnitBase):
         if not isinstance(other, Torque):
             raise TypeError(f'It is not allowed to sum a {self.__class__.__name__} and a {other.__class__.__name__}.')
 
-        return Torque(value = self.__value + other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
-                      unit = self.__unit)
+        return Torque(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
     def __sub__(self, other: 'Torque') -> 'Torque':
         super().__sub__(other = other)
@@ -41,8 +40,7 @@ class Torque(UnitBase):
             raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from a '
                             f'{self.__class__.__name__}.')
 
-        return Torque(value = self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
-                      unit = self.__unit)
+        return Torque(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
     def __mul__(self, other: Union[float, int]) -> 'Torque':
         super().__mul__(other = other)
@@ -70,12 +68,9 @@ class Torque(UnitBase):
             raise TypeError(f'It is not allowed to divide a {self.__class__.__name__} by a {other.__class__.__name__}.')
 
         if isinstance(other, Torque):
-            return self.__value/(other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit])
-        if isinstance(other, Inertia):
-            inertia = Inertia(value = other.value, unit = other.unit)
-            inertia.to('kgm^2')
-            return Acceleration(value = self.__value*self.__UNITS[self.__unit]/self.__UNITS['Nm']/inertia.value,
-                                unit = 'rad/s^2')
+            return self.__value/other.to(self.__unit).value
+        elif isinstance(other, Inertia):
+            return Acceleration(value = self.to('Nm').value/other.to('kgm^2').value, unit = 'rad/s^2')
         else:
             return Torque(value = self.__value/other, unit = self.__unit)
 
@@ -85,9 +80,7 @@ class Torque(UnitBase):
         if not isinstance(other, Torque):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Torque(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value == angle.value
+        return self.__value == other.to(self.__unit).value
 
     def __ne__(self, other: 'Torque') -> bool:
         super().__eq__(other = other)
@@ -95,9 +88,7 @@ class Torque(UnitBase):
         if not isinstance(other, Torque):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Torque(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value != angle.value
+        return self.__value != other.to(self.__unit).value
 
     def __gt__(self, other: 'Torque') -> bool:
         super().__eq__(other = other)
@@ -105,9 +96,7 @@ class Torque(UnitBase):
         if not isinstance(other, Torque):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Torque(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value > angle.value
+        return self.__value > other.to(self.__unit).value
 
     def __ge__(self, other: 'Torque') -> bool:
         super().__eq__(other = other)
@@ -115,9 +104,7 @@ class Torque(UnitBase):
         if not isinstance(other, Torque):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Torque(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value >= angle.value
+        return self.__value >= other.to(self.__unit).value
 
     def __lt__(self, other: 'Torque') -> bool:
         super().__eq__(other = other)
@@ -125,9 +112,7 @@ class Torque(UnitBase):
         if not isinstance(other, Torque):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Torque(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value < angle.value
+        return self.__value < other.to(self.__unit).value
 
     def __le__(self, other: 'Torque') -> bool:
         super().__eq__(other = other)
@@ -135,9 +120,7 @@ class Torque(UnitBase):
         if not isinstance(other, Torque):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-        angle = Torque(value = other.value, unit = other.unit)
-        angle.to(self.__unit)
-        return self.__value <= angle.value
+        return self.__value <= other.to(self.__unit).value
 
     @property
     def value(self) -> Union[float, int]:
@@ -147,14 +130,18 @@ class Torque(UnitBase):
     def unit(self) -> str:
         return self.__unit
 
-    def to(self, target_unit: str) -> 'Torque':
-        super().to(target_unit = target_unit)
+    def to(self, target_unit: str, inplace: bool = False) -> 'Torque':
+        super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
-        self.__value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
-        self.__unit = target_unit
+        target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
 
-        return self
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Torque(value = target_value, unit = target_unit)
