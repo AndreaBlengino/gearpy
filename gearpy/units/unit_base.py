@@ -42,22 +42,34 @@ class UnitBase(ABC):
                 raise ZeroDivisionError('It is not allowed to divide a Unit by zero.')
 
     @abstractmethod
-    def __eq__(self, other: 'UnitBase') -> None: ...
+    def __eq__(self, other: 'UnitBase') -> None:
+        if not isinstance(other, self.__class__):
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @abstractmethod
-    def __ne__(self, other: 'UnitBase') -> None: ...
+    def __ne__(self, other: 'UnitBase') -> None:
+        if not isinstance(other, self.__class__):
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @abstractmethod
-    def __gt__(self, other: 'UnitBase') -> None: ...
+    def __gt__(self, other: 'UnitBase') -> None:
+        if not isinstance(other, self.__class__):
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @abstractmethod
-    def __ge__(self, other: 'UnitBase') -> None: ...
+    def __ge__(self, other: 'UnitBase') -> None:
+        if not isinstance(other, self.__class__):
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @abstractmethod
-    def __lt__(self, other: 'UnitBase') -> None: ...
+    def __lt__(self, other: 'UnitBase') -> None:
+        if not isinstance(other, self.__class__):
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @abstractmethod
-    def __le__(self, other: 'UnitBase') -> None: ...
+    def __le__(self, other: 'UnitBase') -> None:
+        if not isinstance(other, self.__class__):
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @property
     @abstractmethod

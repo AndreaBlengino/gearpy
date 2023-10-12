@@ -70,48 +70,30 @@ class Time(UnitBase):
     def __eq__(self, other: 'Time') -> bool:
         super().__eq__(other = other)
 
-        if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
-
         return self.__value == other.to(self.__unit).value
 
     def __ne__(self, other: 'Time') -> bool:
-        super().__eq__(other = other)
-
-        if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+        super().__ne__(other = other)
 
         return self.__value != other.to(self.__unit).value
 
     def __gt__(self, other: 'Time') -> bool:
-        super().__eq__(other = other)
-
-        if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+        super().__gt__(other = other)
 
         return self.__value > other.to(self.__unit).value
 
     def __ge__(self, other: 'Time') -> bool:
-        super().__eq__(other = other)
-
-        if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+        super().__ge__(other = other)
 
         return self.__value >= other.to(self.__unit).value
 
     def __lt__(self, other: 'Time') -> bool:
-        super().__eq__(other = other)
-
-        if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+        super().__lt__(other = other)
 
         return self.__value < other.to(self.__unit).value
 
     def __le__(self, other: 'Time') -> bool:
-        super().__eq__(other = other)
-
-        if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+        super().__le__(other = other)
 
         return self.__value <= other.to(self.__unit).value
 
