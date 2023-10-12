@@ -12,7 +12,7 @@ class Inertia(UnitBase):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
-            raise KeyError(f"Inertia unit '{unit}' not available. "
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
         if value <= 0:
@@ -28,7 +28,7 @@ class Inertia(UnitBase):
         super().__add__(other = other)
 
         if not isinstance(other, Inertia):
-            raise TypeError(f'It is not allowed to sum an Inertia and a {other.__class__.__name__}.')
+            raise TypeError(f'It is not allowed to sum an {self.__class__.__name__} and a {other.__class__.__name__}.')
 
         return Inertia(value = self.__value + other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
                        unit = self.__unit)
@@ -37,7 +37,8 @@ class Inertia(UnitBase):
         super().__sub__(other = other)
 
         if not isinstance(other, Inertia):
-            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an Inertia.')
+            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an '
+                            f'{self.__class__.__name__}.')
 
         if self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit] <= 0:
             raise ValueError('Cannot perform the subtraction because the result is not positive.')
@@ -49,7 +50,8 @@ class Inertia(UnitBase):
         super().__mul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
-            raise TypeError(f'It is not allowed to multiply an Inertia by a {other.__class__.__name__}.')
+            raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
 
         if other <= 0:
             raise ValueError('Cannot perform a multiplication by a non-positive number.')
@@ -60,7 +62,8 @@ class Inertia(UnitBase):
         super().__rmul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
-            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an Inertia.')
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
+                            f'{self.__class__.__name__}.')
 
         if other <= 0:
             raise ValueError('Cannot perform a multiplication by a non-positive number.')
@@ -71,7 +74,8 @@ class Inertia(UnitBase):
         super().__truediv__(other = other)
 
         if not isinstance(other, Inertia) and not isinstance(other, float) and not isinstance(other, int):
-            raise TypeError(f'It is not allowed to divide an Inertia by a {other.__class__.__name__}.')
+            raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
 
         if isinstance(other, Inertia):
             return self.__value/(other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit])
@@ -82,7 +86,7 @@ class Inertia(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Inertia):
-            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Inertia(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -92,7 +96,7 @@ class Inertia(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Inertia):
-            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Inertia(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -102,7 +106,7 @@ class Inertia(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Inertia):
-            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Inertia(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -112,7 +116,7 @@ class Inertia(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Inertia):
-            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Inertia(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -122,7 +126,7 @@ class Inertia(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Inertia):
-            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Inertia(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -132,7 +136,7 @@ class Inertia(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Inertia):
-            raise TypeError(f'Cannot compare Inertia and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Inertia(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -150,7 +154,7 @@ class Inertia(UnitBase):
         super().to(target_unit = target_unit)
 
         if target_unit not in self.__UNITS.keys():
-            raise KeyError(f"Inertia unit '{target_unit}' not available. "
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
         self.__value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]

@@ -12,7 +12,7 @@ class Time(UnitBase):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
-            raise KeyError(f"Time unit '{unit}' not available. "
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
         self.__value = value
@@ -25,7 +25,7 @@ class Time(UnitBase):
         super().__add__(other = other)
 
         if not isinstance(other, Time):
-            raise TypeError(f'It is not allowed to sum a Time and a {other.__class__.__name__}.')
+            raise TypeError(f'It is not allowed to sum a {self.__class__.__name__} and a {other.__class__.__name__}.')
 
         return Time(value = self.__value + other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
                      unit = self.__unit)
@@ -34,7 +34,8 @@ class Time(UnitBase):
         super().__sub__(other = other)
 
         if not isinstance(other, Time):
-            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an Time.')
+            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an '
+                            f'{self.__class__.__name__}.')
 
         return Time(value = self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
                      unit = self.__unit)
@@ -43,7 +44,8 @@ class Time(UnitBase):
         super().__mul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
-            raise TypeError(f'It is not allowed to multiply a Time by a {other.__class__.__name__}.')
+            raise TypeError(f'It is not allowed to multiply a {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
 
         return Time(value = self.__value*other, unit = self.__unit)
 
@@ -51,7 +53,8 @@ class Time(UnitBase):
         super().__rmul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
-            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by a Time.')
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by a '
+                            f'{self.__class__.__name__}.')
 
         return Time(value = self.__value*other, unit = self.__unit)
 
@@ -59,7 +62,7 @@ class Time(UnitBase):
         super().__truediv__(other = other)
 
         if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
-            raise TypeError(f'It is not allowed to divide a Time by a {other.__class__.__name__}.')
+            raise TypeError(f'It is not allowed to divide a {self.__class__.__name__} by a {other.__class__.__name__}.')
 
         if isinstance(other, Time):
             return self.__value/(other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit])
@@ -70,7 +73,7 @@ class Time(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Time(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -80,7 +83,7 @@ class Time(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
 
         angle = Time(value = other.value, unit = other.unit)
@@ -91,7 +94,7 @@ class Time(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Time(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -101,7 +104,7 @@ class Time(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Time(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -111,7 +114,7 @@ class Time(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Time(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -121,7 +124,7 @@ class Time(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Time):
-            raise TypeError(f'Cannot compare Time and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Time(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -139,7 +142,7 @@ class Time(UnitBase):
         super().to(target_unit = target_unit)
 
         if target_unit not in self.__UNITS.keys():
-            raise KeyError(f"Time unit '{target_unit}' not available. "
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
         self.__value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]

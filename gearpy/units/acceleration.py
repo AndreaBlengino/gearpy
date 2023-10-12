@@ -14,7 +14,7 @@ class Acceleration(UnitBase):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
-            raise KeyError(f"Acceleration unit '{unit}' not available. "
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
         self.__value = value
@@ -27,7 +27,7 @@ class Acceleration(UnitBase):
         super().__add__(other = other)
 
         if not isinstance(other, Acceleration):
-            raise TypeError(f'It is not allowed to sum an Acceleration and a {other.__class__.__name__}.')
+            raise TypeError(f'It is not allowed to sum an {self.__class__.__name__} and a {other.__class__.__name__}.')
 
         return Acceleration(value = self.__value + other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
                             unit = self.__unit)
@@ -36,7 +36,8 @@ class Acceleration(UnitBase):
         super().__sub__(other = other)
 
         if not isinstance(other, Acceleration):
-            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an Acceleration.')
+            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an '
+                            f'{self.__class__.__name__}.')
 
         return Acceleration(value = self.__value - other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit],
                             unit = self.__unit)
@@ -45,7 +46,8 @@ class Acceleration(UnitBase):
         super().__mul__(other = other)
 
         if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
-            raise TypeError(f'It is not allowed to multiply an Acceleration by a {other.__class__.__name__}.')
+            raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
 
         if isinstance(other, Time):
             time = Time(value = other.value, unit = other.unit)
@@ -58,7 +60,8 @@ class Acceleration(UnitBase):
         super().__rmul__(other = other)
 
         if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
-            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an Acceleration.')
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
+                            f'{self.__class__.__name__}.')
 
         if isinstance(other, Time):
             time = Time(value = other.value, unit = other.unit)
@@ -71,7 +74,8 @@ class Acceleration(UnitBase):
         super().__truediv__(other = other)
 
         if not isinstance(other, Acceleration) and not isinstance(other, float) and not isinstance(other, int):
-            raise TypeError(f'It is not allowed to divide an Acceleration by a {other.__class__.__name__}.')
+            raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
 
         if isinstance(other, Acceleration):
             return self.__value/(other.value*self.__UNITS[other.unit]/self.__UNITS[self.__unit])
@@ -82,7 +86,7 @@ class Acceleration(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Acceleration):
-            raise TypeError(f'Cannot compare Acceleration and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Acceleration(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -92,7 +96,7 @@ class Acceleration(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Acceleration):
-            raise TypeError(f'Cannot compare Acceleration and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Acceleration(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -102,7 +106,7 @@ class Acceleration(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Acceleration):
-            raise TypeError(f'Cannot compare Acceleration and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Acceleration(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -112,7 +116,7 @@ class Acceleration(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Acceleration):
-            raise TypeError(f'Cannot compare Acceleration and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Acceleration(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -122,7 +126,7 @@ class Acceleration(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Acceleration):
-            raise TypeError(f'Cannot compare Acceleration and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Acceleration(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -132,7 +136,7 @@ class Acceleration(UnitBase):
         super().__eq__(other = other)
 
         if not isinstance(other, Acceleration):
-            raise TypeError(f'Cannot compare Acceleration and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
         angle = Acceleration(value = other.value, unit = other.unit)
         angle.to(self.__unit)
@@ -150,7 +154,7 @@ class Acceleration(UnitBase):
         super().to(target_unit = target_unit)
 
         if target_unit not in self.__UNITS.keys():
-            raise KeyError(f"Acceleration unit '{target_unit}' not available. "
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
         self.__value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
