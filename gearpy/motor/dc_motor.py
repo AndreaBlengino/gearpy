@@ -1,15 +1,15 @@
 from gearpy.mechanical_object import RotatingObject
 from gearpy.motor import MotorBase
-from gearpy.units import Acceleration, Angle, Inertia, Speed, Torque
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Torque
 
 
 class DCMotor(MotorBase):
 
-    def __init__(self, name: str, inertia: Inertia, no_load_speed: Speed, maximum_torque: Torque):
-        super().__init__(name = name, inertia = inertia)
+    def __init__(self, name: str, inertia_moment: InertiaMoment, no_load_speed: AngularSpeed, maximum_torque: Torque):
+        super().__init__(name = name, inertia_moment = inertia_moment)
 
-        if not isinstance(no_load_speed, Speed):
-            raise TypeError(f"Parameter 'no_load_speed' must be an instance of {Speed.__name__!r}")
+        if not isinstance(no_load_speed, AngularSpeed):
+            raise TypeError(f"Parameter 'no_load_speed' must be an instance of {AngularSpeed.__name__!r}")
 
         if not isinstance(maximum_torque, Torque):
             raise TypeError(f"Parameter 'maximum_torque' must be an instance of {Torque.__name__!r}.")
@@ -36,31 +36,31 @@ class DCMotor(MotorBase):
         super(DCMotor, type(self)).drives.fset(self, drives)
 
     @property
-    def angle(self) -> Angle:
-        return super().angle
+    def angular_position(self) -> AngularPosition:
+        return super().angular_position
 
-    @angle.setter
-    def angle(self, angle: Angle):
-        super(DCMotor, type(self)).angle.fset(self, angle)
-
-    @property
-    def speed(self) -> Speed:
-        return super().speed
-
-    @speed.setter
-    def speed(self, speed: Speed):
-        super(DCMotor, type(self)).speed.fset(self, speed)
+    @angular_position.setter
+    def angular_position(self, angular_position: AngularPosition):
+        super(DCMotor, type(self)).angular_position.fset(self, angular_position)
 
     @property
-    def acceleration(self) -> Acceleration:
-        return super().acceleration
+    def angular_speed(self) -> AngularSpeed:
+        return super().angular_speed
 
-    @acceleration.setter
-    def acceleration(self, acceleration: Acceleration):
-        super(DCMotor, type(self)).acceleration.fset(self, acceleration)
+    @angular_speed.setter
+    def angular_speed(self, angular_speed: AngularSpeed):
+        super(DCMotor, type(self)).angular_speed.fset(self, angular_speed)
 
     @property
-    def no_load_speed(self) -> Speed:
+    def angular_acceleration(self) -> AngularAcceleration:
+        return super().angular_acceleration
+
+    @angular_acceleration.setter
+    def angular_acceleration(self, angular_acceleration: AngularAcceleration):
+        super(DCMotor, type(self)).angular_acceleration.fset(self, angular_acceleration)
+
+    @property
+    def no_load_speed(self) -> AngularSpeed:
         return self.__no_load_speed
 
     @property
@@ -92,11 +92,11 @@ class DCMotor(MotorBase):
         super(DCMotor, type(self)).load_torque.fset(self, load_torque)
 
     @property
-    def inertia(self) -> Inertia:
-        return super().inertia
+    def inertia_moment(self) -> InertiaMoment:
+        return super().inertia_moment
 
     def compute_torque(self) -> Torque:
-        return Torque(value = (1 - self.speed.to('rad/s').value/self.__no_load_speed.to('rad/s').value)*
+        return Torque(value = (1 - self.angular_speed.to('rad/s').value/self.__no_load_speed.to('rad/s').value)*
                               self.__maximum_torque.value,
                       unit = self.__maximum_torque.unit)
 

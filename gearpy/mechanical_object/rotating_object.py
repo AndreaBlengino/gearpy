@@ -1,69 +1,70 @@
 from abc import abstractmethod
-from gearpy.units import Acceleration, Angle, Inertia, Speed, Torque
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Torque
 from .mechanical_object import MechanicalObject
 
 
 class RotatingObject(MechanicalObject):
 
     @abstractmethod
-    def __init__(self, name: str, inertia: Inertia):
+    def __init__(self, name: str, inertia_moment: InertiaMoment):
         super().__init__(name = name)
 
-        if not isinstance(inertia, Inertia):
-            raise TypeError(f"Parameter 'inertia' must be an instance of {Inertia.__name__!r}.")
+        if not isinstance(inertia_moment, InertiaMoment):
+            raise TypeError(f"Parameter 'inertia_moment' must be an instance of {InertiaMoment.__name__!r}.")
 
-        self.__angle = None
-        self.__speed = None
-        self.__acceleration = None
+        self.__angular_position = None
+        self.__angular_speed = None
+        self.__angular_acceleration = None
         self.__torque = None
         self.__driving_torque = None
         self.__load_torque = None
-        self.__inertia = inertia
-        self.__time_variables = {'angle': [],
-                                 'speed': [],
-                                 'acceleration': [],
+        self.__inertia_moment = inertia_moment
+        self.__time_variables = {'angular position': [],
+                                 'angular speed': [],
+                                 'angular acceleration': [],
                                  'torque': [],
                                  'driving torque': [],
                                  'load torque': []}
 
     @property
     @abstractmethod
-    def angle(self) -> Angle:
-        return self.__angle
+    def angular_position(self) -> AngularPosition:
+        return self.__angular_position
 
-    @angle.setter
+    @angular_position.setter
     @abstractmethod
-    def angle(self, angle: Angle):
-        if not isinstance(angle, Angle):
-            raise TypeError(f"Parameter 'angle' must be an instance of {Angle.__name__!r}.")
+    def angular_position(self, angular_position: AngularPosition):
+        if not isinstance(angular_position, AngularPosition):
+            raise TypeError(f"Parameter 'angular_position' must be an instance of {AngularPosition.__name__!r}.")
 
-        self.__angle = angle
+        self.__angular_position = angular_position
 
     @property
     @abstractmethod
-    def speed(self) -> Speed:
-        return self.__speed
+    def angular_speed(self) -> AngularSpeed:
+        return self.__angular_speed
 
-    @speed.setter
+    @angular_speed.setter
     @abstractmethod
-    def speed(self, speed: Speed):
-        if not isinstance(speed, Speed):
-            raise TypeError(f"Parameter 'speed' must be an instance of {Speed.__name__!r}.")
+    def angular_speed(self, angular_speed: AngularSpeed):
+        if not isinstance(angular_speed, AngularSpeed):
+            raise TypeError(f"Parameter 'angular_speed' must be an instance of {AngularSpeed.__name__!r}.")
 
-        self.__speed = speed
+        self.__angular_speed = angular_speed
 
     @property
     @abstractmethod
-    def acceleration(self) -> Acceleration:
-        return self.__acceleration
+    def angular_acceleration(self) -> AngularAcceleration:
+        return self.__angular_acceleration
 
-    @acceleration.setter
+    @angular_acceleration.setter
     @abstractmethod
-    def acceleration(self, acceleration: Acceleration):
-        if not isinstance(acceleration, Acceleration):
-            raise TypeError(f"Parameter 'acceleration' must be an instance of {Acceleration.__name__!r}.")
+    def angular_acceleration(self, angular_acceleration: AngularAcceleration):
+        if not isinstance(angular_acceleration, AngularAcceleration):
+            raise TypeError(f"Parameter 'angular_acceleration' must be an instance of "
+                            f"{AngularAcceleration.__name__!r}.")
 
-        self.__acceleration = acceleration
+        self.__angular_acceleration = angular_acceleration
 
     @property
     @abstractmethod
@@ -106,8 +107,8 @@ class RotatingObject(MechanicalObject):
 
     @property
     @abstractmethod
-    def inertia(self) -> Inertia:
-        return self.__inertia
+    def inertia_moment(self) -> InertiaMoment:
+        return self.__inertia_moment
 
     @property
     @abstractmethod
@@ -116,9 +117,9 @@ class RotatingObject(MechanicalObject):
 
     @abstractmethod
     def update_time_variables(self):
-        self.__time_variables['angle'].append(self.__angle)
-        self.__time_variables['speed'].append(self.__speed)
-        self.__time_variables['acceleration'].append(self.__acceleration)
+        self.__time_variables['angular position'].append(self.__angular_position)
+        self.__time_variables['angular speed'].append(self.__angular_speed)
+        self.__time_variables['angular acceleration'].append(self.__angular_acceleration)
         self.__time_variables['torque'].append(self.__torque)
         self.__time_variables['driving torque'].append(self.__driving_torque)
         self.__time_variables['load torque'].append(self.__load_torque)

@@ -1,16 +1,21 @@
-from .angular_acceleration import AngularAcceleration
-from .inertia_moment import InertiaMoment
+from .angular_position import AngularPosition
+from math import pi
+from .time import Time
 from typing import Union
 from .unit_base import UnitBase
 
 
-class Torque(UnitBase):
+class AngularSpeed(UnitBase):
 
-    __UNITS = {'Nm': 1,
-               'mNm': 1e-3,
-               'kNm': 1e3,
-               'kgfm': 9.80665,
-               'kgfcm': 9.80665e-2}
+    __UNITS = {'rad/s': 1,
+               'rad/min': 1/60,
+               'rad/h': 1/60/60,
+               'deg/s': pi/180,
+               'deg/min': pi/180/60,
+               'deg/h': pi/180/60/60,
+               'rps': 2*pi,
+               'rpm': 2*pi/60,
+               'rph': 2*pi/60/60}
 
     def __init__(self, value: Union[float, int], unit: str):
         super().__init__(value = value, unit = unit)
@@ -25,74 +30,77 @@ class Torque(UnitBase):
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
 
-    def __add__(self, other: 'Torque') -> 'Torque':
+    def __add__(self, other: 'AngularSpeed') -> 'AngularSpeed':
         super().__add__(other = other)
 
-        return Torque(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
+        return AngularSpeed(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
-    def __sub__(self, other: 'Torque') -> 'Torque':
+    def __sub__(self, other: 'AngularSpeed') -> 'AngularSpeed':
         super().__sub__(other = other)
 
-        return Torque(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
+        return AngularSpeed(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
-    def __mul__(self, other: Union[float, int]) -> 'Torque':
+    def __mul__(self, other: Union[Time, float, int]) -> Union[AngularPosition, 'AngularSpeed']:
         super().__mul__(other = other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to multiply a {self.__class__.__name__} by a '
                             f'{other.__class__.__name__}.')
 
-        return Torque(value = self.__value*other, unit = self.__unit)
+        if isinstance(other, Time):
+            return AngularPosition(value = self.to('rad/s').value*other.to('sec').value, unit = 'rad')
+        else:
+            return AngularSpeed(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'Torque':
+    def __rmul__(self, other: Union[Time, float, int]) -> Union[AngularPosition, 'AngularSpeed']:
         super().__rmul__(other = other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by a '
                             f'{self.__class__.__name__}.')
 
-        return Torque(value = self.__value*other, unit = self.__unit)
+        if isinstance(other, Time):
+            return AngularPosition(value = self.to('rad/s').value*other.to('sec').value, unit = 'rad')
+        else:
+            return AngularSpeed(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['Torque', 'InertiaMoment', float, int]) -> Union['Torque', 'AngularAcceleration', float]:
+    def __truediv__(self, other: Union['AngularSpeed', float, int]) -> Union['AngularSpeed', float]:
         super().__truediv__(other = other)
 
-        if not isinstance(other, Torque) and not isinstance(other, float) and not isinstance(other, int) \
-                and not isinstance(other, InertiaMoment):
+        if not isinstance(other, AngularSpeed) and not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to divide a {self.__class__.__name__} by a {other.__class__.__name__}.')
 
-        if isinstance(other, Torque):
+        if isinstance(other, AngularSpeed):
             return self.__value/other.to(self.__unit).value
-        elif isinstance(other, InertiaMoment):
-            return AngularAcceleration(value = self.to('Nm').value/other.to('kgm^2').value, unit = 'rad/s^2')
         else:
-            return Torque(value = self.__value/other, unit = self.__unit)
+            return AngularSpeed(value = self.__value/other, unit = self.__unit)
 
-    def __eq__(self, other: 'Torque') -> bool:
+    def __eq__(self, other: 'AngularSpeed') -> bool:
         super().__eq__(other = other)
 
         return self.__value == other.to(self.__unit).value
 
-    def __ne__(self, other: 'Torque') -> bool:
+    def __ne__(self, other: 'AngularSpeed') -> bool:
         super().__ne__(other = other)
 
         return self.__value != other.to(self.__unit).value
 
-    def __gt__(self, other: 'Torque') -> bool:
+    def __gt__(self, other: 'AngularSpeed') -> bool:
         super().__gt__(other = other)
 
         return self.__value > other.to(self.__unit).value
 
-    def __ge__(self, other: 'Torque') -> bool:
+    def __ge__(self, other: 'AngularSpeed') -> bool:
         super().__ge__(other = other)
 
         return self.__value >= other.to(self.__unit).value
 
-    def __lt__(self, other: 'Torque') -> bool:
+    def __lt__(self, other: 'AngularSpeed') -> bool:
         super().__lt__(other = other)
 
         return self.__value < other.to(self.__unit).value
 
-    def __le__(self, other: 'Torque') -> bool:
+    def __le__(self, other: 'AngularSpeed') -> bool:
         super().__le__(other = other)
 
         return self.__value <= other.to(self.__unit).value
@@ -105,7 +113,7 @@ class Torque(UnitBase):
     def unit(self) -> str:
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'Torque':
+    def to(self, target_unit: str, inplace: bool = False) -> 'AngularSpeed':
         super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
@@ -119,4 +127,4 @@ class Torque(UnitBase):
             self.__unit = target_unit
             return self
         else:
-            return Torque(value = target_value, unit = target_unit)
+            return AngularSpeed(value = target_value, unit = target_unit)

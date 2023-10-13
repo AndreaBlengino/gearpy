@@ -1,14 +1,14 @@
 from math import pi
-from .speed import Speed
-from .time import Time
 from typing import Union
 from .unit_base import UnitBase
 
 
-class Acceleration(UnitBase):
+class AngularPosition(UnitBase):
 
-    __UNITS = {'rad/s^2': 1,
-               'deg/s^2': pi/180}
+    __UNITS = {'rad': 1,
+               'deg': pi/180,
+               'arcmin': pi/180/60,
+               'arcsec': pi/180/60/60}
 
     def __init__(self, value: Union[float, int], unit: str):
         super().__init__(value = value, unit = unit)
@@ -23,78 +23,72 @@ class Acceleration(UnitBase):
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
 
-    def __add__(self, other: 'Acceleration') -> 'Acceleration':
+    def __add__(self, other: 'AngularPosition') -> 'AngularPosition':
         super().__add__(other = other)
 
-        return Acceleration(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
+        return AngularPosition(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
-    def __sub__(self, other: 'Acceleration') -> 'Acceleration':
+    def __sub__(self, other: 'AngularPosition') -> 'AngularPosition':
         super().__sub__(other = other)
 
-        return Acceleration(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
+        return AngularPosition(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
-    def __mul__(self, other: Union[Time, float, int]) -> Union[Speed, 'Acceleration']:
+    def __mul__(self, other: Union[float, int]) -> 'AngularPosition':
         super().__mul__(other = other)
 
-        if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
                             f'{other.__class__.__name__}.')
 
-        if isinstance(other, Time):
-            return Speed(value = self.to('rad/s^2').value*other.to('sec').value, unit = 'rad/s')
-        else:
-            return Acceleration(value = self.__value*other, unit = self.__unit)
+        return AngularPosition(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[Time, float, int]) -> Union[Speed, 'Acceleration']:
+    def __rmul__(self, other: Union[float, int]) -> 'AngularPosition':
         super().__rmul__(other = other)
 
-        if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
                             f'{self.__class__.__name__}.')
 
-        if isinstance(other, Time):
-            return Speed(value = self.to('rad/s^2').value*other.to('sec').value, unit = 'rad/s')
-        else:
-            return Acceleration(value = self.__value*other, unit = self.__unit)
+        return AngularPosition(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['Acceleration', float, int]) -> Union['Acceleration', float]:
+    def __truediv__(self, other: Union['AngularPosition', float, int]) -> Union['AngularPosition', float]:
         super().__truediv__(other = other)
 
-        if not isinstance(other, Acceleration) and not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, AngularPosition) and not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
                             f'{other.__class__.__name__}.')
 
-        if isinstance(other, Acceleration):
+        if isinstance(other, AngularPosition):
             return self.__value/other.to(self.__unit).value
         else:
-            return Acceleration(value = self.__value/other, unit = self.__unit)
+            return AngularPosition(value = self.__value/other, unit = self.__unit)
 
-    def __eq__(self, other: 'Acceleration') -> bool:
+    def __eq__(self, other: 'AngularPosition') -> bool:
         super().__eq__(other = other)
 
         return self.__value == other.to(self.__unit).value
 
-    def __ne__(self, other: 'Acceleration') -> bool:
+    def __ne__(self, other: 'AngularPosition') -> bool:
         super().__ne__(other = other)
 
         return self.__value != other.to(self.__unit).value
 
-    def __gt__(self, other: 'Acceleration') -> bool:
+    def __gt__(self, other: 'AngularPosition') -> bool:
         super().__gt__(other = other)
 
         return self.__value > other.to(self.__unit).value
 
-    def __ge__(self, other: 'Acceleration') -> bool:
+    def __ge__(self, other: 'AngularPosition') -> bool:
         super().__ge__(other = other)
 
         return self.__value >= other.to(self.__unit).value
 
-    def __lt__(self, other: 'Acceleration') -> bool:
+    def __lt__(self, other: 'AngularPosition') -> bool:
         super().__lt__(other = other)
 
         return self.__value < other.to(self.__unit).value
 
-    def __le__(self, other: 'Acceleration') -> bool:
+    def __le__(self, other: 'AngularPosition') -> bool:
         super().__le__(other = other)
 
         return self.__value <= other.to(self.__unit).value
@@ -107,7 +101,7 @@ class Acceleration(UnitBase):
     def unit(self) -> str:
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'Acceleration':
+    def to(self, target_unit: str, inplace: bool = False) -> 'AngularPosition':
         super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
@@ -121,4 +115,4 @@ class Acceleration(UnitBase):
             self.__unit = target_unit
             return self
         else:
-            return Acceleration(value = target_value, unit = target_unit)
+            return AngularPosition(value = target_value, unit = target_unit)

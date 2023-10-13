@@ -53,27 +53,28 @@ class Solver:
 
     def _compute_transmission_inertia(self):
 
-        self.transmission_inertia = self.transmission_chain[0].inertia
+        self.transmission_inertia_moment = self.transmission_chain[0].inertia_moment
         for item in self.transmission_chain[1:]:
-            self.transmission_inertia *= item.master_gear_ratio
-            self.transmission_inertia += item.inertia
+            self.transmission_inertia_moment *= item.master_gear_ratio
+            self.transmission_inertia_moment += item.inertia_moment
 
     def _compute_transmission_initial_state(self):
 
         for i in range(len(self.transmission_chain) - 2, -1, -1):
             gear_ratio = self.transmission_chain[i + 1].master_gear_ratio
-            self._compute_angle(gear_ratio = gear_ratio, i = i)
-            self._compute_speed(gear_ratio = gear_ratio, i = i)
+            self._compute_angular_position(gear_ratio = gear_ratio, i = i)
+            self._compute_angular_speed(gear_ratio = gear_ratio, i = i)
 
         self._compute_driving_torque()
         self._compute_load_torque()
         self._compute_torque()
 
-        self.transmission_chain[-1].acceleration = self.transmission_chain[-1].torque/self.transmission_inertia
+        self.transmission_chain[-1].angular_acceleration = self.transmission_chain[-1].torque/\
+                                                           self.transmission_inertia_moment
 
         for i in range(len(self.transmission_chain) - 2, -1, -1):
             gear_ratio = self.transmission_chain[i + 1].master_gear_ratio
-            self._compute_acceleration(gear_ratio = gear_ratio, i = i)
+            self._compute_angular_acceleration(gear_ratio = gear_ratio, i = i)
 
     def _update_time_variables(self):
 
@@ -84,21 +85,21 @@ class Solver:
 
         for i in range(len(self.transmission_chain) - 2, -1, -1):
             gear_ratio = self.transmission_chain[i + 1].master_gear_ratio
-            self._compute_angle(gear_ratio = gear_ratio, i = i)
-            self._compute_speed(gear_ratio = gear_ratio, i = i)
-            self._compute_acceleration(gear_ratio = gear_ratio, i = i)
+            self._compute_angular_position(gear_ratio = gear_ratio, i = i)
+            self._compute_angular_speed(gear_ratio = gear_ratio, i = i)
+            self._compute_angular_acceleration(gear_ratio = gear_ratio, i = i)
 
-    def _compute_angle(self, gear_ratio, i):
+    def _compute_angular_position(self, gear_ratio, i):
 
-        self.transmission_chain[i].angle = gear_ratio*self.transmission_chain[i + 1].angle
+        self.transmission_chain[i].angular_position = gear_ratio*self.transmission_chain[i + 1].angular_position
 
-    def _compute_speed(self, gear_ratio, i):
+    def _compute_angular_speed(self, gear_ratio, i):
 
-        self.transmission_chain[i].speed = gear_ratio*self.transmission_chain[i + 1].speed
+        self.transmission_chain[i].angular_speed = gear_ratio*self.transmission_chain[i + 1].angular_speed
 
-    def _compute_acceleration(self, gear_ratio, i):
+    def _compute_angular_acceleration(self, gear_ratio, i):
 
-        self.transmission_chain[i].acceleration = gear_ratio*self.transmission_chain[i + 1].acceleration
+        self.transmission_chain[i].angular_acceleration = gear_ratio*self.transmission_chain[i + 1].angular_acceleration
 
     def _compute_driving_torque(self):
 
@@ -114,9 +115,10 @@ class Solver:
         for i in range(len(self.transmission_chain) - 1, 0, -1):
             if self.transmission_chain[i].external_torque is not None:
                 self.transmission_chain[i].load_torque = \
-                    self.transmission_chain[i].external_torque(time = self.time[-1],
-                                                               angle = self.transmission_chain[i].angle,
-                                                               speed = self.transmission_chain[i].speed)
+                    self.transmission_chain[i]. \
+                        external_torque(time = self.time[-1],
+                                        angular_position = self.transmission_chain[i].angular_position,
+                                        angular_speed = self.transmission_chain[i].angular_speed)
             gear_ratio = self.transmission_chain[i].master_gear_ratio
             self.transmission_chain[i - 1].load_torque = self.transmission_chain[i].load_torque/gear_ratio
 
@@ -127,6 +129,9 @@ class Solver:
 
     def _time_integration(self):
 
-        self.transmission_chain[-1].acceleration = self.transmission_chain[-1].torque/self.transmission_inertia
-        self.transmission_chain[-1].speed += self.transmission_chain[-1].acceleration*self.time_discretization
-        self.transmission_chain[-1].angle += self.transmission_chain[-1].speed*self.time_discretization
+        self.transmission_chain[-1].angular_acceleration = self.transmission_chain[-1].torque/\
+                                                           self.transmission_inertia_moment
+        self.transmission_chain[-1].angular_speed += self.transmission_chain[-1].angular_acceleration*\
+                                                     self.time_discretization
+        self.transmission_chain[-1].angular_position += self.transmission_chain[-1].angular_speed*\
+                                                        self.time_discretization

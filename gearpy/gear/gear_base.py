@@ -1,14 +1,14 @@
 from abc import abstractmethod
 from gearpy.mechanical_object import RotatingObject
-from gearpy.units import Acceleration, Angle, Inertia, Speed, Torque
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Torque
 from typing import Callable, Union
 
 
 class GearBase(RotatingObject):
 
     @abstractmethod
-    def __init__(self, name: str, n_teeth: int, inertia: Inertia):
-        super().__init__(name = name, inertia = inertia)
+    def __init__(self, name: str, n_teeth: int, inertia_moment: InertiaMoment):
+        super().__init__(name = name, inertia_moment = inertia_moment)
 
         if not isinstance(n_teeth, int):
             raise TypeError("Parameter 'n_teeth' must be an integer.")
@@ -56,33 +56,33 @@ class GearBase(RotatingObject):
 
     @property
     @abstractmethod
-    def angle(self) -> Angle:
-        return super().angle
+    def angular_position(self) -> AngularPosition:
+        return super().angular_position
 
-    @angle.setter
+    @angular_position.setter
     @abstractmethod
-    def angle(self, angle: Angle):
-        super(GearBase, type(self)).angle.fset(self, angle)
-
-    @property
-    @abstractmethod
-    def speed(self) -> Speed:
-        return super().speed
-
-    @speed.setter
-    @abstractmethod
-    def speed(self, speed: Speed):
-        super(GearBase, type(self)).speed.fset(self, speed)
+    def angular_position(self, angular_position: AngularPosition):
+        super(GearBase, type(self)).angular_position.fset(self, angular_position)
 
     @property
     @abstractmethod
-    def acceleration(self) -> Acceleration:
-        return super().acceleration
+    def angular_speed(self) -> AngularSpeed:
+        return super().angular_speed
 
-    @acceleration.setter
+    @angular_speed.setter
     @abstractmethod
-    def acceleration(self, acceleration: Acceleration):
-        super(GearBase, type(self)).acceleration.fset(self, acceleration)
+    def angular_speed(self, angular_speed: AngularSpeed):
+        super(GearBase, type(self)).angular_speed.fset(self, angular_speed)
+
+    @property
+    @abstractmethod
+    def angular_acceleration(self) -> AngularAcceleration:
+        return super().angular_acceleration
+
+    @angular_acceleration.setter
+    @abstractmethod
+    def angular_acceleration(self, angular_acceleration: AngularAcceleration):
+        super(GearBase, type(self)).angular_acceleration.fset(self, angular_acceleration)
 
     @property
     @abstractmethod

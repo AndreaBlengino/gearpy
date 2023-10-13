@@ -1,13 +1,13 @@
 from gearpy.gear import GearBase
 from gearpy.mechanical_object import RotatingObject
-from gearpy.units import Acceleration, Angle, Inertia, Speed, Torque
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Torque
 from typing import Callable, Union
 
 
 class SpurGear(GearBase):
 
-    def __init__(self, name: str, n_teeth: int, inertia: Inertia):
-        super().__init__(name = name, n_teeth = n_teeth, inertia = inertia)
+    def __init__(self, name: str, n_teeth: int, inertia_moment: InertiaMoment):
+        super().__init__(name = name, n_teeth = n_teeth, inertia_moment = inertia_moment)
 
     @property
     def name(self) -> str:
@@ -50,28 +50,28 @@ class SpurGear(GearBase):
         super(SpurGear, type(self)).master_gear_efficiency.fset(self, master_gear_efficiency)
 
     @property
-    def angle(self) -> Angle:
-        return super().angle
+    def angular_position(self) -> AngularPosition:
+        return super().angular_position
 
-    @angle.setter
-    def angle(self, angle: Angle):
-        super(SpurGear, type(self)).angle.fset(self, angle)
-
-    @property
-    def speed(self) -> Speed:
-        return super().speed
-
-    @speed.setter
-    def speed(self, speed: Speed):
-        super(SpurGear, type(self)).speed.fset(self, speed)
+    @angular_position.setter
+    def angular_position(self, angular_position: AngularPosition):
+        super(SpurGear, type(self)).angular_position.fset(self, angular_position)
 
     @property
-    def acceleration(self) -> Acceleration:
-        return super().acceleration
+    def angular_speed(self) -> AngularSpeed:
+        return super().angular_speed
 
-    @acceleration.setter
-    def acceleration(self, acceleration: Acceleration):
-        super(SpurGear, type(self)).acceleration.fset(self, acceleration)
+    @angular_speed.setter
+    def angular_speed(self, angular_speed: AngularSpeed):
+        super(SpurGear, type(self)).angular_speed.fset(self, angular_speed)
+
+    @property
+    def angular_acceleration(self) -> AngularAcceleration:
+        return super().angular_acceleration
+
+    @angular_acceleration.setter
+    def angular_acceleration(self, angular_acceleration: AngularAcceleration):
+        super(SpurGear, type(self)).angular_acceleration.fset(self, angular_acceleration)
 
     @property
     def torque(self) -> Torque:
@@ -98,8 +98,8 @@ class SpurGear(GearBase):
         super(SpurGear, type(self)).load_torque.fset(self, load_torque)
 
     @property
-    def inertia(self) -> Inertia:
-        return super().inertia
+    def inertia_moment(self) -> InertiaMoment:
+        return super().inertia_moment
 
     @property
     def external_torque(self) -> Callable:
