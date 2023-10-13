@@ -1,27 +1,21 @@
 from gearpy.mechanical_object import RotatingObject
 from gearpy.motor import MotorBase
 from gearpy.transmission import Transmission
-from gearpy.units import Time
+from gearpy.units import Time, TimeInterval
 import numpy as np
 
 
 class Solver:
 
-    def __init__(self, time_discretization: Time, simulation_time: Time, transmission: Transmission):
-        if not isinstance(time_discretization, Time):
-            raise TypeError("Parameter 'time_discretization' must be an instance of Time.")
+    def __init__(self, time_discretization: TimeInterval, simulation_time: TimeInterval, transmission: Transmission):
+        if not isinstance(time_discretization, TimeInterval):
+            raise TypeError("Parameter 'time_discretization' must be an instance of TimeInterval.")
 
-        if not isinstance(simulation_time, Time):
-            raise TypeError("Parameter 'simulation_time' must be an instance of Time.")
+        if not isinstance(simulation_time, TimeInterval):
+            raise TypeError("Parameter 'simulation_time' must be an instance of TimeInterval.")
 
         if not isinstance(transmission, Transmission):
             raise TypeError("Parameter 'transmission' must be an instance of Transmission.")
-
-        if time_discretization.value <= 0:
-            raise ValueError("Parameter 'time_discretization' must be positive.")
-
-        if simulation_time.value <= 0:
-            raise ValueError("Parameter 'time_simulation' must be positive.")
 
         if time_discretization >= simulation_time:
             raise ValueError("Parameter 'time_discretization' cannot be greater or equal to 'simulation_time'.")
