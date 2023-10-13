@@ -19,7 +19,7 @@ class MotorBase(RotatingObject):
     @abstractmethod
     def drives(self, drives: RotatingObject):
         if not isinstance(drives, RotatingObject):
-            raise TypeError("Parameter 'drives' must be a RotatingObject")
+            raise TypeError(f"Parameter 'drives' must be a {RotatingObject.__name__!r}")
 
         self.__drives = drives
 

@@ -9,13 +9,13 @@ class Solver:
 
     def __init__(self, time_discretization: TimeInterval, simulation_time: TimeInterval, transmission: Transmission):
         if not isinstance(time_discretization, TimeInterval):
-            raise TypeError("Parameter 'time_discretization' must be an instance of TimeInterval.")
+            raise TypeError(f"Parameter 'time_discretization' must be an instance of {TimeInterval.__name__!r}.")
 
         if not isinstance(simulation_time, TimeInterval):
-            raise TypeError("Parameter 'simulation_time' must be an instance of TimeInterval.")
+            raise TypeError(f"Parameter 'simulation_time' must be an instance of {TimeInterval.__name__!r}.")
 
         if not isinstance(transmission, Transmission):
-            raise TypeError("Parameter 'transmission' must be an instance of Transmission.")
+            raise TypeError(f"Parameter 'transmission' must be an instance of {Transmission.__name__!r}.")
 
         if time_discretization >= simulation_time:
             raise ValueError("Parameter 'time_discretization' cannot be greater or equal to 'simulation_time'.")
@@ -24,10 +24,10 @@ class Solver:
             raise ValueError("Parameter 'transmission.chain' cannot be an empty list.")
 
         if not isinstance(transmission.chain[0], MotorBase):
-            raise TypeError("First element in 'transmission' must be an instance of MotorBase.")
+            raise TypeError(f"First element in 'transmission' must be an instance of {MotorBase.__name__!r}.")
 
         if not all([isinstance(item, RotatingObject) for item in transmission.chain]):
-            raise TypeError("All elements of 'transmission' must be instances of RotatingObject.")
+            raise TypeError(f"All elements of 'transmission' must be instances of {RotatingObject.__name__!r}.")
 
         self.time_discretization = time_discretization
         self.simulation_time = simulation_time

@@ -9,10 +9,10 @@ class DCMotor(MotorBase):
         super().__init__(name = name, inertia = inertia)
 
         if not isinstance(no_load_speed, Speed):
-            raise TypeError("Parameter 'no_load_speed' must be an instance of Speed")
+            raise TypeError(f"Parameter 'no_load_speed' must be an instance of {Speed.__name__!r}")
 
         if not isinstance(maximum_torque, Torque):
-            raise TypeError("Parameter 'maximum_torque' must be an instance of Torque.")
+            raise TypeError(f"Parameter 'maximum_torque' must be an instance of {Torque.__name__!r}.")
 
         if no_load_speed.value <= 0:
             raise ValueError("Parameter 'no_load_speed' must be positive.")

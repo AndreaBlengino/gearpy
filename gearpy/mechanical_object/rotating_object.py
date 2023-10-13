@@ -10,7 +10,7 @@ class RotatingObject(MechanicalObject):
         super().__init__(name = name)
 
         if not isinstance(inertia, Inertia):
-            raise TypeError("Parameter 'inertia' must be an instance of Inertia.")
+            raise TypeError(f"Parameter 'inertia' must be an instance of {Inertia.__name__!r}.")
 
         self.__angle = None
         self.__speed = None
@@ -35,7 +35,7 @@ class RotatingObject(MechanicalObject):
     @abstractmethod
     def angle(self, angle: Angle):
         if not isinstance(angle, Angle):
-            raise TypeError("Parameter 'angle' must be an instance of Angle.")
+            raise TypeError(f"Parameter 'angle' must be an instance of {Angle.__name__!r}.")
 
         self.__angle = angle
 
@@ -48,7 +48,7 @@ class RotatingObject(MechanicalObject):
     @abstractmethod
     def speed(self, speed: Speed):
         if not isinstance(speed, Speed):
-            raise TypeError("Parameter 'speed' must be an instance of Speed.")
+            raise TypeError(f"Parameter 'speed' must be an instance of {Speed.__name__!r}.")
 
         self.__speed = speed
 
@@ -61,7 +61,7 @@ class RotatingObject(MechanicalObject):
     @abstractmethod
     def acceleration(self, acceleration: Acceleration):
         if not isinstance(acceleration, Acceleration):
-            raise TypeError("Parameter 'acceleration' must be an instance of Acceleration.")
+            raise TypeError(f"Parameter 'acceleration' must be an instance of {Acceleration.__name__!r}.")
 
         self.__acceleration = acceleration
 
@@ -74,7 +74,7 @@ class RotatingObject(MechanicalObject):
     @abstractmethod
     def torque(self, torque: Torque):
         if not isinstance(torque, Torque):
-            raise TypeError("Parameter 'torque' must be an instance of Torque.")
+            raise TypeError(f"Parameter 'torque' must be an instance of {Torque.__name__!r}.")
 
         self.__torque = torque
 
@@ -87,7 +87,7 @@ class RotatingObject(MechanicalObject):
     @abstractmethod
     def driving_torque(self, driving_torque: Torque):
         if not isinstance(driving_torque, Torque):
-            raise TypeError("Parameter 'driving_torque' must be an instance of Torque.")
+            raise TypeError(f"Parameter 'driving_torque' must be an instance of {Torque.__name__!r}.")
 
         self.__driving_torque = driving_torque
 
@@ -100,7 +100,7 @@ class RotatingObject(MechanicalObject):
     @abstractmethod
     def load_torque(self, load_torque: Torque):
         if not isinstance(load_torque, Torque):
-            raise TypeError("Parameter 'load_torque' must be an instance of Torque.")
+            raise TypeError(f"Parameter 'load_torque' must be an instance of {Torque.__name__!r}.")
 
         self.__load_torque = load_torque
 
