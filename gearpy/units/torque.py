@@ -1,5 +1,7 @@
 from .angular_acceleration import AngularAcceleration
 from .inertia_moment import InertiaMoment
+from math import fabs
+from .settings import COMPARISON_TOLERANCE
 from typing import Union
 from .unit_base import UnitBase
 
@@ -70,32 +72,50 @@ class Torque(UnitBase):
     def __eq__(self, other: 'Torque') -> bool:
         super().__eq__(other = other)
 
-        return self.__value == other.to(self.__unit).value
+        if self.__unit == other.unit:
+            return self.__value == other.value
+        else:
+            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
 
     def __ne__(self, other: 'Torque') -> bool:
         super().__ne__(other = other)
 
-        return self.__value != other.to(self.__unit).value
+        if self.__unit == other.unit:
+            return self.__value != other.value
+        else:
+            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
 
     def __gt__(self, other: 'Torque') -> bool:
         super().__gt__(other = other)
 
-        return self.__value > other.to(self.__unit).value
+        if self.__unit == other.unit:
+            return self.__value > other.value
+        else:
+            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
 
     def __ge__(self, other: 'Torque') -> bool:
         super().__ge__(other = other)
 
-        return self.__value >= other.to(self.__unit).value
+        if self.__unit == other.unit:
+            return self.__value >= other.value
+        else:
+            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
 
     def __lt__(self, other: 'Torque') -> bool:
         super().__lt__(other = other)
 
-        return self.__value < other.to(self.__unit).value
+        if self.__unit == other.unit:
+            return self.__value < other.value
+        else:
+            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
 
     def __le__(self, other: 'Torque') -> bool:
         super().__le__(other = other)
 
-        return self.__value <= other.to(self.__unit).value
+        if self.__unit == other.unit:
+            return self.__value <= other.value
+        else:
+            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -112,7 +132,10 @@ class Torque(UnitBase):
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
-        target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
+        if target_unit != self.__unit:
+            target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
+        else:
+            target_value = self.__value
 
         if inplace:
             self.__value = target_value
