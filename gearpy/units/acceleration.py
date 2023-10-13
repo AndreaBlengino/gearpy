@@ -26,17 +26,10 @@ class Acceleration(UnitBase):
     def __add__(self, other: 'Acceleration') -> 'Acceleration':
         super().__add__(other = other)
 
-        if not isinstance(other, Acceleration):
-            raise TypeError(f'It is not allowed to sum an {self.__class__.__name__} and a {other.__class__.__name__}.')
-
         return Acceleration(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
     def __sub__(self, other: 'Acceleration') -> 'Acceleration':
         super().__sub__(other = other)
-
-        if not isinstance(other, Acceleration):
-            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an '
-                            f'{self.__class__.__name__}.')
 
         return Acceleration(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 

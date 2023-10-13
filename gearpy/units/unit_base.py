@@ -18,10 +18,15 @@ class UnitBase(ABC):
     def __repr__(self): ...
 
     @abstractmethod
-    def __add__(self, other: 'UnitBase') -> None: ...
+    def __add__(self, other: 'UnitBase') -> None:
+        if not isinstance(other, self.__class__):
+            raise TypeError(f'It is not allowed to sum a {self.__class__.__name__} and a {other.__class__.__name__}.')
 
     @abstractmethod
-    def __sub__(self, other: 'UnitBase') -> None: ...
+    def __sub__(self, other: 'UnitBase') -> None:
+        if not isinstance(other, self.__class__):
+            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} '
+                            f'from a {self.__class__.__name__}.')
 
     @abstractmethod
     def __mul__(self, other: Union[float, int]) -> None: ...

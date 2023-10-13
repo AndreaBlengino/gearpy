@@ -27,17 +27,10 @@ class Inertia(UnitBase):
     def __add__(self, other: 'Inertia') -> 'Inertia':
         super().__add__(other = other)
 
-        if not isinstance(other, Inertia):
-            raise TypeError(f'It is not allowed to sum an {self.__class__.__name__} and a {other.__class__.__name__}.')
-
         return Inertia(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
     def __sub__(self, other: 'Inertia') -> 'Inertia':
         super().__sub__(other = other)
-
-        if not isinstance(other, Inertia):
-            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from an '
-                            f'{self.__class__.__name__}.')
 
         if self.__value - other.to(self.__unit).value <= 0:
             raise ValueError('Cannot perform the subtraction because the result is not positive.')

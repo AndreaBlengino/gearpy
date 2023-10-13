@@ -33,17 +33,10 @@ class Speed(UnitBase):
     def __add__(self, other: 'Speed') -> 'Speed':
         super().__add__(other = other)
 
-        if not isinstance(other, Speed):
-            raise TypeError(f'It is not allowed to sum a {self.__class__.__name__} and a {other.__class__.__name__}.')
-
         return Speed(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
     def __sub__(self, other: 'Speed') -> 'Speed':
         super().__sub__(other = other)
-
-        if not isinstance(other, Speed):
-            raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} from a '
-                            f'{self.__class__.__name__}.')
 
         return Speed(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
