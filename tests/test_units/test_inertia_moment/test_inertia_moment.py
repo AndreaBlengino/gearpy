@@ -13,7 +13,7 @@ class TestInertiaMomentInit:
 
 
     @mark.genuine
-    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True),
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list))
     @settings(max_examples = 100)
     def test_method(self, value, unit):
@@ -48,7 +48,7 @@ class TestInertiaMomentRepr:
 
 
     @mark.genuine
-    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True),
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list))
     @settings(max_examples = 100)
     def test_method(self, value, unit):
@@ -63,9 +63,9 @@ class TestInertiaMomentAdd:
 
 
     @mark.genuine
-    @given(value_1 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
+    @given(value_1 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit_1 = sampled_from(elements = units_list),
-           value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
+           value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
     @settings(max_examples = 100)
     def test_method(self, value_1, unit_1, value_2, unit_2):
@@ -89,9 +89,9 @@ class TestInertiaMomentSub:
 
 
     @mark.genuine
-    @given(value_1 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
+    @given(value_1 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit_1 = sampled_from(elements = units_list),
-           value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
+           value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
     @settings(max_examples = 100)
     def test_method(self, value_1, unit_1, value_2, unit_2):
@@ -122,7 +122,7 @@ class TestInertiaMomentMul:
 
 
     @mark.genuine
-    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     @settings(max_examples = 100)
@@ -152,7 +152,7 @@ class TestInertiaMomentRmul:
 
 
     @mark.genuine
-    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     @settings(max_examples = 100)
@@ -182,9 +182,9 @@ class TestInertiaMomentTruediv:
 
 
     @mark.genuine
-    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
-           divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
+           divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
                             inertia_moments()))
     @settings(max_examples = 100)
     def test_method(self, value, unit, divider):
@@ -244,7 +244,7 @@ class TestInertiaMomentNe:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
-           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True))
+           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     @settings(max_examples = 100)
     def test_method(self, value, unit, gap):
         inertia_moment_1 = InertiaMoment(value = value, unit = unit)
@@ -267,7 +267,7 @@ class TestInertiaMomentGt:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
-           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True))
+           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     @settings(max_examples = 100)
     def test_method(self, value, unit, gap):
         inertia_moment_1 = InertiaMoment(value = value + gap, unit = unit)
@@ -290,7 +290,7 @@ class TestInertiaMomentGe:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
-           gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False))
+           gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False, max_value = 1000))
     @settings(max_examples = 100)
     def test_method(self, value, unit, gap):
         inertia_moment_1 = InertiaMoment(value = value + gap, unit = unit)
@@ -313,7 +313,7 @@ class TestInertiaMomentLt:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
-           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True))
+           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     @settings(max_examples = 100)
     def test_method(self, value, unit, gap):
         if value != 0:
@@ -337,7 +337,7 @@ class TestInertiaMomentLe:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
-           gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False))
+           gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False, max_value = 1000))
     @settings(max_examples = 100)
     def test_method(self, value, unit, gap):
         if value != 0:

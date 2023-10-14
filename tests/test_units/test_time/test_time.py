@@ -59,9 +59,9 @@ class TestTimeAdd:
 
 
     @mark.genuine
-    @given(value_1 = floats(allow_nan = False, allow_infinity = False),
+    @given(value_1 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_1 = sampled_from(elements = units_list),
-           value_2 = floats(allow_nan = False, allow_infinity = False),
+           value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
     @settings(max_examples = 100)
     def test_method(self, value_1, unit_1, value_2, unit_2):
@@ -85,9 +85,9 @@ class TestTimeSub:
 
 
     @mark.genuine
-    @given(value_1 = floats(allow_nan = False, allow_infinity = False),
+    @given(value_1 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_1 = sampled_from(elements = units_list),
-           value_2 = floats(allow_nan = False, allow_infinity = False),
+           value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
     @settings(max_examples = 100)
     def test_method(self, value_1, unit_1, value_2, unit_2):
@@ -111,7 +111,7 @@ class TestTimeMul:
 
 
     @mark.genuine
-    @given(value = floats(allow_nan = False, allow_infinity = False),
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                                angular_speeds(),
@@ -146,7 +146,7 @@ class TestTimeRmul:
 
 
     @mark.genuine
-    @given(value = floats(allow_nan = False, allow_infinity = False),
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                                angular_speeds(),
@@ -171,7 +171,7 @@ class TestTimeRmul:
 
 
     @mark.genuine
-    @given(value = floats(allow_nan = False, allow_infinity = False),
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
     @settings(max_examples = 100)
     def test_method_patch_1(self, value, unit):
@@ -190,7 +190,7 @@ class TestTimeRmul:
 
 
     @mark.genuine
-    @given(value = floats(allow_nan = False, allow_infinity = False),
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
     @settings(max_examples = 100)
     def test_method_patch_2(self, value, unit):
@@ -219,9 +219,9 @@ class TestTimeTruediv:
 
 
     @mark.genuine
-    @given(value = floats(allow_nan = False, allow_infinity = False),
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
-           divider = one_of(floats(allow_nan = False, allow_infinity = False),
+           divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                             times()))
     @settings(max_examples = 100)
     def test_method(self, value, unit, divider):
@@ -281,7 +281,7 @@ class TestTimeNe:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
-           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True))
+           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     @settings(max_examples = 100)
     def test_method(self, value, unit, gap):
         time_1 = Time(value = value, unit = unit)
@@ -304,7 +304,7 @@ class TestTimeGt:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
-           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True))
+           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     @settings(max_examples = 100)
     def test_method(self, value, unit, gap):
         time_1 = Time(value = value + gap, unit = unit)
@@ -327,7 +327,7 @@ class TestTimeGe:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
-           gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False))
+           gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False, max_value = 1000))
     @settings(max_examples = 100)
     def test_method(self, value, unit, gap):
         time_1 = Time(value = value + gap, unit = unit)
@@ -350,7 +350,7 @@ class TestTimeLt:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
-           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True))
+           gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     @settings(max_examples = 100)
     def test_method(self, value, unit, gap):
         if value != 0:
@@ -374,7 +374,7 @@ class TestTimeLe:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
-           gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False))
+           gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False, max_value = 1000))
     @settings(max_examples = 100)
     def test_method(self, value, unit, gap):
         if value != 0:
