@@ -743,23 +743,34 @@ class Time(UnitBase):
 
         return Time(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
-    def __mul__(self, other: Union[float, int]) -> 'Time':
+    def __mul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) -> Union['AngularPosition', 'AngularSpeed', 'Time']:
         super().__mul__(other = other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, AngularAcceleration) and not isinstance(other, AngularSpeed) \
+                and not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to multiply a {self.__class__.__name__} by a '
                             f'{other.__class__.__name__}.')
 
-        return Time(value = self.__value*other, unit = self.__unit)
+        if isinstance(other, AngularAcceleration):
+            return AngularSpeed(value = self.to('sec').value*other.to('rad/s^2').value, unit = 'rad/s')
+        elif isinstance(other, AngularSpeed):
+            return AngularPosition(value = self.to('sec').value*other.to('rad/s').value, unit = 'rad')
+        else:
+            return Time(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'Time':
+    def __rmul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) -> Union['AngularPosition', 'AngularSpeed', 'Time']:
         super().__rmul__(other = other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, AngularSpeed) and not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by a '
                             f'{self.__class__.__name__}.')
 
-        return Time(value = self.__value*other, unit = self.__unit)
+        if isinstance(other, AngularAcceleration):
+            return AngularSpeed(value = self.to('sec').value*other.to('rad/s^2').value, unit = 'rad/s')
+        elif isinstance(other, AngularSpeed):
+            return AngularPosition(value = self.to('sec').value*other.to('rad/s').value, unit = 'rad')
+        else:
+            return Time(value = self.__value*other, unit = self.__unit)
 
     def __truediv__(self, other: Union['Time', float, int]) -> Union['Time', float]:
         super().__truediv__(other = other)
