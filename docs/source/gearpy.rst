@@ -9,4 +9,5 @@ gearpy
    motor/index
    solver/index
    transmission/index
+   units/index
    utils/index

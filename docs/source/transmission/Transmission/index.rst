@@ -12,3 +12,5 @@ Transmission
 
 .. toctree::
    :hidden:
+
+   chain

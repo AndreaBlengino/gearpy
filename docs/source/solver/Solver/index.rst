@@ -12,3 +12,5 @@ Solver
 
 .. toctree::
    :hidden:
+
+   run

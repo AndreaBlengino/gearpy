@@ -12,3 +12,16 @@ DCMotor
 
 .. toctree::
    :hidden:
+
+   angular_acceleration
+   angular_position
+   angular_speed
+   compute_torque
+   drives
+   driving_torque
+   inertia_moment
+   load_torque
+   name
+   time_variables
+   torque
+   update_time_variables

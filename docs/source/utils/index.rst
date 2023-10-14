@@ -11,4 +11,5 @@ utils
 .. toctree::
    :hidden:
 
-
+   add_fixed_joint
+   add_gear_mating
