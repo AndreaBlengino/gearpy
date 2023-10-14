@@ -158,6 +158,25 @@ class TestAngularSpeedRmul:
             assert result.unit == angular_speed.unit
 
 
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method_patch(self, value, unit):
+        angular_speed = AngularSpeed(value = value, unit = unit)
+
+        class FakeTime(Time):
+
+            def __mul__(self, other: AngularSpeed): return NotImplemented
+
+        fake_multiplier = FakeTime(1, 'sec')
+        result = fake_multiplier*angular_speed
+
+        assert isinstance(result, AngularPosition)
+        assert result.value == angular_speed.to('rad/s').value*fake_multiplier.to('sec').value
+        assert result.unit == 'rad'
+
+
     @mark.error
     def test_raises_type_error(self, angular_speed_rmul_type_error):
         with raises(TypeError):

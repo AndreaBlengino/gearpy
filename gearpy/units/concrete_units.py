@@ -761,7 +761,8 @@ class Time(UnitBase):
     def __rmul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) -> Union['AngularPosition', 'AngularSpeed', 'Time']:
         super().__rmul__(other = other)
 
-        if not isinstance(other, AngularSpeed) and not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, AngularAcceleration) and not isinstance(other, AngularSpeed) \
+                and not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by a '
                             f'{self.__class__.__name__}.')
 

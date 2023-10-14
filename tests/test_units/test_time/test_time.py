@@ -170,6 +170,44 @@ class TestTimeRmul:
             assert result.unit == time.unit
 
 
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method_patch_1(self, value, unit):
+        time = Time(value = value, unit = unit)
+
+        class FakeAngularAcceleration(AngularAcceleration):
+
+            def __mul__(self, other: Time): return NotImplemented
+
+        fake_multiplier = FakeAngularAcceleration(1, 'rad/s^2')
+        result = fake_multiplier*time
+
+        assert isinstance(result, AngularSpeed)
+        assert result.value == time.to('sec').value*fake_multiplier.to('rad/s^2').value
+        assert result.unit == 'rad/s'
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method_patch_2(self, value, unit):
+        time = Time(value = value, unit = unit)
+
+        class FakeAngularSpeed(AngularSpeed):
+
+            def __mul__(self, other: Time): return NotImplemented
+
+        fake_multiplier = FakeAngularSpeed(1, 'rad/s')
+        result = fake_multiplier*time
+
+        assert isinstance(result, AngularPosition)
+        assert result.value == time.to('sec').value*fake_multiplier.to('rad/s').value
+        assert result.unit == 'rad'
+
+
     @mark.error
     def test_raises_type_error(self, time_rmul_type_error):
         with raises(TypeError):
