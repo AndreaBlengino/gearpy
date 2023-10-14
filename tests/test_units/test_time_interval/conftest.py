@@ -1,19 +1,10 @@
 from gearpy.units import AngularAcceleration, AngularSpeed, Time, TimeInterval
-from hypothesis.strategies import composite, floats, sampled_from
 import numpy as np
 from tests.conftest import types_to_check
 from pytest import fixture
 
 
 basic_time_interval = TimeInterval(1, 'sec')
-
-
-@composite
-def time_intervals(draw):
-    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    unit = draw(sampled_from(elements = list(TimeInterval._Time__UNITS.keys())))
-
-    return TimeInterval(value = value, unit = unit)
 
 
 time_interval_init_type_error_1 = [{'value': type_to_check, 'unit': 'unit'} for type_to_check in types_to_check

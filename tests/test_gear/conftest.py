@@ -1,22 +1,8 @@
-from gearpy.gear import SpurGear
 from gearpy.mechanical_object import RotatingObject
 from gearpy.units import InertiaMoment
-from hypothesis.strategies import composite, text, integers
 from pytest import fixture
 from tests.conftest import types_to_check
 from typing import Callable
-
-
-basic_spur_gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
-
-
-@composite
-def spur_gears(draw):
-    name = draw(text(min_size = 1))
-    n_teeth = draw(integers(min_value = 1))
-    inertia = InertiaMoment(1, 'kgm^2')
-
-    return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = inertia)
 
 
 spur_gear_init_type_error_1 = [{'name': type_to_check, 'n_teeth': 10, 'inertia_moment': InertiaMoment(1, 'kgm^2')}

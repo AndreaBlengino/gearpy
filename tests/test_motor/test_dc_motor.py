@@ -4,7 +4,7 @@ from gearpy.units import Torque
 from hypothesis import given, settings
 from hypothesis.strategies import text
 from pytest import mark, raises
-from tests.test_motor.conftest import basic_dc_motor
+from tests.conftest import basic_dc_motor
 from tests.test_units.test_angular_speed.conftest import angular_speeds
 from tests.test_units.test_inertia_moment.conftest import inertia_moments, basic_inertia_moment
 from tests.test_units.test_torque.conftest import torques

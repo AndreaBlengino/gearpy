@@ -1,25 +1,7 @@
 from gearpy.mechanical_object import RotatingObject
-from gearpy.motor import DCMotor
 from gearpy.units import AngularSpeed, InertiaMoment, Torque
-from hypothesis.strategies import composite, text, floats
 from tests.conftest import types_to_check
 from pytest import fixture
-
-
-basic_dc_motor = DCMotor(name = 'name',
-                         inertia_moment = InertiaMoment(1, 'kgm^2'),
-                         no_load_speed = AngularSpeed(1000, 'rpm'),
-                         maximum_torque = Torque(1, 'Nm'))
-
-
-@composite
-def dc_motors(draw):
-    name = draw(text(min_size = 1))
-    inertia = draw(floats(min_value = 0, exclude_min = True, allow_nan = False, allow_infinity = False))
-    no_load_speed = draw(floats(min_value = 0, exclude_min = True, allow_nan = False, allow_infinity = False))
-    maximum_torque = draw(floats(min_value = 0, exclude_min = True, allow_nan = False, allow_infinity = False))
-
-    return DCMotor(name = name, inertia_moment = inertia, no_load_speed = no_load_speed, maximum_torque = maximum_torque)
 
 
 dc_motor_init_type_error_1 = [{'name': type_to_check, 'inertia_moment': InertiaMoment(1, 'kgm^2'),

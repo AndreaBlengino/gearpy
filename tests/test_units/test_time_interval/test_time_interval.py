@@ -1,7 +1,8 @@
 from gearpy.units import Time, TimeInterval
 from hypothesis.strategies import floats, sampled_from, one_of, booleans
 from hypothesis import given, settings
-from tests.test_units.test_time_interval.conftest import basic_time_interval, time_intervals
+from tests.conftest import time_intervals
+from tests.test_units.test_time_interval.conftest import basic_time_interval
 from pytest import mark, raises
 
 

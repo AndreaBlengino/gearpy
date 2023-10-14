@@ -4,7 +4,7 @@ from gearpy.units import AngularSpeed, InertiaMoment, Torque
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, integers, functions
 from pytest import mark, raises
-from tests.test_gear.conftest import basic_spur_gear
+from tests.conftest import basic_spur_gear
 from tests.test_units.test_inertia_moment.conftest import inertia_moments
 
 
