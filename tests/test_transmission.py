@@ -1,4 +1,7 @@
-from gearpy import DCMotor, Transmission, add_gear_mating, add_fixed_joint
+from gearpy.motor import DCMotor
+from gearpy.transmission import Transmission
+from gearpy.units import AngularSpeed, InertiaMoment, Torque
+from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings
 from hypothesis.strategies import lists
 from pytest import mark, raises
@@ -40,6 +43,7 @@ class TestTransmissionInit:
 
     @mark.error
     def test_raises_value_error(self):
-        motor = DCMotor(name = 'motor', inertia = 1, no_load_speed = 1, maximum_torque = 1)
+        motor = DCMotor(name = 'motor', inertia_moment = InertiaMoment(1, 'kgm^2'),
+                        no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'))
         with raises(ValueError):
             Transmission(motor = motor)

@@ -1,13 +1,14 @@
 from abc import abstractmethod
-from gearpy.mechanical_object.rotating_object import RotatingObject
+from gearpy.mechanical_object import RotatingObject
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Torque
 from typing import Callable, Union
 
 
 class GearBase(RotatingObject):
 
     @abstractmethod
-    def __init__(self, name: str, n_teeth: int, inertia: float):
-        super().__init__(name = name, inertia = inertia)
+    def __init__(self, name: str, n_teeth: int, inertia_moment: InertiaMoment):
+        super().__init__(name = name, inertia_moment = inertia_moment)
 
         if not isinstance(n_teeth, int):
             raise TypeError("Parameter 'n_teeth' must be an integer.")
@@ -36,7 +37,7 @@ class GearBase(RotatingObject):
     @abstractmethod
     def driven_by(self, driven_by: RotatingObject):
         if not isinstance(driven_by, RotatingObject):
-            raise TypeError("Parameter 'drives' must be a RotatingObject")
+            raise TypeError(f"Parameter 'driven_by' must be a {RotatingObject.__name__!r}")
 
         self.__driven_by = driven_by
 
@@ -49,9 +50,69 @@ class GearBase(RotatingObject):
     @abstractmethod
     def drives(self, drives: RotatingObject):
         if not isinstance(drives, RotatingObject):
-            raise TypeError("Parameter 'drives' must be a RotatingObject")
+            raise TypeError(f"Parameter 'drives' must be a {RotatingObject.__name__!r}")
 
         self.__drives = drives
+
+    @property
+    @abstractmethod
+    def angular_position(self) -> AngularPosition:
+        return super().angular_position
+
+    @angular_position.setter
+    @abstractmethod
+    def angular_position(self, angular_position: AngularPosition):
+        super(GearBase, type(self)).angular_position.fset(self, angular_position)
+
+    @property
+    @abstractmethod
+    def angular_speed(self) -> AngularSpeed:
+        return super().angular_speed
+
+    @angular_speed.setter
+    @abstractmethod
+    def angular_speed(self, angular_speed: AngularSpeed):
+        super(GearBase, type(self)).angular_speed.fset(self, angular_speed)
+
+    @property
+    @abstractmethod
+    def angular_acceleration(self) -> AngularAcceleration:
+        return super().angular_acceleration
+
+    @angular_acceleration.setter
+    @abstractmethod
+    def angular_acceleration(self, angular_acceleration: AngularAcceleration):
+        super(GearBase, type(self)).angular_acceleration.fset(self, angular_acceleration)
+
+    @property
+    @abstractmethod
+    def torque(self) -> Torque:
+        return super().torque
+
+    @torque.setter
+    @abstractmethod
+    def torque(self, torque: Torque):
+        super(GearBase, type(self)).torque.fset(self, torque)
+
+    @property
+    @abstractmethod
+    def driving_torque(self) -> Torque:
+        return super().driving_torque
+
+    @driving_torque.setter
+    @abstractmethod
+    def driving_torque(self, driving_torque: Torque):
+        super(GearBase, type(self)).driving_torque.fset(self, driving_torque)
+
+    @property
+    @abstractmethod
+    def load_torque(self) -> Torque:
+        return super().load_torque
+
+    @load_torque.setter
+    @abstractmethod
+    def load_torque(self, load_torque: Torque):
+        super(GearBase, type(self)).load_torque.fset(self, load_torque)
 
     @property
     @abstractmethod

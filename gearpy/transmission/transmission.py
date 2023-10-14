@@ -1,11 +1,11 @@
-from gearpy.motor.motor import MotorBase
+from gearpy.motor import MotorBase
 
 
 class Transmission:
 
     def __init__(self, motor: MotorBase):
         if not isinstance(motor, MotorBase):
-            raise TypeError("Parameter 'motor' must be an instance of MotorBase.")
+            raise TypeError(f"Parameter 'motor' must be an instance of {MotorBase.__name__!r}.")
 
         if motor.drives is None:
             raise ValueError("Parameter 'motor' is not connected to any other element. Call 'add_fixed_joint' "
