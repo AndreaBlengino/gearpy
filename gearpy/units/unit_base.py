@@ -19,12 +19,12 @@ class UnitBase(ABC):
 
     @abstractmethod
     def __add__(self, other: 'UnitBase') -> None:
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'It is not allowed to sum a {self.__class__.__name__} and a {other.__class__.__name__}.')
 
     @abstractmethod
     def __sub__(self, other: 'UnitBase') -> None:
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} '
                             f'from a {self.__class__.__name__}.')
 
@@ -48,32 +48,32 @@ class UnitBase(ABC):
 
     @abstractmethod
     def __eq__(self, other: 'UnitBase') -> None:
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @abstractmethod
     def __ne__(self, other: 'UnitBase') -> None:
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @abstractmethod
     def __gt__(self, other: 'UnitBase') -> None:
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @abstractmethod
     def __ge__(self, other: 'UnitBase') -> None:
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @abstractmethod
     def __lt__(self, other: 'UnitBase') -> None:
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @abstractmethod
     def __le__(self, other: 'UnitBase') -> None:
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
     @property
