@@ -21,7 +21,9 @@ DCMotor
    driving_torque
    inertia_moment
    load_torque
+   maximum_torque
    name
+   no_load_speed
    time_variables
    torque
    update_time_variables
