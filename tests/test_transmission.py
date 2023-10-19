@@ -1,4 +1,4 @@
-from gearpy.motor import DCMotor
+from gearpy.mechanical_object import DCMotor
 from gearpy.transmission import Transmission
 from gearpy.units import AngularSpeed, InertiaMoment, Torque
 from gearpy.utils import add_gear_mating, add_fixed_joint

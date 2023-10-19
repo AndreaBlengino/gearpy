@@ -1,5 +1,4 @@
-from gearpy.gear import SpurGear
-from gearpy.motor import DCMotor
+from gearpy.mechanical_object import DCMotor, SpurGear
 from gearpy.units import AngularSpeed, InertiaMoment, Torque
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, integers, functions

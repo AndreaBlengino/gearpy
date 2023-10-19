@@ -1,6 +1,4 @@
-from gearpy.gear import GearBase, SpurGear
-from gearpy.mechanical_object import RotatingObject
-from gearpy.motor import MotorBase, DCMotor
+from gearpy.mechanical_object import RotatingObject, GearBase, MotorBase, SpurGear, DCMotor
 from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, InertiaMoment, Torque, Time, TimeInterval
 from gearpy.utils import add_fixed_joint, add_gear_mating

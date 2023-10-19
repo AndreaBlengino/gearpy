@@ -1,4 +1,4 @@
-from gearpy.gear import SpurGear
+from gearpy.mechanical_object import SpurGear
 from gearpy.units import InertiaMoment
 from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings
