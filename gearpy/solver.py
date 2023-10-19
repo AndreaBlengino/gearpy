@@ -1,12 +1,11 @@
-from gearpy.mechanical_object import RotatingObject
-from gearpy.motor import MotorBase
+from gearpy.mechanical_object import RotatingObject, MotorBase
 from gearpy.transmission import Transmission
 from gearpy.units import Time, TimeInterval
 import numpy as np
 
 
 class Solver:
-    r"""gearpy.solver.solver.Solver object.
+    r"""``gearpy.solver.Solver`` object.
 
     Attributes
     ----------

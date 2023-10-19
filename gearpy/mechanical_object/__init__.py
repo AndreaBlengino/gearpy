@@ -1,2 +1,2 @@
-from .mechanical_object import MechanicalObject
-from .rotating_object import RotatingObject
+from .mechanical_objects import DCMotor, SpurGear
+from .mechanical_object_base import MechanicalObject, RotatingObject, MotorBase, GearBase

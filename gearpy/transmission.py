@@ -1,8 +1,8 @@
-from gearpy.motor import MotorBase
+from gearpy.mechanical_object import MotorBase
 
 
 class Transmission:
-    r"""gearpy.transmission.transmission.Transmission object.
+    r"""``gearpy.transmission.Transmission`` object.
 
     Attributes
     ----------

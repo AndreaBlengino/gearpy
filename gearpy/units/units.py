@@ -7,7 +7,7 @@ COMPARISON_TOLERANCE = 1e-12
 
 
 class AngularPosition(UnitBase):
-    r"""gearpy.units.concrete_units.AngularPosition object.
+    r"""``gearpy.units.units.AngularPosition`` object.
 
     Attributes
     ----------
@@ -237,7 +237,7 @@ class AngularPosition(UnitBase):
 
 
 class AngularSpeed(UnitBase):
-    r"""gearpy.units.concrete_units.AngularSpeed object.
+    r"""``gearpy.units.units.AngularSpeed`` object.
 
     Attributes
     ----------
@@ -484,7 +484,7 @@ class AngularSpeed(UnitBase):
 
 
 class AngularAcceleration(UnitBase):
-    r"""gearpy.units.concrete_units.AngularAcceleration object.
+    r"""``gearpy.units.units.AngularAcceleration`` object.
 
     Attributes
     ----------
@@ -718,7 +718,7 @@ class AngularAcceleration(UnitBase):
 
 
 class InertiaMoment(UnitBase):
-    r"""gearpy.units.concrete_units.InertiaMoment object.
+    r"""``gearpy.units.units.InertiaMoment`` object.
 
     Attributes
     ----------
@@ -963,7 +963,7 @@ class InertiaMoment(UnitBase):
 
 
 class Torque(UnitBase):
-    r"""gearpy.units.concrete_units.Torque object.
+    r"""``gearpy.units.units.Torque`` object.
 
     Attributes
     ----------
@@ -1199,7 +1199,7 @@ class Torque(UnitBase):
 
 
 class Time(UnitBase):
-    r"""gearpy.units.concrete_units.Time object.
+    r"""``gearpy.units.units.Time`` object.
 
     Attributes
     ----------
@@ -1438,7 +1438,7 @@ class Time(UnitBase):
 
 
 class TimeInterval(Time):
-    r"""gearpy.units.concrete_units.TimeInterval object.
+    r"""``gearpy.units.units.TimeInterval`` object.
 
     Attributes
     ----------

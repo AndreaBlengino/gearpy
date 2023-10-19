@@ -1,5 +1,4 @@
-from gearpy.gear import GearBase
-from gearpy.motor import MotorBase
+from gearpy.mechanical_object import GearBase, MotorBase
 from typing import Union
 
 
