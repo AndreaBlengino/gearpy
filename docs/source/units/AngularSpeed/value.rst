@@ -2,6 +2,6 @@ value
 =====
 
 
-.. currentmodule:: gearpy.units.concrete_units
+.. currentmodule:: gearpy.units.units
 
 .. autoproperty:: AngularSpeed.value

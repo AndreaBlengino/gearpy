@@ -3,7 +3,7 @@ Torque
 
 
 .. currentmodule:: gearpy.units
-.. autoclass:: gearpy.units.concrete_units.Torque
+.. autoclass:: gearpy.units.units.Torque
    :members:
    :undoc-members:
    :show-inheritance:

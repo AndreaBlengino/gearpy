@@ -3,7 +3,7 @@ Time
 
 
 .. currentmodule:: gearpy.units
-.. autoclass:: gearpy.units.concrete_units.Time
+.. autoclass:: gearpy.units.units.Time
    :members:
    :undoc-members:
    :show-inheritance:

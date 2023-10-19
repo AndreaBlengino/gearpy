@@ -2,6 +2,6 @@ chain
 =====
 
 
-.. currentmodule:: gearpy.transmission.transmission
+.. currentmodule:: gearpy.transmission
 
 .. autoproperty:: Transmission.chain

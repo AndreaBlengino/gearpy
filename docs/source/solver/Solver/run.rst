@@ -2,6 +2,6 @@ run
 ===
 
 
-.. currentmodule:: gearpy.solver.solver
+.. currentmodule:: gearpy.solver
 
 .. automethod:: Solver.run

@@ -193,7 +193,7 @@ class SpurGear(GearBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.AngularPosition`
+        :py:class:`gearpy.units.units.AngularPosition`
         """
         return super().angular_position
 
@@ -217,7 +217,7 @@ class SpurGear(GearBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.AngularSpeed`
+        :py:class:`gearpy.units.units.AngularSpeed`
         """
         return super().angular_speed
 
@@ -241,7 +241,7 @@ class SpurGear(GearBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.AngularAcceleration`
+        :py:class:`gearpy.units.units.AngularAcceleration`
         """
         return super().angular_acceleration
 
@@ -266,7 +266,7 @@ class SpurGear(GearBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.Torque`
+        :py:class:`gearpy.units.units.Torque`
         """
         return super().torque
 
@@ -291,7 +291,7 @@ class SpurGear(GearBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.Torque`
+        :py:class:`gearpy.units.units.Torque`
         """
         return super().driving_torque
 
@@ -315,7 +315,7 @@ class SpurGear(GearBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.Torque`
+        :py:class:`gearpy.units.units.Torque`
         """
         return super().load_torque
 
@@ -340,7 +340,7 @@ class SpurGear(GearBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.InertiaMoment`
+        :py:class:`gearpy.units.units.InertiaMoment`
         """
         return super().inertia_moment
 
@@ -552,7 +552,7 @@ class DCMotor(MotorBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.AngularPosition`
+        :py:class:`gearpy.units.units.AngularPosition`
         """
         return super().angular_position
 
@@ -576,7 +576,7 @@ class DCMotor(MotorBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.AngularSpeed`
+        :py:class:`gearpy.units.units.AngularSpeed`
         """
         return super().angular_speed
 
@@ -600,7 +600,7 @@ class DCMotor(MotorBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.AngularAcceleration`
+        :py:class:`gearpy.units.units.AngularAcceleration`
         """
         return super().angular_acceleration
 
@@ -629,7 +629,7 @@ class DCMotor(MotorBase):
 
         Se Also
         -------
-        :py:class:`gearpy.units.concrete_units.AngularSpeed`
+        :py:class:`gearpy.units.units.AngularSpeed`
         """
         return self.__no_load_speed
 
@@ -653,7 +653,7 @@ class DCMotor(MotorBase):
 
         Se Also
         -------
-        :py:class:`gearpy.units.concrete_units.Torque`
+        :py:class:`gearpy.units.units.Torque`
         """
         return self.__maximum_torque
 
@@ -674,7 +674,7 @@ class DCMotor(MotorBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.Torque`
+        :py:class:`gearpy.units.units.Torque`
         """
         return super().torque
 
@@ -698,7 +698,7 @@ class DCMotor(MotorBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.Torque`
+        :py:class:`gearpy.units.units.Torque`
         """
         return super().driving_torque
 
@@ -722,7 +722,7 @@ class DCMotor(MotorBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.Torque`
+        :py:class:`gearpy.units.units.Torque`
         """
         return super().load_torque
 
@@ -747,7 +747,7 @@ class DCMotor(MotorBase):
 
         See Also
         --------
-        :py:class:`gearpy.units.concrete_units.InertiaMoment`
+        :py:class:`gearpy.units.units.InertiaMoment`
         """
         return super().inertia_moment
 

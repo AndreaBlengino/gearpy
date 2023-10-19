@@ -3,7 +3,7 @@ AngularSpeed
 
 
 .. currentmodule:: gearpy.units
-.. autoclass:: gearpy.units.concrete_units.AngularSpeed
+.. autoclass:: gearpy.units.units.AngularSpeed
    :members:
    :undoc-members:
    :show-inheritance:

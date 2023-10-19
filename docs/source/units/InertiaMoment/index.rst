@@ -3,7 +3,7 @@ InertiaMoment
 
 
 .. currentmodule:: gearpy.units
-.. autoclass:: gearpy.units.concrete_units.InertiaMoment
+.. autoclass:: gearpy.units.units.InertiaMoment
    :members:
    :undoc-members:
    :show-inheritance:

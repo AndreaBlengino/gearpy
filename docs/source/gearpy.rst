@@ -5,8 +5,7 @@ gearpy
 .. toctree::
    :hidden:
 
-   gear/index
-   motor/index
+   mechanical_object/index
    solver/index
    transmission/index
    units/index

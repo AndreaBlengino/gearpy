@@ -2,6 +2,6 @@ to
 ==
 
 
-.. currentmodule:: gearpy.units.concrete_units
+.. currentmodule:: gearpy.units.units
 
 .. automethod:: AngularPosition.to

@@ -3,7 +3,7 @@ TimeInterval
 
 
 .. currentmodule:: gearpy.units
-.. autoclass:: gearpy.units.concrete_units.TimeInterval
+.. autoclass:: gearpy.units.units.TimeInterval
    :members:
    :undoc-members:
    :show-inheritance:

@@ -3,7 +3,7 @@ Solver
 
 
 .. currentmodule:: gearpy.solver
-.. autoclass:: gearpy.solver.solver.Solver
+.. autoclass:: gearpy.solver.Solver
    :members:
    :undoc-members:
    :show-inheritance:

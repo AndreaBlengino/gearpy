@@ -2,6 +2,6 @@ unit
 ====
 
 
-.. currentmodule:: gearpy.units.concrete_units
+.. currentmodule:: gearpy.units.units
 
 .. autoproperty:: AngularAcceleration.unit
