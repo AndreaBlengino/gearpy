@@ -4,6 +4,31 @@ from typing import Union
 
 
 def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, int]):
+    """Creates a gear mating between two existing gears. This mating is used to compose the mechanical Transmission. \n
+    The ratio of the angular speed of the ``master`` gear over the angular speed of the ``slave`` gear is equal to the
+    ratio of the ``slave`` gear number of teeth over the ``master`` gear number of teeth. \n
+    The ``master`` gear is closest to the motor and transfers a fraction of the driving torque to the ``slave`` one,
+    based on the ``efficiency`` value: the higher the ``efficiency``, the higher the fraction of transferred driving
+    torque.
+
+    Parameters
+    ----------
+    master : GearBase
+        Driving gear.
+    slave : GearBase
+        Driven gear.
+    efficiency : float or int
+        Mechanical efficiency of the gear mating.
+
+    Raises
+    ------
+    TypeError
+        - If ``master`` is not an instance of ``GearBase``,
+        - if ``slave`` is not an instance of ``GearBase``,
+        - if ``efficiency`` is not a float or an integer.
+    ValueError
+        If ``efficiency`` is not within ``0`` and ``1``.
+    """
     if not isinstance(master, GearBase):
         raise TypeError("Parameter 'master' must be an instance of GearBase.")
 
@@ -23,6 +48,24 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
 
 
 def add_fixed_joint(master: Union[MotorBase, GearBase], slave: GearBase):
+    """Creates a fixed joint between a ``master`` gear (or the driving motor) and a ``slave`` gear. The fixed joint
+    forces the two elements to rotates at the same angular position, speed and acceleration. \n
+    The ``master`` gear is closest to the transmission driving motor (or it is actually it) and transfers the whole
+    driving torque to the ``slave`` one.
+
+    Parameters
+    ----------
+    master : MotorBase or GearBase
+        Driving gear.
+    slave : GearBase
+        Driven gear.
+
+    Raises
+    ------
+    TypeError
+        - If ``master`` is not an instance of ``MotorBase`` or ``GearBase``,
+        - it ``slave`` is not an instance of ``GearBase``.
+    """
     if not isinstance(master, MotorBase) and not isinstance(master, GearBase):
         raise TypeError("Parameter 'master' must be an instance of MotorBase or GearBase.")
 

@@ -7,6 +7,20 @@ COMPARISON_TOLERANCE = 1e-12
 
 
 class AngularPosition(UnitBase):
+    r"""gearpy.units.concrete_units.AngularPosition object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for angular position.
+    :py:attr:`value` : float or int
+        Angular position numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
 
     __UNITS = {'rad': 1,
                'deg': pi/180,
@@ -116,13 +130,93 @@ class AngularPosition(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
+        """Angular position numerical value. The relative unit is expressed by the ``unit`` property.
+
+        Returns
+        -------
+        float or int
+            Angular position numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        """
         return self.__value
 
     @property
     def unit(self) -> str:
+        """Symbol of the unit of measurement for angular position. It must be a string.
+        Available units are:
+
+            - ``'rad'`` for radian,
+            - ``'deg'`` for degree,
+            - ``'arcmin'`` for minute of arc,
+            - ``'armsec'`` for second of arc.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for angular position.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'AngularPosition':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        AngularPosition
+            Converted angular position.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``AngularPosition`` instantiation.
+
+        >>> from gearpy.units import AngularPosition
+        >>> p = AngularPosition(180, 'deg')
+        >>> p
+        ... 180 deg
+
+        Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current value.
+
+        >>> p.to('rad')
+        ... 3.141592653589793 rad
+        >>> p
+        ... 180 deg
+
+        Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+
+        >>> p.to('arcmin', inplace = True)
+        ... 10800.0 arcmin
+        >>> p
+        ... 10800.0 arcmin
+        """
         super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
@@ -143,6 +237,20 @@ class AngularPosition(UnitBase):
 
 
 class AngularSpeed(UnitBase):
+    r"""gearpy.units.concrete_units.AngularSpeed object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for angular speed.
+    :py:attr:`value` : float or int
+        Angular speed numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
 
     __UNITS = {'rad/s': 1,
                'rad/min': 1/60,
@@ -262,13 +370,100 @@ class AngularSpeed(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
+        """Angular speed numerical value. The relative unit is expressed by the ``unit`` property.
+
+        Returns
+        -------
+        float or int
+            Angular speed numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        """
         return self.__value
 
     @property
     def unit(self) -> str:
+        """Symbol of the unit of measurement for angular speed. It must be a string.
+        Available units are:
+
+            - ``'rad/s'`` for radian per second,
+            - ``'rad/min'`` for radian per minute,
+            - ``'rad/h'`` for radian per hour,
+            - ``'deg/s'`` for degree per second,
+            - ``'deg/min'`` for degree per minute,
+            - ``'deg/h'`` for degree per hour,
+            - ``'rps'`` for revolutions per second,
+            - ``'rpm'`` for revolutions per minute,
+            - ``'rph'`` for revolutions per hour.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for angular speed.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'AngularSpeed':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        AngularSpeed
+            Converted angular speed.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``AngularSpeed`` instantiation.
+
+        >>> from gearpy.units import AngularSpeed
+        >>> s = AngularSpeed(1000, 'rpm')
+        >>> s
+        ... 1000 rpm
+
+        Conversion from revolutions per minute to radian per second with ``inplace = False`` by default, so it does not
+        override the current value.
+
+        >>> s.to('rad/s')
+        ... 104.71975511965977 rad/s
+        >>> s
+        ... 1000 rpm
+
+        Conversion from revolutions per minute to revolutions per second with ``inplace = True``, in order to override
+        the current value.
+
+        >>> s.to('rps', inplace = True)
+        ... 16.666666666666664 rps
+        >>> s
+        ... 16.666666666666664 rps
+        """
         super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
@@ -289,6 +484,20 @@ class AngularSpeed(UnitBase):
 
 
 class AngularAcceleration(UnitBase):
+    r"""gearpy.units.concrete_units.AngularAcceleration object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for angular acceleration.
+    :py:attr:`value` : float or int
+        Angular acceleration numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
 
     __UNITS = {'rad/s^2': 1,
                'deg/s^2': pi/180}
@@ -402,13 +611,93 @@ class AngularAcceleration(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
+        """Angular acceleration numerical value. The relative unit is expressed by the ``unit`` property.
+
+        Returns
+        -------
+        float or int
+            Angular acceleration numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        """
         return self.__value
 
     @property
     def unit(self) -> str:
+        """Symbol of the unit of measurement for angular acceleration. It must be a string.
+        Available units are:
+
+            - ``'rad/s^2'`` for radian per second squared,
+            - ``'deg/s^2'`` for degree per second squared.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for angular acceleration.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'AngularAcceleration':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        AngularAcceleration
+            Converted angular acceleration.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``AngularAcceleration`` instantiation.
+
+        >>> from gearpy.units import AngularAcceleration
+        >>> a = AngularAcceleration(180, 'deg/s^2')
+        >>> a
+        ... 180 deg/s^2
+
+        Conversion from degree per second squared to radian per second squared with ``inplace = False`` by default, so
+        it does not override the current value.
+
+        >>> a.to('rad/s^2')
+        ... 3.141592653589793 rad/s^2
+        >>> a
+        ... 180 deg/s^2
+
+        Conversion from degree per second squared to radian per second squared with ``inplace = True``, in order to
+        override the current value.
+
+        >>> a.to('rad/s^2', inplace = True)
+        ... 3.141592653589793 rad/s^2
+        >>> a
+        ... 3.141592653589793 rad/s^2
+        """
         super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
@@ -429,6 +718,20 @@ class AngularAcceleration(UnitBase):
 
 
 class InertiaMoment(UnitBase):
+    r"""gearpy.units.concrete_units.InertiaMoment object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for moment of inertia.
+    :py:attr:`value` : float or int
+        Moment of inertia numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
 
     __UNITS = {'kgm^2': 1,
                'gm^2': 1e-3,
@@ -549,13 +852,97 @@ class InertiaMoment(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
+        """Moment of inertia numerical value. The relative unit is expressed by the ``unit`` property. It must be
+        positive.
+
+        Returns
+        -------
+        float or int
+            Moment of inertia numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        ValueError
+            If ``value`` is not positive.
+        """
         return self.__value
 
     @property
     def unit(self) -> str:
+        """Symbol of the unit of measurement for moment of inertia. It must be a string.
+        Available units are:
+
+            - ``'kgm^2'`` for kilogram-square meter,
+            - ``'gm^2'`` for gram-square meter,
+            - ``'gcm^2'`` for gram-square centimeter.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for moment of inertia.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'InertiaMoment':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        InertiaMoment
+            Converted moment of inertia.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``InertiaMoment`` instantiation.
+
+        >>> from gearpy.units import InertiaMoment
+        >>> i = InertiaMoment(1, 'kgm^2')
+        >>> i
+        ... 1 kgm^2
+
+        Conversion from kilogram-square meter to gram-square meter with ``inplace = False`` by default, so it does not
+        override the current value.
+
+        >>> i.to('gm^2')
+        ... 1000.0 gm^2
+        >>> i
+        ... 1 kgm^2
+
+        Conversion from kilograms-square meter to gram-square meter with ``inplace = True``, in order to override the
+        current value.
+
+        >>> i.to('gm^2', inplace = True)
+        ... 1000.0 gm^2
+        >>> i
+        ... 1000.0 gm^2
+        """
         super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
@@ -576,6 +963,20 @@ class InertiaMoment(UnitBase):
 
 
 class Torque(UnitBase):
+    r"""gearpy.units.concrete_units.Torque object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for torque.
+    :py:attr:`value` : float or int
+        Torque numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
 
     __UNITS = {'Nm': 1,
                'mNm': 1e-3,
@@ -688,13 +1089,96 @@ class Torque(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
+        """Torque numerical value. The relative unit is expressed by the ``unit`` property.
+
+        Returns
+        -------
+        float or int
+            Torque numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        """
         return self.__value
 
     @property
     def unit(self) -> str:
+        """Symbol of the unit of measurement for Torque. It must be a string.
+        Available units are:
+
+            - ``'Nm'`` for newton-meter,
+            - ``'mNm'`` for milli-newton-meter,
+            - ``'kNm'`` for kilo-newton-meter,
+            - ``'kgfm'`` for kilogram force-meter,
+            - ``'kgfcm'`` for kilogram force-centimeter.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for torque.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'Torque':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Torque
+            Converted torque.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Torque`` instantiation.
+
+        >>> from gearpy.units import Torque
+        >>> T = Torque(1, 'Nm')
+        >>> T
+        ... 1 Nm
+
+        Conversion from newton-meter to kilogram force-meter with ``inplace = False`` by default, so it does not
+        override the current value.
+
+        >>> T.to('kgfm')
+        ... 0.10197162129779283 kgfm
+        >>> T
+        ... 1 Nm
+
+        Conversion from newton-meter to kilogram force-meter with ``inplace = True``, in order to override the current
+        value.
+
+        >>> T.to('kgfm', inplace = True)
+        ... 0.10197162129779283 kgfm
+        >>> T
+        ... 0.10197162129779283 kgfm
+        """
         super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
@@ -715,6 +1199,20 @@ class Torque(UnitBase):
 
 
 class Time(UnitBase):
+    r"""gearpy.units.concrete_units.Time object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for time.
+    :py:attr:`value` : float or int
+        Time numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
 
     __UNITS = {'sec': 1,
                'min': 60,
@@ -834,13 +1332,92 @@ class Time(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
+        """Time numerical value. The relative unit is expressed by the ``unit`` property.
+
+        Returns
+        -------
+        float or int
+            Time numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        """
         return self.__value
 
     @property
     def unit(self) -> str:
+        """Symbol of the unit of measurement for time. It must be a string.
+        Available units are:
+
+            - ``'sec'`` for second,
+            - ``'min'`` for minute,
+            - ``'hour'`` for hour.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for time.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'Time':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Time
+            Converted time.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Time`` instantiation.
+
+        >>> from gearpy.units import Time
+        >>> t = Time(1, 'hour')
+        >>> t
+        ... 1 hour
+
+        Conversion from hour to second with ``inplace = False`` by default, so it does not override the current value.
+
+        >>> t.to('sec')
+        ... 3600.0 sec
+        >>> t
+        ... 1 hour
+
+        Conversion from hour to second with ``inplace = True``, in order to override the current value.
+
+        >>> t.to('sec', inplace = True)
+        ... 3600.0 sec
+        >>> t
+        ... 3600.0 sec
+        """
         super().to(target_unit = target_unit, inplace = inplace)
 
         if target_unit not in self.__UNITS.keys():
@@ -861,6 +1438,20 @@ class Time(UnitBase):
 
 
 class TimeInterval(Time):
+    r"""gearpy.units.concrete_units.TimeInterval object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for time interval.
+    :py:attr:`value` : float or int
+        Time interval numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
 
     def __init__(self, value: Union[float, int], unit: str):
         super().__init__(value = value, unit = unit)
@@ -914,7 +1505,96 @@ class TimeInterval(Time):
         else:
             return TimeInterval(value = self.__value/other, unit = self.__unit)
 
+    @property
+    def value(self) -> Union[float, int]:
+        """Time interval numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+
+        Returns
+        -------
+        float or int
+            Time interval numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        ValueError
+            If ``value`` is not positive.
+        """
+        return super().value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for time interval. It must be a string.
+        Available units are:
+
+            - ``'sec'`` for second,
+            - ``'min'`` for minute,
+            - ``'hour'`` for hour.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for time interval.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return super().unit
+
     def to(self, target_unit: str, inplace: bool = False) -> 'TimeInterval':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        TimeInterval
+            Converted time interval.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``TimeInterval`` instantiation.
+
+        >>> from gearpy.units import TimeInterval
+        >>> dt = TimeInterval(1, 'hour')
+        >>> dt
+        ... 1 hour
+
+        Conversion from hour to second with ``inplace = False`` by default, so it does not override the current value.
+
+        >>> dt.to('sec')
+        ... 3600.0 sec
+        >>> dt
+        ... 1 hour
+
+        Conversion from hour to second with ``inplace = True``, in order to override the current value.
+
+        >>> dt.to('sec', inplace = True)
+        ... 3600.0 sec
+        >>> dt
+        ... 3600.0 sec
+        """
         converted = super().to(target_unit = target_unit, inplace = inplace)
 
         if inplace:

@@ -6,6 +6,33 @@ import numpy as np
 
 
 class Solver:
+    r"""gearpy.solver.solver.Solver object.
+
+    Attributes
+    ----------
+    :py:attr:`time_discretization` : TimeInterval
+        Time discretization to be used for the simulation.
+    :py:attr:`simulation_time` : TimeInterval
+        Duration of the simulation.
+    :py:attr:`transmission` : Transmission
+        Mechanical transmission to be simulated.
+    :py:attr:`time` : list
+        Simulation time steps.
+
+    Methods
+    -------
+    :py:meth:`run`
+        Runs the mechanical transmission simulation.
+
+    Raises
+    ------
+    TypeError
+        - If ``time_discretization`` is not an instance of ``TimeInterval``,
+        - if ``simulation_time`` is not an instance of ``TimeInterval``,
+        - if ``transmission`` is not an instance of ``Transmission``,
+        - if the first element in ``transmission`` is not an instance of ``MotorBase``,
+        - if an element of ``transmission`` is not an instance of ``RotatingObject``.
+    """
 
     def __init__(self, time_discretization: TimeInterval, simulation_time: TimeInterval, transmission: Transmission):
         if not isinstance(time_discretization, TimeInterval):
@@ -35,7 +62,16 @@ class Solver:
         self.time = [Time(value = 0, unit = time_discretization.unit)]
 
     def run(self):
-
+        """Runs the mechanical transmission simulation. \n
+        Firstly it computes the whole mechanical transmission equivalent moment of inertia with respect to the last
+        gear, by multiplying each element's moment of inertia, starting from the motor, by it gear ratio with respect to
+        the following element in the transmission chain and sum them up. \n
+        Then it compute the initial state in terms of angular position, speed and acceleration for each mechanical
+        transmission element. \n
+        Finally, for each time step and for each mechanical transmission element, it computes the kinematic variables,
+        it computes the driving, load and net torque, it computes the angular acceleration of the last element in the
+        transmission chain and perform a time integration to compute its angular speed and position.
+        """
         self._compute_transmission_inertia()
         self._compute_transmission_initial_state()
         self._update_time_variables()
