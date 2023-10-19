@@ -13,6 +13,7 @@ gearpy documentation
    :caption: Module
 
    gearpy
+   examples/index
 
 
 .. toctree::
