@@ -5,7 +5,7 @@ from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings
 from hypothesis.strategies import lists
 from pytest import mark, raises
-from tests.conftest import dc_motors, spur_gears
+from tests.conftest import dc_motors, spur_gears, flywheels
 
 
 @mark.transmission
@@ -14,10 +14,12 @@ class TestTransmissionInit:
 
     @mark.genuine
     @given(motor = dc_motors(),
-           gears = lists(elements = spur_gears(), min_size = 1))
+           gears = lists(elements = spur_gears(), min_size = 1),
+           flywheel = flywheels())
     @settings(max_examples = 100)
-    def test_method(self, motor, gears):
-        add_fixed_joint(master = motor, slave = gears[0])
+    def test_method(self, motor, gears, flywheel):
+        add_fixed_joint(master = motor, slave = flywheel)
+        add_fixed_joint(master = flywheel, slave = gears[0])
 
         for i in range(0, len(gears) - 1):
             if i%2 == 0:
@@ -29,9 +31,10 @@ class TestTransmissionInit:
 
         assert isinstance(transmission.chain, tuple)
         assert transmission.chain
-        assert len(transmission.chain) == len(gears) + 1
+        assert len(transmission.chain) == len(gears) + 2
         assert transmission.chain[0] == motor
-        for chain_element, gear in zip(transmission.chain[1:], gears):
+        assert transmission.chain[1] == flywheel
+        for chain_element, gear in zip(transmission.chain[2:], gears):
             assert chain_element == gear
 
 

@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import RotatingObject, GearBase, MotorBase, SpurGear, DCMotor
+from gearpy.mechanical_object import RotatingObject, GearBase, MotorBase, SpurGear, DCMotor, Flywheel
 from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, InertiaMoment, Torque, Time, TimeInterval
 from gearpy.utils import add_fixed_joint, add_gear_mating
@@ -7,17 +7,20 @@ import numpy as np
 from pytest import fixture
 
 
-types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
-                  AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'), AngularAcceleration(1, 'rad/s^2'),
-                  InertiaMoment(1, 'kgm^2'), Torque(1, 'Nm'), Time(1, 'sec'), TimeInterval(1, 'sec')]
-
-
 basic_spur_gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
 
-basic_dc_motor = DCMotor(name = 'name',
+basic_dc_motor = DCMotor(name = 'motor',
                          inertia_moment = InertiaMoment(1, 'kgm^2'),
                          no_load_speed = AngularSpeed(1000, 'rpm'),
                          maximum_torque = Torque(1, 'Nm'))
+
+basic_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
+
+
+types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
+                  AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'), AngularAcceleration(1, 'rad/s^2'),
+                  InertiaMoment(1, 'kgm^2'), Torque(1, 'Nm'), Time(1, 'sec'), TimeInterval(1, 'sec'),
+                  basic_dc_motor, basic_spur_gear, basic_flywheel]
 
 
 @composite
@@ -55,6 +58,17 @@ def dc_motors(draw):
                    inertia_moment = InertiaMoment(inertia_moment_value, inertia_moment_unit),
                    no_load_speed = AngularSpeed(no_load_speed_value, no_load_speed_unit),
                    maximum_torque = Torque(maximum_torque_value, maximum_torque_unit))
+
+
+@composite
+def flywheels(draw):
+    name = draw(text(min_size = 1))
+
+    inertia_moment_units_list = list(InertiaMoment._InertiaMoment__UNITS.keys())
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
+    inertia_moment_unit = draw(sampled_from(elements = inertia_moment_units_list))
+
+    return Flywheel(name = name, inertia_moment = InertiaMoment(inertia_moment_value, inertia_moment_unit))
 
 
 @composite
@@ -104,10 +118,11 @@ def add_gear_mating_value_error(request):
 
 
 add_fixed_joint_type_error_1 = [{'master': type_to_check, 'slave': basic_spur_gear} for type_to_check in types_to_check
-                                if not isinstance(type_to_check, GearBase) and not isinstance(type_to_check, MotorBase)]
+                                if not isinstance(type_to_check, GearBase) and not isinstance(type_to_check, MotorBase)
+                                and not isinstance(type_to_check, Flywheel)]
 
-add_fixed_joint_type_error_2 = [{'master': basic_spur_gear, 'slave': type_to_check}
-                                for type_to_check in types_to_check if not isinstance(type_to_check, GearBase)]
+add_fixed_joint_type_error_2 = [{'master': basic_spur_gear, 'slave': type_to_check} for type_to_check in types_to_check
+                                if not isinstance(type_to_check, GearBase) and not isinstance(type_to_check, Flywheel)]
 
 @fixture(params = [*add_fixed_joint_type_error_1,
                    *add_fixed_joint_type_error_2])

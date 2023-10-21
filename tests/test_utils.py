@@ -2,9 +2,9 @@ from gearpy.mechanical_object import SpurGear
 from gearpy.units import InertiaMoment
 from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings
-from hypothesis.strategies import floats
+from hypothesis.strategies import floats, one_of
 from pytest import mark, raises
-from tests.conftest import spur_gears
+from tests.conftest import dc_motors, spur_gears, flywheels
 
 
 @mark.utils
@@ -45,14 +45,15 @@ class TestAddFixedJoint:
 
 
     @mark.genuine
-    @given(gear_1 = spur_gears(), gear_2 = spur_gears())
+    @given(master = one_of(dc_motors(), spur_gears(), flywheels()),
+           slave = one_of(spur_gears(), flywheels()))
     @settings(max_examples = 100)
-    def test_function(self, gear_1, gear_2):
-        add_fixed_joint(master = gear_1, slave = gear_2)
+    def test_function(self, master, slave):
+        add_fixed_joint(master = master, slave = slave)
 
-        assert gear_1.drives == gear_2
-        assert gear_2.driven_by == gear_1
-        assert gear_2.master_gear_ratio == 1.0
+        assert master.drives == slave
+        assert slave.driven_by == master
+        assert slave.master_gear_ratio == 1.0
 
 
     @mark.error
