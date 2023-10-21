@@ -148,12 +148,13 @@ class Solver:
     def _compute_load_torque(self):
 
         for i in range(len(self.transmission_chain) - 1, 0, -1):
-            if self.transmission_chain[i].external_torque is not None:
-                self.transmission_chain[i].load_torque = \
-                    self.transmission_chain[i]. \
-                        external_torque(time = self.time[-1],
-                                        angular_position = self.transmission_chain[i].angular_position,
-                                        angular_speed = self.transmission_chain[i].angular_speed)
+            if hasattr(self.transmission_chain[i], 'external_torque'):
+                if self.transmission_chain[i].external_torque is not None:
+                    self.transmission_chain[i].load_torque = \
+                        self.transmission_chain[i]. \
+                            external_torque(time = self.time[-1],
+                                            angular_position = self.transmission_chain[i].angular_position,
+                                            angular_speed = self.transmission_chain[i].angular_speed)
             gear_ratio = self.transmission_chain[i].master_gear_ratio
             self.transmission_chain[i - 1].load_torque = self.transmission_chain[i].load_torque/gear_ratio
 

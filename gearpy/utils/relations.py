@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import GearBase, MotorBase
+from gearpy.mechanical_object import MotorBase, GearBase, Flywheel
 from typing import Union
 
 
@@ -46,30 +46,30 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
     slave.master_gear_efficiency = efficiency
 
 
-def add_fixed_joint(master: Union[MotorBase, GearBase], slave: GearBase):
-    """Creates a fixed joint between a ``master`` gear (or the driving motor) and a ``slave`` gear. The fixed joint
-    forces the two elements to rotates at the same angular position, speed and acceleration. \n
-    The ``master`` gear is closest to the transmission driving motor (or it is actually it) and transfers the whole
-    driving torque to the ``slave`` one.
+def add_fixed_joint(master: Union[MotorBase, GearBase, Flywheel], slave: Union[GearBase, Flywheel]):
+    """Creates a fixed joint between a ``master`` rotating object and a ``slave`` one. The fixed joint forces the two
+    elements to rotate at the same angular position, speed and acceleration. \n
+    The ``master`` rotating object is closest to the transmission driving motor (or it is actually it) and transfers the
+    whole driving torque to the ``slave`` one.
 
     Parameters
     ----------
-    master : MotorBase or GearBase
-        Driving gear.
-    slave : GearBase
-        Driven gear.
+    master : MotorBase or GearBase or Flywheel
+        Driving rotating object, it must be an instance of MotorBase, GearBase or Flywheel.
+    slave : GearBase or Flywheel
+        Driven rotating object, it must be an instance of GearBase or Flywheel.
 
     Raises
     ------
     TypeError
-        - If ``master`` is not an instance of ``MotorBase`` or ``GearBase``,
-        - it ``slave`` is not an instance of ``GearBase``.
+        - If ``master`` is not an instance of ``MotorBase`` or ``GearBase`` or ``Flywheel``,
+        - it ``slave`` is not an instance of ``GearBase`` or ``Flywheel``.
     """
-    if not isinstance(master, MotorBase) and not isinstance(master, GearBase):
-        raise TypeError("Parameter 'master' must be an instance of MotorBase or GearBase.")
+    if not isinstance(master, MotorBase) and not isinstance(master, GearBase) and not isinstance(master, Flywheel):
+        raise TypeError("Parameter 'master' must be an instance of MotorBase, GearBase or Flywheel.")
 
-    if not isinstance(slave, GearBase):
-        raise TypeError("Parameter 'slave' must be an instance of GearBase.")
+    if not isinstance(slave, GearBase) and not isinstance(slave, Flywheel):
+        raise TypeError("Parameter 'slave' must be an instance of GearBase or Flywheel.")
 
     master.drives = slave
     slave.driven_by = master

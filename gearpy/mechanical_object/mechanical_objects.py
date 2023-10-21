@@ -817,3 +817,117 @@ class DCMotor(MotorBase):
         :py:attr:`time_variables`
         """
         super().update_time_variables()
+
+
+class Flywheel(RotatingObject):
+
+    def __init__(self, name: str, inertia_moment: InertiaMoment):
+        super().__init__(name = name, inertia_moment = inertia_moment)
+
+        self.__driven_by = None
+        self.__drives = None
+        self.__master_gear_ratio = None
+        self.__master_gear_efficiency = 1
+
+    @property
+    def name(self) -> str:
+        return super().name
+
+    @property
+    def driven_by(self) -> RotatingObject:
+        return self.__driven_by
+
+    @driven_by.setter
+    def driven_by(self, driven_by: RotatingObject):
+        if not isinstance(driven_by, RotatingObject):
+            raise TypeError(f"Parameter 'driven_by' must be a {RotatingObject.__name__!r}")
+
+        self.__driven_by = driven_by
+
+    @property
+    def drives(self) -> RotatingObject:
+        return self.__drives
+
+    @drives.setter
+    def drives(self, drives: RotatingObject):
+        if not isinstance(drives, RotatingObject):
+            raise TypeError(f"Parameter 'drives' must be a {RotatingObject.__name__!r}")
+
+        self.__drives = drives
+
+    @property
+    def angular_position(self) -> AngularPosition:
+        return super().angular_position
+
+    @angular_position.setter
+    def angular_position(self, angular_position: AngularPosition):
+        super(Flywheel, type(self)).angular_position.fset(self, angular_position)
+
+    @property
+    def angular_speed(self) -> AngularSpeed:
+        return super().angular_speed
+
+    @angular_speed.setter
+    def angular_speed(self, angular_speed: AngularSpeed):
+        super(Flywheel, type(self)).angular_speed.fset(self, angular_speed)
+
+    @property
+    def angular_acceleration(self) -> AngularAcceleration:
+        return super().angular_acceleration
+
+    @angular_acceleration.setter
+    def angular_acceleration(self, angular_acceleration: AngularAcceleration):
+        super(Flywheel, type(self)).angular_acceleration.fset(self, angular_acceleration)
+
+    @property
+    def torque(self) -> Torque:
+        return super().torque
+
+    @torque.setter
+    def torque(self, torque: Torque):
+        super(Flywheel, type(self)).torque.fset(self, torque)
+
+    @property
+    def driving_torque(self) -> Torque:
+        return super().driving_torque
+
+    @driving_torque.setter
+    def driving_torque(self, driving_torque: Torque):
+        super(Flywheel, type(self)).driving_torque.fset(self, driving_torque)
+
+    @property
+    def load_torque(self) -> Torque:
+        return super().load_torque
+
+    @load_torque.setter
+    def load_torque(self, load_torque: Torque):
+        super(Flywheel, type(self)).load_torque.fset(self, load_torque)
+
+    @property
+    def master_gear_ratio(self) -> float:
+        return self.__master_gear_ratio
+
+    @master_gear_ratio.setter
+    def master_gear_ratio(self, master_gear_ratio: float):
+        if not isinstance(master_gear_ratio, float):
+            raise TypeError("Parameter 'master_gear_ratio' must be a float.")
+
+        if master_gear_ratio <= 0:
+            raise ValueError("Parameter 'master_gear_ratio' must be positive.")
+
+        self.__master_gear_ratio = master_gear_ratio
+
+    @property
+    def master_gear_efficiency(self) -> float:
+        return self.__master_gear_efficiency
+
+    @property
+    def inertia_moment(self) -> InertiaMoment:
+        return super().inertia_moment
+
+    @property
+    def time_variables(self) -> dict:
+        return super().time_variables
+
+    def update_time_variables(self) -> None:
+        super().update_time_variables()
