@@ -1,4 +1,6 @@
 from gearpy.mechanical_object import MotorBase
+from gearpy.units import Time
+import pandas as pd
 
 
 class Transmission:
@@ -44,3 +46,37 @@ class Transmission:
             Elements in the transmission chain.
         """
         return self.__chain
+
+
+    def snapshot(self,
+                 time: list,
+                 target_time: Time,
+                 angular_position_unit: str = 'rad',
+                 angular_speed_unit: str = 'rad/s',
+                 angular_acceleration_unit: str = 'rad/s^2',
+                 torque_unit: str = 'Nm',
+                 driving_torque_unit: str = 'Nm',
+                 load_torque_unit: str = 'Nm',
+                 print_data: bool = True) -> pd.DataFrame:
+
+        index = time.index(target_time)
+
+        data = pd.DataFrame(columns = [f'angular position ({angular_position_unit})',
+                                       f'angular speed ({angular_speed_unit})',
+                                       f'angular acceleration ({angular_acceleration_unit})',
+                                       f'torque ({torque_unit})',
+                                       f'driving torque ({driving_torque_unit})',
+                                       f'load torque ({load_torque_unit})'])
+
+        for element in self.chain:
+            for variable, unit in zip(['angular position', 'angular speed', 'angular acceleration',
+                                       'torque', 'driving torque', 'load torque'],
+                                      [angular_position_unit, angular_speed_unit, angular_acceleration_unit,
+                                       torque_unit, driving_torque_unit, load_torque_unit]):
+                data.loc[element.name, f'{variable} ({unit})'] = element.time_variables[variable][index].to(unit).value
+
+        if print_data:
+            print(f'Mechanical Transmission Status at Time = {target_time}')
+            print(data.to_string())
+
+        return data
