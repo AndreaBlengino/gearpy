@@ -1,6 +1,7 @@
 from gearpy.mechanical_object import MotorBase
 from gearpy.units import Time
 import pandas as pd
+from scipy.interpolate import interp1d
 
 
 class Transmission:
@@ -59,8 +60,6 @@ class Transmission:
                  load_torque_unit: str = 'Nm',
                  print_data: bool = True) -> pd.DataFrame:
 
-        index = time.index(target_time)
-
         data = pd.DataFrame(columns = [f'angular position ({angular_position_unit})',
                                        f'angular speed ({angular_speed_unit})',
                                        f'angular acceleration ({angular_acceleration_unit})',
@@ -73,7 +72,10 @@ class Transmission:
                                        'torque', 'driving torque', 'load torque'],
                                       [angular_position_unit, angular_speed_unit, angular_acceleration_unit,
                                        torque_unit, driving_torque_unit, load_torque_unit]):
-                data.loc[element.name, f'{variable} ({unit})'] = element.time_variables[variable][index].to(unit).value
+                interpolation_function = interp1d(x = [instant.to('sec').value for instant in time],
+                                                  y = [value.to(unit).value
+                                                       for value in element.time_variables[variable]])
+                data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
 
         if print_data:
             print(f'Mechanical Transmission Status at Time = {target_time}')
