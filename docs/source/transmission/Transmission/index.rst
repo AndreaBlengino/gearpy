@@ -14,3 +14,4 @@ Transmission
    :hidden:
 
    chain
+   snapshot

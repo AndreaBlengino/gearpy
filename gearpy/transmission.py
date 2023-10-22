@@ -13,12 +13,20 @@ class Transmission:
     :py:attr:`chain` : tuple
         Elements in the transmission chain.
 
+    Methods
+    -------
+    :py:meth:`snapshot`
+        Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
+        ``target_time``.
+
     Raises
     ------
     TypeError
         If ``motor`` parameter is not an instance of ``MotorBase``.
     ValueError
         If ``motor.drives`` is ``None``.
+    NameError
+        If two or more elements in the transmission chain share the same name.
     """
 
     def __init__(self, motor: MotorBase):
@@ -66,7 +74,65 @@ class Transmission:
                  driving_torque_unit: str = 'Nm',
                  load_torque_unit: str = 'Nm',
                  print_data: bool = True) -> pd.DataFrame:
+        """Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
+        ``target_time``. The computed time variables are organized in a ``pandas.DataFrame``, returned by the method.
+        Each element in the transmission chain is a row of the DataFrame, while the columns are the time variables
+        angular position, angular speed, angular acceleration, torque, driving torque, load torque. Each time variable
+        is converted to the relative unit passed as optional parameter. \n
+        If the ``target_time`` is not among simulated time steps in the ``time`` list, it computes a linear
+        interpolation from the two closest simulated time steps.
 
+        Parameters
+        ----------
+        time : list
+            List containing the simulated time steps by the solver as instances of ``Time``. Use
+            :py:attr:`gearpy.solver.Solver.time`.
+        target_time : Time
+            Time to which compute the mechanical transmission time variables snapshot. It must be within minimum and
+            maximum simulated time steps in ``time`` parameter.
+        angular_position_unit : str, optional
+            Symbol of the unit of measurement to which convert the angular position in the DataFrame. It must be a
+            string. Default is ``'rad'``.
+        angular_speed_unit : str, optional
+            Symbol of the unit of measurement to which convert the angular speed in the DataFrame. It must be a string.
+            Default is ``'rad/s'``.
+        angular_acceleration_unit : str, optional
+            Symbol of the unit of measurement to which convert the angular acceleration in the DataFrame. It must be a
+            string. Default is ``'rad/s^2'``.
+        torque_unit : str, optional
+            Symbol of the unit of measurement to which convert the torque in the DataFrame. It must be a string. Default
+            is ``'Nm'``.
+        driving_torque_unit : str, optional
+            Symbol of the unit of measurement to which convert the driving torque in the DataFrame. It must be a string.
+            Default is ``'Nm'``.
+        load_torque_unit : str, optional
+            Symbol of the unit of measurement to which convert the load torque in the DataFrame. It must be a string.
+            Default is ``'Nm'``.
+        print_data : bool, optional
+            Whether or not to print the computed time variables DataFrame. Default is ``True``.
+
+        Returns
+        -------
+        pandas.DataFrame
+            DataFrame containing time variables values at the specified ``target_time`` for each element in the
+            transmission chain.
+
+        Raises
+        ------
+        TypeError
+            - If ``time`` is not a list,
+            - if an element of ``time`` is not an instance of ``Time``,
+            - if ``target_time`` is not an instance of ``Time``,
+            - if ``angular_position_unit`` is not a string,
+            - if ``angular_speed_unit`` is not a string,
+            - if ``angular_acceleration_unit`` is not a string,
+            - if ``torque_unit`` is not a string,
+            - if ``driving_torque_unit`` is not a string,
+            - if ``load_torque_unit`` is not a string,
+            - if ``print_data`` is not a bool.
+        ValueError
+            If ``time`` is an empty list.
+        """
         if not isinstance(time, list):
             raise TypeError("Parameter 'time' must be a list.")
 

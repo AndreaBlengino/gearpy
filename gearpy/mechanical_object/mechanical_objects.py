@@ -51,6 +51,7 @@ class SpurGear(GearBase):
     @property
     def name(self) -> str:
         """Name of the spur gear. It must be a non-empty string. \n
+        It must be an unique name, not shared by other elements in the transmission chain. \n
         Once set at the spur gear instantiation, it cannot be further changed.
 
         Returns
@@ -500,6 +501,7 @@ class DCMotor(MotorBase):
     @property
     def name(self) -> str:
         """Name of the DC motor. It must be a non-empty string. \n
+        It must be an unique name, not shared by other elements in the transmission chain. \n
         Once set at the DC motor instantiation, it cannot be further changed.
 
         Returns
@@ -868,6 +870,7 @@ class Flywheel(RotatingObject):
     @property
     def name(self) -> str:
         """Name of the flywheel. It must be a non-empty string. \n
+        It must be an unique name, not shared by other elements in the transmission chain. \n
         Once set at the flywheel instantiation, it cannot be further changed.
 
         Returns
