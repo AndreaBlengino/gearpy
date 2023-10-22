@@ -1,4 +1,5 @@
 from gearpy.mechanical_object import RotatingObject, GearBase, MotorBase, SpurGear, DCMotor, Flywheel
+from gearpy.solver import Solver
 from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, InertiaMoment, Torque, Time, TimeInterval
 from gearpy.utils import add_fixed_joint, add_gear_mating
@@ -7,14 +8,35 @@ import numpy as np
 from pytest import fixture
 
 
-basic_spur_gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
-
 basic_dc_motor = DCMotor(name = 'motor',
                          inertia_moment = InertiaMoment(1, 'kgm^2'),
                          no_load_speed = AngularSpeed(1000, 'rpm'),
                          maximum_torque = Torque(1, 'Nm'))
 
 basic_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
+
+basic_spur_gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+
+
+transmission_dc_motor = DCMotor(name = 'motor',
+                                inertia_moment = InertiaMoment(1, 'kgm^2'),
+                                no_load_speed = AngularSpeed(1000, 'rpm'),
+                                maximum_torque = Torque(1, 'Nm'))
+transmission_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
+transmission_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+transmission_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 40, inertia_moment = InertiaMoment(1, 'kgm^2'))
+add_fixed_joint(master = transmission_dc_motor, slave = transmission_flywheel)
+add_fixed_joint(master = transmission_flywheel, slave = transmission_spur_gear_1)
+add_gear_mating(master = transmission_spur_gear_1, slave = transmission_spur_gear_2, efficiency = 0.9)
+basic_transmission = Transmission(motor = transmission_dc_motor)
+
+transmission_spur_gear_2.external_torque = lambda time, angular_position, angular_speed: Torque(1, 'mNm')
+transmission_spur_gear_2.angular_position = AngularPosition(0, 'rad')
+transmission_spur_gear_2.angular_speed = AngularSpeed(0, 'rad/s')
+basic_solver = Solver(time_discretization = TimeInterval(1, 'sec'),
+                      simulation_time = TimeInterval(2000, 'sec'),
+                      transmission = basic_transmission)
+basic_solver.run()
 
 
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
@@ -132,6 +154,90 @@ def add_fixed_joint_type_error(request):
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, MotorBase)])
 def transmission_init_type_error(request):
+    return request.param
+
+
+transmission_snapshot_type_error_1 = [{'time': type_to_check, 'target_time': Time(1, 'sec'),
+                                       'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                       'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm',
+                                       'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
+                                       'print_data': False} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, list)]
+
+transmission_snapshot_type_error_2 = [{'time': [type_to_check], 'target_time': Time(1, 'sec'),
+                                       'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                       'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm',
+                                       'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
+                                       'print_data': False} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, Time)]
+
+transmission_snapshot_type_error_3 = [{'time': basic_solver.time, 'target_time': type_to_check,
+                                       'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                       'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm',
+                                       'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
+                                       'print_data': False} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, Time)]
+
+transmission_snapshot_type_error_4 = [{'time': basic_solver.time, 'target_time': Time(1, 'sec'),
+                                       'angular_position_unit': type_to_check, 'angular_speed_unit': 'rad/s',
+                                       'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm',
+                                       'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
+                                       'print_data': False} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, str)]
+
+transmission_snapshot_type_error_5 = [{'time': basic_solver.time, 'target_time': Time(1, 'sec'),
+                                       'angular_position_unit': 'rad', 'angular_speed_unit': type_to_check,
+                                       'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm',
+                                       'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
+                                       'print_data': False} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, str)]
+
+transmission_snapshot_type_error_6 = [{'time': basic_solver.time, 'target_time': Time(1, 'sec'),
+                                       'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                       'angular_acceleration_unit': type_to_check, 'torque_unit': 'Nm',
+                                       'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
+                                       'print_data': False} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, str)]
+
+transmission_snapshot_type_error_7 = [{'time': basic_solver.time, 'target_time': Time(1, 'sec'),
+                                       'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                       'angular_acceleration_unit': 'rad/s^2', 'torque_unit': type_to_check,
+                                       'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
+                                       'print_data': False} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, str)]
+
+transmission_snapshot_type_error_8 = [{'time': basic_solver.time, 'target_time': Time(1, 'sec'),
+                                       'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                       'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm',
+                                       'driving_torque_unit': type_to_check, 'load_torque_unit': 'Nm',
+                                       'print_data': False} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, str)]
+
+transmission_snapshot_type_error_9 = [{'time': basic_solver.time, 'target_time': Time(1, 'sec'),
+                                       'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                       'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm',
+                                       'driving_torque_unit': 'Nm', 'load_torque_unit': type_to_check,
+                                       'print_data': False} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, str)]
+
+transmission_snapshot_type_error_10 = [{'time': basic_solver.time, 'target_time': Time(1, 'sec'),
+                                        'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                        'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm',
+                                        'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
+                                        'print_data': type_to_check} for type_to_check in types_to_check
+                                       if not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)]
+
+@fixture(params = [*transmission_snapshot_type_error_1,
+                   *transmission_snapshot_type_error_2,
+                   *transmission_snapshot_type_error_3,
+                   *transmission_snapshot_type_error_4,
+                   *transmission_snapshot_type_error_5,
+                   *transmission_snapshot_type_error_6,
+                   *transmission_snapshot_type_error_7,
+                   *transmission_snapshot_type_error_8,
+                   *transmission_snapshot_type_error_9,
+                   *transmission_snapshot_type_error_10])
+def transmission_snapshot_type_error(request):
     return request.param
 
 
