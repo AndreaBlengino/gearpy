@@ -60,6 +60,39 @@ class Transmission:
                  load_torque_unit: str = 'Nm',
                  print_data: bool = True) -> pd.DataFrame:
 
+        if not isinstance(time, list):
+            raise TypeError("Parameter 'time' must be a list.")
+
+        if not all([isinstance(instant, Time) for instant in time]):
+            raise TypeError(f"Every element of the 'time' list must be an instance of {Time.__name__!r}.")
+
+        if not time:
+            raise ValueError("Parameter 'time' cannot be an empty list.")
+
+        if not isinstance(target_time, Time):
+            raise TypeError(f"Parameter 'target_time' must be an instance of {Time.__name__!r}.")
+
+        if not isinstance(angular_position_unit, str):
+            raise TypeError(f"Parameter 'angular_position_unit' must be a string.")
+
+        if not isinstance(angular_speed_unit, str):
+            raise TypeError(f"Parameter 'angular_speed_unit' must be a string.")
+
+        if not isinstance(angular_acceleration_unit, str):
+            raise TypeError(f"Parameter 'angular_acceleration_unit' must be a string.")
+
+        if not isinstance(torque_unit, str):
+            raise TypeError(f"Parameter 'torque_unit' must be a string.")
+
+        if not isinstance(driving_torque_unit, str):
+            raise TypeError(f"Parameter 'driving_torque_unit' must be a string.")
+
+        if not isinstance(load_torque_unit, str):
+            raise TypeError(f"Parameter 'load_torque_unit' must be a string.")
+
+        if not isinstance(print_data, bool):
+            raise TypeError(f"Parameter 'print_data' must be a bool.")
+
         data = pd.DataFrame(columns = [f'angular position ({angular_position_unit})',
                                        f'angular speed ({angular_speed_unit})',
                                        f'angular acceleration ({angular_acceleration_unit})',
