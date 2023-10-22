@@ -1,3 +1,4 @@
+from collections import Counter
 from gearpy.mechanical_object import MotorBase
 from gearpy.units import Time
 import pandas as pd
@@ -31,6 +32,12 @@ class Transmission:
         chain = [motor]
         while chain[-1].drives is not None:
             chain.append(chain[-1].drives)
+
+        counts = Counter([element.name for element in chain])
+        for name, count in counts.items():
+            if count > 1:
+                raise NameError(f"Found {count} elements with the same name {name!r}, "
+                                f"each element must have a unique name.")
 
         self.__chain = tuple(chain)
 
