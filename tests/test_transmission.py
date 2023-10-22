@@ -1,9 +1,9 @@
-from gearpy.mechanical_object import DCMotor
+from gearpy.mechanical_object import DCMotor, SpurGear
 from gearpy.solver import Solver
 from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, InertiaMoment, Torque, Time
 from gearpy.utils import add_gear_mating, add_fixed_joint
-from hypothesis import given, settings
+from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import lists, floats, sampled_from, booleans
 import pandas as pd
 from pytest import mark, raises
@@ -20,7 +20,7 @@ class TestTransmissionInit:
     @given(motor = dc_motors(),
            flywheel = flywheels(),
            gears = lists(elements = spur_gears(), min_size = 1))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_property(self, motor, flywheel, gears):
         add_fixed_joint(master = motor, slave = flywheel)
         add_fixed_joint(master = flywheel, slave = gears[0])
@@ -53,6 +53,16 @@ class TestTransmissionInit:
         motor = DCMotor(name = 'motor', inertia_moment = InertiaMoment(1, 'kgm^2'),
                         no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'))
         with raises(ValueError):
+            Transmission(motor = motor)
+
+
+    @mark.error
+    def test_raises_name_error(self):
+        motor = DCMotor(name = 'not unique name', inertia_moment = InertiaMoment(1, 'kgm^2'),
+                        no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'))
+        gear = SpurGear(name = 'not unique name', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+        add_fixed_joint(master = motor, slave = gear)
+        with raises(NameError):
             Transmission(motor = motor)
 
 
@@ -94,6 +104,7 @@ class TestTransmissionSnapshot:
                                      print_data = print_data)
 
         assert isinstance(data, pd.DataFrame)
+        assert [element.name for element in transmission.chain] == data.index.to_list()
         assert [f'angular position ({angular_position_unit})', f'angular speed ({angular_speed_unit})',
                 f'angular acceleration ({angular_acceleration_unit})', f'torque ({torque_unit})',
                 f'driving torque ({driving_torque_unit})', f'load torque ({load_torque_unit})']

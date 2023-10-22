@@ -1,6 +1,6 @@
 from gearpy.solver import Solver
 from gearpy.units import Torque, Time
-from hypothesis import given, settings
+from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import floats, integers
 import numpy as np
 from pytest import mark, raises
@@ -17,7 +17,7 @@ class TestSolverInit:
     @given(time_discretization = time_intervals(),
            simulation_steps = integers(min_value = 2, max_value = 1000),
            transmission = transmissions())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, time_discretization, simulation_steps, transmission):
         simulation_time = time_discretization*simulation_steps
         solver = Solver(time_discretization = time_discretization,
