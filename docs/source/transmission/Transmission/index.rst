@@ -15,3 +15,5 @@ Transmission
 
    chain
    snapshot
+   time
+   update_time
