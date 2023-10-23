@@ -10,6 +10,7 @@ from pytest import mark, raises
 from tests.conftest import dc_motors, spur_gears, flywheels, time_intervals, transmissions, basic_transmission
 from tests.test_units.test_angular_position.conftest import angular_positions
 from tests.test_units.test_angular_speed.conftest import angular_speeds
+from tests.test_units.test_time.conftest import times
 
 
 @mark.transmission
@@ -67,6 +68,25 @@ class TestTransmissionInit:
 
 
 @mark.transmission
+class TestTransmissionUpdateTime:
+
+    @mark.genuine
+    @given(transmission = transmissions(),
+           instant = times())
+    @settings(max_examples = 100)
+    def test_method(self, transmission, instant):
+        transmission.update_time(instant = instant)
+
+        assert transmission.time[-1] == instant
+
+
+    @mark.error
+    def test_raises_type_error(self, transmission_update_time_type_error):
+        with raises(TypeError):
+            basic_transmission.update_time(instant = transmission_update_time_type_error)
+
+
+@mark.transmission
 class TestTransmissionSnapshot:
 
 
@@ -97,7 +117,7 @@ class TestTransmissionSnapshot:
                         transmission = transmission)
         solver.run()
 
-        data = transmission.snapshot(time = solver.time, target_time = (simulation_time - time_discretization)*target_time_fraction,
+        data = transmission.snapshot(target_time = (simulation_time - time_discretization)*target_time_fraction,
                                      angular_position_unit = angular_position_unit, angular_speed_unit = angular_speed_unit,
                                      angular_acceleration_unit = angular_acceleration_unit, torque_unit = torque_unit,
                                      driving_torque_unit = driving_torque_unit, load_torque_unit = load_torque_unit,
@@ -113,10 +133,16 @@ class TestTransmissionSnapshot:
     @mark.error
     def test_raises_type_error(self, transmission_snapshot_type_error):
         with raises(TypeError):
-            basic_transmission.snapshot(**transmission_snapshot_type_error)
+            if transmission_snapshot_type_error:
+                basic_transmission.snapshot(**transmission_snapshot_type_error)
+            else:
+                basic_transmission.update_time(Time(1, 'sec'))
+                basic_transmission.time[0] = 1
+                basic_transmission.snapshot(target_time = Time(1, 'sec'))
 
 
     @mark.error
     def test_raises_value_error(self):
         with raises(ValueError):
-            basic_transmission.snapshot(time = [], target_time = Time(1, 'sec'))
+            basic_transmission.time.clear()
+            basic_transmission.snapshot(target_time = Time(1, 'sec'))

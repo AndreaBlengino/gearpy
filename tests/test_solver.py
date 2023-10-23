@@ -26,8 +26,7 @@ class TestSolverInit:
 
         assert solver.time_discretization == time_discretization
         assert solver.simulation_time == simulation_time
-        assert solver.transmission_chain == transmission.chain
-        assert solver.time == [Time(value = 0, unit = time_discretization.unit)]
+        assert solver.transmission == transmission
 
 
     @mark.error
@@ -63,4 +62,4 @@ class TestSolverRun:
                         transmission = transmission)
         solver.run()
 
-        assert len(solver.time) == len(np.arange(time_discretization.value, simulation_time.value, time_discretization.value)) + 1
+        assert len(transmission.time) == len(np.arange(time_discretization.value, simulation_time.value, time_discretization.value)) + 1
