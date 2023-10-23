@@ -12,12 +12,16 @@ class Transmission:
     ----------
     :py:attr:`chain` : tuple
         Elements in the transmission chain.
+    :py:attr:`time` : list
+        Simulated time steps.
 
     Methods
     -------
     :py:meth:`snapshot`
         Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
         ``target_time``.
+    :py:meth:`update_time`
+        Updates the ``Transmission.time`` list by appending the ``instant`` simulated time step.
 
     Raises
     ------
@@ -48,6 +52,7 @@ class Transmission:
                                 f"each element must have a unique name.")
 
         self.__chain = tuple(chain)
+        self.__time = []
 
 
     @property
@@ -64,8 +69,40 @@ class Transmission:
         return self.__chain
 
 
+    @property
+    def time(self) -> list:
+        """List of the simulated time steps. \n
+        During simulation, the solver appends a simulated time step to this list. \n
+        Every element of this list must be an instance of ``gearpy.units.Time``.
+
+        Returns
+        -------
+        list
+            List of the simulated time steps.
+        """
+        return self.__time
+
+
+    def update_time(self, instant: Time):
+        """Updates the ``Transmission.time`` list by appending the ``instant`` simulated time step.
+
+        Parameters
+        ----------
+        instant : Time
+            Simulated time step to be added to ``Transmission.time`` list.
+
+        Raises
+        ------
+        TypeError
+            If ``instant`` is not an instance of ``gearpy.units.Time``.
+        """
+        if not isinstance(instant, Time):
+            raise TypeError(f"Parameter 'instant' must be instances of {Time.__name__!r}.")
+
+        self.__time.append(instant)
+
+
     def snapshot(self,
-                 time: list,
                  target_time: Time,
                  angular_position_unit: str = 'rad',
                  angular_speed_unit: str = 'rad/s',
@@ -84,9 +121,6 @@ class Transmission:
 
         Parameters
         ----------
-        time : list
-            List containing the simulated time steps by the solver as instances of ``Time``. Use
-            :py:attr:`gearpy.solver.Solver.time`.
         target_time : Time
             Time to which compute the mechanical transmission time variables snapshot. It must be within minimum and
             maximum simulated time steps in ``time`` parameter.
@@ -120,8 +154,7 @@ class Transmission:
         Raises
         ------
         TypeError
-            - If ``time`` is not a list,
-            - if an element of ``time`` is not an instance of ``Time``,
+            - If an element of ``time`` is not an instance of ``Time``,
             - if ``target_time`` is not an instance of ``Time``,
             - if ``angular_position_unit`` is not a string,
             - if ``angular_speed_unit`` is not a string,
@@ -133,13 +166,10 @@ class Transmission:
         ValueError
             If ``time`` is an empty list.
         """
-        if not isinstance(time, list):
-            raise TypeError("Parameter 'time' must be a list.")
-
-        if not all([isinstance(instant, Time) for instant in time]):
+        if not all([isinstance(instant, Time) for instant in self.time]):
             raise TypeError(f"Every element of the 'time' list must be an instance of {Time.__name__!r}.")
 
-        if not time:
+        if not self.time:
             raise ValueError("Parameter 'time' cannot be an empty list.")
 
         if not isinstance(target_time, Time):
@@ -178,7 +208,7 @@ class Transmission:
                                        'torque', 'driving torque', 'load torque'],
                                       [angular_position_unit, angular_speed_unit, angular_acceleration_unit,
                                        torque_unit, driving_torque_unit, load_torque_unit]):
-                interpolation_function = interp1d(x = [instant.to('sec').value for instant in time],
+                interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
                                                   y = [value.to(unit).value
                                                        for value in element.time_variables[variable]])
                 data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
