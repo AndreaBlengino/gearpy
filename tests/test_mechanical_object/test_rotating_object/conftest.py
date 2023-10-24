@@ -1,6 +1,5 @@
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Torque
-from tests.conftest import types_to_check
-from tests.conftest import basic_spur_gear, basic_dc_motor, basic_flywheel
+from tests.conftest import types_to_check, basic_spur_gear, basic_dc_motor, basic_flywheel
 from pytest import fixture
 
 

@@ -1,5 +1,5 @@
 from gearpy.solver import Solver
-from gearpy.units import Torque, Time
+from gearpy.units import Torque
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import floats, integers
 import numpy as np

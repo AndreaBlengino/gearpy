@@ -1,6 +1,6 @@
 from hypothesis import given, settings
 from pytest import mark, raises
-from tests.test_rotating_object.conftest import basic_rotating_objects
+from tests.test_mechanical_object.test_rotating_object.conftest import basic_rotating_objects
 from tests.test_units.test_angular_acceleration.conftest import angular_accelerations
 from tests.test_units.test_angular_position.conftest import angular_positions
 from tests.test_units.test_angular_speed.conftest import angular_speeds
