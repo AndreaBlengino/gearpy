@@ -5,12 +5,14 @@ from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Ine
 from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import lists, floats, sampled_from, booleans
+import matplotlib.pyplot as plt
 import pandas as pd
 from pytest import mark, raises
-from tests.conftest import dc_motors, spur_gears, flywheels, time_intervals, transmissions, basic_transmission
+from tests.conftest import dc_motors, spur_gears, flywheels, time_intervals, transmissions, basic_transmission, solved_transmissions
 from tests.test_units.test_angular_position.conftest import angular_positions
 from tests.test_units.test_angular_speed.conftest import angular_speeds
 from tests.test_units.test_time.conftest import times
+import warnings
 
 
 @mark.transmission
@@ -146,3 +148,30 @@ class TestTransmissionSnapshot:
         with raises(ValueError):
             basic_transmission.time.clear()
             basic_transmission.snapshot(target_time = Time(1, 'sec'))
+
+
+@mark.transmission
+class TestTransmissionPlot:
+
+
+    @mark.genuine
+    @given(solved_transmission = solved_transmissions(),
+           angular_position_unit = sampled_from(elements = list(AngularPosition._AngularPosition__UNITS.keys())),
+           angular_speed_unit = sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())),
+           angular_acceleration_unit = sampled_from(elements = list(AngularAcceleration._AngularAcceleration__UNITS.keys())),
+           torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
+           time_unit = sampled_from(elements = list(Time._Time__UNITS.keys())))
+    @settings(max_examples = 10, deadline = None)
+    def test_method(self, solved_transmission, angular_position_unit, angular_speed_unit, angular_acceleration_unit,
+                    torque_unit, time_unit):
+        warnings.filterwarnings("ignore", category = UserWarning)
+        solved_transmission.plot(angular_position_unit = angular_position_unit, angular_speed_unit = angular_speed_unit,
+                                 angular_acceleration_unit = angular_acceleration_unit, torque_unit = torque_unit,
+                                 time_unit = time_unit)
+        plt.close()
+
+
+    @mark.error
+    def test_raises_type_error(self, transmission_plot_type_error):
+        with raises(TypeError):
+            basic_transmission.plot(**transmission_plot_type_error)

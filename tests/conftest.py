@@ -54,7 +54,6 @@ def names(draw, strategy):
 @composite
 def spur_gears(draw):
     name = draw(names(text(min_size = 1)))
-
     n_teeth = draw(integers(min_value = 1))
 
     inertia_moment_units_list = list(InertiaMoment._InertiaMoment__UNITS.keys())
@@ -113,6 +112,37 @@ def transmissions(draw):
             add_fixed_joint(master = gears[i], slave = gears[i + 1])
 
     return Transmission(motor = motor)
+
+
+@composite
+def solved_transmissions(draw):
+    motor = draw(dc_motors())
+    gears = draw(lists(elements = spur_gears(), min_size = 1, max_size = 4))
+
+    time_discretization_value = draw(floats(min_value = 1e-3, max_value = 1, allow_nan = False, allow_infinity = False))
+    time_discretization = TimeInterval(value = time_discretization_value, unit = 'sec')
+    simulation_steps = draw(floats(min_value = 5, max_value = 50, allow_nan = False, allow_infinity = False))
+
+    add_fixed_joint(master = motor, slave = gears[0])
+
+    for i in range(0, len(gears) - 1):
+        if i%2 == 0:
+            add_gear_mating(master = gears[i], slave = gears[i + 1], efficiency = 1)
+        else:
+            add_fixed_joint(master = gears[i], slave = gears[i + 1])
+
+    transmission = Transmission(motor = motor)
+
+    gears[-1].external_torque = lambda time, angular_position, angular_speed: Torque(1, 'mNm')
+    gears[-1].angular_position = AngularPosition(0, 'rad')
+    gears[-1].angular_speed = AngularSpeed(0, 'rad/s')
+    simulation_time = time_discretization*simulation_steps
+    solver = Solver(time_discretization = time_discretization,
+                    simulation_time = simulation_time,
+                    transmission = transmission)
+    solver.run()
+
+    return transmission
 
 
 @composite
@@ -228,6 +258,35 @@ transmission_snapshot_type_error_9 = [{}]
                    *transmission_snapshot_type_error_8,
                    *transmission_snapshot_type_error_9])
 def transmission_snapshot_type_error(request):
+    return request.param
+
+
+transmission_plot_type_error_1 = [{'angular_position_unit': type_to_check, 'angular_speed_unit': 'rad/s',
+                                   'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'time_unit': 'sec'}
+                                  for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+transmission_plot_type_error_2 = [{'angular_position_unit': 'rad', 'angular_speed_unit': type_to_check,
+                                   'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'time_unit': 'sec'}
+                                  for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+transmission_plot_type_error_3 = [{'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                   'angular_acceleration_unit': type_to_check, 'torque_unit': 'Nm', 'time_unit': 'sec'}
+                                  for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+transmission_plot_type_error_4 = [{'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                   'angular_acceleration_unit': 'rad/s^2', 'torque_unit': type_to_check, 'time_unit': 'sec'}
+                                  for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+transmission_plot_type_error_5 = [{'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                   'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'time_unit': type_to_check}
+                                  for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+@fixture(params = [*transmission_plot_type_error_1,
+                   *transmission_plot_type_error_2,
+                   *transmission_plot_type_error_3,
+                   *transmission_plot_type_error_4,
+                   *transmission_plot_type_error_5])
+def transmission_plot_type_error(request):
     return request.param
 
 
