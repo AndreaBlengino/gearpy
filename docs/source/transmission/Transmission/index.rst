@@ -14,6 +14,7 @@ Transmission
    :hidden:
 
    chain
+   plot
    snapshot
    time
    update_time

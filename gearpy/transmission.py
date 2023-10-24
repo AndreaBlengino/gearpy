@@ -18,6 +18,8 @@ class Transmission:
 
     Methods
     -------
+    :py:meth:`plot`
+        Plots time variables for each element in the mechanical transmission chain.
     :py:meth:`snapshot`
         Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
         ``target_time``.
@@ -227,6 +229,39 @@ class Transmission:
              angular_acceleration_unit: str = 'rad/s^2',
              torque_unit: str = 'Nm',
              time_unit: str = 'sec'):
+        """Plots time variables for each element in the mechanical transmission chain. \n
+        Generates a grid of subplots, one column for each element of the transmission chain and 4 rows for the time
+        variables: angular position, speed and acceleration in the first three rows and torque, driving torque and load
+        torque grouped together in the last row. \n
+        Plotted value units are manager with optional parameters.
+
+        Parameters
+        ----------
+        angular_position_unit : str, optional
+            Symbol of the unit of measurement to which convert the angular position values in the plot. It must be a
+            string. Default is ``'rad'``.
+        angular_speed_unit : str, optional
+            Symbol of the unit of measurement to which convert the angular speed values in the plot. It must be a
+            string. Default is ``'rad/s'``.
+        angular_acceleration_unit : str, optional
+            Symbol of the unit of measurement to which convert the angular acceleration values in the plot. It must be a
+            string. Default is ``'rad/s^2'``.
+        torque_unit : str, optional
+            Symbol of the unit of measurement to which convert the torque values in the plot. It must be a string.
+            Default is ``'Nm'``.
+        time_unit : str, optional
+            Symbol of the unit of measurement to which convert the time values in the plot. It must be a string. Default
+            is ``'sec'``.
+
+        Raises
+        ------
+        TypeError
+            - If ``angular_position_unit`` is not a string,
+            - if ``angular_speed_unit`` is not a string,
+            - if ``angular_acceleration_unit`` is not a string,
+            - if ``torque_unit`` is not a string,
+            - if ``time_unit`` is not a string.
+        """
         if not isinstance(angular_position_unit, str):
             raise TypeError("Parameter 'angular_position_unit' must be a string.")
 
