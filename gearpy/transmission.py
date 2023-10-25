@@ -1,9 +1,10 @@
 from collections import Counter
-from gearpy.mechanical_object import MotorBase
+from gearpy.mechanical_object import MotorBase, RotatingObject
 from gearpy.units import Time
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.interpolate import interp1d
+from typing import List, Tuple
 
 
 class Transmission:
@@ -59,7 +60,7 @@ class Transmission:
 
 
     @property
-    def chain(self) -> tuple:
+    def chain(self) -> Tuple[RotatingObject]:
         """Elements in the transmission chain. \n
         The first element is the driving motor, the next elements are in order, from the closest to the farthest from
         the motor. Each element is driven by the previous one and it drives the following one.
@@ -73,7 +74,7 @@ class Transmission:
 
 
     @property
-    def time(self) -> list:
+    def time(self) -> List[Time]:
         """List of the simulated time steps. \n
         During simulation, the solver appends a simulated time step to this list. \n
         Every element of this list must be an instance of ``gearpy.units.Time``.

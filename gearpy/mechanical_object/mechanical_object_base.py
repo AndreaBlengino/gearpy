@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Torque
-from typing import Callable, Union
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Time, Torque, UnitBase
+from typing import Callable, Dict, List, Union
 
 
 class MechanicalObject(ABC):
@@ -130,7 +130,7 @@ class RotatingObject(MechanicalObject):
 
     @property
     @abstractmethod
-    def time_variables(self) -> dict:
+    def time_variables(self) -> Dict[str, List[UnitBase]]:
         return self.__time_variables
 
     @abstractmethod
@@ -224,7 +224,7 @@ class MotorBase(RotatingObject):
         super(MotorBase, type(self)).load_torque.fset(self, load_torque)
 
     @abstractmethod
-    def compute_torque(self): ...
+    def compute_torque(self) -> Torque: ...
 
 
 class GearBase(RotatingObject):
@@ -371,12 +371,12 @@ class GearBase(RotatingObject):
 
     @property
     @abstractmethod
-    def external_torque(self) -> Callable:
+    def external_torque(self) -> Callable[[AngularPosition, AngularSpeed, Time], Torque]:
         return self.__external_torque
 
     @external_torque.setter
     @abstractmethod
-    def external_torque(self, external_torque: Callable):
+    def external_torque(self, external_torque: Callable[[AngularPosition, AngularSpeed, Time], Torque]):
         if not isinstance(external_torque, Callable):
             raise TypeError("Parameter 'external_torque' must be callable.")
 

@@ -5,3 +5,4 @@ from .units import AngularPosition, \
                    Torque, \
                    Time, \
                    TimeInterval
+from .unit_base import UnitBase

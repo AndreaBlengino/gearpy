@@ -1,6 +1,6 @@
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Torque
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Time, Torque, UnitBase
 from .mechanical_object_base import RotatingObject, GearBase, MotorBase
-from typing import Callable, Union
+from typing import Callable, Dict, List, Union
 
 
 class SpurGear(GearBase):
@@ -346,7 +346,7 @@ class SpurGear(GearBase):
         return super().inertia_moment
 
     @property
-    def external_torque(self) -> Callable:
+    def external_torque(self) -> Callable[[AngularPosition, AngularSpeed, Time], Torque]:
         """Custom function to compute the external torque applied on the gear. It must be a function with parameters
         ``angular_position``, ``angular_speed`` and ``time``. The function must return an instance of ``Torque``.
 
@@ -399,11 +399,11 @@ class SpurGear(GearBase):
         return super().external_torque
 
     @external_torque.setter
-    def external_torque(self, external_torque: Callable):
+    def external_torque(self, external_torque: Callable[[AngularPosition, AngularSpeed, Time], Torque]):
         super(SpurGear, type(self)).external_torque.fset(self, external_torque)
 
     @property
-    def time_variables(self) -> dict:
+    def time_variables(self) -> Dict[str, List[UnitBase]]:
         """Time variables of the gear. Each time variable is stored as a dictionary key-value pair. The available time
         variables are:
 
@@ -782,7 +782,7 @@ class DCMotor(MotorBase):
                       unit = self.__maximum_torque.unit)
 
     @property
-    def time_variables(self) -> dict:
+    def time_variables(self) -> Dict[str, List[UnitBase]]:
         """Time variables of the DC motor. Each time variable is stored as a dictionary key-value pair. The available
         time variables are:
 
@@ -1144,7 +1144,7 @@ class Flywheel(RotatingObject):
         return super().inertia_moment
 
     @property
-    def time_variables(self) -> dict:
+    def time_variables(self) -> Dict[str, List[UnitBase]]:
         """Time variables of the flywheel. Each time variable is stored as a dictionary key-value pair. The available
         time variables are:
 

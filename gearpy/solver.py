@@ -29,6 +29,9 @@ class Solver:
         - if ``transmission`` is not an instance of ``Transmission``,
         - if the first element in ``transmission`` is not an instance of ``MotorBase``,
         - if an element of ``transmission`` is not an instance of ``RotatingObject``.
+    ValueError
+        - If ``time_discretization`` is greater or equal to ``simulation_time``,
+        - if ``transmission.chain`` is an empty tuple.
     """
 
     def __init__(self, time_discretization: TimeInterval, simulation_time: TimeInterval, transmission: Transmission):
@@ -45,7 +48,7 @@ class Solver:
             raise ValueError("Parameter 'time_discretization' cannot be greater or equal to 'simulation_time'.")
 
         if not transmission.chain:
-            raise ValueError("Parameter 'transmission.chain' cannot be an empty list.")
+            raise ValueError("Parameter 'transmission.chain' cannot be an empty tuple.")
 
         if not isinstance(transmission.chain[0], MotorBase):
             raise TypeError(f"First element in 'transmission' must be an instance of {MotorBase.__name__!r}.")
