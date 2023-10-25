@@ -4,7 +4,7 @@ from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, InertiaMoment, Torque, Time
 from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings, HealthCheck
-from hypothesis.strategies import lists, floats, sampled_from, booleans
+from hypothesis.strategies import lists, floats, sampled_from, booleans, one_of, none, integers
 import matplotlib.pyplot as plt
 import pandas as pd
 from pytest import mark, raises
@@ -156,16 +156,27 @@ class TestTransmissionPlot:
 
     @mark.genuine
     @given(solved_transmission = solved_transmissions(),
+           elements_index = one_of(none(), lists(integers(min_value = 0, max_value = 4), min_size = 1)),
            angular_position_unit = sampled_from(elements = list(AngularPosition._AngularPosition__UNITS.keys())),
            angular_speed_unit = sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())),
            angular_acceleration_unit = sampled_from(elements = list(AngularAcceleration._AngularAcceleration__UNITS.keys())),
            torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
            time_unit = sampled_from(elements = list(Time._Time__UNITS.keys())))
     @settings(max_examples = 10, deadline = None)
-    def test_method(self, solved_transmission, angular_position_unit, angular_speed_unit, angular_acceleration_unit,
-                    torque_unit, time_unit):
+    def test_method(self, solved_transmission, elements_index, angular_position_unit, angular_speed_unit,
+                    angular_acceleration_unit, torque_unit, time_unit):
         warnings.filterwarnings("ignore", category = UserWarning)
-        solved_transmission.plot(angular_position_unit = angular_position_unit, angular_speed_unit = angular_speed_unit,
+
+        if elements_index is not None:
+            valid_index = [index for index in elements_index if index < len(solved_transmission.chain)]
+            elements = [solved_transmission.chain[index] for index in valid_index]
+            if not elements:
+                elements = [solved_transmission.chain[0]]
+        else:
+            elements = None
+
+        solved_transmission.plot(elements = elements, angular_position_unit = angular_position_unit,
+                                 angular_speed_unit = angular_speed_unit,
                                  angular_acceleration_unit = angular_acceleration_unit, torque_unit = torque_unit,
                                  time_unit = time_unit)
         plt.close()
@@ -175,3 +186,9 @@ class TestTransmissionPlot:
     def test_raises_type_error(self, transmission_plot_type_error):
         with raises(TypeError):
             basic_transmission.plot(**transmission_plot_type_error)
+
+
+    @mark.error
+    def test_raises_value_error(self, transmission_plot_value_error):
+        with raises(ValueError):
+            basic_transmission.plot(**transmission_plot_value_error)
