@@ -225,19 +225,22 @@ class Transmission:
 
 
     def plot(self,
+             elements: List[RotatingObject] = None,
              angular_position_unit: str = 'rad',
              angular_speed_unit: str = 'rad/s',
              angular_acceleration_unit: str = 'rad/s^2',
              torque_unit: str = 'Nm',
              time_unit: str = 'sec'):
-        """Plots time variables for each element in the mechanical transmission chain. \n
-        Generates a grid of subplots, one column for each element of the transmission chain and 4 rows for the time
-        variables: angular position, speed and acceleration in the first three rows and torque, driving torque and load
-        torque grouped together in the last row. \n
-        Plotted value units are manager with optional parameters.
+        """Plots time variables for selected element in the mechanical transmission chain. \n
+        Generates a grid of subplots, one column for each selected element of the transmission chain and 4 rows for the
+        time variables: angular position, speed and acceleration in the first three rows and torque, driving torque and
+        load torque grouped together in the last row. \n
+        Plotted value units are managed with optional parameters.
 
         Parameters
         ----------
+        elements: list, optional
+            Elements of the transmission chain which time variables have to be plotted.
         angular_position_unit : str, optional
             Symbol of the unit of measurement to which convert the angular position values in the plot. It must be a
             string. Default is ``'rad'``.
@@ -257,12 +260,32 @@ class Transmission:
         Raises
         ------
         TypeError
-            - If ``angular_position_unit`` is not a string,
+            - If ``elements`` is not a list,
+            - if an element of ``elements`` is not an instance of ``RotatingObject``,
+            - if ``angular_position_unit`` is not a string,
             - if ``angular_speed_unit`` is not a string,
             - if ``angular_acceleration_unit`` is not a string,
             - if ``torque_unit`` is not a string,
             - if ``time_unit`` is not a string.
+        ValueError
+            - If ``elements`` is an empty list,
+            - if an element of ``elements`` in not in ``Transmission.chain``.
         """
+        if elements is not None:
+            if not isinstance(elements, list):
+                raise TypeError("Parameter 'elements' must be a list.")
+
+            if not elements:
+                raise ValueError("Parameter 'elements' cannot be an empty list.")
+
+            for element in elements:
+                if not isinstance(element, RotatingObject):
+                    raise TypeError(f"Each element of 'elements' must be an instance of {RotatingObject.__name__!r}.")
+
+                if element not in self.chain:
+                    raise ValueError(f"Element {element.name!r} not found in the transmission chain. "
+                                     f"Available elements are: {[valid_element.name for valid_element in self.chain]}.")
+
         if not isinstance(angular_position_unit, str):
             raise TypeError("Parameter 'angular_position_unit' must be a string.")
 
@@ -278,32 +301,61 @@ class Transmission:
         if not isinstance(time_unit, str):
             raise TypeError("Parameter 'time_unit' must be a string.")
 
+        if elements is None:
+            elements = self.chain
+        else:
+            elements = list(set(elements))
+
         time_values = [instant.to(time_unit).value for instant in self.time]
 
-        fig, ax = plt.subplots(nrows = 4, ncols = len(self.chain), sharex = 'all', figsize = (14, 10))
+        fig, ax = plt.subplots(nrows = 4, ncols = len(elements), sharex = 'all', figsize = (14, 10))
 
-        for i, item in enumerate(self.chain, 0):
-            ax[0, i].set_title(item.name)
-            ax[0, i].plot(time_values, [variable.to(angular_position_unit).value
-                                        for variable in item.time_variables['angular position']])
-            ax[1, i].plot(time_values, [variable.to(angular_speed_unit).value
-                                        for variable in item.time_variables['angular speed']])
-            ax[2, i].plot(time_values, [variable.to(angular_acceleration_unit).value
-                                        for variable in item.time_variables['angular acceleration']])
-            ax[3, i].plot(time_values, [variable.to(torque_unit).value
-                                        for variable in item.time_variables['torque']], label = 'net')
-            ax[3, i].plot(time_values, [variable.to(torque_unit).value
-                                        for variable in item.time_variables['driving torque']], label = 'driving')
-            ax[3, i].plot(time_values, [variable.to(torque_unit).value
-                                        for variable in item.time_variables['load torque']], label = 'load')
+        if len(elements) > 1:
+            for i, item in enumerate(elements, 0):
+                ax[0, i].set_title(item.name)
+                ax[0, i].plot(time_values, [variable.to(angular_position_unit).value
+                                            for variable in item.time_variables['angular position']])
+                ax[1, i].plot(time_values, [variable.to(angular_speed_unit).value
+                                            for variable in item.time_variables['angular speed']])
+                ax[2, i].plot(time_values, [variable.to(angular_acceleration_unit).value
+                                            for variable in item.time_variables['angular acceleration']])
+                ax[3, i].plot(time_values, [variable.to(torque_unit).value
+                                            for variable in item.time_variables['torque']], label = 'net')
+                ax[3, i].plot(time_values, [variable.to(torque_unit).value
+                                            for variable in item.time_variables['driving torque']], label = 'driving')
+                ax[3, i].plot(time_values, [variable.to(torque_unit).value
+                                            for variable in item.time_variables['load torque']], label = 'load')
 
-        for i in range(len(self.chain)):
-            ax[3, i].set_xlabel(f'time ({time_unit})')
-        ax[0, 0].set_ylabel(f'angular position ({angular_position_unit})')
-        ax[1, 0].set_ylabel(f'angular speed ({angular_speed_unit})')
-        ax[2, 0].set_ylabel(f'angular acceleration ({angular_acceleration_unit})')
-        ax[3, 0].set_ylabel(f'torque ({torque_unit})')
-        ax[3, 0].legend(title = 'torque', frameon = True)
+            for i in range(len(elements)):
+                ax[3, i].set_xlabel(f'time ({time_unit})')
+            ax[0, 0].set_ylabel(f'angular position ({angular_position_unit})')
+            ax[1, 0].set_ylabel(f'angular speed ({angular_speed_unit})')
+            ax[2, 0].set_ylabel(f'angular acceleration ({angular_acceleration_unit})')
+            ax[3, 0].set_ylabel(f'torque ({torque_unit})')
+            ax[3, 0].legend(title = 'torque', frameon = True)
+
+        else:
+            item = elements[0]
+            ax[0].set_title(item.name)
+            ax[0].plot(time_values, [variable.to(angular_position_unit).value
+                                     for variable in item.time_variables['angular position']])
+            ax[1].plot(time_values, [variable.to(angular_speed_unit).value
+                                     for variable in item.time_variables['angular speed']])
+            ax[2].plot(time_values, [variable.to(angular_acceleration_unit).value
+                                     for variable in item.time_variables['angular acceleration']])
+            ax[3].plot(time_values, [variable.to(torque_unit).value
+                                     for variable in item.time_variables['torque']], label = 'net')
+            ax[3].plot(time_values, [variable.to(torque_unit).value
+                                     for variable in item.time_variables['driving torque']], label = 'driving')
+            ax[3].plot(time_values, [variable.to(torque_unit).value
+                                     for variable in item.time_variables['load torque']], label = 'load')
+
+            ax[3].set_xlabel(f'time ({time_unit})')
+            ax[0].set_ylabel(f'angular position ({angular_position_unit})')
+            ax[1].set_ylabel(f'angular speed ({angular_speed_unit})')
+            ax[2].set_ylabel(f'angular acceleration ({angular_acceleration_unit})')
+            ax[3].set_ylabel(f'torque ({torque_unit})')
+            ax[3].legend(title = 'torque', frameon = True)
 
         for axi in ax.flatten():
             axi.tick_params(bottom = False, top = False, left = False, right = False)
