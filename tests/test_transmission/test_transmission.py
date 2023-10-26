@@ -159,14 +159,15 @@ class TestTransmissionPlot:
            elements_index = one_of(none(), lists(integers(min_value = 0, max_value = 4), min_size = 1)),
            single_element = booleans(),
            elements_as_names = booleans(),
+           variables = one_of(none(), lists(sampled_from(elements = list(basic_transmission.chain[0].time_variables.keys())), min_size = 1)),
            angular_position_unit = sampled_from(elements = list(AngularPosition._AngularPosition__UNITS.keys())),
            angular_speed_unit = sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())),
            angular_acceleration_unit = sampled_from(elements = list(AngularAcceleration._AngularAcceleration__UNITS.keys())),
            torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
            time_unit = sampled_from(elements = list(Time._Time__UNITS.keys())))
     @settings(max_examples = 20, deadline = None)
-    def test_method(self, solved_transmission, elements_index, single_element, elements_as_names, angular_position_unit,
-                    angular_speed_unit, angular_acceleration_unit, torque_unit, time_unit):
+    def test_method(self, solved_transmission, elements_index, single_element, elements_as_names, variables,
+                    angular_position_unit, angular_speed_unit, angular_acceleration_unit, torque_unit, time_unit):
         warnings.filterwarnings("ignore", category = UserWarning)
 
         if elements_index is not None:
@@ -179,8 +180,8 @@ class TestTransmissionPlot:
         else:
             elements = None
 
-        solved_transmission.plot(elements = elements, angular_position_unit = angular_position_unit,
-                                 angular_speed_unit = angular_speed_unit,
+        solved_transmission.plot(elements = elements, variables = variables,
+                                 angular_position_unit = angular_position_unit, angular_speed_unit = angular_speed_unit,
                                  angular_acceleration_unit = angular_acceleration_unit, torque_unit = torque_unit,
                                  time_unit = time_unit)
         plt.close()
