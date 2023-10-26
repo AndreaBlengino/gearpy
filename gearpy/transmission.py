@@ -4,7 +4,7 @@ from gearpy.units import Time
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.interpolate import interp1d
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 
 class Transmission:
@@ -225,7 +225,7 @@ class Transmission:
 
 
     def plot(self,
-             elements: List[RotatingObject] = None,
+             elements: List[Union[RotatingObject, str]] = None,
              angular_position_unit: str = 'rad',
              angular_speed_unit: str = 'rad/s',
              angular_acceleration_unit: str = 'rad/s^2',
@@ -235,12 +235,14 @@ class Transmission:
         Generates a grid of subplots, one column for each selected element of the transmission chain and 4 rows for the
         time variables: angular position, speed and acceleration in the first three rows and torque, driving torque and
         load torque grouped together in the last row. \n
-        Plotted value units are managed with optional parameters.
+        Plotted value units are managed with optional parameters. \n
+        Elements to be plotted can be passed as instances or names (strings) in a list.
 
         Parameters
         ----------
         elements: list, optional
-            Elements of the transmission chain which time variables have to be plotted.
+            Elements of the transmission chain which time variables have to be plotted. Each single element can be
+            passed as instance or name (string).
         angular_position_unit : str, optional
             Symbol of the unit of measurement to which convert the angular position values in the plot. It must be a
             string. Default is ``'rad'``.
@@ -261,7 +263,7 @@ class Transmission:
         ------
         TypeError
             - If ``elements`` is not a list,
-            - if an element of ``elements`` is not an instance of ``RotatingObject``,
+            - if an element of ``elements`` is not an instance of ``RotatingObject`` or a string,
             - if ``angular_position_unit`` is not a string,
             - if ``angular_speed_unit`` is not a string,
             - if ``angular_acceleration_unit`` is not a string,
@@ -278,13 +280,21 @@ class Transmission:
             if not elements:
                 raise ValueError("Parameter 'elements' cannot be an empty list.")
 
-            for element in elements:
-                if not isinstance(element, RotatingObject):
-                    raise TypeError(f"Each element of 'elements' must be an instance of {RotatingObject.__name__!r}.")
+            valid_element_names = [valid_element.name for valid_element in self.chain]
 
-                if element not in self.chain:
-                    raise ValueError(f"Element {element.name!r} not found in the transmission chain. "
-                                     f"Available elements are: {[valid_element.name for valid_element in self.chain]}.")
+            for element in elements:
+                if not isinstance(element, RotatingObject) and not isinstance(element, str):
+                    raise TypeError(f"Each element of 'elements' must be an instance of {RotatingObject.__name__!r}"
+                                    f"or a string.")
+
+                if isinstance(element, RotatingObject):
+                    if element not in self.chain:
+                        raise ValueError(f"Element {element.name!r} not found in the transmission chain. "
+                                         f"Available elements are: {valid_element_names}.")
+                else:
+                    if element not in valid_element_names:
+                        raise ValueError(f"Element {element!r} not found in the transmission chain. "
+                                         f"Available elements are: {valid_element_names}.")
 
         if not isinstance(angular_position_unit, str):
             raise TypeError("Parameter 'angular_position_unit' must be a string.")
@@ -304,7 +314,7 @@ class Transmission:
         if elements is None:
             elements = self.chain
         else:
-            elements = list(set(elements))
+            elements = [element for element in self.chain if element in elements or element.name in elements]
 
         time_values = [instant.to(time_unit).value for instant in self.time]
 
