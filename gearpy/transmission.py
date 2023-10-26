@@ -364,7 +364,7 @@ class Transmission:
         fig, ax = plt.subplots(nrows = n_variables, ncols = len(elements), sharex = 'all', figsize = (14, 10))
 
         for i, item in enumerate(elements, 0):
-            if len(variables) > 1:
+            if n_variables > 1:
                 axes = ax[:, i] if len(elements) > 1 else ax
             else:
                 axes = [ax[i]] if len(elements) > 1 else [ax]
@@ -382,7 +382,7 @@ class Transmission:
 
             axes[-1].set_xlabel(f'time ({time_unit})')
 
-        if len(variables) > 1:
+        if n_variables > 1:
             first_column_axes = ax[:, 0] if len(elements) > 1 else ax
         else:
             first_column_axes = [ax[0]] if len(elements) > 1 else [ax]
@@ -394,7 +394,7 @@ class Transmission:
             first_column_axes[-1].set_ylabel(f'torque ({torque_unit})')
             first_column_axes[-1].legend(title = 'torque', frameon = True)
 
-        if len(elements) > 1 or len(variables) > 1:
+        if len(elements) > 1 or n_variables > 1:
             for axi in ax.flatten():
                 axi.tick_params(bottom = False, top = False, left = False, right = False)
         else:
