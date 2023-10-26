@@ -157,21 +157,25 @@ class TestTransmissionPlot:
     @mark.genuine
     @given(solved_transmission = solved_transmissions(),
            elements_index = one_of(none(), lists(integers(min_value = 0, max_value = 4), min_size = 1)),
+           single_element = booleans(),
+           elements_as_names = booleans(),
            angular_position_unit = sampled_from(elements = list(AngularPosition._AngularPosition__UNITS.keys())),
            angular_speed_unit = sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())),
            angular_acceleration_unit = sampled_from(elements = list(AngularAcceleration._AngularAcceleration__UNITS.keys())),
            torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
            time_unit = sampled_from(elements = list(Time._Time__UNITS.keys())))
-    @settings(max_examples = 10, deadline = None)
-    def test_method(self, solved_transmission, elements_index, angular_position_unit, angular_speed_unit,
-                    angular_acceleration_unit, torque_unit, time_unit):
+    @settings(max_examples = 20, deadline = None)
+    def test_method(self, solved_transmission, elements_index, single_element, elements_as_names, angular_position_unit,
+                    angular_speed_unit, angular_acceleration_unit, torque_unit, time_unit):
         warnings.filterwarnings("ignore", category = UserWarning)
 
         if elements_index is not None:
             valid_index = [index for index in elements_index if index < len(solved_transmission.chain)]
             elements = [solved_transmission.chain[index] for index in valid_index]
-            if not elements:
+            if not elements or single_element:
                 elements = [solved_transmission.chain[0]]
+            if elements_as_names:
+                elements = [element.name for element in elements]
         else:
             elements = None
 

@@ -85,7 +85,7 @@ transmission_plot_type_error_1 = [{'elements': type_to_check, 'angular_position_
 transmission_plot_type_error_2 = [{'elements': [type_to_check], 'angular_position_unit': 'rad',
                                    'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': 'rad/s^2',
                                    'torque_unit': 'Nm', 'time_unit': 'sec'} for type_to_check in types_to_check
-                                  if not isinstance(type_to_check, RotatingObject)]
+                                  if not isinstance(type_to_check, RotatingObject) and not isinstance(type_to_check, str)]
 
 transmission_plot_type_error_3 = [{'elements': [basic_transmission.chain[0]], 'angular_position_unit': type_to_check,
                                    'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': 'rad/s^2',
@@ -129,7 +129,7 @@ motor_not_in_basic_transmission = DCMotor(name = basic_transmission.chain[0].nam
                                           no_load_speed = basic_transmission.chain[0].no_load_speed)
 
 @fixture(params = [{'elements': []},
-                   {'elements': [motor_not_in_basic_transmission]}])
+                   {'elements': [motor_not_in_basic_transmission]},
+                   {'elements': [motor_not_in_basic_transmission.name]}])
 def transmission_plot_value_error(request):
     return request.param
-
