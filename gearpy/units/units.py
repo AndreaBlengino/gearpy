@@ -25,7 +25,8 @@ class AngularPosition(UnitBase):
     __UNITS = {'rad': 1,
                'deg': pi/180,
                'arcmin': pi/180/60,
-               'arcsec': pi/180/60/60}
+               'arcsec': pi/180/60/60,
+               'rot': 2*pi}
 
     def __init__(self, value: Union[float, int], unit: str):
         super().__init__(value = value, unit = unit)
@@ -152,7 +153,8 @@ class AngularPosition(UnitBase):
             - ``'rad'`` for radian,
             - ``'deg'`` for degree,
             - ``'arcmin'`` for minute of arc,
-            - ``'armsec'`` for second of arc.
+            - ``'armsec'`` for second of arc,
+            - ``'rot'`` for rotation.
 
         Returns
         -------
@@ -500,7 +502,8 @@ class AngularAcceleration(UnitBase):
     """
 
     __UNITS = {'rad/s^2': 1,
-               'deg/s^2': pi/180}
+               'deg/s^2': pi/180,
+               'rot/s^2': 2*pi}
 
     def __init__(self, value: Union[float, int], unit: str):
         super().__init__(value = value, unit = unit)
@@ -631,7 +634,8 @@ class AngularAcceleration(UnitBase):
         Available units are:
 
             - ``'rad/s^2'`` for radian per second squared,
-            - ``'deg/s^2'`` for degree per second squared.
+            - ``'deg/s^2'`` for degree per second squared,
+            - ``'rot/s^2'`` for rotation per second squared.
 
         Returns
         -------
@@ -734,8 +738,13 @@ class InertiaMoment(UnitBase):
     """
 
     __UNITS = {'kgm^2': 1,
+               'kgdm^2': 1e-2,
+               'kgcm^2': 1e-4,
+               'kgmm^2': 1e-6,
                'gm^2': 1e-3,
-               'gcm^2': 1e-7}
+               'gdm^2': 1e-5,
+               'gcm^2': 1e-7,
+               'gmm^2': 1e-9}
 
     def __init__(self, value: Union[float, int], unit: str):
         super().__init__(value = value, unit = unit)
@@ -875,8 +884,13 @@ class InertiaMoment(UnitBase):
         Available units are:
 
             - ``'kgm^2'`` for kilogram-square meter,
+            - ``'kgdm^2'`` for kilogram-square decimeter,
+            - ``'kgcm^2'`` for kilogram-square centimeter,
+            - ``'kgmm^2'`` for kilogram-square millimeter,
             - ``'gm^2'`` for gram-square meter,
-            - ``'gcm^2'`` for gram-square centimeter.
+            - ``'gdm^2'`` for gram-square decimeter,
+            - ``'gcm^2'`` for gram-square centimeter,
+            - ``'gmm^2'`` for gram-square millimeter.
 
         Returns
         -------
@@ -980,9 +994,21 @@ class Torque(UnitBase):
 
     __UNITS = {'Nm': 1,
                'mNm': 1e-3,
+               'mNdm': 1e-4,
+               'mNcm': 1e-5,
+               'mNmm': 1e-6,
                'kNm': 1e3,
+               'kNdm': 1e2,
+               'kNcm': 1e1,
+               'kNmm': 1,
                'kgfm': 9.80665,
-               'kgfcm': 9.80665e-2}
+               'kgfdm': 9.80665e-1,
+               'kgfcm': 9.80665e-2,
+               'kgfmm': 9.80665e-3,
+               'gfm': 9.80665e-3,
+               'gfdm': 9.80665e-4,
+               'gfcm': 9.80665e-5,
+               'gfmm': 9.80665e-6}
 
     def __init__(self, value: Union[float, int], unit: str):
         super().__init__(value = value, unit = unit)
@@ -1110,9 +1136,21 @@ class Torque(UnitBase):
 
             - ``'Nm'`` for newton-meter,
             - ``'mNm'`` for milli-newton-meter,
+            - ``'mNdm'`` for milli-newton-decimeter,
+            - ``'mNcm'`` for milli-newton-centimeter,
+            - ``'mNmm'`` for milli-newton-millimeter,
             - ``'kNm'`` for kilo-newton-meter,
+            - ``'kNdm'`` for kilo-newton-decimeter,
+            - ``'kNcm'`` for kilo-newton-centimeter,
+            - ``'kNmm'`` for kilo-newton-millimeter,
             - ``'kgfm'`` for kilogram force-meter,
-            - ``'kgfcm'`` for kilogram force-centimeter.
+            - ``'kgfdm'`` for kilogram force-decimeter,
+            - ``'kgfcm'`` for kilogram force-centimeter,
+            - ``'kgfmm'`` for kilogram force-millimeter,
+            - ``'gfm'`` for gram force-meter,
+            - ``'gfdm'`` for gram force-decimeter,
+            - ``'gfcm'`` for gram force-centimeter,
+            - ``'gfmm'`` for gram force-millimeter.
 
         Returns
         -------
@@ -1216,7 +1254,8 @@ class Time(UnitBase):
 
     __UNITS = {'sec': 1,
                'min': 60,
-               'hour': 60*60}
+               'hour': 60*60,
+               'ms': 1e-3}
 
     def __init__(self, value: Union[float, int], unit: str):
         super().__init__(value = value, unit = unit)
@@ -1353,7 +1392,8 @@ class Time(UnitBase):
 
             - ``'sec'`` for second,
             - ``'min'`` for minute,
-            - ``'hour'`` for hour.
+            - ``'hour'`` for hour,
+            - ``'ms'`` for millisecond.
 
         Returns
         -------
@@ -1530,7 +1570,8 @@ class TimeInterval(Time):
 
             - ``'sec'`` for second,
             - ``'min'`` for minute,
-            - ``'hour'`` for hour.
+            - ``'hour'`` for hour,
+            - ``'ms'`` for millisecond.
 
         Returns
         -------
