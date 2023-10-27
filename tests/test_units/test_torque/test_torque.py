@@ -354,7 +354,7 @@ class TestTorqueTo:
                 converted_torque = torque.to(target_unit = target_unit, inplace = inplace)
 
                 assert converted_torque.unit == target_unit
-                if target_unit != unit:
+                if Torque._Torque__UNITS[target_unit] != Torque._Torque__UNITS[unit]:
                     assert converted_torque.value != value
                     assert converted_torque.unit != unit
 
