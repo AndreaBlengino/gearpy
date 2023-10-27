@@ -231,7 +231,8 @@ class Transmission:
              angular_speed_unit: str = 'rad/s',
              angular_acceleration_unit: str = 'rad/s^2',
              torque_unit: str = 'Nm',
-             time_unit: str = 'sec'):
+             time_unit: str = 'sec',
+             figsize: Union[None, tuple] = None):
         """Plots time variables for selected elements in the mechanical transmission chain. \n
         Generates a grid of subplots, one column for each selected element of the transmission chain and one rows for
         each selected time variable. \n
@@ -264,6 +265,8 @@ class Transmission:
         time_unit : str, optional
             Symbol of the unit of measurement to which convert the time values in the plot. It must be a string. Default
             is ``'sec'``.
+        figsize : tuple, optional
+            Width and height of the window size, in inches. If not provided defaults to ``[6.4, 4.8]``.
 
         Raises
         ------
@@ -335,6 +338,16 @@ class Transmission:
         if not isinstance(time_unit, str):
             raise TypeError("Parameter 'time_unit' must be a string.")
 
+        if figsize is not None:
+            if not isinstance(figsize, tuple):
+                raise TypeError("Parameter 'figsize' must be a tuple.")
+
+            if len(figsize) != 2:
+                raise ValueError("Parameter 'figsize' must contain two values, one for width and one for height.")
+
+            if not all([isinstance(dimension, float) or isinstance(dimension, int) for dimension in figsize]):
+                raise TypeError("All elements of 'figsize' must be floats or integers.")
+
         if elements is None:
             elements = self.chain
         else:
@@ -361,7 +374,7 @@ class Transmission:
                  'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
                  'driving torque': torque_unit, 'load torque': torque_unit}
 
-        fig, ax = plt.subplots(nrows = n_variables, ncols = len(elements), sharex = 'all', figsize = (14, 10))
+        fig, ax = plt.subplots(nrows = n_variables, ncols = len(elements), sharex = 'all', figsize = figsize)
 
         for i, item in enumerate(elements, 0):
             if n_variables > 1:
