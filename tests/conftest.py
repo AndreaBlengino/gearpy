@@ -3,7 +3,7 @@ from gearpy.solver import Solver
 from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, InertiaMoment, Torque, Time, TimeInterval
 from gearpy.utils import add_fixed_joint, add_gear_mating
-from hypothesis.strategies import composite, text, integers, floats, lists, sampled_from, shared, builds
+from hypothesis.strategies import composite, text, integers, floats, lists, sampled_from, shared, builds, characters
 import numpy as np
 
 
@@ -52,7 +52,7 @@ def names(draw, strategy):
 
 @composite
 def spur_gears(draw):
-    name = draw(names(text(min_size = 1)))
+    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
     n_teeth = draw(integers(min_value = 1))
 
     inertia_moment_units_list = list(InertiaMoment._InertiaMoment__UNITS.keys())
@@ -66,7 +66,7 @@ def spur_gears(draw):
 
 @composite
 def dc_motors(draw):
-    name = draw(names(text(min_size = 1)))
+    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
 
     inertia_moment_units_list = list(InertiaMoment._InertiaMoment__UNITS.keys())
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
@@ -88,7 +88,7 @@ def dc_motors(draw):
 
 @composite
 def flywheels(draw):
-    name = draw(names(text(min_size = 1)))
+    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
 
     inertia_moment_units_list = list(InertiaMoment._InertiaMoment__UNITS.keys())
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
