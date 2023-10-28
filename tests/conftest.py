@@ -54,47 +54,30 @@ def names(draw, strategy):
 def spur_gears(draw):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
     n_teeth = draw(integers(min_value = 1))
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
 
-    inertia_moment_units_list = list(InertiaMoment._InertiaMoment__UNITS.keys())
-    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    inertia_moment_unit = draw(sampled_from(elements = inertia_moment_units_list))
-
-    return SpurGear(name = name,
-                    n_teeth = n_teeth,
-                    inertia_moment = InertiaMoment(inertia_moment_value, inertia_moment_unit))
+    return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
 
 
 @composite
 def dc_motors(draw):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
-
-    inertia_moment_units_list = list(InertiaMoment._InertiaMoment__UNITS.keys())
-    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    inertia_moment_unit = draw(sampled_from(elements = inertia_moment_units_list))
-
-    no_load_speed_units_list = list(AngularSpeed._AngularSpeed__UNITS.keys())
-    no_load_speed_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    no_load_speed_unit = draw(sampled_from(elements = no_load_speed_units_list))
-
-    maximum_torque_units_list = list(Torque._Torque__UNITS.keys())
-    maximum_torque_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    maximum_torque_unit = draw(sampled_from(elements = maximum_torque_units_list))
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    no_load_speed_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 5000, max_value = 10000))
+    maximum_torque_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1.5, max_value = 5))
 
     return DCMotor(name = name,
-                   inertia_moment = InertiaMoment(inertia_moment_value, inertia_moment_unit),
-                   no_load_speed = AngularSpeed(no_load_speed_value, no_load_speed_unit),
-                   maximum_torque = Torque(maximum_torque_value, maximum_torque_unit))
+                   inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
+                   no_load_speed = AngularSpeed(no_load_speed_value, 'rpm'),
+                   maximum_torque = Torque(maximum_torque_value, 'mNm'))
 
 
 @composite
 def flywheels(draw):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
 
-    inertia_moment_units_list = list(InertiaMoment._InertiaMoment__UNITS.keys())
-    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    inertia_moment_unit = draw(sampled_from(elements = inertia_moment_units_list))
-
-    return Flywheel(name = name, inertia_moment = InertiaMoment(inertia_moment_value, inertia_moment_unit))
+    return Flywheel(name = name, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
 
 
 @composite

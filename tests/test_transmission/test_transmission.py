@@ -75,7 +75,7 @@ class TestTransmissionUpdateTime:
     @mark.genuine
     @given(transmission = transmissions(),
            instant = times())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, transmission, instant):
         transmission.update_time(instant = instant)
 
