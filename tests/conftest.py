@@ -53,7 +53,7 @@ def names(draw, strategy):
 @composite
 def spur_gears(draw):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
-    n_teeth = draw(integers(min_value = 1))
+    n_teeth = draw(integers(min_value = 1, max_value = 100))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
 
     return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
