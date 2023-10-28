@@ -13,12 +13,14 @@ gearpy documentation
    :caption: Module
 
    gearpy
+   examples/index
 
 
 .. toctree::
    :hidden:
    :caption: References
 
+   get_started
    Source Code <https://github.com/AndreaBlengino/gearpy>
    PyPI <https://pypi.org/project/gearpy>
    Issue Tracker <https://github.com/AndreaBlengino/gearpy/issues>

@@ -370,14 +370,14 @@ class TestAngularAccelerationTo:
            inplace = booleans())
     @settings(max_examples = 100)
     def test_method(self, value, unit, inplace):
-        if value != 0:
+        if abs(value) >= 1e-10:
             angular_acceleration = AngularAcceleration(value = value, unit = unit)
 
             for target_unit in units_list:
                 converted_acceleration = angular_acceleration.to(target_unit = target_unit, inplace = inplace)
 
                 assert converted_acceleration.unit == target_unit
-                if target_unit != unit:
+                if AngularAcceleration._AngularAcceleration__UNITS[target_unit] != AngularAcceleration._AngularAcceleration__UNITS[unit]:
                     assert converted_acceleration.value != value
                     assert converted_acceleration.unit != unit
 

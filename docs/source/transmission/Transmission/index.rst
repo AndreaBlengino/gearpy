@@ -3,7 +3,7 @@ Transmission
 
 
 .. currentmodule:: gearpy.transmission
-.. autoclass:: gearpy.transmission.transmission.Transmission
+.. autoclass:: gearpy.transmission.Transmission
    :members:
    :undoc-members:
    :show-inheritance:
@@ -14,3 +14,7 @@ Transmission
    :hidden:
 
    chain
+   plot
+   snapshot
+   time
+   update_time

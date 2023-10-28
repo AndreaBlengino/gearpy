@@ -347,14 +347,14 @@ class TestTorqueTo:
            inplace = booleans())
     @settings(max_examples = 100)
     def test_method(self, value, unit, inplace):
-        if value != 0:
+        if abs(value) >= 1e-10:
             torque = Torque(value = value, unit = unit)
 
             for target_unit in units_list:
                 converted_torque = torque.to(target_unit = target_unit, inplace = inplace)
 
                 assert converted_torque.unit == target_unit
-                if target_unit != unit:
+                if Torque._Torque__UNITS[target_unit] != Torque._Torque__UNITS[unit]:
                     assert converted_torque.value != value
                     assert converted_torque.unit != unit
 

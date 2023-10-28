@@ -3,7 +3,7 @@ AngularPosition
 
 
 .. currentmodule:: gearpy.units
-.. autoclass:: gearpy.units.concrete_units.AngularPosition
+.. autoclass:: gearpy.units.units.AngularPosition
    :members:
    :undoc-members:
    :show-inheritance:
