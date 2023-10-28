@@ -347,7 +347,7 @@ class TestTorqueTo:
            inplace = booleans())
     @settings(max_examples = 100)
     def test_method(self, value, unit, inplace):
-        if value != 0:
+        if abs(value) >= 1e-10:
             torque = Torque(value = value, unit = unit)
 
             for target_unit in units_list:

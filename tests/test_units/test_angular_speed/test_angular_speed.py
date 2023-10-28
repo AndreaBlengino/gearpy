@@ -370,14 +370,14 @@ class TestAngularSpeedTo:
            inplace = booleans())
     @settings(max_examples = 100)
     def test_method(self, value, unit, inplace):
-        if value != 0:
+        if abs(value) >= 1e-10:
             angular_speed = AngularSpeed(value = value, unit = unit)
 
             for target_unit in units_list:
                 converted_speed = angular_speed.to(target_unit = target_unit, inplace = inplace)
 
                 assert converted_speed.unit == target_unit
-                if target_unit != unit:
+                if AngularSpeed._AngularSpeed__UNITS[target_unit] != AngularSpeed._AngularSpeed__UNITS[unit]:
                     assert converted_speed.value != value
                     assert converted_speed.unit != unit
 

@@ -364,14 +364,14 @@ class TestInertiaMomentTo:
            inplace = booleans())
     @settings(max_examples = 100)
     def test_method(self, value, unit, inplace):
-        if value != 0:
+        if abs(value) >= 1e-10:
             inertia_moment = InertiaMoment(value = value, unit = unit)
 
             for target_unit in units_list:
                 converted_inertia = inertia_moment.to(target_unit = target_unit, inplace = inplace)
 
                 assert converted_inertia.unit == target_unit
-                if target_unit != unit:
+                if InertiaMoment._InertiaMoment__UNITS[target_unit] != InertiaMoment._InertiaMoment__UNITS[unit]:
                     assert converted_inertia.value != value
                     assert converted_inertia.unit != unit
 

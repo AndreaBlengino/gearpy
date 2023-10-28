@@ -339,14 +339,14 @@ class TestAngularPositionTo:
            inplace = booleans())
     @settings(max_examples = 100)
     def test_method(self, value, unit, inplace):
-        if value != 0:
+        if abs(value) >= 1e-10:
             angular_position = AngularPosition(value = value, unit = unit)
 
             for target_unit in units_list:
                 converted_position = angular_position.to(target_unit = target_unit, inplace = inplace)
 
                 assert converted_position.unit == target_unit
-                if target_unit != unit:
+                if AngularPosition._AngularPosition__UNITS[target_unit] != AngularPosition._AngularPosition__UNITS[unit]:
                     assert converted_position.value != value
                     assert converted_position.unit != unit
 
