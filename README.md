@@ -15,7 +15,7 @@
 - [Source code](https://github.com/AndreaBlengino/gearpy/tree/master/gearpy)  
 - [Issue tracker](https://github.com/AndreaBlengino/gearpy/issues)  
 - [Documentation](https://gearpy.readthedocs.io/en/latest/?badge=latest)  
-- [Installation](https://gearpy.readthedocs.io/en/latest/installation.html)
+- [Installation](https://gearpy.readthedocs.io/en/latest/get_started.html)
 - [Usage examples](https://gearpy.readthedocs.io/en/latest/examples/index.html)  
 - [PyPI](https://pypi.org/project/gearpy/)  
 - [GNU General Public License v3.0](https://github.com/AndreaBlengino/gearpy/blob/master/LICENSE)
