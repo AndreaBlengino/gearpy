@@ -1644,3 +1644,239 @@ class TimeInterval(Time):
             return self
         else:
             return TimeInterval(value = converted.value, unit = converted.unit)
+
+
+class Length(UnitBase):
+    r"""``gearpy.units.units.Length`` object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for length.
+    :py:attr:`value` : float or int
+        Length numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
+
+    __UNITS = {'m': 1,
+               'dm': 1e-1,
+               'cm': 1e-2,
+               'mm': 1e-3}
+
+    def __init__(self, value: Union[float, int], unit: str):
+        super().__init__(value = value, unit = unit)
+
+        if unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if value <= 0:
+            raise ValueError("Parameter 'value' must be positive.")
+
+        self.__value = value
+        self.__unit = unit
+
+    def __repr__(self) -> str:
+        return f'{self.__value} {self.__unit}'
+
+    def __add__(self, other: 'Length') -> 'Length':
+        super().__add__(other = other)
+
+        return Length(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
+
+    def __sub__(self, other: 'Length') -> 'Length':
+        super().__sub__(other = other)
+
+        return Length(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
+
+    def __mul__(self, other: Union[float, int]) -> 'Length':
+        super().__mul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        return Length(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Length':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
+                            f'{self.__class__.__name__}.')
+
+        return Length(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Length', float, int]) -> Union['Length', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Length) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        if isinstance(other, Length):
+            return self.__value/other.to(self.__unit).value
+        else:
+            return Length(value = self.__value/other, unit = self.__unit)
+
+    def __eq__(self, other: 'Length') -> bool:
+        super().__eq__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value == other.value
+        else:
+            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
+
+    def __ne__(self, other: 'Length') -> bool:
+        super().__ne__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value != other.value
+        else:
+            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
+
+    def __gt__(self, other: 'Length') -> bool:
+        super().__gt__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value > other.value
+        else:
+            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
+
+    def __ge__(self, other: 'Length') -> bool:
+        super().__ge__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value >= other.value
+        else:
+            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
+
+    def __lt__(self, other: 'Length') -> bool:
+        super().__lt__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value < other.value
+        else:
+            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
+
+    def __le__(self, other: 'Length') -> bool:
+        super().__le__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value <= other.value
+        else:
+            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
+
+    @property
+    def value(self) -> Union[float, int]:
+        """Length numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+
+        Returns
+        -------
+        float or int
+            Length numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        ValueError
+            If ``value`` is not positive.
+        """
+        return self.__value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for length. It must be a string.
+        Available units are:
+
+            - ``'m'`` for meter,
+            - ``'dm'`` for decimeter,
+            - ``'cm'`` for centimeter,
+            - ``'mm'`` for millimeter.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for length.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return self.__unit
+
+    def to(self, target_unit: str, inplace: bool = False) -> 'Length':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Length
+            Converted length.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Length`` instantiation.
+
+        >>> from gearpy.units import Length
+        >>> l = Length(1, 'm')
+        >>> l
+        ... 1 m
+
+        Conversion from meter to centimeter with ``inplace = False`` by default, so it does not override the current
+        value.
+
+        >>> l.to('cm')
+        ... 100.0 cm
+        >>> l
+        ... 1 m
+
+        Conversion from meter to centimeter with ``inplace = True``, in order to override the current value.
+
+        >>> l.to('cm', inplace = True)
+        ... 100.0 cm
+        >>> l
+        ... 100.0 cm
+        """
+        super().to(target_unit = target_unit, inplace = inplace)
+
+        if target_unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if target_unit != self.__unit:
+            target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
+        else:
+            target_value = self.__value
+
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Length(value = target_value, unit = target_unit)
