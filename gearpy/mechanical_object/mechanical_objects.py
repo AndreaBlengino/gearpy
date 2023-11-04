@@ -52,7 +52,7 @@ class SpurGear(GearBase):
     def name(self) -> str:
         """Name of the spur gear. It must be a non-empty string. \n
         It must be an unique name, not shared by other elements in the transmission chain. \n
-        Once set at the spur gear instantiation, it cannot be further changed.
+        Once set at the spur gear instantiation, it cannot be changed afterwards.
 
         Returns
         -------
@@ -71,7 +71,7 @@ class SpurGear(GearBase):
     @property
     def n_teeth(self) -> int:
         """Number of gear teeth. It must be a positive integer. \n
-        Once set at the spur gear instantiation, it cannot be further changed.
+        Once set at the spur gear instantiation, it cannot be changed afterwards.
 
         Returns
         -------
@@ -327,7 +327,7 @@ class SpurGear(GearBase):
     @property
     def inertia_moment(self) -> InertiaMoment:
         """Moment of inertia of the gear. It must be an instance of ``InertiaMoment``. \n
-        Once set at the spur gear instantiation, it cannot be further changed.
+        Once set at the spur gear instantiation, it cannot be changed afterwards.
 
         Returns
         -------
@@ -502,7 +502,7 @@ class DCMotor(MotorBase):
     def name(self) -> str:
         """Name of the DC motor. It must be a non-empty string. \n
         It must be an unique name, not shared by other elements in the transmission chain. \n
-        Once set at the DC motor instantiation, it cannot be further changed.
+        Once set at the DC motor instantiation, it cannot be changed afterwards.
 
         Returns
         -------
@@ -615,7 +615,7 @@ class DCMotor(MotorBase):
         """No load angular speed of the DC motor. It must be an instance of ``AngularSpeed``. Its value must be
         positive. \n
         It is the angular speed at which the DC motor rotates when no load is applied to its rotor. \n
-        Once set at the DC motor instantiation, it cannot be further changed.
+        Once set at the DC motor instantiation, it cannot be changed afterwards.
 
         Returns
         -------
@@ -639,7 +639,7 @@ class DCMotor(MotorBase):
     def maximum_torque(self) -> Torque:
         """Maximum torque developed by the DC motor. It must be an instance of ``Torque``. Its value must be positive. \n
         It is the maximum torque the DC motor can develop when its rotor is kept still by the load. \n
-        Once set at the DC motor instantiation, it cannot be further changed.
+        Once set at the DC motor instantiation, it cannot be changed afterwards.
 
         Returns
         -------
@@ -735,7 +735,7 @@ class DCMotor(MotorBase):
     @property
     def inertia_moment(self) -> InertiaMoment:
         """Moment of inertia of the DC motor's rotor. It must be an instance of ``InertiaMoment``. \n
-        Once set at the DC motor instantiation, it cannot be further changed.
+        Once set at the DC motor instantiation, it cannot be changed afterwards.
 
         Returns
         -------
@@ -871,7 +871,7 @@ class Flywheel(RotatingObject):
     def name(self) -> str:
         """Name of the flywheel. It must be a non-empty string. \n
         It must be an unique name, not shared by other elements in the transmission chain. \n
-        Once set at the flywheel instantiation, it cannot be further changed.
+        Once set at the flywheel instantiation, it cannot be changed afterwards.
 
         Returns
         -------
@@ -1125,7 +1125,7 @@ class Flywheel(RotatingObject):
     @property
     def inertia_moment(self) -> InertiaMoment:
         """Moment of inertia of the flywheel. It must be an instance of ``InertiaMoment``. \n
-        Once set at the flywheel instantiation, it cannot be further changed.
+        Once set at the flywheel instantiation, it cannot be changed afterwards.
 
         Returns
         -------
