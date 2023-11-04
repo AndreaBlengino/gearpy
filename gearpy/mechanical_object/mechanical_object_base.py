@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Time, Torque, UnitBase
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Length, Time, Torque, UnitBase
 from typing import Callable, Dict, List, Union
 
 
@@ -230,7 +230,7 @@ class MotorBase(RotatingObject):
 class GearBase(RotatingObject):
 
     @abstractmethod
-    def __init__(self, name: str, n_teeth: int, inertia_moment: InertiaMoment):
+    def __init__(self, name: str, n_teeth: int, module: Length, inertia_moment: InertiaMoment):
         super().__init__(name = name, inertia_moment = inertia_moment)
 
         if not isinstance(n_teeth, int):
@@ -239,7 +239,12 @@ class GearBase(RotatingObject):
         if n_teeth <= 0:
             raise ValueError("Parameter 'n_teeth' must be positive.")
 
+        if not isinstance(module, Length):
+            raise TypeError(f"Parameter 'module' must be an instance of {Length.__name__!r}.")
+
         self.__n_teeth = n_teeth
+        self.__module = module
+        self.__reference_diameter = n_teeth*module
         self.__driven_by = None
         self.__drives = None
         self.__master_gear_ratio = None
@@ -250,6 +255,16 @@ class GearBase(RotatingObject):
     @abstractmethod
     def n_teeth(self) -> int:
         return self.__n_teeth
+
+    @property
+    @abstractmethod
+    def module(self) -> Length:
+        return self.__module
+
+    @property
+    @abstractmethod
+    def reference_diameter(self) -> Length:
+        return self.__reference_diameter
 
     @property
     @abstractmethod

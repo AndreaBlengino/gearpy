@@ -1,4 +1,4 @@
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Time, Torque, UnitBase
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Length, Time, Torque, UnitBase
 from .mechanical_object_base import RotatingObject, GearBase, MotorBase
 from typing import Callable, Dict, List, Union
 
@@ -45,8 +45,8 @@ class SpurGear(GearBase):
         Updates ``time_variables`` dictionary by appending the last value of each time variable to corresponding list.
     """
 
-    def __init__(self, name: str, n_teeth: int, inertia_moment: InertiaMoment):
-        super().__init__(name = name, n_teeth = n_teeth, inertia_moment = inertia_moment)
+    def __init__(self, name: str, n_teeth: int, module: Length, inertia_moment: InertiaMoment):
+        super().__init__(name = name, n_teeth = n_teeth, module = module, inertia_moment = inertia_moment)
 
     @property
     def name(self) -> str:
@@ -86,6 +86,36 @@ class SpurGear(GearBase):
             If ``n_teeth`` is not positive.
         """
         return super().n_teeth
+
+    @property
+    def module(self) -> Length:
+        """Unit of the gear teeth size. It must be an instance of ``Length``. \n
+        Once set at the spur gear instantiation, it cannot be changed afterwards.
+
+        Returns
+        -------
+        Length
+            Unit of the gear teeth size.
+
+        Raises
+        ------
+        TypeError
+            If ``module`` is not an instance of ``Length``.
+        """
+        return super().module
+
+    @property
+    def reference_diameter(self) -> Length:
+        """Reference diameter of the gear. It must be an instance of ``Length``. \n
+        It is computed as the product of ``n_teeth`` times ``module`` at the spur gear instantiation and it cannot be
+        changed afterwards.
+
+        Returns
+        -------
+        Length
+            Reference diameter of the gear.
+        """
+        return super().reference_diameter
 
     @property
     def driven_by(self) -> RotatingObject:
