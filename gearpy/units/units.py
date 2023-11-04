@@ -1880,3 +1880,241 @@ class Length(UnitBase):
             return self
         else:
             return Length(value = target_value, unit = target_unit)
+
+
+class Force(UnitBase):
+    r"""``gearpy.units.units.Force`` object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for force.
+    :py:attr:`value` : float or int
+        Force numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
+
+    __UNITS = {'N': 1,
+               'mN': 1e-3,
+               'kN': 1e3,
+               'kgf': 9.80665,
+               'gf': 9.80665e-3}
+
+    def __init__(self, value: Union[float, int], unit: str):
+        super().__init__(value = value, unit = unit)
+
+        if unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if value <= 0:
+            raise ValueError("Parameter 'value' must be positive.")
+
+        self.__value = value
+        self.__unit = unit
+
+    def __repr__(self) -> str:
+        return f'{self.__value} {self.__unit}'
+
+    def __add__(self, other: 'Force') -> 'Force':
+        super().__add__(other = other)
+
+        return Force(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
+
+    def __sub__(self, other: 'Force') -> 'Force':
+        super().__sub__(other = other)
+
+        return Force(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
+
+    def __mul__(self, other: Union[float, int]) -> 'Force':
+        super().__mul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        return Force(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Force':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
+                            f'{self.__class__.__name__}.')
+
+        return Force(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Force', float, int]) -> Union['Force', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Force) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        if isinstance(other, Force):
+            return self.__value/other.to(self.__unit).value
+        else:
+            return Force(value = self.__value/other, unit = self.__unit)
+
+    def __eq__(self, other: 'Force') -> bool:
+        super().__eq__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value == other.value
+        else:
+            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
+
+    def __ne__(self, other: 'Force') -> bool:
+        super().__ne__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value != other.value
+        else:
+            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
+
+    def __gt__(self, other: 'Force') -> bool:
+        super().__gt__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value > other.value
+        else:
+            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
+
+    def __ge__(self, other: 'Force') -> bool:
+        super().__ge__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value >= other.value
+        else:
+            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
+
+    def __lt__(self, other: 'Force') -> bool:
+        super().__lt__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value < other.value
+        else:
+            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
+
+    def __le__(self, other: 'Force') -> bool:
+        super().__le__(other = other)
+
+        if self.__unit == other.unit:
+            return self.__value <= other.value
+        else:
+            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
+
+    @property
+    def value(self) -> Union[float, int]:
+        """Force numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+
+        Returns
+        -------
+        float or int
+            Force numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        ValueError
+            If ``value`` is not positive.
+        """
+        return self.__value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for force. It must be a string.
+        Available units are:
+
+            - ``'N'`` for newton,
+            - ``'mN'`` for milli-newton,
+            - ``'kN'`` for kilo-newton,
+            - ``'kgf'`` for kilogram force,
+            - ``'gf'`` for gram force.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for force.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return self.__unit
+
+    def to(self, target_unit: str, inplace: bool = False) -> 'Force':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Force
+            Converted force.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Force`` instantiation.
+
+        >>> from gearpy.units import Force
+        >>> f = Force(1, 'N')
+        >>> f
+        ... 1 N
+
+        Conversion from newton to kilogram force with ``inplace = False`` by default, so it does not override the
+        current value.
+
+        >>> f.to('kgf')
+        ... 0.10197162129779283 kgf
+        >>> f
+        ... 1 N
+
+        Conversion from newton to kilogram force with ``inplace = True``, in order to override the current value.
+
+        >>> f.to('kgf', inplace = True)
+        ... 0.10197162129779283 kgf
+        >>> f
+        ... 0.10197162129779283 kgf
+        """
+        super().to(target_unit = target_unit, inplace = inplace)
+
+        if target_unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if target_unit != self.__unit:
+            target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
+        else:
+            target_value = self.__value
+
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Force(value = target_value, unit = target_unit)
