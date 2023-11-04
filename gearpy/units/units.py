@@ -1051,17 +1051,19 @@ class Torque(UnitBase):
 
         return Torque(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['InertiaMoment', 'Torque', float, int]) -> Union['AngularAcceleration', 'Torque', float]:
+    def __truediv__(self, other: Union['InertiaMoment', 'Length', 'Torque', float, int]) -> Union['AngularAcceleration', 'Force', float, 'Torque']:
         super().__truediv__(other = other)
 
-        if not isinstance(other, Torque) and not isinstance(other, float) and not isinstance(other, int) \
-                and not isinstance(other, InertiaMoment):
+        if not isinstance(other, InertiaMoment) and not isinstance(other, Length) and not isinstance(other, Torque) \
+                and not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to divide a {self.__class__.__name__} by a {other.__class__.__name__}.')
 
-        if isinstance(other, Torque):
-            return self.__value/other.to(self.__unit).value
-        elif isinstance(other, InertiaMoment):
+        if isinstance(other, InertiaMoment):
             return AngularAcceleration(value = self.to('Nm').value/other.to('kgm^2').value, unit = 'rad/s^2')
+        elif isinstance(other, Length):
+            return Force(value = self.to('Nm').value/other.to('m').value, unit = 'N')
+        elif isinstance(other, Torque):
+            return self.__value/other.to(self.__unit).value
         else:
             return Torque(value = self.__value/other, unit = self.__unit)
 
