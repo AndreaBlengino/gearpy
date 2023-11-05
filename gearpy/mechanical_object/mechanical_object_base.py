@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Length, Time, Torque, UnitBase
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Time, \
+    Torque, UnitBase
 from typing import Callable, Dict, List, Union
 
 
@@ -245,6 +246,7 @@ class GearBase(RotatingObject):
         self.__n_teeth = n_teeth
         self.__module = module
         self.__reference_diameter = n_teeth*module
+        self.__tangential_force = None
         self.__driven_by = None
         self.__drives = None
         self.__master_gear_ratio = None
@@ -351,6 +353,22 @@ class GearBase(RotatingObject):
     @abstractmethod
     def load_torque(self, load_torque: Torque):
         super(GearBase, type(self)).load_torque.fset(self, load_torque)
+
+    @property
+    @abstractmethod
+    def tangential_force(self) -> Force:
+        return self.__tangential_force
+
+    @tangential_force.setter
+    @abstractmethod
+    def tangential_force(self, tangential_force: Force):
+        if not isinstance(tangential_force, Force):
+            raise TypeError(f"Parameter 'tangential_force' must be an instance of {Force.__name__!r}.")
+
+        self.__tangential_force = tangential_force
+
+    @abstractmethod
+    def compute_tangential_force(self): ...
 
     @property
     @abstractmethod

@@ -1,4 +1,5 @@
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Length, Time, Torque, UnitBase
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Time, \
+    Torque, UnitBase
 from .mechanical_object_base import RotatingObject, GearBase, MotorBase
 from typing import Callable, Dict, List, Union
 
@@ -353,6 +354,20 @@ class SpurGear(GearBase):
     @load_torque.setter
     def load_torque(self, load_torque: Torque):
         super(SpurGear, type(self)).load_torque.fset(self, load_torque)
+
+    @property
+    def tangential_force(self) -> Force:
+        return super().tangential_force
+
+    @tangential_force.setter
+    def tangential_force(self, tangential_force: Force):
+        super(SpurGear, type(self)).tangential_force.fset(self, tangential_force)
+
+    def compute_tangential_force(self):
+        if self.master_gear_ratio == 1:
+            self.tangential_force = abs(self.load_torque)/(self.reference_diameter/2)
+        else:
+            self.tangential_force = abs(self.driving_torque)/(self.reference_diameter/2)
 
     @property
     def inertia_moment(self) -> InertiaMoment:
