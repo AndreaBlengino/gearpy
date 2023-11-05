@@ -27,7 +27,7 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
         - if ``efficiency`` is not a float or an integer.
     ValueError
         - If ``efficiency`` is not within ``0`` and ``1``,
-        - if ``master`` and ``slave`` have different ``module``s.
+        - if ``master`` and ``slave`` have different values for ``module``.
     """
     if not isinstance(master, GearBase):
         raise TypeError("Parameter 'master' must be an instance of GearBase.")

@@ -13,6 +13,10 @@ class SpurGear(GearBase):
         Name of the spur gear.
     :py:attr:`n_teeth` : int
         Number of gear teeth.
+    :py:attr:`module` : Length
+        Unit of the gear teeth size.
+    :py:attr:`reference_diameter` : Length
+        Reference diameter of the gear.
     :py:attr:`driven_by` : RotatingObject
         Rotating object that drives the gear, for example a motor or another gear.
     :py:attr:`drives` : RotatingObject
@@ -33,6 +37,8 @@ class SpurGear(GearBase):
         Driving torque applied on the gear by its driving gear.
     :py:attr:`load_torque` : Torque
         Load torque applied on the gear by its driven gear or an external load.
+    :py:attr:`tangential_force` : Force
+        Tangential force applied on the gear teeth by the mating gear.
     :py:attr:`inertia_moment` : InertiaMoment
         Moment of inertia of the gear.
     :py:attr:`time_variables` : dict
@@ -40,6 +46,8 @@ class SpurGear(GearBase):
 
     Methods
     -------
+    :py:meth:`compute_tangential_force`
+        Computes the tangential force applied on the gear teeth by the mating gear.
     :py:meth:`external_torque`
         Custom function to compute the external torque applied on the gear.
     :py:meth:`update_time_variables`
@@ -358,6 +366,23 @@ class SpurGear(GearBase):
 
     @property
     def tangential_force(self) -> Force:
+        """Tangential force applied on the gear teeth by the mating gear. It must be an instance of ``Force``.
+
+        Returns
+        -------
+        Force
+            Tangential force appliced on the gear teeth by the mating gear.
+
+        Raises
+        ------
+        TypeError
+            If ``tangential_force`` is not an instance of ``Force``.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Force`
+        :py:meth:`compute_tangential_force`
+        """
         return super().tangential_force
 
     @tangential_force.setter
@@ -365,6 +390,19 @@ class SpurGear(GearBase):
         super(SpurGear, type(self)).tangential_force.fset(self, tangential_force)
 
     def compute_tangential_force(self):
+        """Computes the tangential force applied on the gear teeth by the mating gear. \n
+        Considering a gear mating:
+
+        - if the gear is the master one, then it takes into account the ``load_torque`` for the computation
+        - if the gear is the slave one, then it take into account the ``driving_torque`` for the computation
+
+        The tangential force is computed dividing the just described reference torque by the reference radius (half of
+        the reference diameter).
+
+        See Also
+        --------
+        :py:attr:`tangential_force`
+        """
         if self.master_gear_ratio == 1:
             self.tangential_force = abs(self.load_torque)/(self.reference_diameter/2)
         else:
