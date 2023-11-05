@@ -16,6 +16,7 @@ SpurGear
    angular_acceleration
    angular_position
    angular_speed
+   compute_tangential_force
    driven_by
    drives
    driving_torque
@@ -24,8 +25,11 @@ SpurGear
    load_torque
    master_gear_efficiency
    master_gear_ratio
+   module
    n_teeth
    name
+   reference_diameter
+   tangential_force
    time_variables
    torque
    update_time_variables
