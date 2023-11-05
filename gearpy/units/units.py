@@ -1913,9 +1913,6 @@ class Force(UnitBase):
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
                            f"Available units are: {list(self.__UNITS.keys())}")
 
-        if value <= 0:
-            raise ValueError("Parameter 'value' must be positive.")
-
         self.__value = value
         self.__unit = unit
 
