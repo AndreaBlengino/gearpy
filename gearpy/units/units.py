@@ -41,6 +41,9 @@ class AngularPosition(UnitBase):
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
 
+    def __abs__(self):
+        return AngularPosition(abs(self.__value), self.__unit)
+
     def __add__(self, other: 'AngularPosition') -> 'AngularPosition':
         super().__add__(other = other)
 
@@ -276,6 +279,9 @@ class AngularSpeed(UnitBase):
 
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
+
+    def __abs__(self):
+        return AngularSpeed(abs(self.__value), self.__unit)
 
     def __add__(self, other: 'AngularSpeed') -> 'AngularSpeed':
         super().__add__(other = other)
@@ -517,6 +523,9 @@ class AngularAcceleration(UnitBase):
 
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
+
+    def __abs__(self):
+        return AngularAcceleration(abs(self.__value), self.__unit)
 
     def __add__(self, other: 'AngularAcceleration') -> 'AngularAcceleration':
         super().__add__(other = other)
@@ -761,6 +770,9 @@ class InertiaMoment(UnitBase):
 
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
+
+    def __abs__(self):
+        return InertiaMoment(abs(self.__value), self.__unit)
 
     def __add__(self, other: 'InertiaMoment') -> 'InertiaMoment':
         super().__add__(other = other)
@@ -1023,6 +1035,9 @@ class Torque(UnitBase):
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
 
+    def __abs__(self):
+        return Torque(abs(self.__value), self.__unit)
+
     def __add__(self, other: 'Torque') -> 'Torque':
         super().__add__(other = other)
 
@@ -1272,6 +1287,9 @@ class Time(UnitBase):
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
 
+    def __abs__(self):
+        return Time(abs(self.__value), self.__unit)
+
     def __add__(self, other: 'Time') -> 'Time':
         super().__add__(other = other)
 
@@ -1504,6 +1522,9 @@ class TimeInterval(Time):
         self.__value = value
         self.__unit = unit
 
+    def __abs__(self):
+        return TimeInterval(abs(self.__value), self.__unit)
+
     def __add__(self, other: Union['Time', 'TimeInterval']) -> Union['Time', 'TimeInterval']:
         super().__add__(other = other)
 
@@ -1684,6 +1705,9 @@ class Length(UnitBase):
 
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
+
+    def __abs__(self):
+        return Length(abs(self.__value), self.__unit)
 
     def __add__(self, other: 'Length') -> 'Length':
         super().__add__(other = other)
@@ -1918,6 +1942,9 @@ class Force(UnitBase):
 
     def __repr__(self) -> str:
         return f'{self.__value} {self.__unit}'
+
+    def __abs__(self):
+        return Force(abs(self.__value), self.__unit)
 
     def __add__(self, other: 'Force') -> 'Force':
         super().__add__(other = other)
