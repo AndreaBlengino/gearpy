@@ -48,6 +48,7 @@ class SpurGear(GearBase):
 
     def __init__(self, name: str, n_teeth: int, module: Length, inertia_moment: InertiaMoment):
         super().__init__(name = name, n_teeth = n_teeth, module = module, inertia_moment = inertia_moment)
+        self.time_variables['tangential force'] = []
 
     @property
     def name(self) -> str:
@@ -457,7 +458,8 @@ class SpurGear(GearBase):
             - ``angular_acceleration``,
             - ``torque``,
             - ``driving_torque``,
-            - ``load_torque``.
+            - ``load_torque``,
+            - ``tangential_force``.
 
         Corresponding values of the dictionary are lists of the respective time variable values. \n
         At each time iteration, the ``Solver`` appends every time variables' values to the relative list in the
@@ -478,13 +480,14 @@ class SpurGear(GearBase):
         """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
         dictionary) to corresponding list (value of the dictionary). \n
         Time variables are ``angular_position``, ``angular_speed``, ``angular_acceleration``, ``torque``,
-        ``driving_torque`` and ``load_torque`` of the gear.
+        ``driving_torque``, ``load_torque`` and ``tangential_force`` of the gear.
 
         See Also
         --------
         :py:attr:`time_variables`
         """
         super().update_time_variables()
+        self.time_variables['tangential force'].append(self.tangential_force)
 
 
 class DCMotor(MotorBase):
