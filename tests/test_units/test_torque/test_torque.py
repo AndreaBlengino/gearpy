@@ -52,6 +52,20 @@ class TestTorqueRepr:
         assert str(torque) == f'{value} {unit}'
 
 
+@mark.units
+class TestTorqueAbs:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        torque = Torque(value = value, unit = unit)
+
+        assert abs(torque) == Torque(value = abs(value), unit = unit)
+        assert abs(torque).value >= 0
+
 
 @mark.units
 class TestTorqueAdd:

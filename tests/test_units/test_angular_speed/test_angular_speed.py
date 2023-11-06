@@ -51,6 +51,20 @@ class TestAngularSpeedRepr:
         assert str(angular_speed) == f'{value} {unit}'
 
 
+@mark.units
+class TestAngularSpeedAbs:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        angular_speed = AngularSpeed(value = value, unit = unit)
+
+        assert abs(angular_speed) == AngularSpeed(value = abs(value), unit = unit)
+        assert abs(angular_speed).value >= 0
+
 
 @mark.units
 class TestAngularSpeedAdd:

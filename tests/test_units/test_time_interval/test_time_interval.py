@@ -58,6 +58,20 @@ class TestTimeIntervalRepr:
         assert str(time_interval) == f'{value} {unit}'
 
 
+@mark.units
+class TestTimeIntervalAbs:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        time_interval = TimeInterval(value = value, unit = unit)
+
+        assert abs(time_interval) == TimeInterval(value = abs(value), unit = unit)
+        assert abs(time_interval).value >= 0
+
 
 @mark.units
 class TestTimeIntervalAdd:
