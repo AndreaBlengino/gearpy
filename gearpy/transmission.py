@@ -1,5 +1,5 @@
 from collections import Counter
-from gearpy.mechanical_object import MotorBase, RotatingObject
+from gearpy.mechanical_object import MotorBase, RotatingObject, GearBase
 from gearpy.units import Time
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -231,6 +231,7 @@ class Transmission:
              angular_speed_unit: str = 'rad/s',
              angular_acceleration_unit: str = 'rad/s^2',
              torque_unit: str = 'Nm',
+             force_unit: str = 'N',
              time_unit: str = 'sec',
              figsize: Union[None, tuple] = None):
         """Plots time variables for selected elements in the mechanical transmission chain. \n
@@ -262,6 +263,9 @@ class Transmission:
         torque_unit : str, optional
             Symbol of the unit of measurement to which convert the torque values in the plot. It must be a string.
             Default is ``'Nm'``.
+        force_unit : str, optional
+            Symbol of the unit of measurement to which convert the force values in the plot. It must be a string.
+            Default is ``'N'``.
         time_unit : str, optional
             Symbol of the unit of measurement to which convert the time values in the plot. It must be a string. Default
             is ``'sec'``.
@@ -279,6 +283,7 @@ class Transmission:
             - if ``angular_speed_unit`` is not a string,
             - if ``angular_acceleration_unit`` is not a string,
             - if ``torque_unit`` is not a string,
+            - if ``force_unit`` is not a string,
             - if ``time_unit`` is not a string.
         ValueError
             - If ``elements`` is an empty list,
@@ -315,7 +320,7 @@ class Transmission:
             if not variables:
                 raise ValueError("Parameter 'variables' cannot be an empty list.")
 
-            valid_variables = list(self.chain[0].time_variables.keys())
+            valid_variables = list(self.chain[-1].time_variables.keys())
             for variable in variables:
                 if not isinstance(variable, str):
                     raise TypeError("Each element of 'variables' must be a string.")
@@ -335,6 +340,9 @@ class Transmission:
         if not isinstance(torque_unit, str):
             raise TypeError("Parameter 'torque_unit' must be a string.")
 
+        if not isinstance(force_unit, str):
+            raise TypeError("Parameter 'force_unit' must be a string.")
+
         if not isinstance(time_unit, str):
             raise TypeError("Parameter 'time_unit' must be a string.")
 
@@ -352,67 +360,99 @@ class Transmission:
             elements = self.chain
         else:
             elements = [element for element in self.chain if element in elements or element.name in elements]
+        n_elements = len(elements)
 
         if variables is None:
-            variables = list(self.chain[0].time_variables.keys())
+            variables = []
+            for element in elements:
+                variables.extend(element.time_variables.keys())
+            variables = list(set(variables))
         else:
             variables = list(set(variables))
 
         SORT_ORDER = {'angular position': 0, 'angular speed': 1, 'angular acceleration': 2,
-                      'torque': 3, 'driving torque': 4, 'load torque': 5}
+                      'torque': 3, 'driving torque': 4, 'load torque': 5, 'tangential force': 6}
         variables.sort(key = lambda variable: SORT_ORDER[variable])
 
-        kinematic_variables = [variable for variable in variables if 'torque' not in variable]
+        kinematic_variables = [variable for variable in variables if 'torque' not in variable and 'force' not in variable]
         torques_variables = [variable for variable in variables if 'torque' in variable]
+        forces_variables = [variable for variable in variables if 'force' in variable]
         n_variables = len(kinematic_variables)
         if torques_variables:
+            n_variables += 1
+        if forces_variables:
             n_variables += 1
 
         time_values = [instant.to(time_unit).value for instant in self.time]
 
         UNITS = {'angular position': angular_position_unit, 'angular speed': angular_speed_unit,
                  'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
-                 'driving torque': torque_unit, 'load torque': torque_unit}
+                 'driving torque': torque_unit, 'load torque': torque_unit, 'tangential force': force_unit}
 
-        fig, ax = plt.subplots(nrows = n_variables, ncols = len(elements), sharex = 'all', figsize = figsize)
+        fig, ax = plt.subplots(nrows = n_variables, ncols = n_elements, sharex = 'all',
+                               layout = 'constrained', figsize = figsize)
 
         for i, item in enumerate(elements, 0):
             if n_variables > 1:
-                axes = ax[:, i] if len(elements) > 1 else ax
+                axes = ax[:, i] if n_elements > 1 else ax
             else:
-                axes = [ax[i]] if len(elements) > 1 else [ax]
+                axes = [ax[i]] if n_elements > 1 else [ax]
             axes[0].set_title(item.name)
 
             for j, variable in enumerate(kinematic_variables, 0):
                 axes[j].plot(time_values, [variable_value.to(UNITS[variable]).value
                                            for variable_value in item.time_variables[variable]])
 
-            for variable in torques_variables:
-                label = variable.replace('torque', '').replace(' ', '')
-                label = 'net' if label == '' else label
-                axes[-1].plot(time_values, [variable_value.to(UNITS[variable]).value
-                                            for variable_value in item.time_variables[variable]], label = label)
+            if torques_variables:
+                torques_variables_index = -2 if forces_variables else -1
+                for variable in torques_variables:
+                    label = variable.replace('torque', '').replace(' ', '')
+                    label = 'net' if label == '' else label
+                    axes[torques_variables_index].plot(time_values,
+                                                       [variable_value.to(UNITS[variable]).value
+                                                        for variable_value in item.time_variables[variable]],
+                                                       label = label)
 
-            axes[-1].set_xlabel(f'time ({time_unit})')
+            if isinstance(item, GearBase):
+                for variable in forces_variables:
+                    axes[-1].plot(time_values, [variable_value.to(UNITS[variable]).value
+                                                for variable_value in item.time_variables[variable]])
+            else:
+                if forces_variables:
+                    axes[-1].axis('off')
+
+            last_row_axes = -2 if forces_variables and n_variables > 1 and not isinstance(item, GearBase) else -1
+
+            axes[last_row_axes].set_xlabel(f'time ({time_unit})')
+            axes[last_row_axes].xaxis.set_tick_params(which = 'both', labelbottom = True)
 
         if n_variables > 1:
-            first_column_axes = ax[:, 0] if len(elements) > 1 else ax
+            first_column_axes = ax[:, 0] if n_elements > 1 else ax
         else:
-            first_column_axes = [ax[0]] if len(elements) > 1 else [ax]
+            first_column_axes = [ax[0]] if n_elements > 1 else [ax]
 
         for j, variable in enumerate(kinematic_variables, 0):
             first_column_axes[j].set_ylabel(f'{variable} ({UNITS[variable]})')
 
         if torques_variables:
-            first_column_axes[-1].set_ylabel(f'torque ({torque_unit})')
-            first_column_axes[-1].legend(title = 'torque', frameon = True)
+            torques_variables_index = -2 if forces_variables else -1
+            first_column_axes[torques_variables_index].set_ylabel(f'torque ({torque_unit})')
+            first_column_axes[torques_variables_index].legend(title = 'torque', frameon = True)
 
-        if len(elements) > 1 or n_variables > 1:
+        if forces_variables:
+            for i, item in enumerate(elements, 0):
+                if isinstance(item, GearBase):
+                    if n_variables > 1:
+                        axes = ax[:, i] if n_elements > 1 else ax
+                    else:
+                        axes = [ax[i]] if n_elements > 1 else [ax]
+                    axes[-1].set_ylabel(f'force ({force_unit})')
+                    break
+
+        if n_elements > 1 or n_variables > 1:
             for axi in ax.flatten():
                 axi.tick_params(bottom = False, top = False, left = False, right = False)
         else:
             ax.tick_params(bottom = False, top = False, left = False, right = False)
-
-        plt.tight_layout()
 
         plt.show()
