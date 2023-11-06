@@ -11,7 +11,7 @@ build:
   jobs:
     post_create_environment:
     - pip install .
-    - pip install -r docs/source/requirements.txt
+    - pip install -r requirements/docs.txt
 
 sphinx:
    configuration: docs/source/conf.py

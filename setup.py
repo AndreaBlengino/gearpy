@@ -6,6 +6,18 @@ version = subprocess.run(['git', 'describe', '--tags'], stdout = subprocess.PIPE
 with open('README.md', 'r') as f:
     long_description = f.read()
 
+def read_requirements(path: str):
+    with open(path) as file:
+        lines = file.readlines()
+
+    return [line.replace('==', ' >= ').replace('\n', '') for line in lines]
+
+basic_requirements = read_requirements(r'requirements/common.txt')
+extras_dev = read_requirements(r'requirements/dev.txt')
+extras_docs = read_requirements(r'requirements/docs.txt')
+extras_tests = read_requirements(r'requirements/tests.txt')
+
+
 setup(name = 'gearpy',
       version = version,
       description = "Python package for mechanical transmission analysis",
@@ -28,14 +40,8 @@ setup(name = 'gearpy',
                      'Programming Language :: Python :: 3.10',
                      'Programming Language :: Python :: 3.11',
                      'Topic :: Scientific/Engineering'],
-      install_requires = ['matplotlib >= 3.8.0',
-                          'numpy >= 1.26.0',
-                          'pandas >= 2.1.1',
-                          'scipy >= 1.11.3'],
-      extras_require = {'dev': ['sphinx >= 7.2.6',
-                                'm2r2 >= 0.3.3.post2',
-                                'furo >= 2023.9.10',
-                                'tox >= 4.11.3',
-                                'hypothesis >= 6.87.1',
-                                'twine >= 4.0.2']},
+      install_requires = basic_requirements,
+      extras_require = {'dev': extras_dev,
+                        'docs': extras_docs,
+                        'tests': extras_tests},
       python_requires = '>=3.9, <3.12')
