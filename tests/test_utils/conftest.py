@@ -20,7 +20,7 @@ def add_gear_mating_type_error(request):
     return request.param
 
 
-@fixture(params = [-1, 2])
+@fixture(params = [-1, 2, 0.5])
 def add_gear_mating_value_error(request):
     return request.param
 

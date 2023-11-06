@@ -1,5 +1,5 @@
 from gearpy.mechanical_object import SpurGear
-from gearpy.units import InertiaMoment
+from gearpy.units import InertiaMoment, Length
 from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings
 from hypothesis.strategies import floats, one_of
@@ -34,10 +34,15 @@ class TestAddGearMating:
 
     @mark.error
     def test_raises_value_error(self, add_gear_mating_value_error):
-        gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
-        gear_2 = SpurGear(name = 'gear 2', n_teeth = 20, inertia_moment = InertiaMoment(1, 'kgm^2'))
-        with raises(ValueError):
-            add_gear_mating(master = gear_1, slave = gear_2, efficiency = add_gear_mating_value_error)
+        gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
+        gear_2 = SpurGear(name = 'gear 2', n_teeth = 20, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
+        gear_3 = SpurGear(name = 'gear 3', n_teeth = 20, module = Length(2, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
+        if add_gear_mating_value_error < 0 or add_gear_mating_value_error > 1:
+            with raises(ValueError):
+                add_gear_mating(master = gear_1, slave = gear_2, efficiency = add_gear_mating_value_error)
+        else:
+            with raises(ValueError):
+                add_gear_mating(master = gear_1, slave = gear_3, efficiency = add_gear_mating_value_error)
 
 
 @mark.utils

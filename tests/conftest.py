@@ -1,7 +1,7 @@
 from gearpy.mechanical_object import SpurGear, DCMotor, Flywheel
 from gearpy.solver import Solver
 from gearpy.transmission import Transmission
-from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, InertiaMoment, Torque, Time, TimeInterval
+from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Force, InertiaMoment, Length, Torque, Time, TimeInterval
 from gearpy.utils import add_fixed_joint, add_gear_mating
 from hypothesis.strategies import composite, text, integers, floats, lists, sampled_from, shared, builds, characters
 import numpy as np
@@ -14,7 +14,7 @@ basic_dc_motor = DCMotor(name = 'motor',
 
 basic_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
 
-basic_spur_gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+basic_spur_gear = SpurGear(name = 'gear', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
 
 
 transmission_dc_motor = DCMotor(name = 'motor',
@@ -22,8 +22,8 @@ transmission_dc_motor = DCMotor(name = 'motor',
                                 no_load_speed = AngularSpeed(1000, 'rpm'),
                                 maximum_torque = Torque(1, 'Nm'))
 transmission_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
-transmission_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
-transmission_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 40, inertia_moment = InertiaMoment(1, 'kgm^2'))
+transmission_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
+transmission_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 40, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
 add_fixed_joint(master = transmission_dc_motor, slave = transmission_flywheel)
 add_fixed_joint(master = transmission_flywheel, slave = transmission_spur_gear_1)
 add_gear_mating(master = transmission_spur_gear_1, slave = transmission_spur_gear_2, efficiency = 0.9)
@@ -39,8 +39,8 @@ basic_solver.run()
 
 
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
-                  AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'), AngularAcceleration(1, 'rad/s^2'),
-                  InertiaMoment(1, 'kgm^2'), Torque(1, 'Nm'), Time(1, 'sec'), TimeInterval(1, 'sec'),
+                  AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'), AngularAcceleration(1, 'rad/s^2'), Force(1, 'N'),
+                  InertiaMoment(1, 'kgm^2'), Length(1, 'm'), Torque(1, 'Nm'), Time(1, 'sec'), TimeInterval(1, 'sec'),
                   basic_dc_motor, basic_spur_gear, basic_flywheel]
 
 
@@ -56,7 +56,7 @@ def spur_gears(draw):
     n_teeth = draw(integers(min_value = 1, max_value = 100))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
 
-    return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
+    return SpurGear(name = name, n_teeth = n_teeth, module = Length(1, 'mm'), inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
 
 
 @composite

@@ -1,5 +1,5 @@
 from gearpy.mechanical_object import DCMotor, SpurGear, Flywheel
-from gearpy.units import AngularSpeed, InertiaMoment, Torque
+from gearpy.units import AngularSpeed, InertiaMoment, Length, Torque
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats
 from pytest import mark, raises
@@ -43,7 +43,7 @@ class TestFlywheelDrivenBy:
         motor = DCMotor(name = 'motor', inertia_moment = InertiaMoment(1, 'kgm^2'),
                         no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'))
         flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
-        gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+        gear = SpurGear(name = 'gear', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
 
         for master in [motor, flywheel, gear]:
             basic_flywheel.driven_by = master
@@ -63,7 +63,7 @@ class TestFlywheelDrives:
 
     @mark.genuine
     def test_property(self):
-        gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+        gear = SpurGear(name = 'gear', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
         flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
 
         for slave in [gear, flywheel]:

@@ -1,7 +1,7 @@
 from gearpy.mechanical_object import DCMotor, SpurGear
 from gearpy.solver import Solver
 from gearpy.transmission import Transmission
-from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, InertiaMoment, Torque, Time
+from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, InertiaMoment, Length, Torque, Time
 from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import lists, floats, sampled_from, booleans, one_of, none, integers, tuples
@@ -63,7 +63,7 @@ class TestTransmissionInit:
     def test_raises_name_error(self):
         motor = DCMotor(name = 'not unique name', inertia_moment = InertiaMoment(1, 'kgm^2'),
                         no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'))
-        gear = SpurGear(name = 'not unique name', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+        gear = SpurGear(name = 'not unique name', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
         add_fixed_joint(master = motor, slave = gear)
         with raises(NameError):
             Transmission(motor = motor)
@@ -159,7 +159,7 @@ class TestTransmissionPlot:
            elements_index = one_of(none(), lists(integers(min_value = 0, max_value = 4), min_size = 1)),
            single_element = booleans(),
            elements_as_names = booleans(),
-           variables = one_of(none(), lists(sampled_from(elements = list(basic_transmission.chain[0].time_variables.keys())), min_size = 1)),
+           variables = one_of(none(), lists(sampled_from(elements = list(basic_transmission.chain[-1].time_variables.keys())), min_size = 1)),
            angular_position_unit = sampled_from(elements = list(AngularPosition._AngularPosition__UNITS.keys())),
            angular_speed_unit = sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())),
            angular_acceleration_unit = sampled_from(elements = list(AngularAcceleration._AngularAcceleration__UNITS.keys())),

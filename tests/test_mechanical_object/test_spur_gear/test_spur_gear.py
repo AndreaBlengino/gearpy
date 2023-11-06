@@ -1,5 +1,5 @@
 from gearpy.mechanical_object import DCMotor, SpurGear
-from gearpy.units import AngularSpeed, InertiaMoment, Torque
+from gearpy.units import AngularSpeed, Force, InertiaMoment, Length, Torque
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, integers, functions
 from pytest import mark, raises
@@ -14,14 +14,18 @@ class TestSpurGearInit:
     @mark.genuine
     @given(name = text(min_size = 1),
            n_teeth = integers(min_value = 1),
+           module_value = floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 10),
            inertia_moment = inertia_moments())
     @settings(max_examples = 100)
-    def test_method(self, name, n_teeth, inertia_moment):
-        gear = SpurGear(name = name, n_teeth = n_teeth, inertia_moment = inertia_moment)
+    def test_method(self, name, n_teeth, module_value, inertia_moment):
+        module = Length(module_value, 'mm')
+        gear = SpurGear(name = name, n_teeth = n_teeth, module = module, inertia_moment = inertia_moment)
 
         assert gear.name == name
         assert gear.n_teeth == n_teeth
+        assert gear.module == module
         assert gear.inertia_moment == inertia_moment
+        assert gear.reference_diameter == n_teeth*module
 
 
     @mark.error
@@ -44,7 +48,7 @@ class TestSpurGearDrivenBy:
     def test_property(self):
         motor = DCMotor(name = 'motor', inertia_moment = InertiaMoment(1, 'kgm^2'),
                         no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'))
-        gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+        gear = SpurGear(name = 'gear', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
 
         for master in [motor, gear]:
             basic_spur_gear.driven_by = master
@@ -64,7 +68,7 @@ class TestSpurGearDrives:
 
     @mark.genuine
     def test_property(self):
-        gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+        gear = SpurGear(name = 'gear', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
         basic_spur_gear.drives = gear
 
         assert basic_spur_gear.drives == gear
@@ -74,6 +78,24 @@ class TestSpurGearDrives:
     def test_raises_type_error(self, spur_gear_drives_type_error):
         with raises(TypeError):
             basic_spur_gear.drives = spur_gear_drives_type_error
+
+
+@mark.spur_gear
+class TestSpurGearTangentialForce:
+
+
+    @mark.genuine
+    def test_property(self):
+        tangential_force = Force(1, 'N')
+        basic_spur_gear.tangential_force = tangential_force
+
+        assert basic_spur_gear.tangential_force == tangential_force
+
+
+    @mark.error
+    def test_raises_type_error(self, spur_gear_tangential_force_type_error):
+        with raises(TypeError):
+            basic_spur_gear.tangential_force = spur_gear_tangential_force_type_error
 
 
 @mark.spur_gear

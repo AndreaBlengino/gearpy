@@ -1,3 +1,4 @@
+from gearpy.mechanical_object import GearBase
 from hypothesis import given, settings
 from pytest import mark, raises
 from tests.test_mechanical_object.test_rotating_object.conftest import basic_rotating_objects
@@ -5,6 +6,7 @@ from tests.test_units.test_angular_acceleration.conftest import angular_accelera
 from tests.test_units.test_angular_position.conftest import angular_positions
 from tests.test_units.test_angular_speed.conftest import angular_speeds
 from tests.test_units.test_torque.conftest import torques
+from tests.test_units.test_force.conftest import forces
 
 
 @mark.rotating_object
@@ -142,9 +144,13 @@ class TestRotatingObjectTimeVariables:
         for rotating_object in basic_rotating_objects:
             time_variables = rotating_object.time_variables
 
+            time_variables_list = ['angular position', 'angular speed', 'angular acceleration', 'torque',
+                                   'driving torque', 'load torque']
+            if isinstance(rotating_object, GearBase):
+                time_variables_list.append('tangential force')
+
             assert isinstance(time_variables, dict)
-            assert ['angular position', 'angular speed', 'angular acceleration',
-                    'torque', 'driving torque', 'load torque'] == list(time_variables.keys())
+            assert time_variables_list == list(time_variables.keys())
             assert all([value == [] for value in time_variables.values()])
 
 
@@ -158,8 +164,9 @@ class TestRotatingObjectUpdateTimeVariables:
            angular_acceleration = angular_accelerations(),
            torque = torques(),
            driving_torque = torques(),
-           load_torque = torques())
-    def test_method(self, angular_position, angular_speed, angular_acceleration, torque, driving_torque, load_torque):
+           load_torque = torques(),
+           tangential_force = forces())
+    def test_method(self, angular_position, angular_speed, angular_acceleration, torque, driving_torque, load_torque, tangential_force):
         for rotating_object in basic_rotating_objects:
             rotating_object.angular_position = angular_position
             rotating_object.angular_speed = angular_speed
@@ -167,16 +174,24 @@ class TestRotatingObjectUpdateTimeVariables:
             rotating_object.torque = torque
             rotating_object.driving_torque = driving_torque
             rotating_object.load_torque = load_torque
+            if isinstance(rotating_object, GearBase):
+                rotating_object.tangential_force = tangential_force
 
             rotating_object.update_time_variables()
             time_variables = rotating_object.time_variables
 
+            time_variables_list = ['angular position', 'angular speed', 'angular acceleration', 'torque',
+                                   'driving torque', 'load torque']
+            if isinstance(rotating_object, GearBase):
+                time_variables_list.append('tangential force')
+
             assert isinstance(time_variables, dict)
-            assert ['angular position', 'angular speed', 'angular acceleration',
-                    'torque', 'driving torque', 'load torque'] == list(time_variables.keys())
+            assert time_variables_list == list(time_variables.keys())
             assert time_variables['angular position'][-1] == angular_position
             assert time_variables['angular speed'][-1] == angular_speed
             assert time_variables['angular acceleration'][-1] == angular_acceleration
             assert time_variables['torque'][-1] == torque
             assert time_variables['driving torque'][-1] == driving_torque
             assert time_variables['load torque'][-1] == load_torque
+            if isinstance(rotating_object, GearBase):
+                assert time_variables['tangential force'][-1] == tangential_force

@@ -1,5 +1,5 @@
 from gearpy.mechanical_object import DCMotor, SpurGear
-from gearpy.units import Torque
+from gearpy.units import Length, Torque
 from hypothesis import given, settings
 from hypothesis.strategies import text
 from pytest import mark, raises
@@ -47,7 +47,7 @@ class TestDCMotorDrives:
 
     @mark.genuine
     def test_property(self):
-        gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = basic_inertia_moment)
+        gear = SpurGear(name = 'gear', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = basic_inertia_moment)
         basic_dc_motor.drives = gear
 
         assert basic_dc_motor.drives == gear
