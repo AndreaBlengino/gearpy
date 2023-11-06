@@ -114,12 +114,13 @@ class Transmission:
                  torque_unit: str = 'Nm',
                  driving_torque_unit: str = 'Nm',
                  load_torque_unit: str = 'Nm',
+                 force_unit: str = 'N',
                  print_data: bool = True) -> pd.DataFrame:
         """Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
         ``target_time``. The computed time variables are organized in a ``pandas.DataFrame``, returned by the method.
         Each element in the transmission chain is a row of the DataFrame, while the columns are the time variables
-        angular position, angular speed, angular acceleration, torque, driving torque, load torque. Each time variable
-        is converted to the relative unit passed as optional parameter. \n
+        angular position, angular speed, angular acceleration, torque, driving torque, load torque and tangential force.
+        Each time variable is converted to the relative unit passed as optional parameter. \n
         If the ``target_time`` is not among simulated time steps in the ``time`` list, it computes a linear
         interpolation from the two closest simulated time steps.
 
@@ -146,6 +147,9 @@ class Transmission:
         load_torque_unit : str, optional
             Symbol of the unit of measurement to which convert the load torque in the DataFrame. It must be a string.
             Default is ``'Nm'``.
+        force_unit : str, optional
+            Symbol of the unit of measurement to which convert the force values in the plot. It must be a string.
+            Default is ``'N'``.
         print_data : bool, optional
             Whether or not to print the computed time variables DataFrame. Default is ``True``.
 
@@ -166,6 +170,7 @@ class Transmission:
             - if ``torque_unit`` is not a string,
             - if ``driving_torque_unit`` is not a string,
             - if ``load_torque_unit`` is not a string,
+            - if ``force_unit`` is not a string,
             - if ``print_data`` is not a bool.
         ValueError
             If ``time`` is an empty list.
@@ -197,6 +202,9 @@ class Transmission:
         if not isinstance(load_torque_unit, str):
             raise TypeError(f"Parameter 'load_torque_unit' must be a string.")
 
+        if not isinstance(force_unit, str):
+            raise TypeError(f"Parameter 'force_unit' must be a string.")
+
         if not isinstance(print_data, bool):
             raise TypeError(f"Parameter 'print_data' must be a bool.")
 
@@ -205,7 +213,8 @@ class Transmission:
                                        f'angular acceleration ({angular_acceleration_unit})',
                                        f'torque ({torque_unit})',
                                        f'driving torque ({driving_torque_unit})',
-                                       f'load torque ({load_torque_unit})'])
+                                       f'load torque ({load_torque_unit})',
+                                       f'tangential force ({force_unit})'])
 
         for element in self.chain:
             for variable, unit in zip(['angular position', 'angular speed', 'angular acceleration',
@@ -216,6 +225,13 @@ class Transmission:
                                                   y = [value.to(unit).value
                                                        for value in element.time_variables[variable]])
                 data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
+
+            if isinstance(element, GearBase):
+                for variable, unit in zip(['tangential force'], [force_unit]):
+                    interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
+                                                      y = [value.to(unit).value
+                                                           for value in element.time_variables[variable]])
+                    data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
 
         if print_data:
             print(f'Mechanical Transmission Status at Time = {target_time}')
@@ -238,9 +254,11 @@ class Transmission:
         Generates a grid of subplots, one column for each selected element of the transmission chain and one rows for
         each selected time variable. \n
         Available elements are the ones in the ``chain`` tuple and available variables are: ``'angular position'``,
-        ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``.
+        ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'``, ``'load torque'`` and
+        ``'tangential force'``.
         The kinematic variables position, speed and acceleration are separately plotted in the first three rows of the
-        grid, while torques are grouped together in the last fourth row. \n
+        grid, while torques are grouped together in the last fourth row (if kinematic variables are present) and
+        tangential force is plotted in the fifth row (if all other variables are present). \n
         Plotted values' units are managed with optional parameters. \n
         Elements to be plotted can be passed as instances or names (strings) in a list.
 
