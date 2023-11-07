@@ -105,7 +105,7 @@ class SpurGear(GearBase):
         TypeError
             If ``n_teeth`` is not an integer.
         ValueError
-            If ``n_teeth`` is not positive.
+            If ``n_teeth`` is less than the minimum number of teeth, based on Lewis Factor table.
         """
         return super().n_teeth
 

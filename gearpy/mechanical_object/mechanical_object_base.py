@@ -10,6 +10,7 @@ from typing import Callable, Dict, List, Union
 
 LEWIS_FACTOR_DATA_FILE = (imp_resources.files(gear_data) / 'lewis_factor_table.csv')
 LEWIS_FACTOR_DATA = pd.read_csv(LEWIS_FACTOR_DATA_FILE)
+MINIMUM_TEETH_NUMBER = LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[0], 'number of teeth']
 lewis_factor_function = interp1d(x = LEWIS_FACTOR_DATA['number of teeth'],
                                  y = LEWIS_FACTOR_DATA['Lewis factor'],
                                  fill_value = (LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[0], 'Lewis factor'],
@@ -255,8 +256,8 @@ class GearBase(RotatingObject):
         if not isinstance(n_teeth, int):
             raise TypeError("Parameter 'n_teeth' must be an integer.")
 
-        if n_teeth <= 0:
-            raise ValueError("Parameter 'n_teeth' must be positive.")
+        if n_teeth < MINIMUM_TEETH_NUMBER:
+            raise ValueError(f"Parameter 'n_teeth' must be greater or equal to {MINIMUM_TEETH_NUMBER}.")
 
         if not isinstance(module, Length):
             raise TypeError(f"Parameter 'module' must be an instance of {Length.__name__!r}.")
