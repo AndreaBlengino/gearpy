@@ -1719,14 +1719,17 @@ class Length(UnitBase):
 
         return Length(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
-    def __mul__(self, other: Union[float, int]) -> 'Length':
+    def __mul__(self, other: Union['Length', float, int]) -> Union['Surface', 'Length']:
         super().__mul__(other = other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, Length) and not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
                             f'{other.__class__.__name__}.')
 
-        return Length(value = self.__value*other, unit = self.__unit)
+        if isinstance(other, Length):
+            return Surface(value = self.to('m').value*other.to('m').value, unit = 'm^2')
+        else:
+            return Length(value = self.__value*other, unit = self.__unit)
 
     def __rmul__(self, other: Union[float, int]) -> 'Length':
         super().__rmul__(other = other)
