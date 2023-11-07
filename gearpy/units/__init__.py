@@ -4,6 +4,7 @@ from .units import AngularPosition, \
                    Force, \
                    InertiaMoment, \
                    Length, \
+                   Stress, \
                    Surface, \
                    Torque, \
                    Time, \
