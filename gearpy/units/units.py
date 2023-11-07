@@ -2217,15 +2217,18 @@ class Force(UnitBase):
 
         return Force(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['Force', float, int]) -> Union['Force', float]:
+    def __truediv__(self, other: Union['Force', 'Surface', float, int]) -> Union['Force', 'Stress', float]:
         super().__truediv__(other = other)
 
-        if not isinstance(other, Force) and not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, Force) and not isinstance(other, Surface) and not isinstance(other, float) \
+                and not isinstance(other, int):
             raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
                             f'{other.__class__.__name__}.')
 
         if isinstance(other, Force):
             return self.__value/other.to(self.__unit).value
+        elif isinstance(other, Surface):
+            return Stress(value = self.to('N').value/other.to('m^2').value, unit = 'Pa')
         else:
             return Force(value = self.__value/other, unit = self.__unit)
 
