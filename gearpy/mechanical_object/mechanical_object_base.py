@@ -231,7 +231,12 @@ class MotorBase(RotatingObject):
 class GearBase(RotatingObject):
 
     @abstractmethod
-    def __init__(self, name: str, n_teeth: int, module: Length, inertia_moment: InertiaMoment):
+    def __init__(self,
+                 name: str,
+                 n_teeth: int,
+                 module: Length,
+                 face_width: Length,
+                 inertia_moment: InertiaMoment):
         super().__init__(name = name, inertia_moment = inertia_moment)
 
         if not isinstance(n_teeth, int):
@@ -243,9 +248,13 @@ class GearBase(RotatingObject):
         if not isinstance(module, Length):
             raise TypeError(f"Parameter 'module' must be an instance of {Length.__name__!r}.")
 
+        if not isinstance(face_width, Length):
+            raise TypeError(f"Parameter 'face_width' must be an instance of {Length.__name__!r}.")
+
         self.__n_teeth = n_teeth
         self.__module = module
         self.__reference_diameter = n_teeth*module
+        self.__face_width = face_width
         self.__tangential_force = None
         self.__driven_by = None
         self.__drives = None
@@ -267,6 +276,11 @@ class GearBase(RotatingObject):
     @abstractmethod
     def reference_diameter(self) -> Length:
         return self.__reference_diameter
+
+    @property
+    @abstractmethod
+    def face_width(self) -> Length:
+        return self.__face_width
 
     @property
     @abstractmethod

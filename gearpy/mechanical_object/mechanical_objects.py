@@ -17,6 +17,8 @@ class SpurGear(GearBase):
         Unit of the gear teeth size.
     :py:attr:`reference_diameter` : Length
         Reference diameter of the gear.
+    :py:attr:`face_width` : Length
+        Face width of the gear.
     :py:attr:`driven_by` : RotatingObject
         Rotating object that drives the gear, for example a motor or another gear.
     :py:attr:`drives` : RotatingObject
@@ -54,8 +56,17 @@ class SpurGear(GearBase):
         Updates ``time_variables`` dictionary by appending the last value of each time variable to corresponding list.
     """
 
-    def __init__(self, name: str, n_teeth: int, module: Length, inertia_moment: InertiaMoment):
-        super().__init__(name = name, n_teeth = n_teeth, module = module, inertia_moment = inertia_moment)
+    def __init__(self,
+                 name: str,
+                 n_teeth: int,
+                 module: Length,
+                 face_width: Length,
+                 inertia_moment: InertiaMoment):
+        super().__init__(name = name,
+                         n_teeth = n_teeth,
+                         module = module,
+                         face_width = face_width,
+                         inertia_moment = inertia_moment)
         self.time_variables['tangential force'] = []
 
     @property
@@ -126,6 +137,17 @@ class SpurGear(GearBase):
             Reference diameter of the gear.
         """
         return super().reference_diameter
+
+    @property
+    def face_width(self) -> Length:
+        """Face width of the gear. It must be an instance of ``Length``.
+
+        Returns
+        -------
+        Length
+            Face width of the gear.
+        """
+        return super().face_width
 
     @property
     def driven_by(self) -> RotatingObject:
@@ -566,7 +588,11 @@ class DCMotor(MotorBase):
         Updates ``time_variables`` dictionary by appending the last value of each time variable to corresponding list.
     """
 
-    def __init__(self, name: str, inertia_moment: InertiaMoment, no_load_speed: AngularSpeed, maximum_torque: Torque):
+    def __init__(self,
+                 name: str,
+                 inertia_moment: InertiaMoment,
+                 no_load_speed: AngularSpeed,
+                 maximum_torque: Torque):
         super().__init__(name = name, inertia_moment = inertia_moment)
 
         if not isinstance(no_load_speed, AngularSpeed):
