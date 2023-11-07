@@ -1,9 +1,6 @@
-from math import pi, fabs
+from math import pi
 from typing import Union
 from .unit_base import UnitBase
-
-
-COMPARISON_TOLERANCE = 1e-12
 
 
 class AngularPosition(UnitBase):
@@ -83,54 +80,6 @@ class AngularPosition(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return AngularPosition(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'AngularPosition') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'AngularPosition') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'AngularPosition') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'AngularPosition') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'AngularPosition') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'AngularPosition') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -328,54 +277,6 @@ class AngularSpeed(UnitBase):
         else:
             return AngularSpeed(value = self.__value/other, unit = self.__unit)
 
-    def __eq__(self, other: 'AngularSpeed') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'AngularSpeed') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'AngularSpeed') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'AngularSpeed') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'AngularSpeed') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'AngularSpeed') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
-
     @property
     def value(self) -> Union[float, int]:
         """Angular speed numerical value. The relative unit is expressed by the ``unit`` property.
@@ -572,54 +473,6 @@ class AngularAcceleration(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return AngularAcceleration(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'AngularAcceleration') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'AngularAcceleration') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'AngularAcceleration') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'AngularAcceleration') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'AngularAcceleration') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'AngularAcceleration') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -822,54 +675,6 @@ class InertiaMoment(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return InertiaMoment(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'InertiaMoment') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'InertiaMoment') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'InertiaMoment') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'InertiaMoment') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'InertiaMoment') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'InertiaMoment') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -1082,54 +887,6 @@ class Torque(UnitBase):
         else:
             return Torque(value = self.__value/other, unit = self.__unit)
 
-    def __eq__(self, other: 'Torque') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'Torque') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'Torque') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'Torque') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'Torque') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'Torque') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
-
     @property
     def value(self) -> Union[float, int]:
         """Torque numerical value. The relative unit is expressed by the ``unit`` property.
@@ -1340,54 +1097,6 @@ class Time(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return Time(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'Time') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'Time') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'Time') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'Time') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'Time') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'Time') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -1752,54 +1461,6 @@ class Length(UnitBase):
         else:
             return Length(value = self.__value/other, unit = self.__unit)
 
-    def __eq__(self, other: 'Length') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'Length') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'Length') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'Length') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'Length') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'Length') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
-
     @property
     def value(self) -> Union[float, int]:
         """Length numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
@@ -1990,54 +1651,6 @@ class Surface(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return Surface(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'Surface') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'Surface') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'Surface') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'Surface') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'Surface') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'Surface') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -2232,54 +1845,6 @@ class Force(UnitBase):
         else:
             return Force(value = self.__value/other, unit = self.__unit)
 
-    def __eq__(self, other: 'Force') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'Force') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'Force') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'Force') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'Force') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'Force') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
-
     @property
     def value(self) -> Union[float, int]:
         """Force numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
@@ -2466,54 +2031,6 @@ class Stress(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return Stress(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'Stress') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'Stress') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'Stress') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'Stress') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'Stress') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'Stress') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
