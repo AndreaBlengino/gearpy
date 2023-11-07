@@ -1,6 +1,6 @@
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Time, \
     Torque, UnitBase
-from .mechanical_object_base import RotatingObject, GearBase, MotorBase
+from .mechanical_object_base import RotatingObject, GearBase, MotorBase, lewis_factor_function
 from typing import Callable, Dict, List, Union
 
 
@@ -68,6 +68,7 @@ class SpurGear(GearBase):
                          face_width = face_width,
                          inertia_moment = inertia_moment)
         self.time_variables['tangential force'] = []
+        self.__lewis_factor = lewis_factor_function(self.n_teeth).take(0)
 
     @property
     def name(self) -> str:
@@ -148,6 +149,10 @@ class SpurGear(GearBase):
             Face width of the gear.
         """
         return super().face_width
+
+    @property
+    def lewis_factor(self) -> float:
+        return self.__lewis_factor
 
     @property
     def driven_by(self) -> RotatingObject:

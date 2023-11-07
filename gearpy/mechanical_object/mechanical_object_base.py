@@ -1,7 +1,20 @@
 from abc import ABC, abstractmethod
+from . import gear_data
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Time, \
     Torque, UnitBase
+from importlib import resources as imp_resources
+import pandas as pd
+from scipy.interpolate import interp1d
 from typing import Callable, Dict, List, Union
+
+
+LEWIS_FACTOR_DATA_FILE = (imp_resources.files(gear_data) / 'lewis_factor_table.csv')
+LEWIS_FACTOR_DATA = pd.read_csv(LEWIS_FACTOR_DATA_FILE)
+lewis_factor_function = interp1d(x = LEWIS_FACTOR_DATA['number of teeth'],
+                                 y = LEWIS_FACTOR_DATA['Lewis factor'],
+                                 fill_value = (LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[0], 'Lewis factor'],
+                                               LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[-1], 'Lewis factor']),
+                                 bounds_error = False)
 
 
 class MechanicalObject(ABC):
@@ -281,6 +294,10 @@ class GearBase(RotatingObject):
     @abstractmethod
     def face_width(self) -> Length:
         return self.__face_width
+
+    @property
+    @abstractmethod
+    def lewis_factor(self): ...
 
     @property
     @abstractmethod
