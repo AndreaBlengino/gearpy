@@ -18,19 +18,24 @@ class UnitBase(ABC):
         if not isinstance(unit, str):
             raise TypeError("Parameter 'unit' must be a string.")
 
-    @abstractmethod
-    def __repr__(self): ...
+    def __repr__(self):
+        return f'{self.value} {self.unit}'
 
-    @abstractmethod
+    def __abs__(self):
+        return self.__class__(abs(self.value), self.unit)
+
     def __add__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'It is not allowed to sum a {self.__class__.__name__} and a {other.__class__.__name__}.')
 
-    @abstractmethod
+        return self.__class__(value = self.value + other.to(self.unit).value, unit = self.unit)
+
     def __sub__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} '
                             f'from a {self.__class__.__name__}.')
+
+        return self.__class__(value = self.value - other.to(self.unit).value, unit = self.unit)
 
     @abstractmethod
     def __mul__(self, other: Union[float, int]) -> None: ...

@@ -35,22 +35,6 @@ class AngularPosition(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __abs__(self):
-        return AngularPosition(abs(self.__value), self.__unit)
-
-    def __add__(self, other: 'AngularPosition') -> 'AngularPosition':
-        super().__add__(other = other)
-
-        return AngularPosition(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'AngularPosition') -> 'AngularPosition':
-        super().__sub__(other = other)
-
-        return AngularPosition(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union[float, int]) -> 'AngularPosition':
         super().__mul__(other = other)
 
@@ -225,22 +209,6 @@ class AngularSpeed(UnitBase):
 
         self.__value = value
         self.__unit = unit
-
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __abs__(self):
-        return AngularSpeed(abs(self.__value), self.__unit)
-
-    def __add__(self, other: 'AngularSpeed') -> 'AngularSpeed':
-        super().__add__(other = other)
-
-        return AngularSpeed(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'AngularSpeed') -> 'AngularSpeed':
-        super().__sub__(other = other)
-
-        return AngularSpeed(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
     def __mul__(self, other: Union['Time', float, int]) -> Union['AngularPosition', 'AngularSpeed']:
         super().__mul__(other = other)
@@ -421,22 +389,6 @@ class AngularAcceleration(UnitBase):
 
         self.__value = value
         self.__unit = unit
-
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __abs__(self):
-        return AngularAcceleration(abs(self.__value), self.__unit)
-
-    def __add__(self, other: 'AngularAcceleration') -> 'AngularAcceleration':
-        super().__add__(other = other)
-
-        return AngularAcceleration(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'AngularAcceleration') -> 'AngularAcceleration':
-        super().__sub__(other = other)
-
-        return AngularAcceleration(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
     def __mul__(self, other: Union['Time', float, int]) -> Union['AngularAcceleration', 'AngularSpeed']:
         super().__mul__(other = other)
@@ -620,17 +572,6 @@ class InertiaMoment(UnitBase):
 
         self.__value = value
         self.__unit = unit
-
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __abs__(self):
-        return InertiaMoment(abs(self.__value), self.__unit)
-
-    def __add__(self, other: 'InertiaMoment') -> 'InertiaMoment':
-        super().__add__(other = other)
-
-        return InertiaMoment(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
     def __sub__(self, other: 'InertiaMoment') -> 'InertiaMoment':
         super().__sub__(other = other)
@@ -837,22 +778,6 @@ class Torque(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __abs__(self):
-        return Torque(abs(self.__value), self.__unit)
-
-    def __add__(self, other: 'Torque') -> 'Torque':
-        super().__add__(other = other)
-
-        return Torque(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'Torque') -> 'Torque':
-        super().__sub__(other = other)
-
-        return Torque(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union[float, int]) -> 'Torque':
         super().__mul__(other = other)
 
@@ -1041,22 +966,6 @@ class Time(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __abs__(self):
-        return Time(abs(self.__value), self.__unit)
-
-    def __add__(self, other: 'Time') -> 'Time':
-        super().__add__(other = other)
-
-        return Time(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'Time') -> 'Time':
-        super().__sub__(other = other)
-
-        return Time(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) -> Union['AngularPosition', 'AngularSpeed', 'Time']:
         super().__mul__(other = other)
 
@@ -1230,9 +1139,6 @@ class TimeInterval(Time):
 
         self.__value = value
         self.__unit = unit
-
-    def __abs__(self):
-        return TimeInterval(abs(self.__value), self.__unit)
 
     def __add__(self, other: Union['Time', 'TimeInterval']) -> Union['Time', 'TimeInterval']:
         super().__add__(other = other)
@@ -1412,19 +1318,11 @@ class Length(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __abs__(self):
-        return Length(abs(self.__value), self.__unit)
-
-    def __add__(self, other: 'Length') -> 'Length':
-        super().__add__(other = other)
-
-        return Length(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
     def __sub__(self, other: 'Length') -> 'Length':
         super().__sub__(other = other)
+
+        if self.__value - other.to(self.__unit).value <= 0:
+            raise ValueError('Cannot perform the subtraction because the result is not positive.')
 
         return Length(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
@@ -1606,19 +1504,11 @@ class Surface(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __abs__(self):
-        return Surface(abs(self.__value), self.__unit)
-
-    def __add__(self, other: 'Surface') -> 'Surface':
-        super().__add__(other = other)
-
-        return Surface(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
     def __sub__(self, other: 'Surface') -> 'Surface':
         super().__sub__(other = other)
+
+        if self.__value - other.to(self.__unit).value <= 0:
+            raise ValueError('Cannot perform the subtraction because the result is not positive.')
 
         return Surface(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
@@ -1796,22 +1686,6 @@ class Force(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __abs__(self):
-        return Force(abs(self.__value), self.__unit)
-
-    def __add__(self, other: 'Force') -> 'Force':
-        super().__add__(other = other)
-
-        return Force(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'Force') -> 'Force':
-        super().__sub__(other = other)
-
-        return Force(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union[float, int]) -> 'Force':
         super().__mul__(other = other)
 
@@ -1985,22 +1859,6 @@ class Stress(UnitBase):
 
         self.__value = value
         self.__unit = unit
-
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __abs__(self):
-        return Stress(abs(self.__value), self.__unit)
-
-    def __add__(self, other: 'Stress') -> 'Stress':
-        super().__add__(other = other)
-
-        return Stress(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'Stress') -> 'Stress':
-        super().__sub__(other = other)
-
-        return Stress(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
     def __mul__(self, other: Union[float, int]) -> 'Stress':
         super().__mul__(other = other)
