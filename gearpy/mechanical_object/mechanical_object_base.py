@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from . import gear_data
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Time, \
-    Torque, UnitBase
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Stress, \
+    Time, Torque, UnitBase
 from importlib import resources as imp_resources
 import pandas as pd
 from scipy.interpolate import interp1d
@@ -275,6 +275,7 @@ class GearBase(RotatingObject):
         self.__master_gear_ratio = None
         self.__master_gear_efficiency = 1
         self.__external_torque = None
+        self.__bending_stress = None
 
     @property
     @abstractmethod
@@ -401,6 +402,22 @@ class GearBase(RotatingObject):
 
     @abstractmethod
     def compute_tangential_force(self): ...
+
+    @property
+    @abstractmethod
+    def bending_stress(self) -> Stress:
+        return self.__bending_stress
+
+    @bending_stress.setter
+    @abstractmethod
+    def bending_stress(self, bending_stress: Stress):
+        if not isinstance(bending_stress, Stress):
+            raise TypeError(f"Parameter 'bending_stress' must be an instance of {Stress.__name__!r}.")
+
+        self.__bending_stress = bending_stress
+
+    @abstractmethod
+    def compute_bending_stress(self): ...
 
     @property
     @abstractmethod

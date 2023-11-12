@@ -1,5 +1,5 @@
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Time, \
-    Torque, UnitBase
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Stress, \
+    Time, Torque, UnitBase
 from .mechanical_object_base import RotatingObject, GearBase, MotorBase, lewis_factor_function
 from typing import Callable, Dict, List, Union
 
@@ -68,6 +68,7 @@ class SpurGear(GearBase):
                          face_width = face_width,
                          inertia_moment = inertia_moment)
         self.time_variables['tangential force'] = []
+        self.time_variables['bending stress'] = []
         self.__lewis_factor = lewis_factor_function(self.n_teeth).take(0)
 
     @property
@@ -398,7 +399,7 @@ class SpurGear(GearBase):
         Returns
         -------
         Force
-            Tangential force appliced on the gear teeth by the mating gear.
+            Tangential force applied on the gear teeth by the mating gear.
 
         Raises
         ------
@@ -434,6 +435,67 @@ class SpurGear(GearBase):
             self.tangential_force = abs(self.load_torque)/(self.reference_diameter/2)
         else:
             self.tangential_force = abs(self.driving_torque)/(self.reference_diameter/2)
+
+    @property
+    def bending_stress(self) -> Stress:
+        """Bending stress applied on the gear teeth by the mating gear. It must be an instance of ``Stress``.
+
+        Returns
+        -------
+        Stress
+            Bending stress applied on the gear teeth by the mating gear.
+
+        Raises
+        ------
+        TypeError
+            If ``bending_stress`` is not an instance of ``Stress``.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Stress`
+        :py:meth:`compute_bending_stress`
+        """
+        return super().bending_stress
+
+    @bending_stress.setter
+    def bending_stress(self, bending_stress: Stress):
+        super(SpurGear, type(self)).bending_stress.fset(self, bending_stress)
+
+    def compute_bending_stress(self):
+        r"""Computes the bending stress applied on the gear teeth by the mating gear.
+
+        Notes
+        -----
+        The bending stress computation is based on the following assumptions:
+
+        - the tooth is stressed by the overall force acting on the tip of the tooth itself,
+        - the most unfavorable situation is considered in the calculation, as if there is only one pair of teeth in
+          contact within the contact segment,
+        - the component of the overall force that determines the bending on the tooth is the only one considered and,
+          for simplicity, is taken as having a value equal to the tangential force on the reference diameter,
+        - the radial component of the overall force that causes a compressive stress on the tooth is neglected.
+
+        The bending stress is computed with the following formula:
+
+        .. math::
+            \sigma_b = \frac{F_t}{m \, b \, Y_{LW}}
+
+        where:
+
+        - :math:`F_t` is the tangential force applied on the tooth
+        - :math:`m` is the gear module
+        - :math:`b` is the gear face width
+        - :math:`Y_{LW}` is the gear Lewis factor
+
+        See Also
+        --------
+        :py:attr:`bending_stress`
+        :py:attr:`tangential_force`
+        :py:attr:`module`
+        :py:attr:`face_width`
+        :py:attr:`lewis_factor`
+        """
+        self.bending_stress = self.tangential_force/(self.module*self.face_width)/self.lewis_factor
 
     @property
     def inertia_moment(self) -> InertiaMoment:
@@ -524,7 +586,8 @@ class SpurGear(GearBase):
             - ``torque``,
             - ``driving_torque``,
             - ``load_torque``,
-            - ``tangential_force``.
+            - ``tangential_force``,
+            - ``bending_stress``.
 
         Corresponding values of the dictionary are lists of the respective time variable values. \n
         At each time iteration, the ``Solver`` appends every time variables' values to the relative list in the
@@ -545,7 +608,7 @@ class SpurGear(GearBase):
         """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
         dictionary) to corresponding list (value of the dictionary). \n
         Time variables are ``angular_position``, ``angular_speed``, ``angular_acceleration``, ``torque``,
-        ``driving_torque``, ``load_torque`` and ``tangential_force`` of the gear.
+        ``driving_torque``, ``load_torque``, ``tangential_force`` and ``bending_stress`` of the gear.
 
         See Also
         --------
@@ -553,6 +616,7 @@ class SpurGear(GearBase):
         """
         super().update_time_variables()
         self.time_variables['tangential force'].append(self.tangential_force)
+        self.time_variables['bending stress'].append(self.bending_stress)
 
 
 class DCMotor(MotorBase):
