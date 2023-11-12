@@ -281,6 +281,7 @@ class GearBase(RotatingObject):
         self.__master_gear_efficiency = 1
         self.__external_torque = None
         self.__bending_stress = None
+        self.__contact_stress = None
 
     @property
     @abstractmethod
@@ -428,6 +429,22 @@ class GearBase(RotatingObject):
 
     @abstractmethod
     def compute_bending_stress(self): ...
+
+    @property
+    @abstractmethod
+    def contact_stress(self) -> Stress:
+        return self.__contact_stress
+
+    @contact_stress.setter
+    @abstractmethod
+    def contact_stress(self, contact_stress: Stress):
+        if not isinstance(contact_stress, Stress):
+            raise TypeError(f"Parameter 'contact_stress' must be an instance of {Stress.__name__!r}.")
+
+        self.__contact_stress = contact_stress
+
+    @abstractmethod
+    def compute_contact_stress(self): ...
 
     @property
     @abstractmethod
