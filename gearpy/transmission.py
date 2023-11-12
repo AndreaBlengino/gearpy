@@ -223,7 +223,8 @@ class Transmission:
                                        f'driving torque ({driving_torque_unit})',
                                        f'load torque ({load_torque_unit})',
                                        f'tangential force ({force_unit})',
-                                       f'bending stress ({stress_unit})'])
+                                       f'bending stress ({stress_unit})',
+                                       f'contact stress ({stress_unit})'])
 
         for element in self.chain:
             for variable, unit in zip(['angular position', 'angular speed', 'angular acceleration',
@@ -236,7 +237,8 @@ class Transmission:
                 data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
 
             if isinstance(element, GearBase):
-                for variable, unit in zip(['tangential force', 'bending stress'], [force_unit, stress_unit]):
+                for variable, unit in zip(['tangential force', 'bending stress', 'contact stress'],
+                                          [force_unit, stress_unit, stress_unit]):
                     interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
                                                       y = [value.to(unit).value
                                                            for value in element.time_variables[variable]])
