@@ -22,6 +22,7 @@ SpurGear
    driven_by
    drives
    driving_torque
+   elastic_modulus
    external_torque
    inertia_moment
    load_torque
