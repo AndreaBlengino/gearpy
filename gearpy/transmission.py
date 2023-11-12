@@ -115,6 +115,7 @@ class Transmission:
                  driving_torque_unit: str = 'Nm',
                  load_torque_unit: str = 'Nm',
                  force_unit: str = 'N',
+                 stress_unit: str = 'MPa',
                  print_data: bool = True) -> pd.DataFrame:
         """Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
         ``target_time``. The computed time variables are organized in a ``pandas.DataFrame``, returned by the method.
@@ -150,6 +151,9 @@ class Transmission:
         force_unit : str, optional
             Symbol of the unit of measurement to which convert the force values in the plot. It must be a string.
             Default is ``'N'``.
+        stress_unit : str, optional
+            Symbol of the unit of measurement to which convert the stress values in the plot. It must be a string.
+            Default is ``'MPa'``.
         print_data : bool, optional
             Whether or not to print the computed time variables DataFrame. Default is ``True``.
 
@@ -171,6 +175,7 @@ class Transmission:
             - if ``driving_torque_unit`` is not a string,
             - if ``load_torque_unit`` is not a string,
             - if ``force_unit`` is not a string,
+            - if ``stress_unit`` is not a string,
             - if ``print_data`` is not a bool.
         ValueError
             If ``time`` is an empty list.
@@ -205,6 +210,9 @@ class Transmission:
         if not isinstance(force_unit, str):
             raise TypeError(f"Parameter 'force_unit' must be a string.")
 
+        if not isinstance(stress_unit, str):
+            raise TypeError(f"Parameter 'stress_unit' must be a string.")
+
         if not isinstance(print_data, bool):
             raise TypeError(f"Parameter 'print_data' must be a bool.")
 
@@ -214,7 +222,8 @@ class Transmission:
                                        f'torque ({torque_unit})',
                                        f'driving torque ({driving_torque_unit})',
                                        f'load torque ({load_torque_unit})',
-                                       f'tangential force ({force_unit})'])
+                                       f'tangential force ({force_unit})',
+                                       f'bending stress ({stress_unit})'])
 
         for element in self.chain:
             for variable, unit in zip(['angular position', 'angular speed', 'angular acceleration',
@@ -227,7 +236,7 @@ class Transmission:
                 data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
 
             if isinstance(element, GearBase):
-                for variable, unit in zip(['tangential force'], [force_unit]):
+                for variable, unit in zip(['tangential force', 'bending stress'], [force_unit, stress_unit]):
                     interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
                                                       y = [value.to(unit).value
                                                            for value in element.time_variables[variable]])
