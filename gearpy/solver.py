@@ -85,6 +85,7 @@ class Solver:
             self._compute_load_torque()
             self._compute_torque()
             self._compute_force()
+            self._compute_stress()
             self._time_integration()
             self._update_time_variables()
 
@@ -106,6 +107,7 @@ class Solver:
         self._compute_load_torque()
         self._compute_torque()
         self._compute_force()
+        self._compute_stress()
 
         self.transmission.chain[-1].angular_acceleration = self.transmission.chain[-1].torque/\
                                                            self.transmission_inertia_moment
@@ -171,6 +173,12 @@ class Solver:
         for item in self.transmission.chain:
             if isinstance(item, GearBase):
                 item.compute_tangential_force()
+
+    def _compute_stress(self):
+
+        for item in self.transmission.chain:
+            if isinstance(item, GearBase):
+                item.compute_bending_stress()
 
     def _time_integration(self):
 
