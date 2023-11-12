@@ -250,7 +250,8 @@ class GearBase(RotatingObject):
                  n_teeth: int,
                  module: Length,
                  face_width: Length,
-                 inertia_moment: InertiaMoment):
+                 inertia_moment: InertiaMoment,
+                 elastic_modulus: Stress):
         super().__init__(name = name, inertia_moment = inertia_moment)
 
         if not isinstance(n_teeth, int):
@@ -265,10 +266,14 @@ class GearBase(RotatingObject):
         if not isinstance(face_width, Length):
             raise TypeError(f"Parameter 'face_width' must be an instance of {Length.__name__!r}.")
 
+        if not isinstance(elastic_modulus, Stress):
+            raise TypeError(f"Parameter 'elastic_modulus' must be an instance of {Stress.__name__!r}.")
+
         self.__n_teeth = n_teeth
         self.__module = module
         self.__reference_diameter = n_teeth*module
         self.__face_width = face_width
+        self.__elastic_modulus = elastic_modulus
         self.__tangential_force = None
         self.__driven_by = None
         self.__drives = None
@@ -296,6 +301,11 @@ class GearBase(RotatingObject):
     @abstractmethod
     def face_width(self) -> Length:
         return self.__face_width
+
+    @property
+    @abstractmethod
+    def elastic_modulus(self) -> Stress:
+        return self.__elastic_modulus
 
     @property
     @abstractmethod

@@ -61,12 +61,14 @@ class SpurGear(GearBase):
                  n_teeth: int,
                  module: Length,
                  face_width: Length,
-                 inertia_moment: InertiaMoment):
+                 inertia_moment: InertiaMoment,
+                 elastic_modulus: Stress):
         super().__init__(name = name,
                          n_teeth = n_teeth,
                          module = module,
                          face_width = face_width,
-                         inertia_moment = inertia_moment)
+                         inertia_moment = inertia_moment,
+                         elastic_modulus = elastic_modulus)
         self.time_variables['tangential force'] = []
         self.time_variables['bending stress'] = []
         self.__lewis_factor = lewis_factor_function(self.n_teeth).take(0)
@@ -150,6 +152,17 @@ class SpurGear(GearBase):
             Face width of the gear.
         """
         return super().face_width
+
+    @property
+    def elastic_modulus(self) -> Stress:
+        """Elastic modulus of the material of the gear. It must be an instance of ``Stress``.
+
+        Returns
+        -------
+        Stress
+            Elastic modulus of the material of the gear.
+        """
+        return super().elastic_modulus
 
     @property
     def lewis_factor(self) -> float:
