@@ -18,7 +18,9 @@ SpurGear
    angular_speed
    bending_stress
    compute_bending_stress
+   compute_contact_stress
    compute_tangential_force
+   contact_stress
    driven_by
    drives
    driving_torque
