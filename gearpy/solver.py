@@ -179,6 +179,7 @@ class Solver:
         for item in self.transmission.chain:
             if isinstance(item, GearBase):
                 item.compute_bending_stress()
+                item.compute_contact_stress()
 
     def _time_integration(self):
 
