@@ -408,7 +408,8 @@ class Transmission:
             variables = list(set(variables))
 
         SORT_ORDER = {'angular position': 0, 'angular speed': 1, 'angular acceleration': 2,
-                      'torque': 3, 'driving torque': 4, 'load torque': 5, 'tangential force': 6, 'bending stress': 7}
+                      'torque': 3, 'driving torque': 4, 'load torque': 5, 'tangential force': 6, 'bending stress': 7,
+                      'contact stress': 8}
         variables.sort(key = lambda variable: SORT_ORDER[variable])
 
         kinematic_variables = [variable for variable in variables
@@ -437,7 +438,7 @@ class Transmission:
         UNITS = {'angular position': angular_position_unit, 'angular speed': angular_speed_unit,
                  'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
                  'driving torque': torque_unit, 'load torque': torque_unit, 'tangential force': force_unit,
-                 'bending stress': stress_unit}
+                 'bending stress': stress_unit, 'contact stress': stress_unit}
 
         fig, ax = plt.subplots(nrows = n_variables, ncols = n_elements, sharex = 'all',
                                layout = 'constrained', figsize = figsize)
@@ -468,9 +469,11 @@ class Transmission:
                                                        for variable_value in item.time_variables[variable]])
 
                 for variable in stress_variables:
+                    label = variable.replace(' stress', '')
                     axes[stress_variables_index].plot(time_values,
                                                       [variable_value.to(UNITS[variable]).value
-                                                       for variable_value in item.time_variables[variable]])
+                                                       for variable_value in item.time_variables[variable]],
+                                                      label = label)
             else:
                 if forces_variables:
                     axes[forces_variables_index].axis('off')
@@ -517,6 +520,7 @@ class Transmission:
                     else:
                         axes = [ax[i]] if n_elements > 1 else [ax]
                     axes[stress_variables_index].set_ylabel(f'stress ({stress_unit})')
+                    axes[stress_variables_index].legend(title = 'stress', frameon = True)
                     break
 
         if n_elements > 1 or n_variables > 1:
