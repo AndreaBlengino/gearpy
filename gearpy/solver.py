@@ -172,14 +172,17 @@ class Solver:
 
         for item in self.transmission.chain:
             if isinstance(item, GearBase):
-                item.compute_tangential_force()
+                if item.tangential_force_is_computable:
+                    item.compute_tangential_force()
 
     def _compute_stress(self):
 
         for item in self.transmission.chain:
             if isinstance(item, GearBase):
-                item.compute_bending_stress()
-                item.compute_contact_stress()
+                if item.bending_stress_is_computable:
+                    item.compute_bending_stress()
+                    if item.contact_stress_is_computable:
+                        item.compute_contact_stress()
 
     def _time_integration(self):
 
