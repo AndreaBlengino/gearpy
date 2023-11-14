@@ -2,7 +2,7 @@ from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, For
     Time, Torque, UnitBase
 from math import pi, sin, cos, sqrt
 from .mechanical_object_base import RotatingObject, GearBase, MotorBase, lewis_factor_function
-from typing import Callable, Dict, List, Union
+from typing import Callable, Dict, List, Union, Optional
 
 
 class SpurGear(GearBase):
@@ -60,21 +60,27 @@ class SpurGear(GearBase):
     def __init__(self,
                  name: str,
                  n_teeth: int,
-                 module: Length,
-                 face_width: Length,
                  inertia_moment: InertiaMoment,
-                 elastic_modulus: Stress):
+                 module: Optional[Length] = None,
+                 face_width: Optional[Length] = None,
+                 elastic_modulus: Optional[Stress] = None):
         super().__init__(name = name,
                          n_teeth = n_teeth,
                          module = module,
                          face_width = face_width,
                          inertia_moment = inertia_moment,
                          elastic_modulus = elastic_modulus)
-        self.time_variables['tangential force'] = []
-        self.time_variables['bending stress'] = []
-        self.time_variables['contact stress'] = []
-        self.__lewis_factor = lewis_factor_function(self.n_teeth).take(0)
-        self.__PRESSURE_ANGLE = 20/180*pi
+
+        if self.tangential_force_is_computable:
+            self.time_variables['tangential force'] = []
+
+            if self.bending_stress_is_computable:
+                self.time_variables['bending stress'] = []
+                self.__lewis_factor = lewis_factor_function(self.n_teeth).take(0)
+
+                if self.contact_stress_is_computable:
+                    self.time_variables['contact stress'] = []
+                    self.__PRESSURE_ANGLE = 20/180*pi
 
     @property
     def name(self) -> str:
@@ -95,6 +101,48 @@ class SpurGear(GearBase):
             If ``name`` is an empty string.
         """
         return super().name
+
+    @property
+    def tangential_force_is_computable(self) -> bool:
+        """Whether or not is possible to compute the tangential force on the gear teeth. The tangential force
+        computation depends on the value of ``module``, so if this optional parameter has been set at spur gear
+        instantiation, then it is possible to compute the tangential force and this property is ``True``, otherwise is
+        ``False``.
+
+        Returns
+        -------
+        bool
+            Whether or not is possible to compute the tangential force on the gear teeth.
+        """
+        return super().tangential_force_is_computable
+
+    @property
+    def bending_stress_is_computable(self) -> bool:
+        """Whether or not is possible to compute the bending stress on the gear teeth. The bending stress computation
+        depends on the value of ``module`` and ``face_width``, so if these optional parameters have been set at spur
+        gear instantiation, then it is possible to compute the bending stress and this property is ``True``, otherwise
+        is ``False``.
+
+        Returns
+        -------
+        bool
+            Whether or not is possible to compute the bending stress on the gear teeth.
+        """
+        return super().bending_stress_is_computable
+
+    @property
+    def contact_stress_is_computable(self) -> bool:
+        """Whether or not is possible to compute the contact stress force on the gear teeth. The contact stress
+        computation depends on the value of ``module``, ``face_width`` and ``elastic_modulus``, so if these optional
+        parameters have been set at spur gear instantiation, then it is possible to compute the contact stress and this
+        property is ``True``, otherwise is ``False``.
+
+        Returns
+        -------
+        bool
+            Whether or not is possible to compute the contact stress on the gear teeth.
+        """
+        return super().contact_stress_is_computable
 
     @property
     def n_teeth(self) -> int:
@@ -707,9 +755,14 @@ class SpurGear(GearBase):
         :py:attr:`time_variables`
         """
         super().update_time_variables()
-        self.time_variables['tangential force'].append(self.tangential_force)
-        self.time_variables['bending stress'].append(self.bending_stress)
-        self.time_variables['contact stress'].append(self.contact_stress)
+        if self.tangential_force_is_computable:
+            self.time_variables['tangential force'].append(self.tangential_force)
+
+            if self.bending_stress_is_computable:
+                self.time_variables['bending stress'].append(self.bending_stress)
+
+                if self.contact_stress_is_computable:
+                    self.time_variables['contact stress'].append(self.contact_stress)
 
 
 class DCMotor(MotorBase):

@@ -260,28 +260,52 @@ class GearBase(RotatingObject):
         if n_teeth < MINIMUM_TEETH_NUMBER:
             raise ValueError(f"Parameter 'n_teeth' must be greater or equal to {MINIMUM_TEETH_NUMBER}.")
 
-        if not isinstance(module, Length):
-            raise TypeError(f"Parameter 'module' must be an instance of {Length.__name__!r}.")
+        if module is not None:
+            if not isinstance(module, Length):
+                raise TypeError(f"Parameter 'module' must be an instance of {Length.__name__!r}.")
 
-        if not isinstance(face_width, Length):
-            raise TypeError(f"Parameter 'face_width' must be an instance of {Length.__name__!r}.")
+        if face_width is not None:
+            if not isinstance(face_width, Length):
+                raise TypeError(f"Parameter 'face_width' must be an instance of {Length.__name__!r}.")
 
-        if not isinstance(elastic_modulus, Stress):
-            raise TypeError(f"Parameter 'elastic_modulus' must be an instance of {Stress.__name__!r}.")
+        if elastic_modulus is not None:
+            if not isinstance(elastic_modulus, Stress):
+                raise TypeError(f"Parameter 'elastic_modulus' must be an instance of {Stress.__name__!r}.")
 
         self.__n_teeth = n_teeth
-        self.__module = module
-        self.__reference_diameter = n_teeth*module
-        self.__face_width = face_width
-        self.__elastic_modulus = elastic_modulus
-        self.__tangential_force = None
         self.__driven_by = None
         self.__drives = None
         self.__master_gear_ratio = None
         self.__master_gear_efficiency = 1
         self.__external_torque = None
-        self.__bending_stress = None
-        self.__contact_stress = None
+        self.__module = module
+        self.__face_width = face_width
+        self.__elastic_modulus = elastic_modulus
+
+        if self.tangential_force_is_computable:
+            self.__reference_diameter = n_teeth*module
+            self.__tangential_force = None
+
+            if self.bending_stress_is_computable:
+                self.__bending_stress = None
+
+                if self.contact_stress_is_computable:
+                    self.__contact_stress = None
+
+    @property
+    @abstractmethod
+    def tangential_force_is_computable(self) -> bool:
+        return self.__module is not None
+
+    @property
+    @abstractmethod
+    def bending_stress_is_computable(self) -> bool:
+        return self.__face_width is not None
+
+    @property
+    @abstractmethod
+    def contact_stress_is_computable(self) -> bool:
+        return self.__elastic_modulus is not None
 
     @property
     @abstractmethod
