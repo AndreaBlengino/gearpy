@@ -365,7 +365,10 @@ class Transmission:
             if not variables:
                 raise ValueError("Parameter 'variables' cannot be an empty list.")
 
-            valid_variables = list(self.chain[-1].time_variables.keys())
+            valid_variables = []
+            for element in self.chain:
+                valid_variables.extend(element.time_variables.keys())
+            valid_variables = list(set(valid_variables))
             for variable in variables:
                 if not isinstance(variable, str):
                     raise TypeError("Each element of 'variables' must be a string.")
@@ -474,17 +477,30 @@ class Transmission:
                                                    label = label)
 
             if isinstance(item, GearBase):
-                for variable in forces_variables:
-                    axes[forces_variables_index].plot(time_values,
-                                                      [variable_value.to(UNITS[variable]).value
-                                                       for variable_value in item.time_variables[variable]])
+                if item.tangential_force_is_computable:
+                    for variable in forces_variables:
+                        axes[forces_variables_index].plot(time_values,
+                                                          [variable_value.to(UNITS[variable]).value
+                                                           for variable_value in item.time_variables[variable]])
 
-                for variable in stress_variables:
-                    label = variable.replace(' stress', '')
-                    axes[stress_variables_index].plot(time_values,
-                                                      [variable_value.to(UNITS[variable]).value
-                                                       for variable_value in item.time_variables[variable]],
-                                                      label = label)
+                    for variable in stress_variables:
+                        if (variable == 'bending stress' and item.bending_stress_is_computable) or \
+                                (variable == 'contact stress' and item.contact_stress_is_computable):
+                            axes[stress_variables_index].plot(time_values,
+                                                              [variable_value.to(UNITS[variable]).value
+                                                               for variable_value in item.time_variables[variable]],
+                                                              label = variable.replace('stress', '').replace(' ', ''))
+
+                        else:
+                            if stress_variables:
+                                axes[stress_variables_index].axis('off')
+
+                else:
+                    if forces_variables:
+                        axes[forces_variables_index].axis('off')
+                    if stress_variables:
+                        axes[stress_variables_index].axis('off')
+
             else:
                 if forces_variables:
                     axes[forces_variables_index].axis('off')
@@ -492,10 +508,17 @@ class Transmission:
                     axes[stress_variables_index].axis('off')
 
             last_row_index = n_variables - 1
-            if not isinstance(item, GearBase) and n_variables >= 2:
+            if not isinstance(item, GearBase):
                 if forces_variables:
                     last_row_index -= 1
                 if stress_variables:
+                    last_row_index -= 1
+            else:
+                if forces_variables and not item.tangential_force_is_computable:
+                    last_row_index -= 1
+                if stress_variables and \
+                        (not item.bending_stress_is_computable or 'bending stress' not in stress_variables) and \
+                        (not item.contact_stress_is_computable or 'contact stress' not in stress_variables):
                     last_row_index -= 1
 
             axes[last_row_index].set_xlabel(f'time ({time_unit})')
@@ -516,23 +539,25 @@ class Transmission:
         if forces_variables:
             for i, item in enumerate(elements, 0):
                 if isinstance(item, GearBase):
-                    if n_variables > 1:
-                        axes = ax[:, i] if n_elements > 1 else ax
-                    else:
-                        axes = [ax[i]] if n_elements > 1 else [ax]
-                    axes[forces_variables_index].set_ylabel(f'force ({force_unit})')
-                    break
+                    if item.tangential_force_is_computable:
+                        if n_variables > 1:
+                            axes = ax[:, i] if n_elements > 1 else ax
+                        else:
+                            axes = [ax[i]] if n_elements > 1 else [ax]
+                        axes[forces_variables_index].set_ylabel(f'force ({force_unit})')
+                        break
 
         if stress_variables:
             for i, item in enumerate(elements, 0):
                 if isinstance(item, GearBase):
-                    if n_variables > 1:
-                        axes = ax[:, i] if n_elements > 1 else ax
-                    else:
-                        axes = [ax[i]] if n_elements > 1 else [ax]
-                    axes[stress_variables_index].set_ylabel(f'stress ({stress_unit})')
-                    axes[stress_variables_index].legend(title = 'stress', frameon = True)
-                    break
+                    if item.bending_stress_is_computable:
+                        if n_variables > 1:
+                            axes = ax[:, i] if n_elements > 1 else ax
+                        else:
+                            axes = [ax[i]] if n_elements > 1 else [ax]
+                        axes[stress_variables_index].set_ylabel(f'stress ({stress_unit})')
+                        axes[stress_variables_index].legend(title = 'stress', frameon = True)
+                        break
 
         if n_elements > 1 or n_variables > 1:
             for axi in ax.flatten():
