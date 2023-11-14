@@ -41,9 +41,10 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
     if efficiency > 1 or efficiency < 0:
         raise ValueError("Parameter 'efficiency' must be within 0 and 1.")
 
-    if master.module != slave.module:
-        raise ValueError(f"Gears {master.name!r} and {slave.name!r} have different modules, "
-                         f"so they cannot mate together.")
+    if master.module is not None and slave.module is not None:
+        if master.module != slave.module:
+            raise ValueError(f"Gears {master.name!r} and {slave.name!r} have different modules, "
+                             f"so they cannot mate together.")
 
     master.drives = slave
     slave.driven_by = master
