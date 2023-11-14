@@ -237,8 +237,19 @@ class Transmission:
                 data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
 
             if isinstance(element, GearBase):
-                for variable, unit in zip(['tangential force', 'bending stress', 'contact stress'],
-                                          [force_unit, stress_unit, stress_unit]):
+                variable_list = []
+                unit_list  = []
+                if element.tangential_force_is_computable:
+                    variable_list.append('tangential force')
+                    unit_list.append(force_unit)
+                    if element.bending_stress_is_computable:
+                        variable_list.append('bending stress')
+                        unit_list.append(stress_unit)
+                        if element.contact_stress_is_computable:
+                            variable_list.append('contact stress')
+                            unit_list.append(stress_unit)
+
+                for variable, unit in zip(variable_list, unit_list):
                     interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
                                                       y = [value.to(unit).value
                                                            for value in element.time_variables[variable]])
