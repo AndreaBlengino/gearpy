@@ -1,4 +1,4 @@
-from gearpy.units import Length
+from gearpy.units import Length, Surface
 from hypothesis.strategies import floats, sampled_from, one_of, booleans
 from hypothesis import given, settings
 from tests.test_units.test_length.conftest import basic_length, lengths
@@ -138,15 +138,21 @@ class TestLengthMul:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
-           multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
+           multiplier = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
+                               lengths()))
     @settings(max_examples = 100)
     def test_method(self, value, unit, multiplier):
         length = Length(value = value, unit = unit)
         result = length*multiplier
 
-        assert isinstance(result, Length)
-        assert result.value == length.value*multiplier
-        assert result.unit == length.unit
+        if isinstance(multiplier, Length):
+            assert isinstance(result, Surface)
+            assert result.value == length.to('m').value*multiplier.to('m').value
+            assert result.unit == 'm^2'
+        else:
+            assert isinstance(result, Length)
+            assert result.value == length.value*multiplier
+            assert result.unit == length.unit
 
 
     @mark.error

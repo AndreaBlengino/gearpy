@@ -1,7 +1,8 @@
-from gearpy.units import Force
+from gearpy.units import Force, Surface, Stress
 from hypothesis.strategies import floats, sampled_from, one_of, booleans
 from hypothesis import given, settings
 from tests.test_units.test_force.conftest import basic_force, forces
+from tests.test_units.test_surface.conftest import surfaces
 from pytest import mark, raises
 
 
@@ -174,22 +175,29 @@ class TestForceTruediv:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
-                            forces()))
+                            forces(),
+                            surfaces()))
     @settings(max_examples = 100)
     def test_method(self, value, unit, divider):
-        torque = Force(value = value, unit = unit)
+        force = Force(value = value, unit = unit)
 
         if isinstance(divider, Force):
             if abs(divider.value) >= 1e-300:
-                result = torque/divider
+                result = force/divider
                 assert isinstance(result, float)
-                assert result == torque.value/divider.to(unit).value
+                assert result == force.value/divider.to(unit).value
+        elif isinstance(divider, Surface):
+            if abs(divider.value) >= 1e-300:
+                result = force/divider
+                assert isinstance(result, Stress)
+                assert result.value == force.to('N').value/divider.to('m^2').value
+                assert result.unit == 'Pa'
         else:
             if divider != 0:
-                result = torque/divider
+                result = force/divider
                 assert isinstance(result, Force)
-                assert result.value == torque.value/divider
-                assert result.unit == torque.unit
+                assert result.value == force.value/divider
+                assert result.unit == force.unit
 
 
     @mark.error

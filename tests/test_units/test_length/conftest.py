@@ -10,7 +10,7 @@ basic_length = Length(1, 'm')
 
 @composite
 def lengths(draw):
-    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000))
+    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     unit = draw(sampled_from(elements = list(Length._Length__UNITS.keys())))
 
     return Length(value = value, unit = unit)
@@ -38,14 +38,15 @@ def length_sub_type_error(request):
     return request.param
 
 
-@fixture(params = [type_to_check for type_to_check in types_to_check
-                   if not isinstance(type_to_check, float) and not isinstance(type_to_check, int)])
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
+                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, Length)])
 def length_mul_type_error(request):
     return request.param
 
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
-                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, np.ndarray)])
+                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, np.ndarray)
+                   and not isinstance(type_to_check, Length)])
 def length_rmul_type_error(request):
     return request.param
 

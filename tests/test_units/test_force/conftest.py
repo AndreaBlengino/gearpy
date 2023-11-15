@@ -1,4 +1,4 @@
-from gearpy.units import Force
+from gearpy.units import Force, Surface
 from hypothesis.strategies import composite, floats, sampled_from
 import numpy as np
 from tests.conftest import types_to_check
@@ -51,7 +51,8 @@ def force_rmul_type_error(request):
 
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
-                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, Force)])
+                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, Force)
+                   and not isinstance(type_to_check, Surface)])
 def force_truediv_type_error(request):
     return request.param
 

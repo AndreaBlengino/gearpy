@@ -1,7 +1,8 @@
 from gearpy.mechanical_object import SpurGear, DCMotor, Flywheel
 from gearpy.solver import Solver
 from gearpy.transmission import Transmission
-from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Force, InertiaMoment, Length, Torque, Time, TimeInterval
+from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Force, InertiaMoment, Length, Stress, \
+    Surface, Time, TimeInterval, Torque
 from gearpy.utils import add_fixed_joint, add_gear_mating
 from hypothesis.strategies import composite, text, integers, floats, lists, sampled_from, shared, builds, characters
 import numpy as np
@@ -40,8 +41,8 @@ basic_solver.run()
 
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
                   AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'), AngularAcceleration(1, 'rad/s^2'), Force(1, 'N'),
-                  InertiaMoment(1, 'kgm^2'), Length(1, 'm'), Torque(1, 'Nm'), Time(1, 'sec'), TimeInterval(1, 'sec'),
-                  basic_dc_motor, basic_spur_gear, basic_flywheel]
+                  InertiaMoment(1, 'kgm^2'), Length(1, 'm'), Stress(1, 'Pa'), Surface(1, 'm^2'), Time(1, 'sec'),
+                  TimeInterval(1, 'sec'), Torque(1, 'Nm'), basic_dc_motor, basic_spur_gear, basic_flywheel]
 
 
 @composite

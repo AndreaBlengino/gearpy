@@ -10,7 +10,7 @@ basic_surface = Surface(1, 'm^2')
 
 @composite
 def surfaces(draw):
-    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000))
+    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     unit = draw(sampled_from(elements = list(Surface._Surface__UNITS.keys())))
 
     return Surface(value = value, unit = unit)
