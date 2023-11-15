@@ -35,7 +35,11 @@ class UnitBase(ABC):
             raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} '
                             f'from a {self.__class__.__name__}.')
 
-        return self.__class__(value = self.value - other.to(self.unit).value, unit = self.unit)
+        try:
+            return self.__class__(value = self.value - other.to(self.unit).value, unit = self.unit)
+        except ValueError:
+            if self.value - other.to(self.unit).value <= 0:
+                raise ValueError('Cannot perform the subtraction because the result is not positive.')
 
     @abstractmethod
     def __mul__(self, other: Union[float, int]) -> None: ...

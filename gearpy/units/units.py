@@ -573,14 +573,6 @@ class InertiaMoment(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __sub__(self, other: 'InertiaMoment') -> 'InertiaMoment':
-        super().__sub__(other = other)
-
-        if self.__value - other.to(self.__unit).value <= 0:
-            raise ValueError('Cannot perform the subtraction because the result is not positive.')
-
-        return InertiaMoment(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union[float, int]) -> 'InertiaMoment':
         super().__mul__(other = other)
 
@@ -1151,9 +1143,6 @@ class TimeInterval(Time):
     def __sub__(self, other: Union['Time', 'TimeInterval']) -> Union['Time', 'TimeInterval']:
         super().__sub__(other = other)
 
-        if self.__value - other.to(self.__unit).value <= 0:
-            raise ValueError('Cannot perform the subtraction because the result is not positive.')
-
         if isinstance(other, TimeInterval):
             return TimeInterval(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
         else:
@@ -1317,14 +1306,6 @@ class Length(UnitBase):
 
         self.__value = value
         self.__unit = unit
-
-    def __sub__(self, other: 'Length') -> 'Length':
-        super().__sub__(other = other)
-
-        if self.__value - other.to(self.__unit).value <= 0:
-            raise ValueError('Cannot perform the subtraction because the result is not positive.')
-
-        return Length(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
     def __mul__(self, other: Union['Length', float, int]) -> Union['Surface', 'Length']:
         super().__mul__(other = other)
@@ -1503,14 +1484,6 @@ class Surface(UnitBase):
 
         self.__value = value
         self.__unit = unit
-
-    def __sub__(self, other: 'Surface') -> 'Surface':
-        super().__sub__(other = other)
-
-        if self.__value - other.to(self.__unit).value <= 0:
-            raise ValueError('Cannot perform the subtraction because the result is not positive.')
-
-        return Surface(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
 
     def __mul__(self, other: Union[float, int]) -> 'Surface':
         super().__mul__(other = other)
