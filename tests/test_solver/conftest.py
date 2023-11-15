@@ -3,7 +3,7 @@ from gearpy.transmission import Transmission
 from gearpy.units import AngularSpeed, InertiaMoment, Length, Torque, TimeInterval
 from gearpy.utils import add_fixed_joint
 from pytest import fixture
-from tests.conftest import types_to_check, basic_spur_gear, basic_dc_motor
+from tests.conftest import types_to_check, basic_spur_gear_1, basic_dc_motor
 
 
 motor_transmission_solver_init_type_error = DCMotor(name = 'name', inertia_moment = InertiaMoment(1, 'kgm^2'),
@@ -38,7 +38,7 @@ solver_init_type_error_3 = [{'time_discretization': TimeInterval(1, 'sec'), 'sim
                             if not isinstance(type_to_check, Transmission)]
 
 solver_init_type_error_4 = [{'time_discretization': TimeInterval(1, 'sec'), 'simulation_time': TimeInterval(5, 'sec'),
-                             'transmission': TransmissionFake([type_to_check, basic_spur_gear])}
+                             'transmission': TransmissionFake([type_to_check, basic_spur_gear_1])}
                             for type_to_check in types_to_check if not isinstance(type_to_check, MotorBase)]
 
 solver_init_type_error_5 = [{'time_discretization': TimeInterval(1, 'sec'), 'simulation_time': TimeInterval(5, 'sec'),

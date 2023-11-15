@@ -1,7 +1,7 @@
 from gearpy.units import Stress
 from hypothesis.strategies import floats, sampled_from, one_of, booleans
 from hypothesis import given, settings
-from tests.test_units.test_stress.conftest import basic_stress, stresss
+from tests.test_units.test_stress.conftest import basic_stress, stresses
 from pytest import mark, raises
 
 
@@ -174,7 +174,7 @@ class TestStressTruediv:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
-                            stresss()))
+                            stresses()))
     @settings(max_examples = 100)
     def test_method(self, value, unit, divider):
         torque = Stress(value = value, unit = unit)

@@ -15,7 +15,10 @@ basic_dc_motor = DCMotor(name = 'motor',
 
 basic_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
 
-basic_spur_gear = SpurGear(name = 'gear', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
+basic_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+
+basic_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                           module = Length(1, 'mm'), face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
 
 
 transmission_dc_motor = DCMotor(name = 'motor',
@@ -23,8 +26,8 @@ transmission_dc_motor = DCMotor(name = 'motor',
                                 no_load_speed = AngularSpeed(1000, 'rpm'),
                                 maximum_torque = Torque(1, 'Nm'))
 transmission_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
-transmission_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
-transmission_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 40, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
+transmission_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+transmission_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 40, inertia_moment = InertiaMoment(1, 'kgm^2'))
 add_fixed_joint(master = transmission_dc_motor, slave = transmission_flywheel)
 add_fixed_joint(master = transmission_flywheel, slave = transmission_spur_gear_1)
 add_gear_mating(master = transmission_spur_gear_1, slave = transmission_spur_gear_2, efficiency = 0.9)
@@ -42,7 +45,7 @@ basic_solver.run()
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
                   AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'), AngularAcceleration(1, 'rad/s^2'), Force(1, 'N'),
                   InertiaMoment(1, 'kgm^2'), Length(1, 'm'), Stress(1, 'Pa'), Surface(1, 'm^2'), Time(1, 'sec'),
-                  TimeInterval(1, 'sec'), Torque(1, 'Nm'), basic_dc_motor, basic_spur_gear, basic_flywheel]
+                  TimeInterval(1, 'sec'), Torque(1, 'Nm'), basic_dc_motor, basic_spur_gear_1, basic_flywheel]
 
 
 @composite
@@ -54,10 +57,10 @@ def names(draw, strategy):
 @composite
 def spur_gears(draw):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
-    n_teeth = draw(integers(min_value = 1, max_value = 100))
+    n_teeth = draw(integers(min_value = 10, max_value = 100))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
 
-    return SpurGear(name = name, n_teeth = n_teeth, module = Length(1, 'mm'), inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
+    return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
 
 
 @composite

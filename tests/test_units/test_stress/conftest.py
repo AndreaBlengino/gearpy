@@ -9,7 +9,7 @@ basic_stress = Stress(1, 'Pa')
 
 
 @composite
-def stresss(draw):
+def stresses(draw):
     value = draw(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
     unit = draw(sampled_from(elements = list(Stress._Stress__UNITS.keys())))
 
