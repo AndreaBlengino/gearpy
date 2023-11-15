@@ -294,21 +294,6 @@ class GearBase(RotatingObject):
 
     @property
     @abstractmethod
-    def tangential_force_is_computable(self) -> bool:
-        return self.__module is not None
-
-    @property
-    @abstractmethod
-    def bending_stress_is_computable(self) -> bool:
-        return self.__face_width is not None
-
-    @property
-    @abstractmethod
-    def contact_stress_is_computable(self) -> bool:
-        return self.__elastic_modulus is not None
-
-    @property
-    @abstractmethod
     def n_teeth(self) -> int:
         return self.__n_teeth
 
@@ -440,6 +425,11 @@ class GearBase(RotatingObject):
 
     @property
     @abstractmethod
+    def tangential_force_is_computable(self) -> bool:
+        return self.__module is not None
+
+    @property
+    @abstractmethod
     def bending_stress(self) -> Stress:
         return self.__bending_stress
 
@@ -456,6 +446,11 @@ class GearBase(RotatingObject):
 
     @property
     @abstractmethod
+    def bending_stress_is_computable(self) -> bool:
+        return self.__face_width is not None
+
+    @property
+    @abstractmethod
     def contact_stress(self) -> Stress:
         return self.__contact_stress
 
@@ -469,6 +464,11 @@ class GearBase(RotatingObject):
 
     @abstractmethod
     def compute_contact_stress(self): ...
+
+    @property
+    @abstractmethod
+    def contact_stress_is_computable(self) -> bool:
+        return self.__elastic_modulus is not None
 
     @property
     @abstractmethod
