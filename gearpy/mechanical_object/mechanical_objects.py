@@ -34,6 +34,8 @@ class SpurGear(GearBase):
         Gear ratio of the mating between the gear and its driving gear.
     :py:attr:`master_gear_efficiency` : float or int
         Efficiency of the gear mating between the gear and its driving gear.
+    :py:attr:`mating_role`: Role
+        Role of the gear in the gear mating.
     :py:attr:`angular_position` : AngularPosition
         Angular position of the gear.
     :py:attr:`angular_speed` : AngularSpeed

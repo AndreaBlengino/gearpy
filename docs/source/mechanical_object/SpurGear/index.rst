@@ -34,6 +34,7 @@ SpurGear
    load_torque
    master_gear_efficiency
    master_gear_ratio
+   mating_role
    module
    n_teeth
    name
