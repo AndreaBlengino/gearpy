@@ -491,8 +491,8 @@ class Transmission:
                                                                for variable_value in item.time_variables[variable]],
                                                               label = variable.replace('stress', '').replace(' ', ''))
 
-                        else:
-                            if stress_variables:
+                        if stress_variables \
+                                and not item.bending_stress_is_computable and not item.contact_stress_is_computable:
                                 axes[stress_variables_index].axis('off')
 
                 else:
