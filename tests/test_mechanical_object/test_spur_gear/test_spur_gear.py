@@ -305,10 +305,9 @@ class TestSpurGearComputeContactStress:
 
 
     @mark.error
-    def test_raises_value_error(self):
-        gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
+    def test_raises_value_error(self, spur_gear_compute_contact_stress_value_error):
         with raises(ValueError):
-            gear_1.compute_contact_stress()
+            spur_gear_compute_contact_stress_value_error.compute_contact_stress()
 
 
 @mark.spur_gear

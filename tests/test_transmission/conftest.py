@@ -17,59 +17,70 @@ def transmission_update_time_type_error(request):
 transmission_snapshot_type_error_1 = [{'target_time': type_to_check, 'angular_position_unit': 'rad',
                                        'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': 'rad/s^2',
                                        'torque_unit': 'Nm', 'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
-                                       'force_unit': 'N', 'print_data': False} for type_to_check in types_to_check
-                                      if not isinstance(type_to_check, Time)]
+                                       'force_unit': 'N', 'stress_unit': 'MPa', 'print_data': False}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, Time)]
 
 transmission_snapshot_type_error_2 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': type_to_check,
                                        'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': 'rad/s^2',
                                        'torque_unit': 'Nm', 'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
-                                       'force_unit': 'N', 'print_data': False} for type_to_check in types_to_check
-                                      if not isinstance(type_to_check, str)]
+                                       'force_unit': 'N', 'stress_unit': 'MPa', 'print_data': False}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_snapshot_type_error_3 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': 'rad',
                                        'angular_speed_unit': type_to_check, 'angular_acceleration_unit': 'rad/s^2',
                                        'torque_unit': 'Nm', 'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
-                                       'force_unit': 'N', 'print_data': False} for type_to_check in types_to_check
-                                      if not isinstance(type_to_check, str)]
+                                       'force_unit': 'N', 'stress_unit': 'MPa', 'print_data': False}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_snapshot_type_error_4 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': 'rad',
                                        'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': type_to_check,
                                        'torque_unit': 'Nm', 'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
-                                       'force_unit': 'N', 'print_data': False} for type_to_check in types_to_check
-                                      if not isinstance(type_to_check, str)]
+                                       'force_unit': 'N', 'stress_unit': 'MPa', 'print_data': False}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_snapshot_type_error_5 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': 'rad',
                                        'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': 'rad/s^2',
                                        'torque_unit': type_to_check, 'driving_torque_unit': 'Nm',
-                                       'load_torque_unit': 'Nm', 'force_unit': 'N', 'print_data': False}
+                                       'load_torque_unit': 'Nm', 'force_unit': 'N', 'stress_unit': 'MPa',
+                                       'print_data': False}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_snapshot_type_error_6 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': 'rad',
                                        'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': 'rad/s^2',
                                        'torque_unit': 'Nm', 'driving_torque_unit': type_to_check,
-                                       'load_torque_unit': 'Nm', 'force_unit': 'N', 'print_data': False}
+                                       'load_torque_unit': 'Nm', 'force_unit': 'N', 'stress_unit': 'MPa',
+                                       'print_data': False}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_snapshot_type_error_7 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': 'rad',
                                        'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': 'rad/s^2',
                                        'torque_unit': 'Nm', 'driving_torque_unit': 'Nm',
-                                       'load_torque_unit': type_to_check, 'force_unit': 'N', 'print_data': False}
+                                       'load_torque_unit': type_to_check, 'force_unit': 'N', 'stress_unit': 'MPa',
+                                       'print_data': False}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_snapshot_type_error_8 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': 'rad',
                                        'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': 'rad/s^2',
                                        'torque_unit': 'Nm', 'driving_torque_unit': 'Nm',
-                                       'load_torque_unit': 'Nm', 'force_unit': type_to_check, 'print_data': False}
+                                       'load_torque_unit': 'Nm', 'force_unit': type_to_check, 'stress_unit': 'MPa',
+                                       'print_data': False}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_snapshot_type_error_9 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': 'rad',
+                                       'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': 'rad/s^2',
+                                       'torque_unit': 'Nm', 'driving_torque_unit': 'Nm',
+                                       'load_torque_unit': 'Nm', 'force_unit': 'N', 'stress_unit': type_to_check,
+                                       'print_data': False}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+transmission_snapshot_type_error_10 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': 'rad',
                                         'angular_speed_unit': 'rad/s', 'angular_acceleration_unit': 'rad/s^2',
                                         'torque_unit': 'Nm', 'driving_torque_unit': 'Nm', 'load_torque_unit': 'Nm',
-                                        'force_unit': 'N', 'print_data': type_to_check}
+                                        'force_unit': 'N', 'stress_unit': 'MPa', 'print_data': type_to_check}
                                       for type_to_check in types_to_check
                                       if not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)]
 
-transmission_snapshot_type_error_10 = [{}]
+transmission_snapshot_type_error_11 = [{}]
 
 @fixture(params = [*transmission_snapshot_type_error_1,
                    *transmission_snapshot_type_error_2,
@@ -80,7 +91,8 @@ transmission_snapshot_type_error_10 = [{}]
                    *transmission_snapshot_type_error_7,
                    *transmission_snapshot_type_error_8,
                    *transmission_snapshot_type_error_9,
-                   *transmission_snapshot_type_error_10])
+                   *transmission_snapshot_type_error_10,
+                   *transmission_snapshot_type_error_11])
 def transmission_snapshot_type_error(request):
     return request.param
 
@@ -91,77 +103,85 @@ variables = list(basic_transmission.chain[0].time_variables.keys())
 transmission_plot_type_error_1 = [{'elements': type_to_check, 'variables': variables,
                                    'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
                                    'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
-                                   'time_unit': 'sec', 'figsize': None}
+                                   'stress_unit': 'MPa', 'time_unit': 'sec', 'figsize': None}
                                   for type_to_check in types_to_check
                                   if not isinstance(type_to_check, list) and type_to_check is not None]
 
 transmission_plot_type_error_2 = [{'elements': [type_to_check], 'variables': variables,
                                    'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
                                    'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
-                                   'time_unit': 'sec', 'figsize': None}
+                                   'stress_unit': 'MPa', 'time_unit': 'sec', 'figsize': None}
                                   for type_to_check in types_to_check
                                   if not isinstance(type_to_check, RotatingObject) and not isinstance(type_to_check, str)]
 
 transmission_plot_type_error_3 = [{'elements': elements, 'variables': type_to_check,
                                    'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
                                    'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
-                                   'time_unit': 'sec', 'figsize': None}
+                                   'stress_unit': 'MPa', 'time_unit': 'sec', 'figsize': None}
                                   for type_to_check in types_to_check
                                   if not isinstance(type_to_check, list) and type_to_check is not None]
 
 transmission_plot_type_error_4 = [{'elements': elements, 'variables': [type_to_check],
                                    'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
                                    'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
-                                   'time_unit': 'sec', 'figsize': None}
+                                   'stress_unit': 'MPa', 'time_unit': 'sec', 'figsize': None}
                                   for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_plot_type_error_5 = [{'elements': elements, 'variables': variables,
                                    'angular_position_unit': type_to_check, 'angular_speed_unit': 'rad/s',
                                    'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
-                                   'time_unit': 'sec', 'figsize': None}
+                                   'stress_unit': 'MPa', 'time_unit': 'sec', 'figsize': None}
                                   for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_plot_type_error_6 = [{'elements': elements, 'variables': variables,
                                    'angular_position_unit': 'rad', 'angular_speed_unit': type_to_check,
                                    'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
-                                   'time_unit': 'sec', 'figsize': None}
+                                   'stress_unit': 'MPa', 'time_unit': 'sec', 'figsize': None}
                                   for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_plot_type_error_7 = [{'elements': elements, 'variables': variables,
                                    'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
                                    'angular_acceleration_unit': type_to_check, 'torque_unit': 'Nm', 'force_unit': 'N',
-                                   'time_unit': 'sec', 'figsize': None}
+                                   'stress_unit': 'MPa', 'time_unit': 'sec', 'figsize': None}
                                   for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_plot_type_error_8 = [{'elements': elements, 'variables': variables,
                                    'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
                                    'angular_acceleration_unit': 'rad/s^2', 'torque_unit': type_to_check,
-                                   'force_unit': 'N', 'time_unit': 'sec', 'figsize': None}
+                                   'force_unit': 'N', 'stress_unit': 'MPa', 'time_unit': 'sec', 'figsize': None}
                                   for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_plot_type_error_9 = [{'elements': elements, 'variables': variables,
                                    'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
                                    'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm',
-                                   'force_unit': type_to_check, 'time_unit': 'sec', 'figsize': None}
+                                   'force_unit': type_to_check, 'stress_unit': 'MPa', 'time_unit': 'sec',
+                                   'figsize': None}
                                   for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_plot_type_error_10 = [{'elements': elements, 'variables': variables,
                                    'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
-                                   'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
-                                   'time_unit': type_to_check, 'figsize': None} for type_to_check in types_to_check
-                                  if not isinstance(type_to_check, str)]
+                                   'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm',
+                                   'force_unit': 'N', 'stress_unit': type_to_check, 'time_unit': 'sec', 'figsize': None}
+                                  for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
 
 transmission_plot_type_error_11 = [{'elements': elements, 'variables': variables,
-                                    'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
-                                    'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
-                                    'time_unit': 'sec', 'figsize': type_to_check}
-                                   for type_to_check in types_to_check
-                                   if not isinstance(type_to_check, tuple) and type_to_check is not None]
+                                   'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                   'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
+                                   'stress_unit': 'MPa', 'time_unit': type_to_check, 'figsize': None}
+                                   for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
 transmission_plot_type_error_12 = [{'elements': elements, 'variables': variables,
                                     'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
                                     'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
-                                    'time_unit': 'sec', 'figsize': (type_to_check, type_to_check)}
+                                    'stress_unit': 'MPa', 'time_unit': 'sec', 'figsize': type_to_check}
+                                   for type_to_check in types_to_check
+                                   if not isinstance(type_to_check, tuple) and type_to_check is not None]
+
+transmission_plot_type_error_13 = [{'elements': elements, 'variables': variables,
+                                    'angular_position_unit': 'rad', 'angular_speed_unit': 'rad/s',
+                                    'angular_acceleration_unit': 'rad/s^2', 'torque_unit': 'Nm', 'force_unit': 'N',
+                                    'stress_unit': 'MPa', 'time_unit': 'sec', 'figsize': (type_to_check, type_to_check)}
                                    for type_to_check in types_to_check
                                    if not isinstance(type_to_check, float) and not isinstance(type_to_check, int)]
 
@@ -176,7 +196,8 @@ transmission_plot_type_error_12 = [{'elements': elements, 'variables': variables
                    *transmission_plot_type_error_9,
                    *transmission_plot_type_error_10,
                    *transmission_plot_type_error_11,
-                   *transmission_plot_type_error_12])
+                   *transmission_plot_type_error_12,
+                   *transmission_plot_type_error_13])
 def transmission_plot_type_error(request):
     return request.param
 
