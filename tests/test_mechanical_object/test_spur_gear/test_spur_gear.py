@@ -1,6 +1,6 @@
-from gearpy.mechanical_object import DCMotor, SpurGear
+from gearpy.mechanical_object import DCMotor, SpurGear, MatingMaster, MatingSlave
 from gearpy.units import AngularSpeed, Force, InertiaMoment, Length, Stress, Torque
-from gearpy.utils import add_gear_mating, add_fixed_joint
+from gearpy.utils import add_gear_mating
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, integers, functions
 from pytest import mark, raises
@@ -140,6 +140,26 @@ class TestSpurGearMasterGearEfficiency:
 
 
 @mark.spur_gear
+class TestSpurGearMatingRole:
+
+
+    @mark.genuine
+    def test_property(self):
+        gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'gm^2'))
+        gear_2 = SpurGear(name = 'gear 2', n_teeth = 10, inertia_moment = InertiaMoment(1, 'gm^2'))
+        add_gear_mating(master = gear_1, slave = gear_2, efficiency = 1)
+
+        assert gear_1.mating_role == MatingMaster
+        assert gear_2.mating_role == MatingSlave
+
+
+    @mark.error
+    def test_raises_type_error(self, spur_gear_mating_role_type_error):
+        with raises(TypeError):
+            basic_spur_gear_1.mating_role = spur_gear_mating_role_type_error
+
+
+@mark.spur_gear
 class TestSpurGearTangentialForce:
 
 
@@ -166,19 +186,25 @@ class TestSpurGearComputeTangentialForce:
         gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
         gear_2 = SpurGear(name = 'gear 2', n_teeth = 20, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
 
-        add_fixed_joint(master = gear_1, slave = gear_2)
-        gear_2.load_torque = Torque(1, 'Nm')
-        gear_2.compute_tangential_force()
-
-        assert gear_2.tangential_force is not None
-        assert isinstance(gear_2.tangential_force, Force)
-
         add_gear_mating(master = gear_1, slave = gear_2, efficiency = 0.9)
+        gear_1.driving_torque = Torque(1, 'Nm')
         gear_2.driving_torque = Torque(1, 'Nm')
+        gear_1.load_torque = Torque(1, 'Nm')
+        gear_2.load_torque= Torque(1, 'Nm')
+        gear_1.compute_tangential_force()
         gear_2.compute_tangential_force()
 
+        assert gear_1.tangential_force is not None
         assert gear_2.tangential_force is not None
+        assert isinstance(gear_1.tangential_force, Force)
         assert isinstance(gear_2.tangential_force, Force)
+
+
+    @mark.error
+    def test_raises_value_error(self):
+        gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
+        with raises(ValueError):
+            gear_1.compute_tangential_force()
 
 
 @mark.spur_gear
@@ -276,6 +302,13 @@ class TestSpurGearComputeContactStress:
 
             assert gear.contact_stress is not None
             assert isinstance(gear.contact_stress, Stress)
+
+
+    @mark.error
+    def test_raises_value_error(self):
+        gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
+        with raises(ValueError):
+            gear_1.compute_contact_stress()
 
 
 @mark.spur_gear

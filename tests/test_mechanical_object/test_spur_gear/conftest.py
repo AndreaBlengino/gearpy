@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import RotatingObject
+from gearpy.mechanical_object import RotatingObject, Role
 from gearpy.units import Force, InertiaMoment, Length, Stress
 from pytest import fixture
 from tests.conftest import types_to_check
@@ -80,17 +80,26 @@ def spur_gear_master_gear_efficiency_type_error(request):
 def spur_gear_master_gear_efficiency_value_error(request):
     return request.param
 
+
+@fixture(params = [type_to_check for type_to_check in types_to_check if not hasattr(type_to_check, '__name__') or not issubclass(type_to_check, Role)])
+def spur_gear_mating_role_type_error(request):
+    return request.param
+
+
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Force)])
 def spur_gear_tangential_force_type_error(request):
     return request.param
+
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Stress)])
 def spur_gear_bending_stress_type_error(request):
     return request.param
 
+
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Stress)])
 def spur_gear_contact_stress_type_error(request):
     return request.param
+
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Callable)])
 def spur_gear_external_torque_type_error(request):

@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import SpurGear
+from gearpy.mechanical_object import SpurGear, MatingMaster, MatingSlave
 from gearpy.units import InertiaMoment, Length
 from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings
@@ -21,7 +21,9 @@ class TestAddGearMating:
         add_gear_mating(master = gear_1, slave = gear_2, efficiency = efficiency)
 
         assert gear_1.drives == gear_2
+        assert gear_1.mating_role == MatingMaster
         assert gear_2.driven_by == gear_1
+        assert gear_2.mating_role == MatingSlave
         assert gear_2.master_gear_ratio == gear_2.n_teeth/gear_1.n_teeth
         assert gear_2.master_gear_efficiency == efficiency
 
