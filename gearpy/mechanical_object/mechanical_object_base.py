@@ -451,7 +451,7 @@ class GearBase(RotatingObject):
     @property
     @abstractmethod
     def bending_stress_is_computable(self) -> bool:
-        return self.__face_width is not None
+        return (self.__module is not None) and (self.__face_width is not None)
 
     @property
     @abstractmethod
@@ -472,7 +472,7 @@ class GearBase(RotatingObject):
     @property
     @abstractmethod
     def contact_stress_is_computable(self) -> bool:
-        return self.__elastic_modulus is not None
+        return (self.__module is not None) and (self.__face_width is not None) and (self.__elastic_modulus is not None)
 
     @property
     @abstractmethod
