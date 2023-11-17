@@ -672,7 +672,11 @@ class SpurGear(GearBase):
         Raises
         ------
         ValueError
-            If a gear mating between two gears has not been set.
+            - If a gear mating between two gears has not been set,
+            - if gear role is ``MatingMaster`` and its slave gear misses ``module`` parameter,
+            - if gear role is ``MatingMaster`` and its slave gear misses ``elastic_modulus`` parameter,
+            - if gear role is ``MatingSlave`` and its master gear misses ``module`` parameter,
+            - if gear role is ``MatingSlave`` and its master gear misses ``elastic_modulus`` parameter.
 
         Notes
         -----
@@ -707,11 +711,31 @@ class SpurGear(GearBase):
         :py:attr:`reference_diameter`
         """
         if self.mating_role == MatingMaster:
-            mate_elastic_modulus = self.drives.elastic_modulus
-            mate_reference_diameter = self.drives.reference_diameter
+            if self.drives.module is not None:
+                mate_reference_diameter = self.drives.reference_diameter
+            else:
+                raise ValueError(f"Impossible to compute contact stress for {self.__class__.__name__} {self.name!r} "
+                                 f"because its mating {self.__class__.__name__} {self.drives.name!r} misses "
+                                 f"'module' parameter.")
+            if self.drives.elastic_modulus is not None:
+                mate_elastic_modulus = self.drives.elastic_modulus
+            else:
+                raise ValueError(f"Impossible to compute contact stress for {self.__class__.__name__} {self.name!r} "
+                                 f"because its mating {self.__class__.__name__} {self.drives.name!r} misses "
+                                 f"'elastic_modulus' parameter.")
         elif self.mating_role == MatingSlave:
-            mate_elastic_modulus = self.driven_by.elastic_modulus
-            mate_reference_diameter = self.driven_by.reference_diameter
+            if self.driven_by.module is not None:
+                mate_reference_diameter = self.driven_by.reference_diameter
+            else:
+                raise ValueError(f"Impossible to compute contact stress for {self.__class__.__name__} {self.name!r} "
+                                 f"because its mating {self.__class__.__name__} {self.driven_by.name!r} misses "
+                                 f"'module' parameter.")
+            if self.driven_by.elastic_modulus is not None:
+                mate_elastic_modulus = self.driven_by.elastic_modulus
+            else:
+                raise ValueError(f"Impossible to compute contact stress for {self.__class__.__name__} {self.name!r} "
+                                 f"because its mating {self.__class__.__name__} {self.driven_by.name!r} misses "
+                                 f"'elastic_modulus' parameter.")
         else:
             raise ValueError("Gear mating not defined. "
                              "Use 'gearpy.utils.add_gear_mating' to set up a mating between two gears.")
