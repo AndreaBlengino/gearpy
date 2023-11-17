@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import MotorBase, GearBase, Flywheel
+from gearpy.mechanical_object import MotorBase, GearBase, Flywheel, MatingMaster, MatingSlave
 from typing import Union
 
 
@@ -47,7 +47,9 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
                              f"so they cannot mate together.")
 
     master.drives = slave
+    master.mating_role = MatingMaster
     slave.driven_by = master
+    slave.mating_role = MatingSlave
     slave.master_gear_ratio = slave.n_teeth/master.n_teeth
     slave.master_gear_efficiency = efficiency
 

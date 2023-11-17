@@ -280,6 +280,7 @@ class GearBase(RotatingObject):
         self.__drives = None
         self.__master_gear_ratio = None
         self.__master_gear_efficiency = 1
+        self.__mating_role = None
         self.__external_torque = None
         self.__module = module
         self.__face_width = face_width
@@ -507,6 +508,22 @@ class GearBase(RotatingObject):
 
     @property
     @abstractmethod
+    def mating_role(self) -> 'Role':
+        return self.__mating_role
+
+    @mating_role.setter
+    @abstractmethod
+    def mating_role(self, mating_role):
+        if hasattr(mating_role, '__name__'):
+            if not issubclass(mating_role, Role):
+                raise TypeError(f"Parameter 'mating_role' must be a subclass of {Role.__name__!r}.")
+        else:
+            raise TypeError(f"Parameter 'mating_role' must be a subclass of {Role.__name__!r}.")
+
+        self.__mating_role = mating_role
+
+    @property
+    @abstractmethod
     def external_torque(self) -> Callable[[AngularPosition, AngularSpeed, Time], Torque]:
         return self.__external_torque
 
@@ -517,3 +534,6 @@ class GearBase(RotatingObject):
             raise TypeError("Parameter 'external_torque' must be callable.")
 
         self.__external_torque = external_torque
+
+
+class Role(ABC): ...
