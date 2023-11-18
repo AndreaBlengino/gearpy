@@ -783,6 +783,8 @@ class SpurGear(GearBase):
         ------
         TypeError
             If ``external_torque`` is not callable.
+        KeyError
+            If ``external_torque`` misses parameters ``angular_position``, ``angular_speed`` or ``time``.
 
         Examples
         --------

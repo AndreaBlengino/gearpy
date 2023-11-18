@@ -1,6 +1,6 @@
 from gearpy.mechanical_object import RotatingObject, MotorBase, GearBase
 from gearpy.transmission import Transmission
-from gearpy.units import Time, TimeInterval
+from gearpy.units import Time, TimeInterval, Torque
 import numpy as np
 
 
@@ -70,6 +70,12 @@ class Solver:
         Finally, for each time step and for each mechanical transmission element, it computes the kinematic variables,
         it computes the driving, load and net torque, it computes the angular acceleration of the last element in the
         transmission chain and perform a time integration to compute its angular speed and position.
+
+        Raises
+        ------
+        TypeError
+            If function ``external_torque`` of one gear in the transmission chain does not return an instance of
+            ``Torque``.
         """
         self.transmission.update_time(Time(value = 0, unit = self.time_discretization.unit))
         self._compute_transmission_inertia()
@@ -155,11 +161,15 @@ class Solver:
         for i in range(len(self.transmission.chain) - 1, 0, -1):
             if hasattr(self.transmission.chain[i], 'external_torque'):
                 if self.transmission.chain[i].external_torque is not None:
-                    self.transmission.chain[i].load_torque = \
-                        self.transmission.chain[i]. \
+                    external_torque = \
+                        self.transmission.chain[i].\
                             external_torque(time = self.transmission.time[-1],
                                             angular_position = self.transmission.chain[i].angular_position,
                                             angular_speed = self.transmission.chain[i].angular_speed)
+                    if not isinstance(external_torque, Torque):
+                        raise TypeError(f"Function 'external_torque' of {self.transmission.chain[i].name!r} "
+                                        f"must return an instance of {Torque.__name__!r}.")
+                    self.transmission.chain[i].load_torque = external_torque
             gear_ratio = self.transmission.chain[i].master_gear_ratio
             self.transmission.chain[i - 1].load_torque = self.transmission.chain[i].load_torque/gear_ratio
 

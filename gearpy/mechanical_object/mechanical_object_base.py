@@ -3,6 +3,7 @@ from . import gear_data
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Stress, \
     Time, Torque, UnitBase
 from importlib import resources as imp_resources
+from inspect import signature
 import pandas as pd
 from scipy.interpolate import interp1d
 from typing import Callable, Dict, List, Union
@@ -532,6 +533,11 @@ class GearBase(RotatingObject):
     def external_torque(self, external_torque: Callable[[AngularPosition, AngularSpeed, Time], Torque]):
         if not isinstance(external_torque, Callable):
             raise TypeError("Parameter 'external_torque' must be callable.")
+
+        sig = signature(external_torque)
+        for parameter in ['angular_position', 'angular_speed', 'time']:
+            if parameter not in sig.parameters.keys():
+                raise KeyError(f"Function 'external_torque' misses parameter {parameter!r}.")
 
         self.__external_torque = external_torque
 
