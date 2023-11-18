@@ -1,5 +1,5 @@
-Example 1
-=========
+Simple Transmission Chain
+=========================
 
 
 .. mdinclude:: README.md

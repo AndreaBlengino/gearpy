@@ -1,7 +1,7 @@
 # Import required packages, classes and functions
 
 from gearpy.mechanical_object import DCMotor, SpurGear, Flywheel
-from gearpy.units import AngularSpeed, InertiaMoment, Length, Torque, AngularPosition, TimeInterval, Time
+from gearpy.units import AngularSpeed, InertiaMoment, Torque, AngularPosition, TimeInterval, Time
 from gearpy.utils import add_gear_mating, add_fixed_joint
 from gearpy.transmission import Transmission
 from gearpy.solver import Solver
@@ -18,19 +18,15 @@ flywheel = Flywheel(name = 'flywheel',
                     inertia_moment = InertiaMoment(3, 'gm^2'))
 gear_1 = SpurGear(name = 'gear 1',
                   n_teeth = 10,
-                  module = Length(1, 'mm'),
                   inertia_moment = InertiaMoment(1, 'gm^2'))
 gear_2 = SpurGear(name = 'gear 2',
                   n_teeth = 20,
-                  module = Length(1, 'mm'),
                   inertia_moment = InertiaMoment(2, 'gm^2'))
 gear_3 = SpurGear(name = 'gear 3',
                   n_teeth = 10,
-                  module = Length(1, 'mm'),
                   inertia_moment = InertiaMoment(1, 'gm^2'))
 gear_4 = SpurGear(name = 'gear 4',
                   n_teeth = 30,
-                  module = Length(1, 'mm'),
                   inertia_moment = InertiaMoment(3, 'gm^2'))
 
 
@@ -79,9 +75,9 @@ transmission.snapshot(target_time = Time(1000, 'sec'),
                       load_torque_unit = 'mNm')
 
 
-transmission.plot(figsize = (15, 10))
+transmission.plot(figsize = (12, 9))
 
 transmission.plot(elements = ['gear 4', motor],
-                  variables = ['torque', 'driving torque', 'angular speed', 'load torque', 'tangential force'],
+                  variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
                   torque_unit = 'mNm',
-                  figsize = (8, 8))
+                  figsize = (8, 6))
