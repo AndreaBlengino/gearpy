@@ -4,4 +4,5 @@ Usage Examples
 
 .. toctree::
 
-   example_1/index
+   simple_transmission_chain/index
+   structural_analysis/index
