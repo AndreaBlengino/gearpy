@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
+from math import fabs
 from typing import Union
+
+
+COMPARISON_TOLERANCE = 1e-12
 
 
 class UnitBase(ABC):
@@ -14,19 +18,28 @@ class UnitBase(ABC):
         if not isinstance(unit, str):
             raise TypeError("Parameter 'unit' must be a string.")
 
-    @abstractmethod
-    def __repr__(self): ...
+    def __repr__(self):
+        return f'{self.value} {self.unit}'
 
-    @abstractmethod
+    def __abs__(self):
+        return self.__class__(abs(self.value), self.unit)
+
     def __add__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'It is not allowed to sum a {self.__class__.__name__} and a {other.__class__.__name__}.')
 
-    @abstractmethod
+        return self.__class__(value = self.value + other.to(self.unit).value, unit = self.unit)
+
     def __sub__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'It is not allowed to subtract a {other.__class__.__name__} '
                             f'from a {self.__class__.__name__}.')
+
+        try:
+            return self.__class__(value = self.value - other.to(self.unit).value, unit = self.unit)
+        except ValueError:
+            if self.value - other.to(self.unit).value <= 0:
+                raise ValueError('Cannot perform the subtraction because the result is not positive.')
 
     @abstractmethod
     def __mul__(self, other: Union[float, int]) -> None: ...
@@ -46,35 +59,59 @@ class UnitBase(ABC):
             if other == 0:
                 raise ZeroDivisionError('It is not allowed to divide a Unit by zero.')
 
-    @abstractmethod
     def __eq__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-    @abstractmethod
+        if self.unit == other.unit:
+            return self.value == other.value
+        else:
+            return fabs(self.value - other.to(self.unit).value) < COMPARISON_TOLERANCE
+
     def __ne__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-    @abstractmethod
+        if self.unit == other.unit:
+            return self.value != other.value
+        else:
+            return fabs(self.value - other.to(self.unit).value) > COMPARISON_TOLERANCE
+
     def __gt__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-    @abstractmethod
+        if self.unit == other.unit:
+            return self.value > other.value
+        else:
+            return self.value - other.to(self.unit).value > COMPARISON_TOLERANCE
+
     def __ge__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-    @abstractmethod
+        if self.unit == other.unit:
+            return self.value >= other.value
+        else:
+            return self.value - other.to(self.unit).value >= -COMPARISON_TOLERANCE
+
     def __lt__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
 
-    @abstractmethod
+        if self.unit == other.unit:
+            return self.value < other.value
+        else:
+            return self.value - other.to(self.unit).value < -COMPARISON_TOLERANCE
+
     def __le__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+
+        if self.unit == other.unit:
+            return self.value <= other.value
+        else:
+            return self.value - other.to(self.unit).value <= COMPARISON_TOLERANCE
 
     @property
     @abstractmethod

@@ -1,3 +1,4 @@
+from gearpy.mechanical_object import GearBase
 from hypothesis import given, settings
 from pytest import mark, raises
 from tests.test_mechanical_object.test_rotating_object.conftest import basic_rotating_objects
@@ -5,6 +6,8 @@ from tests.test_units.test_angular_acceleration.conftest import angular_accelera
 from tests.test_units.test_angular_position.conftest import angular_positions
 from tests.test_units.test_angular_speed.conftest import angular_speeds
 from tests.test_units.test_torque.conftest import torques
+from tests.test_units.test_force.conftest import forces
+from tests.test_units.test_stress.conftest import stresses
 
 
 @mark.rotating_object
@@ -142,9 +145,18 @@ class TestRotatingObjectTimeVariables:
         for rotating_object in basic_rotating_objects:
             time_variables = rotating_object.time_variables
 
+            time_variables_list = ['angular position', 'angular speed', 'angular acceleration', 'torque',
+                                   'driving torque', 'load torque']
+            if isinstance(rotating_object, GearBase):
+                if rotating_object.tangential_force_is_computable:
+                    time_variables_list.append('tangential force')
+                    if rotating_object.bending_stress_is_computable:
+                        time_variables_list.append('bending stress')
+                        if rotating_object.contact_stress_is_computable:
+                            time_variables_list.append('contact stress')
+
             assert isinstance(time_variables, dict)
-            assert ['angular position', 'angular speed', 'angular acceleration',
-                    'torque', 'driving torque', 'load torque'] == list(time_variables.keys())
+            assert time_variables_list == list(time_variables.keys())
             assert all([value == [] for value in time_variables.values()])
 
 
@@ -158,8 +170,12 @@ class TestRotatingObjectUpdateTimeVariables:
            angular_acceleration = angular_accelerations(),
            torque = torques(),
            driving_torque = torques(),
-           load_torque = torques())
-    def test_method(self, angular_position, angular_speed, angular_acceleration, torque, driving_torque, load_torque):
+           load_torque = torques(),
+           tangential_force = forces(),
+           bending_stress = stresses(),
+           contact_stress = stresses())
+    def test_method(self, angular_position, angular_speed, angular_acceleration, torque, driving_torque, load_torque,
+                    tangential_force, bending_stress, contact_stress):
         for rotating_object in basic_rotating_objects:
             rotating_object.angular_position = angular_position
             rotating_object.angular_speed = angular_speed
@@ -167,16 +183,39 @@ class TestRotatingObjectUpdateTimeVariables:
             rotating_object.torque = torque
             rotating_object.driving_torque = driving_torque
             rotating_object.load_torque = load_torque
+            if isinstance(rotating_object, GearBase):
+                if rotating_object.tangential_force_is_computable:
+                    rotating_object.tangential_force = tangential_force
+                    if rotating_object.bending_stress_is_computable:
+                        rotating_object.bending_stress = bending_stress
+                        if rotating_object.contact_stress_is_computable:
+                            rotating_object.contact_stress = contact_stress
 
             rotating_object.update_time_variables()
             time_variables = rotating_object.time_variables
 
+            time_variables_list = ['angular position', 'angular speed', 'angular acceleration', 'torque',
+                                   'driving torque', 'load torque']
+            if isinstance(rotating_object, GearBase):
+                if rotating_object.tangential_force_is_computable:
+                    time_variables_list.append('tangential force')
+                    if rotating_object.bending_stress_is_computable:
+                        time_variables_list.append('bending stress')
+                        if rotating_object.contact_stress_is_computable:
+                            time_variables_list.append('contact stress')
+
             assert isinstance(time_variables, dict)
-            assert ['angular position', 'angular speed', 'angular acceleration',
-                    'torque', 'driving torque', 'load torque'] == list(time_variables.keys())
+            assert time_variables_list == list(time_variables.keys())
             assert time_variables['angular position'][-1] == angular_position
             assert time_variables['angular speed'][-1] == angular_speed
             assert time_variables['angular acceleration'][-1] == angular_acceleration
             assert time_variables['torque'][-1] == torque
             assert time_variables['driving torque'][-1] == driving_torque
             assert time_variables['load torque'][-1] == load_torque
+            if isinstance(rotating_object, GearBase):
+                if rotating_object.tangential_force_is_computable:
+                    assert time_variables['tangential force'][-1] == tangential_force
+                    if rotating_object.bending_stress_is_computable:
+                        assert time_variables['bending stress'][-1] == bending_stress
+                        if rotating_object.contact_stress_is_computable:
+                            assert time_variables['contact stress'][-1] == contact_stress

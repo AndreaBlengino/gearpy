@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import RotatingObject, MotorBase
+from gearpy.mechanical_object import RotatingObject, MotorBase, GearBase
 from gearpy.transmission import Transmission
 from gearpy.units import Time, TimeInterval
 import numpy as np
@@ -84,6 +84,8 @@ class Solver:
             self._compute_driving_torque()
             self._compute_load_torque()
             self._compute_torque()
+            self._compute_force()
+            self._compute_stress()
             self._time_integration()
             self._update_time_variables()
 
@@ -104,6 +106,8 @@ class Solver:
         self._compute_driving_torque()
         self._compute_load_torque()
         self._compute_torque()
+        self._compute_force()
+        self._compute_stress()
 
         self.transmission.chain[-1].angular_acceleration = self.transmission.chain[-1].torque/\
                                                            self.transmission_inertia_moment
@@ -163,6 +167,22 @@ class Solver:
 
         for item in self.transmission.chain:
             item.torque = item.driving_torque - item.load_torque
+
+    def _compute_force(self):
+
+        for item in self.transmission.chain:
+            if isinstance(item, GearBase):
+                if item.tangential_force_is_computable:
+                    item.compute_tangential_force()
+
+    def _compute_stress(self):
+
+        for item in self.transmission.chain:
+            if isinstance(item, GearBase):
+                if item.bending_stress_is_computable:
+                    item.compute_bending_stress()
+                    if item.contact_stress_is_computable:
+                        item.compute_contact_stress()
 
     def _time_integration(self):
 

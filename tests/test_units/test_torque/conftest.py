@@ -1,4 +1,4 @@
-from gearpy.units import InertiaMoment, Torque
+from gearpy.units import InertiaMoment, Length, Torque
 from hypothesis.strategies import composite, floats, sampled_from
 import numpy as np
 from tests.conftest import types_to_check
@@ -52,7 +52,7 @@ def torque_rmul_type_error(request):
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
                    and not isinstance(type_to_check, int) and not isinstance(type_to_check, InertiaMoment)
-                   and not isinstance(type_to_check, Torque)])
+                   and not isinstance(type_to_check, Torque) and not isinstance(type_to_check, Length)])
 def torque_truediv_type_error(request):
     return request.param
 

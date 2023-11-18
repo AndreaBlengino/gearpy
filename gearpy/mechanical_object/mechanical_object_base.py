@@ -1,6 +1,21 @@
 from abc import ABC, abstractmethod
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Time, Torque, UnitBase
+from . import gear_data
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Stress, \
+    Time, Torque, UnitBase
+from importlib import resources as imp_resources
+import pandas as pd
+from scipy.interpolate import interp1d
 from typing import Callable, Dict, List, Union
+
+
+LEWIS_FACTOR_DATA_FILE = (imp_resources.files(gear_data) / 'lewis_factor_table.csv')
+LEWIS_FACTOR_DATA = pd.read_csv(LEWIS_FACTOR_DATA_FILE)
+MINIMUM_TEETH_NUMBER = LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[0], 'number of teeth']
+lewis_factor_function = interp1d(x = LEWIS_FACTOR_DATA['number of teeth'],
+                                 y = LEWIS_FACTOR_DATA['Lewis factor'],
+                                 fill_value = (LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[0], 'Lewis factor'],
+                                               LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[-1], 'Lewis factor']),
+                                 bounds_error = False)
 
 
 class MechanicalObject(ABC):
@@ -230,26 +245,85 @@ class MotorBase(RotatingObject):
 class GearBase(RotatingObject):
 
     @abstractmethod
-    def __init__(self, name: str, n_teeth: int, inertia_moment: InertiaMoment):
+    def __init__(self,
+                 name: str,
+                 n_teeth: int,
+                 module: Length,
+                 face_width: Length,
+                 inertia_moment: InertiaMoment,
+                 elastic_modulus: Stress):
         super().__init__(name = name, inertia_moment = inertia_moment)
 
         if not isinstance(n_teeth, int):
             raise TypeError("Parameter 'n_teeth' must be an integer.")
 
-        if n_teeth <= 0:
-            raise ValueError("Parameter 'n_teeth' must be positive.")
+        if n_teeth < MINIMUM_TEETH_NUMBER:
+            raise ValueError(f"Parameter 'n_teeth' must be greater or equal to {MINIMUM_TEETH_NUMBER}.")
+
+        if module is not None:
+            if not isinstance(module, Length):
+                raise TypeError(f"Parameter 'module' must be an instance of {Length.__name__!r}.")
+
+        if face_width is not None:
+            if not isinstance(face_width, Length):
+                raise TypeError(f"Parameter 'face_width' must be an instance of {Length.__name__!r}.")
+
+        if elastic_modulus is not None:
+            if not isinstance(elastic_modulus, Stress):
+                raise TypeError(f"Parameter 'elastic_modulus' must be an instance of {Stress.__name__!r}.")
+
+            if elastic_modulus.value <= 0:
+                raise ValueError(f"Parameter 'elastic_modulus' must be positive.")
 
         self.__n_teeth = n_teeth
         self.__driven_by = None
         self.__drives = None
         self.__master_gear_ratio = None
         self.__master_gear_efficiency = 1
+        self.__mating_role = None
         self.__external_torque = None
+        self.__module = module
+        self.__face_width = face_width
+        self.__elastic_modulus = elastic_modulus
+
+        if self.tangential_force_is_computable:
+            self.__reference_diameter = n_teeth*module
+            self.__tangential_force = None
+
+            if self.bending_stress_is_computable:
+                self.__bending_stress = None
+
+                if self.contact_stress_is_computable:
+                    self.__contact_stress = None
 
     @property
     @abstractmethod
     def n_teeth(self) -> int:
         return self.__n_teeth
+
+    @property
+    @abstractmethod
+    def module(self) -> Length:
+        return self.__module
+
+    @property
+    @abstractmethod
+    def reference_diameter(self) -> Length:
+        return self.__reference_diameter
+
+    @property
+    @abstractmethod
+    def face_width(self) -> Length:
+        return self.__face_width
+
+    @property
+    @abstractmethod
+    def elastic_modulus(self) -> Stress:
+        return self.__elastic_modulus
+
+    @property
+    @abstractmethod
+    def lewis_factor(self): ...
 
     @property
     @abstractmethod
@@ -339,6 +413,69 @@ class GearBase(RotatingObject):
 
     @property
     @abstractmethod
+    def tangential_force(self) -> Force:
+        return self.__tangential_force
+
+    @tangential_force.setter
+    @abstractmethod
+    def tangential_force(self, tangential_force: Force):
+        if not isinstance(tangential_force, Force):
+            raise TypeError(f"Parameter 'tangential_force' must be an instance of {Force.__name__!r}.")
+
+        self.__tangential_force = tangential_force
+
+    @abstractmethod
+    def compute_tangential_force(self): ...
+
+    @property
+    @abstractmethod
+    def tangential_force_is_computable(self) -> bool:
+        return self.__module is not None
+
+    @property
+    @abstractmethod
+    def bending_stress(self) -> Stress:
+        return self.__bending_stress
+
+    @bending_stress.setter
+    @abstractmethod
+    def bending_stress(self, bending_stress: Stress):
+        if not isinstance(bending_stress, Stress):
+            raise TypeError(f"Parameter 'bending_stress' must be an instance of {Stress.__name__!r}.")
+
+        self.__bending_stress = bending_stress
+
+    @abstractmethod
+    def compute_bending_stress(self): ...
+
+    @property
+    @abstractmethod
+    def bending_stress_is_computable(self) -> bool:
+        return (self.__module is not None) and (self.__face_width is not None)
+
+    @property
+    @abstractmethod
+    def contact_stress(self) -> Stress:
+        return self.__contact_stress
+
+    @contact_stress.setter
+    @abstractmethod
+    def contact_stress(self, contact_stress: Stress):
+        if not isinstance(contact_stress, Stress):
+            raise TypeError(f"Parameter 'contact_stress' must be an instance of {Stress.__name__!r}.")
+
+        self.__contact_stress = contact_stress
+
+    @abstractmethod
+    def compute_contact_stress(self): ...
+
+    @property
+    @abstractmethod
+    def contact_stress_is_computable(self) -> bool:
+        return (self.__module is not None) and (self.__face_width is not None) and (self.__elastic_modulus is not None)
+
+    @property
+    @abstractmethod
     def master_gear_ratio(self) -> float:
         return self.__master_gear_ratio
 
@@ -371,6 +508,22 @@ class GearBase(RotatingObject):
 
     @property
     @abstractmethod
+    def mating_role(self) -> 'Role':
+        return self.__mating_role
+
+    @mating_role.setter
+    @abstractmethod
+    def mating_role(self, mating_role):
+        if hasattr(mating_role, '__name__'):
+            if not issubclass(mating_role, Role):
+                raise TypeError(f"Parameter 'mating_role' must be a subclass of {Role.__name__!r}.")
+        else:
+            raise TypeError(f"Parameter 'mating_role' must be a subclass of {Role.__name__!r}.")
+
+        self.__mating_role = mating_role
+
+    @property
+    @abstractmethod
     def external_torque(self) -> Callable[[AngularPosition, AngularSpeed, Time], Torque]:
         return self.__external_torque
 
@@ -381,3 +534,6 @@ class GearBase(RotatingObject):
             raise TypeError("Parameter 'external_torque' must be callable.")
 
         self.__external_torque = external_torque
+
+
+class Role(ABC): ...

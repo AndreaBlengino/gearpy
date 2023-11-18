@@ -10,17 +10,17 @@ basic_inertia_moment = InertiaMoment(1, 'kgm^2')
 
 @composite
 def inertia_moments(draw):
-    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000))
+    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
     unit = draw(sampled_from(elements = list(InertiaMoment._InertiaMoment__UNITS.keys())))
 
     return InertiaMoment(value = value, unit = unit)
 
 
 inertia_moment_init_type_error_1 = [{'value': type_to_check, 'unit': 'unit'} for type_to_check in types_to_check
-                            if not isinstance(type_to_check, float) and not isinstance(type_to_check, int)]
+                                    if not isinstance(type_to_check, float) and not isinstance(type_to_check, int)]
 
 inertia_moment_init_type_error_2 = [{'value': 1, 'unit': types_to_check} for type_to_check in types_to_check
-                            if not isinstance(type_to_check, str)]
+                                    if not isinstance(type_to_check, str)]
 
 @fixture(params = [*inertia_moment_init_type_error_1,
                    *inertia_moment_init_type_error_2])

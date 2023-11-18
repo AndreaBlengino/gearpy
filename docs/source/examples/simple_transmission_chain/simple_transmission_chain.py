@@ -75,7 +75,7 @@ transmission.snapshot(target_time = Time(1000, 'sec'),
                       load_torque_unit = 'mNm')
 
 
-transmission.plot(figsize = (12, 8))
+transmission.plot(figsize = (12, 9))
 
 transmission.plot(elements = ['gear 4', motor],
                   variables = ['torque', 'driving torque', 'angular speed', 'load torque'],

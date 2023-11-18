@@ -7,6 +7,7 @@ from pytest import mark, raises
 from tests.conftest import transmissions, time_intervals
 from tests.test_units.test_angular_position.conftest import angular_positions
 from tests.test_units.test_angular_speed.conftest import angular_speeds
+import warnings
 
 
 @mark.solver
@@ -53,6 +54,8 @@ class TestSolverRun:
            initial_angular_speed = angular_speeds())
     @settings(max_examples = 100, deadline = None)
     def test_method(self, time_discretization, simulation_steps, transmission, initial_angular_position, initial_angular_speed):
+        warnings.filterwarnings('ignore', category = RuntimeWarning)
+
         transmission.chain[-1].angular_position = initial_angular_position
         transmission.chain[-1].angular_speed = initial_angular_speed
         transmission.chain[-1].external_torque = lambda time, angular_position, angular_speed: Torque(0.001, 'Nm')

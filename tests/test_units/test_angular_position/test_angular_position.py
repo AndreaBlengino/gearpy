@@ -51,6 +51,20 @@ class TestAngularPositionRepr:
         assert str(angular_position) == f'{value} {unit}'
 
 
+@mark.units
+class TestAngularPositionAbs:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        angular_position = AngularPosition(value = value, unit = unit)
+
+        assert abs(angular_position) == AngularPosition(value = abs(value), unit = unit)
+        assert abs(angular_position).value >= 0
+
 
 @mark.units
 class TestAngularPositionAdd:

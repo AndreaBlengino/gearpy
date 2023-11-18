@@ -1,10 +1,12 @@
-from gearpy.mechanical_object import SpurGear, DCMotor, Flywheel
+from gearpy.mechanical_object import SpurGear, DCMotor, Flywheel, MatingMaster, MatingSlave
 from gearpy.solver import Solver
 from gearpy.transmission import Transmission
-from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, InertiaMoment, Torque, Time, TimeInterval
+from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Force, InertiaMoment, Length, Stress, \
+    Surface, Time, TimeInterval, Torque
 from gearpy.utils import add_fixed_joint, add_gear_mating
 from hypothesis.strategies import composite, text, integers, floats, lists, sampled_from, shared, builds, characters
 import numpy as np
+from random import shuffle
 
 
 basic_dc_motor = DCMotor(name = 'motor',
@@ -14,7 +16,10 @@ basic_dc_motor = DCMotor(name = 'motor',
 
 basic_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
 
-basic_spur_gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+basic_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+
+basic_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                           module = Length(1, 'mm'), face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
 
 
 transmission_dc_motor = DCMotor(name = 'motor',
@@ -39,9 +44,10 @@ basic_solver.run()
 
 
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
-                  AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'), AngularAcceleration(1, 'rad/s^2'),
-                  InertiaMoment(1, 'kgm^2'), Torque(1, 'Nm'), Time(1, 'sec'), TimeInterval(1, 'sec'),
-                  basic_dc_motor, basic_spur_gear, basic_flywheel]
+                  AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'), AngularAcceleration(1, 'rad/s^2'), Force(1, 'N'),
+                  InertiaMoment(1, 'kgm^2'), Length(1, 'm'), Stress(1, 'Pa'), Surface(1, 'm^2'), Time(1, 'sec'),
+                  TimeInterval(1, 'sec'), Torque(1, 'Nm'), basic_dc_motor, basic_spur_gear_1, basic_flywheel,
+                  MatingMaster, MatingSlave, SpurGear]
 
 
 @composite
@@ -51,12 +57,27 @@ def names(draw, strategy):
 
 
 @composite
-def spur_gears(draw):
+def simple_spur_gears(draw):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
-    n_teeth = draw(integers(min_value = 1, max_value = 100))
+    n_teeth = draw(integers(min_value = 10, max_value = 100))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
 
     return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
+
+
+@composite
+def structural_spur_gears(draw):
+    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
+    n_teeth = draw(integers(min_value = 10, max_value = 100))
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    module = Length(1, 'mm')
+    face_width_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    face_width = Length(face_width_value, 'mm')
+    elastic_modulus_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    elastic_modulus = Stress(elastic_modulus_value, 'GPa')
+
+    return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
+                    module = module, face_width = face_width, elastic_modulus = elastic_modulus)
 
 
 @composite
@@ -83,7 +104,10 @@ def flywheels(draw):
 @composite
 def transmissions(draw):
     motor = draw(dc_motors())
-    gears = draw(lists(elements = spur_gears(), min_size = 1))
+    gears = draw(lists(elements = structural_spur_gears(), min_size = 2))
+
+    if len(gears)%2 == 1:
+        gears = gears[:-1]
 
     add_fixed_joint(master = motor, slave = gears[0])
 
@@ -99,7 +123,29 @@ def transmissions(draw):
 @composite
 def solved_transmissions(draw):
     motor = draw(dc_motors())
-    gears = draw(lists(elements = spur_gears(), min_size = 1, max_size = 4))
+    gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
+    gear_2 = SpurGear(name = 'gear 2', n_teeth = 20, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
+    simple_gears = draw(lists(elements = simple_spur_gears(), min_size = 2, max_size = 4))
+    structural_gears = draw(lists(elements = structural_spur_gears(), min_size = 2, max_size = 4))
+
+
+    if len(simple_gears)%2 == 1:
+        simple_gears = simple_gears[:-1]
+
+    if len(structural_gears)%2 == 1:
+        structural_gears = structural_gears[:-1]
+
+    simple_gears = list(zip(*(iter(simple_gears),)*2))
+    structural_gears = list(zip(*(iter(structural_gears),)*2))
+
+    gears = []
+    gears.extend(simple_gears)
+    gears.extend(structural_gears)
+    shuffle(gears)
+
+    gears = [element for pair in gears for element in pair]
+    gears.append(gear_1)
+    gears.append(gear_2)
 
     time_discretization_value = draw(floats(min_value = 1e-3, max_value = 1, allow_nan = False, allow_infinity = False))
     time_discretization = TimeInterval(value = time_discretization_value, unit = 'sec')

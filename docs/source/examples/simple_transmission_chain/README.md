@@ -8,7 +8,9 @@ A *flywheel* and the *gear 1* are connected to the *DC motor* output
 shaft and rotate with it. The *gear 2* mates with *gear 1* and is 
 connected to *gear 3* through a rigid shaft, so *gear 2* and *gear 3* 
 rotate together. The *gear 3* mates with *gear 4*, to which is connected
-to the external load.
+to the external load.  
+The analysis is focused on transmission elements kinematics and torques,
+without computing structural strength of the gear teeth.
 
 
 ### Model Set Up
@@ -115,13 +117,13 @@ transmission.snapshot(target_time = Time(1000, 'sec'))
 
 ```text
 Mechanical Transmission Status at Time = 1000 sec
-         angular position (rad) angular speed (rad/s) angular acceleration (rad/s^2) torque (Nm) driving torque (Nm) load torque (Nm)
-motor             459683.165617            570.175248                       0.019532    0.001199            0.006199            0.005
-flywheel          459683.165617            570.175248                       0.019532    0.001199            0.006199            0.005
-gear 1            459683.165617            570.175248                       0.019532    0.001199            0.006199            0.005
-gear 2            229841.582808            285.087624                       0.009766    0.001158            0.011158             0.01
-gear 3            229841.582808            285.087624                       0.009766    0.001158            0.011158             0.01
-gear 4             76708.893383             95.032447                       0.003239    0.000126            0.030126             0.03
+         angular position (rad) angular speed (rad/s) angular acceleration (rad/s^2) torque (Nm) driving torque (Nm) load torque (Nm) tangential force (N) bending stress (MPa) contact stress (MPa)
+motor             459683.165617            570.175248                       0.019532    0.001199            0.006199            0.005                  NaN                  NaN                  NaN
+flywheel          459683.165617            570.175248                       0.019532    0.001199            0.006199            0.005                  NaN                  NaN                  NaN
+gear 1            459683.165617            570.175248                       0.019532    0.001199            0.006199            0.005                  NaN                  NaN                  NaN
+gear 2            229841.582808            285.087624                       0.009766    0.001158            0.011158             0.01                  NaN                  NaN                  NaN
+gear 3            229841.582808            285.087624                       0.009766    0.001158            0.011158             0.01                  NaN                  NaN                  NaN
+gear 4             76708.893383             95.032447                       0.003239    0.000126            0.030126             0.03                  NaN                  NaN                  NaN
 ```
 
 The default unit used for torques are not so convenient in this case, so 
@@ -136,18 +138,18 @@ transmission.snapshot(target_time = Time(1000, 'sec'),
 
 ```text
 Mechanical Transmission Status at Time = 1000 sec
-         angular position (rad) angular speed (rad/s) angular acceleration (rad/s^2) torque (mNm) driving torque (mNm) load torque (mNm)
-motor             459683.165617            570.175248                       0.019532     1.198832             6.198832               5.0
-flywheel          459683.165617            570.175248                       0.019532     1.198832             6.198832               5.0
-gear 1            459683.165617            570.175248                       0.019532     1.198832             6.198832               5.0
-gear 2            229841.582808            285.087624                       0.009766     1.157897            11.157897              10.0
-gear 3            229841.582808            285.087624                       0.009766     1.157897            11.157897              10.0
-gear 4             76708.893383             95.032447                       0.003239     0.126322            30.126322              30.0
+         angular position (rad) angular speed (rad/s) angular acceleration (rad/s^2) torque (mNm) driving torque (mNm) load torque (mNm) tangential force (N) bending stress (MPa) contact stress (MPa)
+motor             459683.165617            570.175248                       0.019532     1.198832             6.198832               5.0                  NaN                  NaN                  NaN
+flywheel          459683.165617            570.175248                       0.019532     1.198832             6.198832               5.0                  NaN                  NaN                  NaN
+gear 1            459683.165617            570.175248                       0.019532     1.198832             6.198832               5.0                  NaN                  NaN                  NaN
+gear 2            229841.582808            285.087624                       0.009766     1.157897            11.157897              10.0                  NaN                  NaN                  NaN
+gear 3            229841.582808            285.087624                       0.009766     1.157897            11.157897              10.0                  NaN                  NaN                  NaN
+gear 4             76708.893383             95.032447                       0.003239     0.126322            30.126322              30.0                  NaN                  NaN                  NaN
 ```
 
 Notice that the load torque applied on the *gear 4* is exactly the 
 constant external torque we defined beforehand.  
-After 1000 seconds after the simulation start, the driving torque 
+About 1000 seconds after the simulation start, the driving torque 
 applied on *gear 4* is almost equal to the load torque on it, resulting
 in a very tiny angular acceleration. As a result, we can conclude that 
 the system is almost in a stationary condition after 1000 seconds from 
@@ -156,7 +158,7 @@ We can get a more general view of the system by plotting the time
 variables of each element with respect to time:
 
 ```python
-transmission.plot(figsize = (12, 8))
+transmission.plot(figsize = (12, 9))
 ```
 
 ![](images/plot_1.png)
@@ -182,7 +184,7 @@ sorts:
 - the elements: the motor on the left and following elements proceeding
 to the right,
 - the time variables: kinematic variables at the top and torques in
-the last row, in the same plot.
+the second-last row and force in the last row, in the same plot.
   
 We can see that at 1000 seconds the angular speeds of *motor* and 
 *gear 4* are almost constant, confirming the insight previously 

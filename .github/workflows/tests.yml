@@ -16,8 +16,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          pip install pytest hypothesis coverage pytest-cov pytest-xdist
-          pip install -r requirements.txt
+          pip install -r requirements/common.txt
+          pip install -r requirements/tests.txt
       - name: Fetch
         uses: actions/checkout@master
       - name: Test

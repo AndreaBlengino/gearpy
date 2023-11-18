@@ -57,6 +57,20 @@ class TestInertiaMomentRepr:
         assert str(inertia_moment) == f'{value} {unit}'
 
 
+@mark.units
+class TestInertiaMomentAbs:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        inertia_moment = InertiaMoment(value = value, unit = unit)
+
+        assert abs(inertia_moment) == InertiaMoment(value = abs(value), unit = unit)
+        assert abs(inertia_moment).value >= 0
+
 
 @mark.units
 class TestInertiaMomentAdd:

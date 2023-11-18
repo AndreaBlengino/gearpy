@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import MotorBase, GearBase, Flywheel
+from gearpy.mechanical_object import MotorBase, GearBase, Flywheel, MatingMaster, MatingSlave
 from typing import Union
 
 
@@ -26,7 +26,8 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
         - if ``slave`` is not an instance of ``GearBase``,
         - if ``efficiency`` is not a float or an integer.
     ValueError
-        If ``efficiency`` is not within ``0`` and ``1``.
+        - If ``efficiency`` is not within ``0`` and ``1``,
+        - if ``master`` and ``slave`` have different values for ``module``.
     """
     if not isinstance(master, GearBase):
         raise TypeError("Parameter 'master' must be an instance of GearBase.")
@@ -40,8 +41,15 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
     if efficiency > 1 or efficiency < 0:
         raise ValueError("Parameter 'efficiency' must be within 0 and 1.")
 
+    if master.module is not None and slave.module is not None:
+        if master.module != slave.module:
+            raise ValueError(f"Gears {master.name!r} and {slave.name!r} have different modules, "
+                             f"so they cannot mate together.")
+
     master.drives = slave
+    master.mating_role = MatingMaster
     slave.driven_by = master
+    slave.mating_role = MatingSlave
     slave.master_gear_ratio = slave.n_teeth/master.n_teeth
     slave.master_gear_efficiency = efficiency
 

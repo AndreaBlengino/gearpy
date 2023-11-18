@@ -1,9 +1,6 @@
-from math import pi, fabs
+from math import pi
 from typing import Union
 from .unit_base import UnitBase
-
-
-COMPARISON_TOLERANCE = 1e-12
 
 
 class AngularPosition(UnitBase):
@@ -38,19 +35,6 @@ class AngularPosition(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __add__(self, other: 'AngularPosition') -> 'AngularPosition':
-        super().__add__(other = other)
-
-        return AngularPosition(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'AngularPosition') -> 'AngularPosition':
-        super().__sub__(other = other)
-
-        return AngularPosition(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union[float, int]) -> 'AngularPosition':
         super().__mul__(other = other)
 
@@ -80,54 +64,6 @@ class AngularPosition(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return AngularPosition(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'AngularPosition') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'AngularPosition') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'AngularPosition') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'AngularPosition') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'AngularPosition') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'AngularPosition') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -274,19 +210,6 @@ class AngularSpeed(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __add__(self, other: 'AngularSpeed') -> 'AngularSpeed':
-        super().__add__(other = other)
-
-        return AngularSpeed(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'AngularSpeed') -> 'AngularSpeed':
-        super().__sub__(other = other)
-
-        return AngularSpeed(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union['Time', float, int]) -> Union['AngularPosition', 'AngularSpeed']:
         super().__mul__(other = other)
 
@@ -321,54 +244,6 @@ class AngularSpeed(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return AngularSpeed(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'AngularSpeed') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'AngularSpeed') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'AngularSpeed') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'AngularSpeed') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'AngularSpeed') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'AngularSpeed') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -515,19 +390,6 @@ class AngularAcceleration(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __add__(self, other: 'AngularAcceleration') -> 'AngularAcceleration':
-        super().__add__(other = other)
-
-        return AngularAcceleration(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'AngularAcceleration') -> 'AngularAcceleration':
-        super().__sub__(other = other)
-
-        return AngularAcceleration(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union['Time', float, int]) -> Union['AngularAcceleration', 'AngularSpeed']:
         super().__mul__(other = other)
 
@@ -563,54 +425,6 @@ class AngularAcceleration(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return AngularAcceleration(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'AngularAcceleration') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'AngularAcceleration') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'AngularAcceleration') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'AngularAcceleration') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'AngularAcceleration') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'AngularAcceleration') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -759,22 +573,6 @@ class InertiaMoment(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __add__(self, other: 'InertiaMoment') -> 'InertiaMoment':
-        super().__add__(other = other)
-
-        return InertiaMoment(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'InertiaMoment') -> 'InertiaMoment':
-        super().__sub__(other = other)
-
-        if self.__value - other.to(self.__unit).value <= 0:
-            raise ValueError('Cannot perform the subtraction because the result is not positive.')
-
-        return InertiaMoment(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union[float, int]) -> 'InertiaMoment':
         super().__mul__(other = other)
 
@@ -810,54 +608,6 @@ class InertiaMoment(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return InertiaMoment(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'InertiaMoment') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'InertiaMoment') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'InertiaMoment') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'InertiaMoment') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'InertiaMoment') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'InertiaMoment') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -1020,19 +770,6 @@ class Torque(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __add__(self, other: 'Torque') -> 'Torque':
-        super().__add__(other = other)
-
-        return Torque(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'Torque') -> 'Torque':
-        super().__sub__(other = other)
-
-        return Torque(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union[float, int]) -> 'Torque':
         super().__mul__(other = other)
 
@@ -1051,67 +788,21 @@ class Torque(UnitBase):
 
         return Torque(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['InertiaMoment', 'Torque', float, int]) -> Union['AngularAcceleration', 'Torque', float]:
+    def __truediv__(self, other: Union['InertiaMoment', 'Length', 'Torque', float, int]) -> Union['AngularAcceleration', 'Force', float, 'Torque']:
         super().__truediv__(other = other)
 
-        if not isinstance(other, Torque) and not isinstance(other, float) and not isinstance(other, int) \
-                and not isinstance(other, InertiaMoment):
+        if not isinstance(other, InertiaMoment) and not isinstance(other, Length) and not isinstance(other, Torque) \
+                and not isinstance(other, float) and not isinstance(other, int):
             raise TypeError(f'It is not allowed to divide a {self.__class__.__name__} by a {other.__class__.__name__}.')
 
-        if isinstance(other, Torque):
-            return self.__value/other.to(self.__unit).value
-        elif isinstance(other, InertiaMoment):
+        if isinstance(other, InertiaMoment):
             return AngularAcceleration(value = self.to('Nm').value/other.to('kgm^2').value, unit = 'rad/s^2')
+        elif isinstance(other, Length):
+            return Force(value = self.to('Nm').value/other.to('m').value, unit = 'N')
+        elif isinstance(other, Torque):
+            return self.__value/other.to(self.__unit).value
         else:
             return Torque(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'Torque') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'Torque') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'Torque') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'Torque') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'Torque') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'Torque') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -1267,19 +958,6 @@ class Time(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __repr__(self) -> str:
-        return f'{self.__value} {self.__unit}'
-
-    def __add__(self, other: 'Time') -> 'Time':
-        super().__add__(other = other)
-
-        return Time(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
-
-    def __sub__(self, other: 'Time') -> 'Time':
-        super().__sub__(other = other)
-
-        return Time(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
-
     def __mul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) -> Union['AngularPosition', 'AngularSpeed', 'Time']:
         super().__mul__(other = other)
 
@@ -1320,54 +998,6 @@ class Time(UnitBase):
             return self.__value/other.to(self.__unit).value
         else:
             return Time(value = self.__value/other, unit = self.__unit)
-
-    def __eq__(self, other: 'Time') -> bool:
-        super().__eq__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value == other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) < COMPARISON_TOLERANCE
-
-    def __ne__(self, other: 'Time') -> bool:
-        super().__ne__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value != other.value
-        else:
-            return fabs(self.__value - other.to(self.__unit).value) > COMPARISON_TOLERANCE
-
-    def __gt__(self, other: 'Time') -> bool:
-        super().__gt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value > other.value
-        else:
-            return self.__value - other.to(self.__unit).value > COMPARISON_TOLERANCE
-
-    def __ge__(self, other: 'Time') -> bool:
-        super().__ge__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value >= other.value
-        else:
-            return self.__value - other.to(self.__unit).value >= -COMPARISON_TOLERANCE
-
-    def __lt__(self, other: 'Time') -> bool:
-        super().__lt__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value < other.value
-        else:
-            return self.__value - other.to(self.__unit).value < -COMPARISON_TOLERANCE
-
-    def __le__(self, other: 'Time') -> bool:
-        super().__le__(other = other)
-
-        if self.__unit == other.unit:
-            return self.__value <= other.value
-        else:
-            return self.__value - other.to(self.__unit).value <= COMPARISON_TOLERANCE
 
     @property
     def value(self) -> Union[float, int]:
@@ -1513,9 +1143,6 @@ class TimeInterval(Time):
     def __sub__(self, other: Union['Time', 'TimeInterval']) -> Union['Time', 'TimeInterval']:
         super().__sub__(other = other)
 
-        if self.__value - other.to(self.__unit).value <= 0:
-            raise ValueError('Cannot perform the subtraction because the result is not positive.')
-
         if isinstance(other, TimeInterval):
             return TimeInterval(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
         else:
@@ -1644,3 +1271,702 @@ class TimeInterval(Time):
             return self
         else:
             return TimeInterval(value = converted.value, unit = converted.unit)
+
+
+class Length(UnitBase):
+    r"""``gearpy.units.units.Length`` object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for length.
+    :py:attr:`value` : float or int
+        Length numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
+
+    __UNITS = {'m': 1,
+               'dm': 1e-1,
+               'cm': 1e-2,
+               'mm': 1e-3}
+
+    def __init__(self, value: Union[float, int], unit: str):
+        super().__init__(value = value, unit = unit)
+
+        if unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if value <= 0:
+            raise ValueError("Parameter 'value' must be positive.")
+
+        self.__value = value
+        self.__unit = unit
+
+    def __mul__(self, other: Union['Length', float, int]) -> Union['Surface', 'Length']:
+        super().__mul__(other = other)
+
+        if not isinstance(other, Length) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        if isinstance(other, Length):
+            return Surface(value = self.to('m').value*other.to('m').value, unit = 'm^2')
+        else:
+            return Length(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Length':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
+                            f'{self.__class__.__name__}.')
+
+        return Length(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Length', float, int]) -> Union['Length', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Length) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        if isinstance(other, Length):
+            return self.__value/other.to(self.__unit).value
+        else:
+            return Length(value = self.__value/other, unit = self.__unit)
+
+    @property
+    def value(self) -> Union[float, int]:
+        """Length numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+
+        Returns
+        -------
+        float or int
+            Length numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        ValueError
+            If ``value`` is not positive.
+        """
+        return self.__value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for length. It must be a string.
+        Available units are:
+
+            - ``'m'`` for meter,
+            - ``'dm'`` for decimeter,
+            - ``'cm'`` for centimeter,
+            - ``'mm'`` for millimeter.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for length.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return self.__unit
+
+    def to(self, target_unit: str, inplace: bool = False) -> 'Length':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Length
+            Converted length.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Length`` instantiation.
+
+        >>> from gearpy.units import Length
+        >>> l = Length(1, 'm')
+        >>> l
+        ... 1 m
+
+        Conversion from meter to centimeter with ``inplace = False`` by default, so it does not override the current
+        value.
+
+        >>> l.to('cm')
+        ... 100.0 cm
+        >>> l
+        ... 1 m
+
+        Conversion from meter to centimeter with ``inplace = True``, in order to override the current value.
+
+        >>> l.to('cm', inplace = True)
+        ... 100.0 cm
+        >>> l
+        ... 100.0 cm
+        """
+        super().to(target_unit = target_unit, inplace = inplace)
+
+        if target_unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if target_unit != self.__unit:
+            target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
+        else:
+            target_value = self.__value
+
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Length(value = target_value, unit = target_unit)
+
+
+class Surface(UnitBase):
+    r"""``gearpy.units.units.Surface`` object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for surface.
+    :py:attr:`value` : float or int
+        Surface numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
+
+    __UNITS = {'m^2': 1,
+               'dm^2': 1e-2,
+               'cm^2': 1e-4,
+               'mm^2': 1e-6}
+
+    def __init__(self, value: Union[float, int], unit: str):
+        super().__init__(value = value, unit = unit)
+
+        if unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if value <= 0:
+            raise ValueError("Parameter 'value' must be positive.")
+
+        self.__value = value
+        self.__unit = unit
+
+    def __mul__(self, other: Union[float, int]) -> 'Surface':
+        super().__mul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        return Surface(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Surface':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
+                            f'{self.__class__.__name__}.')
+
+        return Surface(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Surface', float, int]) -> Union['Surface', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Surface) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        if isinstance(other, Surface):
+            return self.__value/other.to(self.__unit).value
+        else:
+            return Surface(value = self.__value/other, unit = self.__unit)
+
+    @property
+    def value(self) -> Union[float, int]:
+        """Surface numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+
+        Returns
+        -------
+        float or int
+            Surface numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        ValueError
+            If ``value`` is not positive.
+        """
+        return self.__value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for surface. It must be a string.
+        Available units are:
+
+            - ``'m^2'`` for square meter,
+            - ``'dm^2'`` for square decimeter,
+            - ``'cm^2'`` for square centimeter,
+            - ``'mm^2'`` for square millimeter.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for surface.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return self.__unit
+
+    def to(self, target_unit: str, inplace: bool = False) -> 'Surface':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Surface
+            Converted surface.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Surface`` instantiation.
+
+        >>> from gearpy.units import Surface
+        >>> s = Surface(1, 'm^2')
+        >>> s
+        ... 1 m^2
+
+        Conversion from square meter to square millimeter with ``inplace = False`` by default, so it does not override
+        the current value.
+
+        >>> s.to('mm^2')
+        ... 1000000.0 mm^2
+        >>> s
+        ... 1 m^2
+
+        Conversion from square meter to square millimeter with ``inplace = True``, in order to override the current
+        value.
+
+        >>> s.to('mm^2', inplace = True)
+        ... 1000000.0 mm^2
+        >>> s
+        ... 1000000.0 mm^2
+        """
+        super().to(target_unit = target_unit, inplace = inplace)
+
+        if target_unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if target_unit != self.__unit:
+            target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
+        else:
+            target_value = self.__value
+
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Surface(value = target_value, unit = target_unit)
+
+
+class Force(UnitBase):
+    r"""``gearpy.units.units.Force`` object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for force.
+    :py:attr:`value` : float or int
+        Force numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
+
+    __UNITS = {'N': 1,
+               'mN': 1e-3,
+               'kN': 1e3,
+               'kgf': 9.80665,
+               'gf': 9.80665e-3}
+
+    def __init__(self, value: Union[float, int], unit: str):
+        super().__init__(value = value, unit = unit)
+
+        if unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        self.__value = value
+        self.__unit = unit
+
+    def __mul__(self, other: Union[float, int]) -> 'Force':
+        super().__mul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        return Force(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Force':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
+                            f'{self.__class__.__name__}.')
+
+        return Force(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Force', 'Surface', float, int]) -> Union['Force', 'Stress', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Force) and not isinstance(other, Surface) and not isinstance(other, float) \
+                and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        if isinstance(other, Force):
+            return self.__value/other.to(self.__unit).value
+        elif isinstance(other, Surface):
+            return Stress(value = self.to('N').value/other.to('m^2').value, unit = 'Pa')
+        else:
+            return Force(value = self.__value/other, unit = self.__unit)
+
+    @property
+    def value(self) -> Union[float, int]:
+        """Force numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+
+        Returns
+        -------
+        float or int
+            Force numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        """
+        return self.__value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for force. It must be a string.
+        Available units are:
+
+            - ``'N'`` for newton,
+            - ``'mN'`` for milli-newton,
+            - ``'kN'`` for kilo-newton,
+            - ``'kgf'`` for kilogram force,
+            - ``'gf'`` for gram force.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for force.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return self.__unit
+
+    def to(self, target_unit: str, inplace: bool = False) -> 'Force':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Force
+            Converted force.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Force`` instantiation.
+
+        >>> from gearpy.units import Force
+        >>> f = Force(1, 'N')
+        >>> f
+        ... 1 N
+
+        Conversion from newton to kilogram force with ``inplace = False`` by default, so it does not override the
+        current value.
+
+        >>> f.to('kgf')
+        ... 0.10197162129779283 kgf
+        >>> f
+        ... 1 N
+
+        Conversion from newton to kilogram force with ``inplace = True``, in order to override the current value.
+
+        >>> f.to('kgf', inplace = True)
+        ... 0.10197162129779283 kgf
+        >>> f
+        ... 0.10197162129779283 kgf
+        """
+        super().to(target_unit = target_unit, inplace = inplace)
+
+        if target_unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if target_unit != self.__unit:
+            target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
+        else:
+            target_value = self.__value
+
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Force(value = target_value, unit = target_unit)
+
+
+class Stress(UnitBase):
+    r"""``gearpy.units.units.Stress`` object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for stress.
+    :py:attr:`value` : float or int
+        Stress numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
+
+    __UNITS = {'Pa': 1,
+               'kPa': 1e3,
+               'MPa': 1e6,
+               'GPa': 1e9}
+
+    def __init__(self, value: Union[float, int], unit: str):
+        super().__init__(value = value, unit = unit)
+
+        if unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        self.__value = value
+        self.__unit = unit
+
+    def __mul__(self, other: Union[float, int]) -> 'Stress':
+        super().__mul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        return Stress(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Stress':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
+                            f'{self.__class__.__name__}.')
+
+        return Stress(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Stress', float, int]) -> Union['Stress', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Stress) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        if isinstance(other, Stress):
+            return self.__value/other.to(self.__unit).value
+        else:
+            return Stress(value = self.__value/other, unit = self.__unit)
+
+    @property
+    def value(self) -> Union[float, int]:
+        """Stress numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+
+        Returns
+        -------
+        float or int
+            Stress numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        """
+        return self.__value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for stress. It must be a string.
+        Available units are:
+
+            - ``'Pa'`` for pascal,
+            - ``'kPa'`` for kilo-pascal,
+            - ``'MPa'`` for mega-pascal,
+            - ``'GPa'`` for giga-pascal.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for stress.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return self.__unit
+
+    def to(self, target_unit: str, inplace: bool = False) -> 'Stress':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Stress
+            Converted stress.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Stress`` instantiation.
+
+        >>> from gearpy.units import Stress
+        >>> s = Stress(1, 'GPa')
+        >>> s
+        ... 1 GPa
+
+        Conversion from giga-pascal to mega-pascal with ``inplace = False`` by default, so it does not override the
+        current value.
+
+        >>> s.to('MPa')
+        ... 1000.0 MPa
+        >>> s
+        ... 1 GPa
+
+        Conversion from giga-pascal to mega-pascal with ``inplace = True``, in order to override the current value.
+
+        >>> s.to('MPa', inplace = True)
+        ... 1000.0 MPa
+        >>> s
+        ... 1000.0 MPa
+        """
+        super().to(target_unit = target_unit, inplace = inplace)
+
+        if target_unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if target_unit != self.__unit:
+            target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
+        else:
+            target_value = self.__value
+
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Stress(value = target_value, unit = target_unit)
