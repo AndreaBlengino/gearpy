@@ -85,3 +85,18 @@ class TestSolverRun:
                         transmission = transmission)
         with raises(TypeError):
             solver.run()
+
+
+    @mark.error
+    def test_raises_value_error(self):
+        motor = DCMotor(name = 'motor', no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
+        gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+        add_fixed_joint(master = motor, slave = gear)
+        transmission = Transmission(motor = motor)
+        gear.angular_position = AngularPosition(0, 'rad')
+        gear.angular_speed = AngularSpeed(0, 'rad/s')
+        solver = Solver(time_discretization = TimeInterval(1, 'sec'),
+                        simulation_time = TimeInterval(10, 'sec'),
+                        transmission = transmission)
+        with raises(ValueError):
+            solver.run()
