@@ -1,5 +1,8 @@
+from gearpy.mechanical_object import DCMotor, SpurGear
 from gearpy.solver import Solver
-from gearpy.units import Torque
+from gearpy.transmission import Transmission
+from gearpy.units import Torque, InertiaMoment, AngularSpeed, AngularPosition, TimeInterval
+from gearpy.utils import add_fixed_joint
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import floats, integers
 import numpy as np
@@ -66,3 +69,19 @@ class TestSolverRun:
         solver.run()
 
         assert len(transmission.time) == len(np.arange(time_discretization.value, simulation_time.value, time_discretization.value)) + 1
+
+
+    @mark.error
+    def test_raises_type_error(self):
+        motor = DCMotor(name = 'motor', no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
+        gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+        add_fixed_joint(master = motor, slave = gear)
+        gear.external_torque = lambda angular_position, angular_speed, time: 1
+        transmission = Transmission(motor = motor)
+        gear.angular_position = AngularPosition(0, 'rad')
+        gear.angular_speed = AngularSpeed(0, 'rad/s')
+        solver = Solver(time_discretization = TimeInterval(1, 'sec'),
+                        simulation_time = TimeInterval(10, 'sec'),
+                        transmission = transmission)
+        with raises(TypeError):
+            solver.run()

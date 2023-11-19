@@ -1,5 +1,5 @@
 from gearpy.mechanical_object import RotatingObject, Role, SpurGear
-from gearpy.units import Force, InertiaMoment, Length, Stress
+from gearpy.units import Force, InertiaMoment, Length, Stress, Torque
 from gearpy.utils import add_gear_mating
 from pytest import fixture
 from tests.conftest import types_to_check
@@ -140,4 +140,11 @@ def spur_gear_compute_contact_stress_value_error(request):
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Callable)])
 def spur_gear_external_torque_type_error(request):
+    return request.param
+
+
+@fixture(params = [lambda angular_speed, time: Torque(1, 'Nm'),
+                   lambda angular_position, time: Torque(1, 'Nm'),
+                   lambda angular_position, angular_speed: Torque(1, 'Nm')])
+def spur_gear_external_torque_key_error(request):
     return request.param
