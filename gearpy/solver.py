@@ -76,7 +76,13 @@ class Solver:
         TypeError
             If function ``external_torque`` of one gear in the transmission chain does not return an instance of
             ``Torque``.
+        ValueError
+            If function ``external_torque`` has not been defined for any gear of the transmission.
         """
+        if not any([element.external_torque is not None for element in self.transmission.chain if isinstance(element, GearBase)]):
+            raise ValueError("The function 'external_torque' has not been defined for any gear of the transmission. "
+                             "Add this function to a tranmission gear.")
+
         self.transmission.update_time(Time(value = 0, unit = self.time_discretization.unit))
         self._compute_transmission_inertia()
         self._compute_transmission_initial_state()
