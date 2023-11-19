@@ -88,7 +88,9 @@ class Solver:
         self._compute_transmission_initial_state()
         self._update_time_variables()
 
-        for k in np.arange(self.time_discretization.value, self.simulation_time.value, self.time_discretization.value):
+        for k in np.arange(self.time_discretization.value,
+                           self.simulation_time.value + self.time_discretization.value,
+                           self.time_discretization.value):
 
             self.transmission.update_time(Time(value = float(k), unit = self.time_discretization.unit))
 
