@@ -68,7 +68,9 @@ class TestSolverRun:
                         transmission = transmission)
         solver.run()
 
-        assert len(transmission.time) == len(np.arange(time_discretization.value, simulation_time.value, time_discretization.value)) + 1
+        assert len(transmission.time) == len(np.arange(time_discretization.value,
+                                                       simulation_time.value + time_discretization.value,
+                                                       time_discretization.value)) + 1
 
 
     @mark.error
