@@ -111,6 +111,7 @@ class Solver:
         self._compute_torque()
         self._compute_force()
         self._compute_stress()
+        self._compute_electrical_current()
         self._compute_angular_acceleration()
         self._update_time_variables()
 
@@ -179,6 +180,11 @@ class Solver:
                     item.compute_bending_stress()
                     if item.contact_stress_is_computable:
                         item.compute_contact_stress()
+
+    def _compute_electrical_current(self):
+
+        if self.transmission.chain[0].electrical_current_is_computable:
+            self.transmission.chain[0].compute_electrical_current()
 
     def _compute_angular_acceleration(self):
 
