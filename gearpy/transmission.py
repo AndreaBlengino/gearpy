@@ -116,6 +116,7 @@ class Transmission:
                  load_torque_unit: str = 'Nm',
                  force_unit: str = 'N',
                  stress_unit: str = 'MPa',
+                 current_unit: str = 'A',
                  print_data: bool = True) -> pd.DataFrame:
         """Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
         ``target_time``. The computed time variables are organized in a ``pandas.DataFrame``, returned by the method.
@@ -154,6 +155,9 @@ class Transmission:
         stress_unit : str, optional
             Symbol of the unit of measurement to which convert the stress values in the plot. It must be a string.
             Default is ``'MPa'``.
+        current_unit : str, optional
+            Symbol of the unit of measurement to which convert the electrical current values in the DataFrame. It must
+            be a string. Default is ``'A'``.
         print_data : bool, optional
             Whether or not to print the computed time variables DataFrame. Default is ``True``.
 
@@ -176,6 +180,7 @@ class Transmission:
             - if ``load_torque_unit`` is not a string,
             - if ``force_unit`` is not a string,
             - if ``stress_unit`` is not a string,
+            - if ``current_unit`` is not a string,
             - if ``print_data`` is not a bool.
         ValueError
             If ``time`` is an empty list.
@@ -213,6 +218,9 @@ class Transmission:
         if not isinstance(stress_unit, str):
             raise TypeError(f"Parameter 'stress_unit' must be a string.")
 
+        if not isinstance(current_unit, str):
+            raise TypeError(f"Parameter 'current_unit' must be a string.")
+
         if not isinstance(print_data, bool):
             raise TypeError(f"Parameter 'print_data' must be a bool.")
 
@@ -224,7 +232,8 @@ class Transmission:
                                        f'load torque ({load_torque_unit})',
                                        f'tangential force ({force_unit})',
                                        f'bending stress ({stress_unit})',
-                                       f'contact stress ({stress_unit})'])
+                                       f'contact stress ({stress_unit})',
+                                       f'electrical current ({current_unit})'])
 
         for element in self.chain:
             for variable, unit in zip(['angular position', 'angular speed', 'angular acceleration',
@@ -235,6 +244,14 @@ class Transmission:
                                                   y = [value.to(unit).value
                                                        for value in element.time_variables[variable]])
                 data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
+
+            if isinstance(element, MotorBase):
+                if element.electrical_current_is_computable:
+                    interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
+                                                      y = [value.to(current_unit).value
+                                                           for value in element.time_variables['electrical current']])
+                    data.loc[element.name, f'electrical current ({current_unit})'] = \
+                        interpolation_function(target_time.to('sec').value).take(0)
 
             if isinstance(element, GearBase):
                 variable_list = []
