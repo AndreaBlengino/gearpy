@@ -833,17 +833,17 @@ class SpurGear(GearBase):
         """Time variables of the gear. Each time variable is stored as a dictionary key-value pair. The available time
         variables are:
 
-            - ``angular_position``,
-            - ``angular_speed``,
-            - ``angular_acceleration``,
+            - ``angular position``,
+            - ``angular speed``,
+            - ``angular acceleration``,
             - ``torque``,
-            - ``driving_torque``,
-            - ``load_torque``,
-            - ``tangential_force``,
-            - ``bending_stress``,
-            - ``contact_stress``.
+            - ``driving torque``,
+            - ``load torque``,
+            - ``tangential force``,
+            - ``bending stress``,
+            - ``contact stress``.
 
-        ``tangential_force``, ``bending_stress`` and ``contact_stress`` are listed among time variables only if they are
+        ``tangential force``, ``bending stress`` and ``contact stress`` are listed among time variables only if they are
         computable indeed, depending on which gear parameters are set at gear instantiation. \n
         Corresponding values of the dictionary are lists of the respective time variable values. \n
         At each time iteration, the ``Solver`` appends every time variables' values to the relative list in the
@@ -1387,12 +1387,13 @@ class DCMotor(MotorBase):
         """Time variables of the DC motor. Each time variable is stored as a dictionary key-value pair. The available
         time variables are:
 
-            - ``angular_position``,
-            - ``angular_speed``,
-            - ``angular_acceleration``,
+            - ``angular position``,
+            - ``angular speed``,
+            - ``angular acceleration``,
             - ``torque``,
-            - ``driving_torque``,
-            - ``load_torque``.
+            - ``driving torque``,
+            - ``load torque``,
+            - ``electrical current``.
 
         ``electrical current`` is listed among time variables only if it is computable indeed, depending on which motor
         parameters are set at DC motor instantiation. \n
@@ -1414,8 +1415,6 @@ class DCMotor(MotorBase):
     def update_time_variables(self) -> None:
         """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
         dictionary) to corresponding list (value of the dictionary). \n
-        Time variables are ``angular_position``, ``angular_speed``, ``angular_acceleration``, ``torque``,
-        ``driving_torque`` and ``load_torque`` of the DC motor.
 
         See Also
         --------

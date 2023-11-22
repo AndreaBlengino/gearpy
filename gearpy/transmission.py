@@ -150,10 +150,10 @@ class Transmission:
             Symbol of the unit of measurement to which convert the load torque in the DataFrame. It must be a string.
             Default is ``'Nm'``.
         force_unit : str, optional
-            Symbol of the unit of measurement to which convert the force values in the plot. It must be a string.
+            Symbol of the unit of measurement to which convert the force values in the DataFrame. It must be a string.
             Default is ``'N'``.
         stress_unit : str, optional
-            Symbol of the unit of measurement to which convert the stress values in the plot. It must be a string.
+            Symbol of the unit of measurement to which convert the stress values in the DataFrame. It must be a string.
             Default is ``'MPa'``.
         current_unit : str, optional
             Symbol of the unit of measurement to which convert the electrical current values in the DataFrame. It must

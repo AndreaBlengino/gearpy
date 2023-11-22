@@ -1694,7 +1694,7 @@ class Force(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Force numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+        """Force numerical value. The relative unit is expressed by the ``unit`` property.
 
         Returns
         -------
@@ -1865,7 +1865,7 @@ class Stress(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Stress numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+        """Stress numerical value. The relative unit is expressed by the ``unit`` property.
 
         Returns
         -------
