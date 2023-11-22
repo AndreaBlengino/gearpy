@@ -1,5 +1,5 @@
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Stress, \
-    Time, Torque, UnitBase
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Current, Force, InertiaMoment, Length, \
+    Stress, Time, Torque, UnitBase
 from math import pi, sin, cos, sqrt
 from .mechanical_object_base import RotatingObject, GearBase, MotorBase, lewis_factor_function, Role
 from typing import Callable, Dict, List, Union, Optional
@@ -906,6 +906,14 @@ class DCMotor(MotorBase):
         Load torque applied on the DC motor by its driven gear.
     :py:attr:`inertia_moment` : InertiaMoment
         Moment of inertia of the DC motor.
+    :py:attr:`no_load_electrical_current` : Current
+        No load electrical current absorbed by the DC motor.
+    :py:attr:`maximum_electrical_current` : Current
+        Maximum electrical current absorbed by the DC motor.
+    :py:attr:`electrical_current_is_computable` : bool
+        Whether or not is possible to compute the electrical current absorbed by the DC motor.
+    :py:attr:`electrical_current` : Current
+        Electrical current absorbed by the DC motor.
     :py:attr:`time_variables` : dict
         Time variables of the DC motor.
 
@@ -913,6 +921,8 @@ class DCMotor(MotorBase):
     -------
     :py:meth:`compute_torque`
         Computes the driving torque developed by the DC motor.
+    :py:meth:`compute_electrical_current`
+        Computes the electrical current absorbed by the DC motor.
     :py:meth:`update_time_variables`
         Updates ``time_variables`` dictionary by appending the last value of each time variable to corresponding list.
     """
@@ -921,7 +931,9 @@ class DCMotor(MotorBase):
                  name: str,
                  inertia_moment: InertiaMoment,
                  no_load_speed: AngularSpeed,
-                 maximum_torque: Torque):
+                 maximum_torque: Torque,
+                 no_load_electrical_current: Optional[Current] = None,
+                 maximum_electrical_current: Optional[Current] = None):
         super().__init__(name = name, inertia_moment = inertia_moment)
 
         if not isinstance(no_load_speed, AngularSpeed):
@@ -936,8 +948,28 @@ class DCMotor(MotorBase):
         if maximum_torque.value <= 0:
             raise ValueError("Parameter 'maximum_torque.rst' must be positive.")
 
+        if no_load_electrical_current is not None:
+            if not isinstance(no_load_electrical_current, Current):
+                raise TypeError(f"Parameter 'no_load_electrical_current' must be an instance of {Current.__name__!r}.")
+
+            if no_load_electrical_current.value <= 0:
+                raise ValueError("Parameter 'no_load_electrical_current' must be positive.")
+
+        if maximum_electrical_current is not None:
+            if not isinstance(maximum_electrical_current, Current):
+                raise TypeError(f"Parameter 'maximum_electrical_current' must be an instance of {Current.__name__!r}.")
+
+            if maximum_electrical_current.value <= 0:
+                raise ValueError("Parameter 'maximum_electrical_current' must be positive.")
+
         self.__no_load_speed = no_load_speed
         self.__maximum_torque = maximum_torque
+        self.__no_load_electrical_current = no_load_electrical_current
+        self.__maximum_electrical_current = maximum_electrical_current
+
+        if self.electrical_current_is_computable:
+            self.__electrical_current = None
+            self.time_variables['electrical current'] = []
 
     @property
     def name(self) -> str:
@@ -1223,6 +1255,134 @@ class DCMotor(MotorBase):
                       unit = self.__maximum_torque.unit)
 
     @property
+    def no_load_electrical_current(self) -> Optional[Current]:
+        """No load electrical current absorbed by the DC motor. It must be an instance of ``Current``. Its value must be
+        positive. \n
+        It is the electrical current absorbed by the DC motor when no load is applied to its rotor. \n
+        Once set at the DC motor instantiation, it cannot be changed afterwards.
+
+        Returns
+        -------
+        Current
+            No load electrical current of the DC motor.
+
+        Raises
+        ------
+        TypeError
+            If ``no_load_electrical_current`` is not an instance of ``Current``.
+        ValueError
+            If ``no_load_electrical_current`` is not positive.
+
+        Se Also
+        -------
+        :py:class:`gearpy.units.units.Current`
+        """
+        return self.__no_load_electrical_current
+
+    @property
+    def maximum_electrical_current(self) -> Optional[Current]:
+        """Maximum electrical current absorbed by the DC motor. It must be an instance of ``Current``. Its value must
+        be positive. \n
+        It is the maximum electrical current the DC motor can absorb when its rotor is kept still by the load. \n
+        Once set at the DC motor instantiation, it cannot be changed afterwards.
+
+        Returns
+        -------
+        Current
+            Maximum electrical current absorbed by the DC motor.
+
+        Raises
+        ------
+        TypeError
+            If ``maximum_electrical_current`` is not an instance of ``Current``.
+        ValueError
+            If ``maximum_electrical_current`` is not positive.
+
+        Se Also
+        -------
+        :py:class:`gearpy.units.units.Current`
+        """
+        return self.__maximum_electrical_current
+
+    def compute_electrical_current(self):
+        r"""Computes the electrical current absorbed by the DC motor. The absorbed electrical current depends on
+        ``no_load_electrical_current`` and ``maximum_electrical_current`` of the DC motor and its instantaneous
+        ``driving_torque``.
+        The returned computed electrical current has the same unit of ``maximum_electrical_current``.
+
+        Returns
+        -------
+        Current
+            The electrical current absorbed by the DC motor.
+
+        Notes
+        -----
+        The computation is based on the following relationship:
+
+        .. math::
+            i \left( T \right) = \left( i_{max} - i_0 \right) \frac{T}{T_{max}} + i_0
+
+        where:
+
+            - :math:`i` is the electrical current absorbed by the DC motor,
+            - :math:`T` is the DC motor developed driving torque,
+            - :math:`i_{max}` is the maximum electrical current absorbed by the DC motor (``maximum_electrical_current``),
+            - :math:`i_0` is the no load electrical current absorbed by the DC motor (``no_load_electrical_current``),
+            - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``).
+        """
+        self.electrical_current = \
+            Current(value = ((self.__maximum_electrical_current - self.__no_load_electrical_current)*
+                             (self.driving_torque/self.__maximum_torque) + self.__no_load_electrical_current).value,
+                    unit = self.__maximum_electrical_current.unit)
+
+    @property
+    def electrical_current_is_computable(self) -> bool:
+        """Whether or not is possible to compute the electrical current absorbed by the DC motor. The electrical current
+        computation depends on the value of ``no_load_electrical_current`` and ``maximum_electrical_current``, so if
+        these optional parameters have been set at DC motor instantiation, then it is possible to compute the absorbed
+        electrical current and this property is ``True``, otherwise is ``False``.
+
+        Returns
+        -------
+        bool
+            Whether or not is possible to compute the electrical current absorbed by the DC motor.
+
+        See Also
+        --------
+        :py:attr:`no_load_electrical_current`
+        :py:attr:`maximum_electrical_current`
+        :py:meth:`compute_electrical_current`
+        """
+        return (self.__no_load_electrical_current is not None) and (self.__maximum_electrical_current is not None)
+
+    @property
+    def electrical_current(self) -> Optional[Current]:
+        """Electrical current absorbed by the DC motor. It must be an instance of ``Current``.
+
+        Returns
+        -------
+        Current
+            Electrical current absorbed by the DC motor.
+
+        Raises
+        ------
+        TypeError
+            If ``electrical_current`` is not an instance of ``Current``.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Current`
+        """
+        return self.__electrical_current
+
+    @electrical_current.setter
+    def electrical_current(self, electrical_current: Current):
+        if not isinstance(electrical_current, Current):
+            raise TypeError(f"Parameter 'electrical_current' must be an instance of {Current.__name__!r}.")
+
+        self.__electrical_current = electrical_current
+
+    @property
     def time_variables(self) -> Dict[str, List[UnitBase]]:
         """Time variables of the DC motor. Each time variable is stored as a dictionary key-value pair. The available
         time variables are:
@@ -1234,6 +1394,8 @@ class DCMotor(MotorBase):
             - ``driving_torque``,
             - ``load_torque``.
 
+        ``electrical current`` is listed among time variables only if it is computable indeed, depending on which motor
+        parameters are set at DC motor instantiation. \n
         Corresponding values of the dictionary are lists of the respective time variable values. \n
         At each time iteration, the ``Solver`` appends every time variables' values to the relative list in the
         dictionary.
@@ -1260,6 +1422,8 @@ class DCMotor(MotorBase):
         :py:attr:`time_variables`
         """
         super().update_time_variables()
+        if self.electrical_current_is_computable:
+            self.time_variables['electrical current'].append(self.electrical_current)
 
 
 class Flywheel(RotatingObject):
