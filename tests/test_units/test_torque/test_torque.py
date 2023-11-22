@@ -1,8 +1,9 @@
-from gearpy.units import AngularAcceleration, InertiaMoment, Torque
+from gearpy.units import AngularAcceleration, InertiaMoment, Torque, Length, Force
 from hypothesis.strategies import floats, sampled_from, one_of, booleans
 from hypothesis import given, settings
 from tests.test_units.test_inertia_moment.conftest import inertia_moments
 from tests.test_units.test_torque.conftest import basic_torque, torques
+from tests.test_units.test_length.conftest import lengths
 from pytest import mark, raises
 
 
@@ -176,6 +177,7 @@ class TestTorqueTruediv:
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                             torques(),
+                            lengths(),
                             inertia_moments()))
     @settings(max_examples = 100)
     def test_method(self, value, unit, divider):
@@ -186,6 +188,12 @@ class TestTorqueTruediv:
                 result = torque/divider
                 assert isinstance(result, float)
                 assert result == torque.value/divider.to(unit).value
+        elif isinstance(divider, Length):
+            if abs(divider.value) >= 1e-300:
+                result = torque/divider
+                assert isinstance(result, Force)
+                assert result.value == torque.to('Nm').value/divider.to('m').value
+                assert result.unit == 'N'
         elif isinstance(divider, InertiaMoment):
             if abs(divider.value) >= 1e-300:
                 result = torque/divider
