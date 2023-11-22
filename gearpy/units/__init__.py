@@ -1,6 +1,7 @@
 from .units import AngularPosition, \
                    AngularSpeed, \
                    AngularAcceleration, \
+                   Current, \
                    Force, \
                    InertiaMoment, \
                    Length, \

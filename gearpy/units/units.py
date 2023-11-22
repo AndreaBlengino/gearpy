@@ -1970,3 +1970,171 @@ class Stress(UnitBase):
             return self
         else:
             return Stress(value = target_value, unit = target_unit)
+
+
+class Current(UnitBase):
+    r"""``gearpy.units.units.Current`` object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for electrical current.
+    :py:attr:`value` : float or int
+        Electrical current numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
+
+    __UNITS = {'A': 1,
+               'mA': 1e-3,
+               'uA': 1e-6}
+
+    def __init__(self, value: Union[float, int], unit: str):
+        super().__init__(value = value, unit = unit)
+
+        if unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        self.__value = value
+        self.__unit = unit
+
+    def __mul__(self, other: Union[float, int]) -> 'Current':
+        super().__mul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        return Current(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Current':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
+                            f'{self.__class__.__name__}.')
+
+        return Current(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Current', float, int]) -> Union['Current', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Current) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        if isinstance(other, Current):
+            return self.__value/other.to(self.__unit).value
+        else:
+            return Current(value = self.__value/other, unit = self.__unit)
+
+    @property
+    def value(self) -> Union[float, int]:
+        """Electrical current numerical value. The relative unit is expressed by the ``unit`` property.
+
+        Returns
+        -------
+        float or int
+            Electrical current numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        """
+        return self.__value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for electrical current. It must be a string.
+        Available units are:
+
+            - ``'A'`` for ampere,
+            - ``'mA'`` for milli-ampere,
+            - ``'uA'`` for micro-ampere.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for electrical current.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return self.__unit
+
+    def to(self, target_unit: str, inplace: bool = False) -> 'Current':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the electrical current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Current
+            Converted electrical current.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Current`` instantiation.
+
+        >>> from gearpy.units import Current
+        >>> i = Current(1, 'A')
+        >>> i
+        ... 1 A
+
+        Conversion from ampere to milli-ampere with ``inplace = False`` by default, so it does not override the current
+        value.
+
+        >>> i.to('mA')
+        ... 1000.0 mA
+        >>> i
+        ... 1 A
+
+        Conversion from ampere to milli-ampere with ``inplace = True``, in order to override the current value.
+
+        >>> i.to('mA', inplace = True)
+        ... 1000.0 mA
+        >>> i
+        ... 1000.0 mA
+        """
+        super().to(target_unit = target_unit, inplace = inplace)
+
+        if target_unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}")
+
+        if target_unit != self.__unit:
+            target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
+        else:
+            target_value = self.__value
+
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Current(value = target_value, unit = target_unit)
