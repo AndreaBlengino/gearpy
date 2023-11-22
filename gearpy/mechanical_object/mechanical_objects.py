@@ -1250,8 +1250,7 @@ class DCMotor(MotorBase):
             - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
             - :math:`\dot{\theta}_0` is the DC motor no load angular speed (``no_load_speed``).
         """
-        return Torque(value = (1 - self.angular_speed.to('rad/s').value/self.__no_load_speed.to('rad/s').value)*
-                              self.__maximum_torque.value,
+        return Torque(value = (1 - self.angular_speed/self.__no_load_speed)*self.__maximum_torque.value,
                       unit = self.__maximum_torque.unit)
 
     @property
