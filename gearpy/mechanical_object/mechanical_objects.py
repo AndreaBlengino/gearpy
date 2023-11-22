@@ -163,7 +163,7 @@ class SpurGear(GearBase):
         return super().inertia_moment
 
     @property
-    def module(self) -> Length:
+    def module(self) -> Optional[Length]:
         """Unit of the gear teeth size. It must be an instance of ``Length``. \n
         Once set at the spur gear instantiation, it cannot be changed afterwards.
 
@@ -180,7 +180,7 @@ class SpurGear(GearBase):
         return super().module
 
     @property
-    def reference_diameter(self) -> Length:
+    def reference_diameter(self) -> Optional[Length]:
         """Reference diameter of the gear. It must be an instance of ``Length``. \n
         It is computed as the product of ``n_teeth`` times ``module`` at the spur gear instantiation and it cannot be
         changed afterwards.
@@ -193,7 +193,7 @@ class SpurGear(GearBase):
         return super().reference_diameter
 
     @property
-    def face_width(self) -> Length:
+    def face_width(self) -> Optional[Length]:
         """Face width of the gear. It must be an instance of ``Length``.
 
         Returns
@@ -204,7 +204,7 @@ class SpurGear(GearBase):
         return super().face_width
 
     @property
-    def elastic_modulus(self) -> Stress:
+    def elastic_modulus(self) -> Optional[Stress]:
         """Elastic modulus of the material of the gear. It must be an instance of ``Stress``.
 
         Returns
@@ -215,7 +215,7 @@ class SpurGear(GearBase):
         return super().elastic_modulus
 
     @property
-    def lewis_factor(self) -> float:
+    def lewis_factor(self) -> Optional[float]:
         """Factor used to compute stresses on the gear tooth.
         It is a tabular value that in general depends on the number of gear teeth and and the pressure angle. In this
         case, the considered pressure angle is always 20 degrees, so the Lewis factor depends only on the number of gear
