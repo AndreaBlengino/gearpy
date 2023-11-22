@@ -288,6 +288,7 @@ class Transmission:
              torque_unit: str = 'Nm',
              force_unit: str = 'N',
              stress_unit: str = 'MPa',
+             current_unit: str = 'A',
              time_unit: str = 'sec',
              figsize: Union[None, tuple] = None):
         """Plots time variables for selected elements in the mechanical transmission chain. \n
@@ -327,6 +328,9 @@ class Transmission:
         stress_unit : str, optional
             Symbol of the unit of measurement to which convert the stress values in the plot. It must be a string.
             Default is ``'MPa'``.
+        current_unit : str, optional
+            Symbol of the unit of measurement to which convert the electrical current values in the plot. It must be a
+            string. Default is ``'A'``.
         time_unit : str, optional
             Symbol of the unit of measurement to which convert the time values in the plot. It must be a string. Default
             is ``'sec'``.
@@ -346,6 +350,7 @@ class Transmission:
             - if ``torque_unit`` is not a string,
             - if ``force_unit`` is not a string,
             - if ``stress_unit`` is not a string,
+            - if ``current_unit`` is not a string,
             - if ``time_unit`` is not a string.
         ValueError
             - If ``elements`` is an empty list,
@@ -411,6 +416,9 @@ class Transmission:
         if not isinstance(stress_unit, str):
             raise TypeError("Parameter 'stress_unit' must be a string.")
 
+        if not isinstance(current_unit, str):
+            raise TypeError("Parameter 'current_unit' must be a string.")
+
         if not isinstance(time_unit, str):
             raise TypeError("Parameter 'time_unit' must be a string.")
 
@@ -440,28 +448,36 @@ class Transmission:
 
         SORT_ORDER = {'angular position': 0, 'angular speed': 1, 'angular acceleration': 2,
                       'torque': 3, 'driving torque': 4, 'load torque': 5, 'tangential force': 6, 'bending stress': 7,
-                      'contact stress': 8}
+                      'contact stress': 8, 'electrical current': 9}
         variables.sort(key = lambda variable: SORT_ORDER[variable])
 
         kinematic_variables = [variable for variable in variables
-                               if 'torque' not in variable and 'force' not in variable and 'stress' not in variable]
+                               if 'torque' not in variable and 'force' not in variable
+                               and 'stress' not in variable and 'electrical' not in variable]
         torques_variables = [variable for variable in variables if 'torque' in variable]
         forces_variables = [variable for variable in variables if 'force' in variable]
         stress_variables = [variable for variable in variables if 'stress' in variable]
+        electrical_variables = [variable for variable in variables if 'electrical' in variable]
 
         torques_variables_index = len(kinematic_variables)
         forces_variables_index = len(kinematic_variables)
         stress_variables_index = len(kinematic_variables)
+        electrical_variables_index = len(kinematic_variables)
 
         n_variables = len(kinematic_variables)
         if torques_variables:
             n_variables += 1
             forces_variables_index += 1
             stress_variables_index += 1
+            electrical_variables_index += 1
         if forces_variables:
             n_variables += 1
             stress_variables_index += 1
+            electrical_variables_index += 1
         if stress_variables:
+            n_variables += 1
+            electrical_variables_index += 1
+        if electrical_variables:
             n_variables += 1
 
         time_values = [instant.to(time_unit).value for instant in self.time]
@@ -469,7 +485,7 @@ class Transmission:
         UNITS = {'angular position': angular_position_unit, 'angular speed': angular_speed_unit,
                  'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
                  'driving torque': torque_unit, 'load torque': torque_unit, 'tangential force': force_unit,
-                 'bending stress': stress_unit, 'contact stress': stress_unit}
+                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electrical current': current_unit}
 
         fig, ax = plt.subplots(nrows = n_variables, ncols = n_elements, sharex = 'all',
                                layout = 'constrained', figsize = figsize)
@@ -492,6 +508,15 @@ class Transmission:
                                                    [variable_value.to(UNITS[variable]).value
                                                     for variable_value in item.time_variables[variable]],
                                                    label = label)
+
+            if isinstance(item, MotorBase):
+                if item.electrical_current_is_computable and electrical_variables:
+                    axes[electrical_variables_index].plot(time_values,
+                                                          [variable_value.to(UNITS['electrical current']).value
+                                                           for variable_value in item.time_variables['electrical current']])
+            else:
+                if electrical_variables:
+                    axes[electrical_variables_index].axis('off')
 
             if isinstance(item, GearBase):
                 if item.tangential_force_is_computable:
@@ -525,17 +550,23 @@ class Transmission:
                     axes[stress_variables_index].axis('off')
 
             last_row_index = n_variables - 1
-            if not isinstance(item, GearBase):
-                if forces_variables:
-                    last_row_index -= 1
-                if stress_variables:
-                    last_row_index -= 1
-            else:
+            if isinstance(item, MotorBase):
+                pass
+            elif isinstance(item, GearBase):
                 if forces_variables and not item.tangential_force_is_computable:
                     last_row_index -= 1
                 if stress_variables and \
                         (not item.bending_stress_is_computable or 'bending stress' not in stress_variables) and \
                         (not item.contact_stress_is_computable or 'contact stress' not in stress_variables):
+                    last_row_index -= 1
+                if electrical_variables:
+                    last_row_index -= 1
+            else:
+                if forces_variables:
+                    last_row_index -= 1
+                if stress_variables:
+                    last_row_index -= 1
+                if electrical_variables:
                     last_row_index -= 1
 
             axes[last_row_index].set_xlabel(f'time ({time_unit})')
@@ -575,6 +606,15 @@ class Transmission:
                         axes[stress_variables_index].set_ylabel(f'stress ({stress_unit})')
                         axes[stress_variables_index].legend(title = 'stress', frameon = True)
                         break
+
+        if electrical_variables:
+            if isinstance(elements[0], MotorBase):
+                if elements[0].electrical_current_is_computable:
+                    if n_variables > 1:
+                        axes = ax[:, 0] if n_elements > 1 else ax
+                    else:
+                        axes = [ax[0]] if n_elements > 1 else [ax]
+                    axes[electrical_variables_index].set_ylabel(f'electrical current ({current_unit})')
 
         if n_elements > 1 or n_variables > 1:
             for axi in ax.flatten():
