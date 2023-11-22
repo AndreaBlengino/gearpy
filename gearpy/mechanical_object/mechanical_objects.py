@@ -940,13 +940,13 @@ class DCMotor(MotorBase):
             raise TypeError(f"Parameter 'no_load_speed' must be an instance of {AngularSpeed.__name__!r}")
 
         if not isinstance(maximum_torque, Torque):
-            raise TypeError(f"Parameter 'maximum_torque.rst' must be an instance of {Torque.__name__!r}.")
+            raise TypeError(f"Parameter 'maximum_torque' must be an instance of {Torque.__name__!r}.")
 
         if no_load_speed.value <= 0:
             raise ValueError("Parameter 'no_load_speed' must be positive.")
 
         if maximum_torque.value <= 0:
-            raise ValueError("Parameter 'maximum_torque.rst' must be positive.")
+            raise ValueError("Parameter 'maximum_torque' must be positive.")
 
         if no_load_electrical_current is not None:
             if not isinstance(no_load_electrical_current, Current):
@@ -1228,8 +1228,8 @@ class DCMotor(MotorBase):
 
     def compute_torque(self) -> Torque:
         r"""Computes the driving torque developed by the DC motor. The driving torque depends on ``no_load_speed`` and
-        ``maximum_torque.rst`` of the DC motor and its instantaneous ``angular_speed``.
-        The returned computed torque has the same unit of ``maximum_torque.rst``.
+        ``maximum_torque`` of the DC motor and its instantaneous ``angular_speed``.
+        The returned computed torque has the same unit of ``maximum_torque``.
 
         Returns
         -------
@@ -1247,7 +1247,7 @@ class DCMotor(MotorBase):
 
             - :math:`T` is the DC motor developed driving torque,
             - :math:`\dot{\theta}` is the actual DC motor angular speed,
-            - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque.rst``),
+            - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
             - :math:`\dot{\theta}_0` is the DC motor no load angular speed (``no_load_speed``).
         """
         return Torque(value = (1 - self.angular_speed.to('rad/s').value/self.__no_load_speed.to('rad/s').value)*
