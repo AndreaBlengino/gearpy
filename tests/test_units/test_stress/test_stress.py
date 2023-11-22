@@ -177,19 +177,19 @@ class TestStressTruediv:
                             stresses()))
     @settings(max_examples = 100)
     def test_method(self, value, unit, divider):
-        torque = Stress(value = value, unit = unit)
+        stress = Stress(value = value, unit = unit)
 
         if isinstance(divider, Stress):
             if abs(divider.value) >= 1e-300:
-                result = torque/divider
+                result = stress/divider
                 assert isinstance(result, float)
-                assert result == torque.value/divider.to(unit).value
+                assert result == stress.value/divider.to(unit).value
         else:
             if divider != 0:
-                result = torque/divider
+                result = stress/divider
                 assert isinstance(result, Stress)
-                assert result.value == torque.value/divider
-                assert result.unit == torque.unit
+                assert result.value == stress.value/divider
+                assert result.unit == stress.unit
 
 
     @mark.error
