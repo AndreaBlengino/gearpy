@@ -962,6 +962,11 @@ class DCMotor(MotorBase):
             if maximum_electrical_current.value <= 0:
                 raise ValueError("Parameter 'maximum_electrical_current' must be positive.")
 
+        if no_load_electrical_current is not None and maximum_electrical_current is not None:
+            if no_load_electrical_current >= maximum_electrical_current:
+                raise ValueError("Parameter 'no_load_electrical_current' cannot be higher than "
+                                 "'maximum_electrical_current'.")
+
         self.__no_load_speed = no_load_speed
         self.__maximum_torque = maximum_torque
         self.__no_load_electrical_current = no_load_electrical_current
