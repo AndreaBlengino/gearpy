@@ -4,7 +4,7 @@ from gearpy.units import Time
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.interpolate import interp1d
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Optional
 
 
 class Transmission:
@@ -108,16 +108,16 @@ class Transmission:
 
     def snapshot(self,
                  target_time: Time,
-                 angular_position_unit: str = 'rad',
-                 angular_speed_unit: str = 'rad/s',
-                 angular_acceleration_unit: str = 'rad/s^2',
-                 torque_unit: str = 'Nm',
-                 driving_torque_unit: str = 'Nm',
-                 load_torque_unit: str = 'Nm',
-                 force_unit: str = 'N',
-                 stress_unit: str = 'MPa',
-                 current_unit: str = 'A',
-                 print_data: bool = True) -> pd.DataFrame:
+                 angular_position_unit: Optional[str] = 'rad',
+                 angular_speed_unit: Optional[str] = 'rad/s',
+                 angular_acceleration_unit: Optional[str] = 'rad/s^2',
+                 torque_unit: Optional[str] = 'Nm',
+                 driving_torque_unit: Optional[str] = 'Nm',
+                 load_torque_unit: Optional[str] = 'Nm',
+                 force_unit: Optional[str] = 'N',
+                 stress_unit: Optional[str] = 'MPa',
+                 current_unit: Optional[str] = 'A',
+                 print_data: Optional[bool] = True) -> pd.DataFrame:
         """Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
         ``target_time``. The computed time variables are organized in a ``pandas.DataFrame``, returned by the method.
         Each element in the transmission chain is a row of the DataFrame, while the columns are the time variables
@@ -280,17 +280,17 @@ class Transmission:
 
 
     def plot(self,
-             elements: List[Union[RotatingObject, str]] = None,
-             variables: List[str] = None,
-             angular_position_unit: str = 'rad',
-             angular_speed_unit: str = 'rad/s',
-             angular_acceleration_unit: str = 'rad/s^2',
-             torque_unit: str = 'Nm',
-             force_unit: str = 'N',
-             stress_unit: str = 'MPa',
-             current_unit: str = 'A',
-             time_unit: str = 'sec',
-             figsize: Union[None, tuple] = None):
+             elements: Optional[List[Union[RotatingObject, str]]] = None,
+             variables: Optional[List[str]] = None,
+             angular_position_unit: Optional[str] = 'rad',
+             angular_speed_unit: Optional[str] = 'rad/s',
+             angular_acceleration_unit: Optional[str] = 'rad/s^2',
+             torque_unit: Optional[str] = 'Nm',
+             force_unit: Optional[str] = 'N',
+             stress_unit: Optional[str] = 'MPa',
+             current_unit: Optional[str] = 'A',
+             time_unit: Optional[str] = 'sec',
+             figsize: Optional[tuple] = None):
         """Plots time variables for selected elements in the mechanical transmission chain. \n
         Generates a grid of subplots, one column for each selected element of the transmission chain and one rows for
         each selected time variable. \n
