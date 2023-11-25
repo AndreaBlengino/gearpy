@@ -269,7 +269,7 @@ class Transmission:
 
         UNITS = {'angular position': angular_position_unit, 'angular speed': angular_speed_unit,
                  'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
-                 'driving torque': torque_unit, 'load torque': torque_unit, 'tangential force': force_unit,
+                 'driving torque': driving_torque_unit, 'load torque': load_torque_unit, 'tangential force': force_unit,
                  'bending stress': stress_unit, 'contact stress': stress_unit, 'electrical current': current_unit}
 
         columns = [f'{variable} ({UNITS[variable]})' for variable in variables]
