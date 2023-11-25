@@ -65,11 +65,13 @@ class Solver:
         Firstly it computes the whole mechanical transmission equivalent moment of inertia with respect to the last
         gear, by multiplying each element's moment of inertia, starting from the motor, by it gear ratio with respect to
         the following element in the transmission chain and sum them up. \n
-        Then it compute the initial state in terms of angular position, speed and acceleration for each mechanical
-        transmission element. \n
-        Finally, for each time step and for each mechanical transmission element, it computes the kinematic variables,
-        it computes the driving, load and net torque, it computes the angular acceleration of the last element in the
-        transmission chain and perform a time integration to compute its angular speed and position.
+        Then for each time step and for each mechanical transmission element, it computes the angular position and
+        angular speed, from the last element in the transmission chain to the first one. Then it computes driving
+        torque, load load torque, net torque, electrical current for motors (if computable), tangential force, bending
+        stress and contact stress for gears (if computable) and finally it computes the angular acceleration of each
+        mechanical transmission element. \n
+        Finally, for each time step it performs a time integration to compute angular position and speed of the last
+        element in the transmission chain.
 
         Raises
         ------
@@ -78,18 +80,27 @@ class Solver:
             ``Torque``.
         ValueError
             If function ``external_torque`` has not been defined for any gear of the transmission.
+
+        Notes
+        -----
+        If ``transmission.chain`` is an empty list, it perform the simulation starting the time from ``0 sec``;
+        otherwise it concatenates another simulation to existing values of time and time variables.
         """
         if not any([element.external_torque is not None
                     for element in self.transmission.chain if isinstance(element, GearBase)]):
             raise ValueError("The function 'external_torque' has not been defined for any gear of the transmission. "
-                             "Add this function to a tranmission gear.")
+                             "Add this function to a transmission gear.")
 
-        self.transmission.update_time(Time(value = 0, unit = self.time_discretization.unit))
+        if self.transmission.time:
+            starting_time = self.transmission.time[-1]
+        else:
+            starting_time = Time(value = 0, unit = self.time_discretization.unit)
+        self.transmission.update_time(starting_time)
         self._compute_transmission_inertia()
         self._compute_transmission_variables()
 
-        for k in np.arange(self.time_discretization.value,
-                           self.simulation_time.value + self.time_discretization.value,
+        for k in np.arange(starting_time.value + self.time_discretization.value,
+                           starting_time.value + self.simulation_time.value + self.time_discretization.value,
                            self.time_discretization.value):
 
             self.transmission.update_time(Time(value = float(k), unit = self.time_discretization.unit))
