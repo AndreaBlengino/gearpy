@@ -116,10 +116,9 @@ are ready to run the simulation::
 from gearpy.units import TimeInterval
 from gearpy.solver import Solver
 
-solver = Solver(time_discretization = TimeInterval(0.1, 'sec'),
-                simulation_time = TimeInterval(100, 'sec'),
-                transmission = transmission)
-solver.run()
+solver = Solver(transmission = transmission)
+solver.run(time_discretization = TimeInterval(0.1, 'sec'),
+           simulation_time = TimeInterval(100, 'sec'))
 ```
 
 ### Results Analysis
@@ -135,12 +134,12 @@ transmission.snapshot(target_time = Time(50, 'sec'))
 ```text
 Mechanical Transmission Status at Time = 50 sec
          angular position (rad) angular speed (rad/s) angular acceleration (rad/s^2) torque (Nm) driving torque (Nm) load torque (Nm) tangential force (N) bending stress (MPa) contact stress (MPa)
-motor               2221.559697             48.412745                       5.886017    0.036284            0.153769         0.117485                  NaN                  NaN                  NaN
-flywheel            2221.559697             48.412745                       5.886017    0.036284            0.153769         0.117485                  NaN                  NaN                  NaN
-gear 1              2221.559697             48.412745                       5.886017    0.036284            0.153769         0.117485            23.497094            23.380193           218.540109
-gear 2               277.694962              6.051593                       0.735752    0.167255            1.107138         0.939884            27.678462            12.696542           237.189281
-gear 3               277.694962              6.051593                       0.735752    0.167255            1.107138         0.939884            187.97675           187.041543           629.467458
-gear 4                46.384583               1.02089                       0.122915    0.339245            5.978548         5.639303           199.284927            94.672174           648.124502
+motor               2226.459971             49.002737                        5.89207    0.036167            0.153206         0.117039                  NaN                  NaN                  NaN
+flywheel            2226.459971             49.002737                        5.89207    0.036167            0.153206         0.117039                  NaN                  NaN                  NaN
+gear 1              2226.459971             49.002737                        5.89207    0.036167            0.153206         0.117039            23.407703            23.291247           218.124014
+gear 2               278.307496              6.125342                       0.736509    0.166774            1.103082         0.936308             27.57705            12.650023           236.754359
+gear 3               278.307496              6.125342                       0.736509    0.166774            1.103082         0.936308           187.261625           186.329975           628.268967
+gear 4                46.384583               1.02089                       0.122751    0.338794            5.956643         5.617849           198.554759            94.325301           646.936069
 ```
 
 We can get a more general view of the system by plotting the time 
@@ -231,12 +230,12 @@ transmission.snapshot(target_time = Time(50, 'sec'))
 ```text
 Mechanical Transmission Status at Time = 50 sec
          angular position (rad) angular speed (rad/s) angular acceleration (rad/s^2) torque (Nm) driving torque (Nm) load torque (Nm) tangential force (N) bending stress (MPa) contact stress (MPa)
-motor               2217.156919             47.314348                         5.4848    0.036905            0.154818         0.117913                  NaN                  NaN                  NaN
-flywheel            2217.156919             47.314348                         5.4848    0.036905            0.154818         0.117913                  NaN                  NaN                  NaN
-gear 1              2217.156919             47.314348                         5.4848    0.036905            0.154818         0.117913            18.866154             7.508917           123.849929
-gear 2               277.144615              5.914293                         0.6856    0.171383            1.114691         0.943308             22.29381             4.090607           134.631358
-gear 3               277.144615              5.914293                         0.6856    0.171383            1.114691         0.943308            75.464616             7.508917           126.122595
-gear 4                46.290493              0.997237                       0.115219    0.359483            6.019329         5.659846            80.257717             3.812718           130.066249
+motor               2221.943659             47.867398                       5.557362    0.036841             0.15429         0.117449                  NaN                  NaN                  NaN
+flywheel            2221.943659             47.867398                       5.557362    0.036841             0.15429         0.117449                  NaN                  NaN                  NaN
+gear 1              2221.943659             47.867398                       5.557362    0.036841             0.15429         0.117449            18.791889             7.479359           123.605927
+gear 2               277.742957              5.983425                        0.69467    0.171294            1.110888         0.939594             22.21776             4.076653           134.401531
+gear 3               277.742957              5.983425                        0.69467    0.171294            1.110888         0.939594            75.167557             7.479359           125.874115
+gear 4                46.290493              0.997237                       0.115778    0.361229            5.998795         5.637567            79.983937             3.799712           129.844215
 ```
 
 We can also get the same plot as before, in order to make a complete 

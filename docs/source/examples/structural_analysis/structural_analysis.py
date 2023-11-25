@@ -65,10 +65,9 @@ gear_4.angular_position = AngularPosition(0, 'rad')
 gear_4.angular_speed = AngularSpeed(0, 'rad/s')
 
 
-solver = Solver(time_discretization = TimeInterval(0.1, 'sec'),
-                simulation_time = TimeInterval(100, 'sec'),
-                transmission = transmission)
-solver.run()
+solver = Solver(transmission = transmission)
+solver.run(time_discretization = TimeInterval(0.1, 'sec'),
+           simulation_time = TimeInterval(100, 'sec'))
 
 
 # Result Analysis
@@ -142,10 +141,9 @@ gear_4.angular_position = AngularPosition(0, 'rad')
 gear_4.angular_speed = AngularSpeed(0, 'rad/s')
 
 
-solver = Solver(time_discretization = TimeInterval(0.1, 'sec'),
-                simulation_time = TimeInterval(100, 'sec'),
-                transmission = transmission)
-solver.run()
+solver = Solver(transmission = transmission)
+solver.run(time_discretization = TimeInterval(0.1, 'sec'),
+           simulation_time = TimeInterval(100, 'sec'))
 
 
 # Improved Model Result Analysis

@@ -99,10 +99,9 @@ are ready to run the simulation::
 from gearpy.units import TimeInterval
 from gearpy.solver import Solver
 
-solver = Solver(time_discretization = TimeInterval(1, 'sec'),
-                simulation_time = TimeInterval(2000, 'sec'),
-                transmission = transmission)
-solver.run()
+solver = Solver(transmission = transmission)
+solver.run(time_discretization = TimeInterval(1, 'sec'), 
+           simulation_time = TimeInterval(2000, 'sec'))
 ```
 
 ### Results Analysis
@@ -117,13 +116,13 @@ transmission.snapshot(target_time = Time(1000, 'sec'))
 
 ```text
 Mechanical Transmission Status at Time = 1000 sec
-         angular position (rad) angular speed (rad/s) angular acceleration (rad/s^2) torque (Nm) driving torque (Nm) load torque (Nm) tangential force (N) bending stress (MPa) contact stress (MPa)
-motor             459683.165617            570.175248                       0.019532    0.001199            0.006199            0.005                  NaN                  NaN                  NaN
-flywheel          459683.165617            570.175248                       0.019532    0.001199            0.006199            0.005                  NaN                  NaN                  NaN
-gear 1            459683.165617            570.175248                       0.019532    0.001199            0.006199            0.005                  NaN                  NaN                  NaN
-gear 2            229841.582808            285.087624                       0.009766    0.001158            0.011158             0.01                  NaN                  NaN                  NaN
-gear 3            229841.582808            285.087624                       0.009766    0.001158            0.011158             0.01                  NaN                  NaN                  NaN
-gear 4             76708.893383             95.032447                       0.003239    0.000126            0.030126             0.03                  NaN                  NaN                  NaN
+         angular position (rad) angular speed (rad/s) angular acceleration (rad/s^2) torque (Nm) driving torque (Nm) load torque (Nm)
+motor             460253.360299            570.194682                       0.019337    0.001199            0.006199            0.005
+flywheel          460253.360299            570.194682                       0.019337    0.001199            0.006199            0.005
+gear 1            460253.360299            570.194682                       0.019337    0.001199            0.006199            0.005
+gear 2            230126.680149            285.097341                       0.009669    0.001158            0.011158             0.01
+gear 3            230126.680149            285.097341                       0.009669    0.001158            0.011158             0.01
+gear 4             76708.893383             95.032447                       0.003223    0.000126            0.030126             0.03
 ```
 
 The default unit used for torques are not so convenient in this case, so 
@@ -138,13 +137,13 @@ transmission.snapshot(target_time = Time(1000, 'sec'),
 
 ```text
 Mechanical Transmission Status at Time = 1000 sec
-         angular position (rad) angular speed (rad/s) angular acceleration (rad/s^2) torque (mNm) driving torque (mNm) load torque (mNm) tangential force (N) bending stress (MPa) contact stress (MPa)
-motor             459683.165617            570.175248                       0.019532     1.198832             6.198832               5.0                  NaN                  NaN                  NaN
-flywheel          459683.165617            570.175248                       0.019532     1.198832             6.198832               5.0                  NaN                  NaN                  NaN
-gear 1            459683.165617            570.175248                       0.019532     1.198832             6.198832               5.0                  NaN                  NaN                  NaN
-gear 2            229841.582808            285.087624                       0.009766     1.157897            11.157897              10.0                  NaN                  NaN                  NaN
-gear 3            229841.582808            285.087624                       0.009766     1.157897            11.157897              10.0                  NaN                  NaN                  NaN
-gear 4             76708.893383             95.032447                       0.003239     0.126322            30.126322              30.0                  NaN                  NaN                  NaN
+         angular position (rad) angular speed (rad/s) angular acceleration (rad/s^2) torque (mNm) driving torque (mNm) load torque (mNm)
+motor             460253.360299            570.194682                       0.019337     1.198702             6.198702               5.0
+flywheel          460253.360299            570.194682                       0.019337     1.198702             6.198702               5.0
+gear 1            460253.360299            570.194682                       0.019337     1.198702             6.198702               5.0
+gear 2            230126.680149            285.097341                       0.009669     1.157664            11.157664              10.0
+gear 3            230126.680149            285.097341                       0.009669     1.157664            11.157664              10.0
+gear 4             76708.893383             95.032447                       0.003223     0.125692            30.125692              30.0
 ```
 
 Notice that the load torque applied on the *gear 4* is exactly the 
