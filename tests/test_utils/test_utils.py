@@ -4,7 +4,7 @@ from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings
 from hypothesis.strategies import floats, one_of
 from pytest import mark, raises
-from tests.conftest import dc_motors, simple_spur_gears, flywheels
+from tests.conftest import simple_dc_motors, simple_spur_gears, flywheels
 
 
 @mark.utils
@@ -52,7 +52,7 @@ class TestAddFixedJoint:
 
 
     @mark.genuine
-    @given(master = one_of(dc_motors(), simple_spur_gears(), flywheels()),
+    @given(master = one_of(simple_dc_motors(), simple_spur_gears(), flywheels()),
            slave = one_of(simple_spur_gears(), flywheels()))
     @settings(max_examples = 100)
     def test_function(self, master, slave):
