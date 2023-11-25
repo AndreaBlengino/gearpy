@@ -194,6 +194,7 @@ class Transmission:
             - if ``print_data`` is not a bool.
         ValueError
             - If ``time`` is an empty list,
+            - if ``target_time`` is outside simulation interval,
             - if ``variables`` is an empty list,
             - if an element of ``variables`` is not a valid time variable.
         """
@@ -205,6 +206,10 @@ class Transmission:
 
         if not isinstance(target_time, Time):
             raise TypeError(f"Parameter 'target_time' must be an instance of {Time.__name__!r}.")
+
+        if (target_time < min(self.time)) or (target_time > max(self.time)):
+            raise ValueError(f"Parameter 'target_time' must be within simulation interval "
+                             f"{min(self.time)} - {max(self.time)}.")
 
         if variables is not None:
             if not isinstance(variables, list):
