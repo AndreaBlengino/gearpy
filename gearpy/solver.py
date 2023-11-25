@@ -9,10 +9,6 @@ class Solver:
 
     Attributes
     ----------
-    :py:attr:`time_discretization` : TimeInterval
-        Time discretization to be used for the simulation.
-    :py:attr:`simulation_time` : TimeInterval
-        Duration of the simulation.
     :py:attr:`transmission` : Transmission
         Mechanical transmission to be simulated.
 
@@ -24,28 +20,16 @@ class Solver:
     Raises
     ------
     TypeError
-        - If ``time_discretization`` is not an instance of ``TimeInterval``,
-        - if ``simulation_time`` is not an instance of ``TimeInterval``,
-        - if ``transmission`` is not an instance of ``Transmission``,
+        - If ``transmission`` is not an instance of ``Transmission``,
         - if the first element in ``transmission`` is not an instance of ``MotorBase``,
         - if an element of ``transmission`` is not an instance of ``RotatingObject``.
     ValueError
-        - If ``time_discretization`` is greater or equal to ``simulation_time``,
-        - if ``transmission.chain`` is an empty tuple.
+        If ``transmission.chain`` is an empty tuple.
     """
 
-    def __init__(self, time_discretization: TimeInterval, simulation_time: TimeInterval, transmission: Transmission):
-        if not isinstance(time_discretization, TimeInterval):
-            raise TypeError(f"Parameter 'time_discretization' must be an instance of {TimeInterval.__name__!r}.")
-
-        if not isinstance(simulation_time, TimeInterval):
-            raise TypeError(f"Parameter 'simulation_time' must be an instance of {TimeInterval.__name__!r}.")
-
+    def __init__(self, transmission: Transmission):
         if not isinstance(transmission, Transmission):
             raise TypeError(f"Parameter 'transmission' must be an instance of {Transmission.__name__!r}.")
-
-        if time_discretization >= simulation_time:
-            raise ValueError("Parameter 'time_discretization' cannot be greater or equal to 'simulation_time'.")
 
         if not transmission.chain:
             raise ValueError("Parameter 'transmission.chain' cannot be an empty tuple.")
@@ -56,11 +40,9 @@ class Solver:
         if not all([isinstance(item, RotatingObject) for item in transmission.chain]):
             raise TypeError(f"All elements of 'transmission' must be instances of {RotatingObject.__name__!r}.")
 
-        self.time_discretization = time_discretization
-        self.simulation_time = simulation_time
         self.transmission = transmission
 
-    def run(self):
+    def run(self, time_discretization: TimeInterval, simulation_time: TimeInterval):
         """Runs the mechanical transmission simulation. \n
         Firstly it computes the whole mechanical transmission equivalent moment of inertia with respect to the last
         gear, by multiplying each element's moment of inertia, starting from the motor, by it gear ratio with respect to
@@ -73,19 +55,38 @@ class Solver:
         Finally, for each time step it performs a time integration to compute angular position and speed of the last
         element in the transmission chain.
 
+        Parameters
+        ----------
+        time_discretization : TimeInterval
+            Time discretization to be used for the simulation.
+        simulation_time : TimeInterval
+            Duration of the simulation.
+
         Raises
         ------
         TypeError
-            If function ``external_torque`` of one gear in the transmission chain does not return an instance of
+            - If ``time_discretization`` is not an instance of ``TimeInterval``,
+            - if ``simulation_time`` is not an instance of ``TimeInterval``,
+            - if function ``external_torque`` of one gear in the transmission chain does not return an instance of
             ``Torque``.
         ValueError
-            If function ``external_torque`` has not been defined for any gear of the transmission.
+            - If ``time_discretization`` is greater or equal to ``simulation_time``,
+            - if function ``external_torque`` has not been defined for any gear of the transmission.
 
         Notes
         -----
         If ``transmission.chain`` is an empty list, it perform the simulation starting the time from ``0 sec``;
         otherwise it concatenates another simulation to existing values of time and time variables.
         """
+        if not isinstance(time_discretization, TimeInterval):
+            raise TypeError(f"Parameter 'time_discretization' must be an instance of {TimeInterval.__name__!r}.")
+
+        if not isinstance(simulation_time, TimeInterval):
+            raise TypeError(f"Parameter 'simulation_time' must be an instance of {TimeInterval.__name__!r}.")
+
+        if time_discretization >= simulation_time:
+            raise ValueError("Parameter 'time_discretization' cannot be greater or equal to 'simulation_time'.")
+
         if not any([element.external_torque is not None
                     for element in self.transmission.chain if isinstance(element, GearBase)]):
             raise ValueError("The function 'external_torque' has not been defined for any gear of the transmission. "
@@ -94,17 +95,17 @@ class Solver:
         if self.transmission.time:
             starting_time = self.transmission.time[-1]
         else:
-            starting_time = Time(value = 0, unit = self.time_discretization.unit)
+            starting_time = Time(value = 0, unit = time_discretization.unit)
         self.transmission.update_time(starting_time)
         self._compute_transmission_inertia()
         self._compute_transmission_variables()
 
-        for k in np.arange(starting_time.value + self.time_discretization.value,
-                           starting_time.value + self.simulation_time.value + self.time_discretization.value,
-                           self.time_discretization.value):
+        for k in np.arange(starting_time.value + time_discretization.value,
+                           starting_time.value + simulation_time.value + time_discretization.value,
+                           time_discretization.value):
 
-            self.transmission.update_time(Time(value = float(k), unit = self.time_discretization.unit))
-            self._time_integration()
+            self.transmission.update_time(Time(value = float(k), unit = time_discretization.unit))
+            self._time_integration(time_discretization = time_discretization)
             self._compute_transmission_variables()
 
     def _compute_transmission_inertia(self):
@@ -211,9 +212,9 @@ class Solver:
         for item in self.transmission.chain:
             item.update_time_variables()
 
-    def _time_integration(self):
+    def _time_integration(self, time_discretization: TimeInterval):
 
-        self.transmission.chain[-1].angular_speed += self.transmission.chain[-1].angular_acceleration*\
-                                                     self.time_discretization
-        self.transmission.chain[-1].angular_position += self.transmission.chain[-1].angular_speed*\
-                                                        self.time_discretization
+        self.transmission.chain[-1].angular_speed += \
+            self.transmission.chain[-1].angular_acceleration*time_discretization
+        self.transmission.chain[-1].angular_position += \
+            self.transmission.chain[-1].angular_speed*time_discretization
