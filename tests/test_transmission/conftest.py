@@ -17,38 +17,45 @@ def transmission_update_time_type_error(request):
 transmission_snapshot_type_error_1 = [{'target_time': type_to_check}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, Time)]
 
-transmission_snapshot_type_error_2 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': type_to_check}
+transmission_snapshot_type_error_2 = [{'target_time': Time(1, 'sec'), 'variables': type_to_check}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, list)
+                                      and type_to_check is not None]
+
+transmission_snapshot_type_error_3 = [{'target_time': Time(1, 'sec'), 'variables': [type_to_check]}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
-transmission_snapshot_type_error_3 = [{'target_time': Time(1, 'sec'), 'angular_speed_unit': type_to_check}
+transmission_snapshot_type_error_4 = [{'target_time': Time(1, 'sec'), 'angular_position_unit': type_to_check}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
-transmission_snapshot_type_error_4 = [{'target_time': Time(1, 'sec'), 'angular_acceleration_unit': type_to_check}
+transmission_snapshot_type_error_5 = [{'target_time': Time(1, 'sec'), 'angular_speed_unit': type_to_check}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
-transmission_snapshot_type_error_5 = [{'target_time': Time(1, 'sec'), 'torque_unit': type_to_check}
+transmission_snapshot_type_error_6 = [{'target_time': Time(1, 'sec'), 'angular_acceleration_unit': type_to_check}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
-transmission_snapshot_type_error_6 = [{'target_time': Time(1, 'sec'), 'driving_torque_unit': type_to_check}
+transmission_snapshot_type_error_7 = [{'target_time': Time(1, 'sec'), 'torque_unit': type_to_check}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
-transmission_snapshot_type_error_7 = [{'target_time': Time(1, 'sec'), 'load_torque_unit': type_to_check}
+transmission_snapshot_type_error_8 = [{'target_time': Time(1, 'sec'), 'driving_torque_unit': type_to_check}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
-transmission_snapshot_type_error_8 = [{'target_time': Time(1, 'sec'), 'force_unit': type_to_check}
+transmission_snapshot_type_error_9 = [{'target_time': Time(1, 'sec'), 'load_torque_unit': type_to_check}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
-transmission_snapshot_type_error_9 = [{'target_time': Time(1, 'sec'), 'stress_unit': type_to_check}
+transmission_snapshot_type_error_10 = [{'target_time': Time(1, 'sec'), 'force_unit': type_to_check}
+                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+transmission_snapshot_type_error_11 = [{'target_time': Time(1, 'sec'), 'stress_unit': type_to_check}
+                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+transmission_snapshot_type_error_12 = [{'target_time': Time(1, 'sec'), 'current_unit': type_to_check}
                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
 
-transmission_snapshot_type_error_10 = [{'target_time': Time(1, 'sec'), 'current_unit': type_to_check}
-                                      for type_to_check in types_to_check if not isinstance(type_to_check, str)]
-
-transmission_snapshot_type_error_11 = [{'target_time': Time(1, 'sec'), 'print_data': type_to_check}
+transmission_snapshot_type_error_13 = [{'target_time': Time(1, 'sec'), 'print_data': type_to_check}
                                       for type_to_check in types_to_check
                                       if not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)]
 
-transmission_snapshot_type_error_12 = [{}]
+transmission_snapshot_type_error_14 = [{}]
 
 @fixture(params = [*transmission_snapshot_type_error_1,
                    *transmission_snapshot_type_error_2,
@@ -61,8 +68,29 @@ transmission_snapshot_type_error_12 = [{}]
                    *transmission_snapshot_type_error_9,
                    *transmission_snapshot_type_error_10,
                    *transmission_snapshot_type_error_11,
-                   *transmission_snapshot_type_error_12])
+                   *transmission_snapshot_type_error_12,
+                   *transmission_snapshot_type_error_13,
+                   *transmission_snapshot_type_error_14])
 def transmission_snapshot_type_error(request):
+    return request.param
+
+
+transmission_snapshot_value_error_1 = [{'target_time': max(basic_transmission.time) + Time(1, 'sec')}]
+
+transmission_snapshot_value_error_2 = [{'target_time': min(basic_transmission.time) - Time(1, 'sec')}]
+
+transmission_snapshot_value_error_3 = [{'target_time': max(basic_transmission.time), 'variables': []}]
+
+transmission_snapshot_value_error_4 = [{'target_time': max(basic_transmission.time), 'variables': ['not a valid time variable']}]
+
+transmission_snapshot_value_error_5 = [{}]
+
+@fixture(params = [*transmission_snapshot_value_error_1,
+                   *transmission_snapshot_value_error_2,
+                   *transmission_snapshot_value_error_3,
+                   *transmission_snapshot_value_error_4,
+                   *transmission_snapshot_value_error_5])
+def transmission_snapshot_value_error(request):
     return request.param
 
 

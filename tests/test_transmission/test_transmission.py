@@ -1,3 +1,4 @@
+from copy import deepcopy
 from gearpy.mechanical_object import DCMotor, SpurGear
 from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
@@ -71,6 +72,7 @@ class TestTransmissionInit:
 @mark.transmission
 class TestTransmissionUpdateTime:
 
+
     @mark.genuine
     @given(transmission = transmissions(),
            instant = times())
@@ -89,6 +91,7 @@ class TestTransmissionUpdateTime:
 
 @mark.transmission
 class TestTransmissionSnapshot:
+
 
     @mark.genuine
     @given(solved_transmission = solved_transmissions(),
@@ -118,31 +121,42 @@ class TestTransmissionSnapshot:
                                             stress_unit = stress_unit, current_unit = current_unit,
                                             print_data = print_data)
 
+        columns = [f'angular position ({angular_position_unit})', f'angular speed ({angular_speed_unit})',
+                   f'angular acceleration ({angular_acceleration_unit})', f'torque ({torque_unit})',
+                   f'driving torque ({driving_torque_unit})', f'load torque ({load_torque_unit})',
+                   f'tangential force ({force_unit})', f'bending stress ({stress_unit})',
+                   f'contact stress ({stress_unit})']
+        if solved_transmission.chain[0].electrical_current_is_computable:
+            columns.append(f'electrical current ({current_unit})')
+
         assert isinstance(data, pd.DataFrame)
         assert [element.name for element in solved_transmission.chain] == data.index.to_list()
-        assert [f'angular position ({angular_position_unit})', f'angular speed ({angular_speed_unit})',
-                f'angular acceleration ({angular_acceleration_unit})', f'torque ({torque_unit})',
-                f'driving torque ({driving_torque_unit})', f'load torque ({load_torque_unit})',
-                f'tangential force ({force_unit})', f'bending stress ({stress_unit})',
-                f'contact stress ({stress_unit})', f'electrical current ({current_unit})'] == data.columns.to_list()
+        assert columns == data.columns.to_list()
 
 
     @mark.error
     def test_raises_type_error(self, transmission_snapshot_type_error):
-        with raises(TypeError):
-            if transmission_snapshot_type_error:
+        if transmission_snapshot_type_error:
+            with raises(TypeError):
                 basic_transmission.snapshot(**transmission_snapshot_type_error)
-            else:
-                basic_transmission.update_time(Time(1, 'sec'))
-                basic_transmission.time[0] = 1
-                basic_transmission.snapshot(target_time = Time(1, 'sec'))
+        else:
+            transmission_copy = deepcopy(basic_transmission)
+            transmission_copy.update_time(Time(1, 'sec'))
+            transmission_copy.time[0] = 1
+            with raises(TypeError):
+                transmission_copy.snapshot(target_time = Time(1, 'sec'))
 
 
     @mark.error
-    def test_raises_value_error(self):
-        with raises(ValueError):
-            basic_transmission.time.clear()
-            basic_transmission.snapshot(target_time = Time(1, 'sec'))
+    def test_raises_value_error(self, transmission_snapshot_value_error):
+        if transmission_snapshot_value_error:
+            with raises(ValueError):
+                basic_transmission.snapshot(**transmission_snapshot_value_error)
+        else:
+            transmission_copy = deepcopy(basic_transmission)
+            transmission_copy.time.clear()
+            with raises(ValueError):
+                transmission_copy.snapshot(target_time = Time(1, 'sec'))
 
 
 @mark.transmission
