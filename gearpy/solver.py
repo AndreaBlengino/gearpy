@@ -136,7 +136,7 @@ class Solver:
 
     def _compute_driving_torque(self):
 
-        self.transmission.chain[0].driving_torque = self.transmission.chain[0].compute_torque()
+        self.transmission.chain[0].compute_torque()
 
         for i in range(1, len(self.transmission.chain)):
             gear_ratio = self.transmission.chain[i].master_gear_ratio

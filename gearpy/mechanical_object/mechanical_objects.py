@@ -1231,15 +1231,10 @@ class DCMotor(MotorBase):
         """
         return super().inertia_moment
 
-    def compute_torque(self) -> Torque:
+    def compute_torque(self):
         r"""Computes the driving torque developed by the DC motor. The driving torque depends on ``no_load_speed`` and
         ``maximum_torque`` of the DC motor and its instantaneous ``angular_speed``.
-        The returned computed torque has the same unit of ``maximum_torque``.
-
-        Returns
-        -------
-        Torque
-            The driving torque developed by the DC motor.
+        The computed torque has the same unit of ``maximum_torque``.
 
         Notes
         -----
@@ -1254,9 +1249,13 @@ class DCMotor(MotorBase):
             - :math:`\dot{\theta}` is the actual DC motor angular speed,
             - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
             - :math:`\dot{\theta}_0` is the DC motor no load angular speed (``no_load_speed``).
+
+        See Also
+        --------
+        :py:attr:`driving_torque`
         """
-        return Torque(value = (1 - self.angular_speed/self.__no_load_speed)*self.__maximum_torque.value,
-                      unit = self.__maximum_torque.unit)
+        self.driving_torque = Torque(value = (1 - self.angular_speed/self.__no_load_speed)*self.__maximum_torque.value,
+                                     unit = self.__maximum_torque.unit)
 
     @property
     def no_load_electrical_current(self) -> Optional[Current]:
@@ -1312,12 +1311,7 @@ class DCMotor(MotorBase):
         r"""Computes the electrical current absorbed by the DC motor. The absorbed electrical current depends on
         ``no_load_electrical_current`` and ``maximum_electrical_current`` of the DC motor and its instantaneous
         ``driving_torque``.
-        The returned computed electrical current has the same unit of ``maximum_electrical_current``.
-
-        Returns
-        -------
-        Current
-            The electrical current absorbed by the DC motor.
+        The computed electrical current has the same unit of ``maximum_electrical_current``.
 
         Notes
         -----
@@ -1333,6 +1327,10 @@ class DCMotor(MotorBase):
             - :math:`i_{max}` is the maximum electrical current absorbed by the DC motor (``maximum_electrical_current``),
             - :math:`i_0` is the no load electrical current absorbed by the DC motor (``no_load_electrical_current``),
             - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``).
+
+        See Also
+        --------
+        :py:attr:`electrical_current`
         """
         self.electrical_current = \
             Current(value = ((self.__maximum_electrical_current - self.__no_load_electrical_current)*
