@@ -15,6 +15,7 @@ Transmission
 
    chain
    plot
+   reset
    snapshot
    time
    update_time
