@@ -26,6 +26,8 @@ class Transmission:
     -------
     :py:meth:`plot`
         Plots time variables for each element in the mechanical transmission chain.
+    :py:meth:`reset`
+        Resets computed time variables.
     :py:meth:`snapshot`
         Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
         ``target_time``.
@@ -109,6 +111,34 @@ class Transmission:
             raise TypeError(f"Parameter 'instant' must be instances of {Time.__name__!r}.")
 
         self.__time.append(instant)
+
+
+    def reset(self):
+        """Resets computed time variables. \n
+        For each element in the mechanical transmission chain, it resets each time variables and also ``time`` property.
+        """
+        self.__time = []
+
+        for element in self.chain:
+            element.angular_position = element.time_variables['angular position'][0]
+            element.angular_speed = element.time_variables['angular speed'][0]
+            element.angular_acceleration = element.time_variables['angular acceleration'][0]
+            element.torque = element.time_variables['torque'][0]
+            element.driving_torque = element.time_variables['driving torque'][0]
+            element.load_torque = element.time_variables['load torque'][0]
+            if isinstance(element, MotorBase):
+                if element.electrical_current_is_computable:
+                    element.electrical_current = element.time_variables['electrical current'][0]
+            if isinstance(element, GearBase):
+                if element.tangential_force_is_computable:
+                    element.tangential_force = element.time_variables['tangential force'][0]
+                    if element.bending_stress_is_computable:
+                        element.bending_stress = element.time_variables['bending stress'][0]
+                        if element.contact_stress_is_computable:
+                            element.contact_stress = element.time_variables['contact stress'][0]
+
+            for variable in element.time_variables.keys():
+                element.time_variables[variable] = []
 
 
     def snapshot(self,
