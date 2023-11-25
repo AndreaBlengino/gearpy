@@ -46,7 +46,8 @@ def dc_motor_init_type_error(request):
                    {'name': 'motor', 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'no_load_speed': AngularSpeed(-1000, 'rpm'), 'maximum_torque': Torque(1, 'Nm')},
                    {'name': 'motor', 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'no_load_speed': AngularSpeed(1000, 'rpm'), 'maximum_torque': Torque(-1, 'Nm')},
                    {'name': 'motor', 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'no_load_speed': AngularSpeed(1000, 'rpm'), 'maximum_torque': Torque(1, 'Nm'), 'no_load_electrical_current': Current(-1, 'A')},
-                   {'name': 'motor', 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'no_load_speed': AngularSpeed(1000, 'rpm'), 'maximum_torque': Torque(1, 'Nm'), 'maximum_electrical_current': Current(-1, 'A')}])
+                   {'name': 'motor', 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'no_load_speed': AngularSpeed(1000, 'rpm'), 'maximum_torque': Torque(1, 'Nm'), 'maximum_electrical_current': Current(-1, 'A')},
+                   {'name': 'motor', 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'no_load_speed': AngularSpeed(1000, 'rpm'), 'maximum_torque': Torque(1, 'Nm'), 'no_load_electrical_current': Current(2, 'A'), 'maximum_electrical_current': Current(1, 'A')}])
 def dc_motor_init_value_error(request):
     return request.param
 

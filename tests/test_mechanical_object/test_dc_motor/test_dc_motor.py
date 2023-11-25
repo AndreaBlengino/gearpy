@@ -75,9 +75,9 @@ class TestDCMotorComputeTorque:
         if no_load_speed.value > 1e-10 and maximum_torque.value > 1e-10:
             motor = DCMotor(name = name, inertia_moment = inertia_moment, no_load_speed = no_load_speed, maximum_torque = maximum_torque)
             motor.angular_speed = speed
-            torque = motor.compute_torque()
+            motor.compute_torque()
 
-            assert isinstance(torque, Torque)
+            assert isinstance(motor.driving_torque, Torque)
 
 
 @mark.dc_motor
