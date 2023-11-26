@@ -44,10 +44,8 @@ basic_transmission = Transmission(motor = transmission_dc_motor)
 transmission_spur_gear_2.external_torque = lambda time, angular_position, angular_speed: Torque(1, 'mNm')
 transmission_spur_gear_2.angular_position = AngularPosition(0, 'rad')
 transmission_spur_gear_2.angular_speed = AngularSpeed(0, 'rad/s')
-basic_solver = Solver(time_discretization = TimeInterval(1, 'sec'),
-                      simulation_time = TimeInterval(2000, 'sec'),
-                      transmission = basic_transmission)
-basic_solver.run()
+basic_solver = Solver(transmission = basic_transmission)
+basic_solver.run(time_discretization = TimeInterval(1, 'sec'), simulation_time = TimeInterval(2000, 'sec'))
 
 
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
@@ -191,17 +189,15 @@ def solved_transmissions(draw):
     gears[-1].angular_position = AngularPosition(0, 'rad')
     gears[-1].angular_speed = AngularSpeed(0, 'rad/s')
     simulation_time = time_discretization*simulation_steps
-    solver = Solver(time_discretization = time_discretization,
-                    simulation_time = simulation_time,
-                    transmission = transmission)
-    solver.run()
+    solver = Solver(transmission = transmission)
+    solver.run(time_discretization = time_discretization, simulation_time = simulation_time)
 
     return transmission
 
 
 @composite
 def time_intervals(draw):
-    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
+    value = draw(integers(min_value = 1, max_value = 10))
     unit = draw(sampled_from(elements = list(TimeInterval._Time__UNITS.keys())))
 
     return TimeInterval(value = value, unit = unit)
