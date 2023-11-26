@@ -92,17 +92,17 @@ class Solver:
             raise ValueError("The function 'external_torque' has not been defined for any gear of the transmission. "
                              "Add this function to a transmission gear.")
 
-        if self.transmission.time:
-            starting_time = self.transmission.time[-1]
-        else:
-            starting_time = Time(value = 0, unit = time_discretization.unit)
-        self.transmission.update_time(starting_time)
         self._compute_transmission_inertia()
-        self._compute_transmission_variables()
+        if self.transmission.time:
+            initial_time = self.transmission.time[-1]
+            final_time = initial_time + simulation_time + time_discretization
+        else:
+            initial_time = Time(value = 0, unit = time_discretization.unit)
+            final_time = initial_time + simulation_time + time_discretization
+            self.transmission.update_time(initial_time)
+            self._compute_transmission_variables()
 
-        for k in np.arange(starting_time.value + time_discretization.value,
-                           starting_time.value + simulation_time.value + time_discretization.value,
-                           time_discretization.value):
+        for k in np.arange(initial_time.value + time_discretization.value, final_time.value, time_discretization.value):
 
             self.transmission.update_time(Time(value = float(k), unit = time_discretization.unit))
             self._time_integration(time_discretization = time_discretization)
