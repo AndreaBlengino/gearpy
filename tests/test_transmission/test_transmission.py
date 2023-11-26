@@ -1,5 +1,5 @@
 from copy import deepcopy
-from gearpy.mechanical_object import DCMotor, SpurGear
+from gearpy.mechanical_object import DCMotor, SpurGear, MotorBase, GearBase
 from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
     Stress, Torque, Time
@@ -87,6 +87,41 @@ class TestTransmissionUpdateTime:
     def test_raises_type_error(self, transmission_update_time_type_error):
         with raises(TypeError):
             basic_transmission.update_time(instant = transmission_update_time_type_error)
+
+
+@mark.transmission
+class TestTransmissionReset:
+
+
+    @mark.genuine
+    @given(transmission = solved_transmissions())
+    @settings(max_examples = 100)
+    def test_method(self, transmission):
+        transmission_copy = deepcopy(transmission)
+        transmission_copy.reset()
+
+        assert transmission_copy.time == []
+
+        for copied_element, original_element in zip(transmission_copy.chain, transmission.chain):
+            assert copied_element.angular_position == original_element.time_variables['angular position'][0]
+            assert copied_element.angular_speed == original_element.time_variables['angular speed'][0]
+            assert copied_element.angular_acceleration == original_element.time_variables['angular acceleration'][0]
+            assert copied_element.driving_torque == original_element.time_variables['driving torque'][0]
+            assert copied_element.load_torque == original_element.time_variables['load torque'][0]
+            assert copied_element.torque == original_element.time_variables['torque'][0]
+            if isinstance(copied_element, MotorBase):
+                if copied_element.electrical_current_is_computable:
+                    assert copied_element.electrical_current == original_element.time_variables['electrical current'][0]
+            if isinstance(copied_element, GearBase):
+                if copied_element.tangential_force_is_computable:
+                    assert copied_element.tangential_force == original_element.time_variables['tangential force'][0]
+                    if copied_element.bending_stress_is_computable:
+                        assert copied_element.bending_stress == original_element.time_variables['bending stress'][0]
+                        if copied_element.contact_stress_is_computable:
+                            assert copied_element.contact_stress == original_element.time_variables['contact stress'][0]
+
+            for variable_values in copied_element.time_variables.values():
+                assert variable_values == []
 
 
 @mark.transmission
