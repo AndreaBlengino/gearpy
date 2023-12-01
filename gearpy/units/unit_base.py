@@ -21,6 +21,9 @@ class UnitBase(ABC):
     def __repr__(self):
         return f'{self.value} {self.unit}'
 
+    def __format__(self, format_spec):
+        return f'{self.value:{format_spec}} {self.unit}'
+
     def __abs__(self):
         return self.__class__(abs(self.value), self.unit)
 
