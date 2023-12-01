@@ -27,6 +27,9 @@ class UnitBase(ABC):
     def __abs__(self):
         return self.__class__(abs(self.value), self.unit)
 
+    def __neg__(self):
+        return self.__class__(-self.value, self.unit)
+
     def __add__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
             raise TypeError(f'It is not allowed to sum a {self.__class__.__name__} and a {other.__class__.__name__}.')
