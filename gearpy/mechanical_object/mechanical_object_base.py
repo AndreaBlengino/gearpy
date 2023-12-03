@@ -240,7 +240,10 @@ class MotorBase(RotatingObject):
         super(MotorBase, type(self)).load_torque.fset(self, load_torque)
 
     @abstractmethod
-    def compute_torque(self) -> Torque: ...
+    def compute_torque(self, **kargs): ...
+
+    @abstractmethod
+    def compute_motor_control(self, **kargs): ...
 
 
 class GearBase(RotatingObject):

@@ -2,7 +2,7 @@ from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Cur
     Stress, Time, Torque, UnitBase
 from math import pi, sin, cos, sqrt
 from .mechanical_object_base import RotatingObject, GearBase, MotorBase, lewis_factor_function, Role
-from typing import Callable, Dict, List, Union, Optional
+from typing import Callable, Dict, List, Union, Optional, Any
 
 
 class SpurGear(GearBase):
@@ -971,6 +971,8 @@ class DCMotor(MotorBase):
         self.__maximum_torque = maximum_torque
         self.__no_load_electrical_current = no_load_electrical_current
         self.__maximum_electrical_current = maximum_electrical_current
+        self.__pwm_control = None
+        self.__pwm = None
 
         if self.electrical_current_is_computable:
             self.__electrical_current = None
@@ -1254,8 +1256,22 @@ class DCMotor(MotorBase):
         --------
         :py:attr:`driving_torque`
         """
-        self.driving_torque = Torque(value = (1 - self.angular_speed/self.__no_load_speed)*self.__maximum_torque.value,
-                                     unit = self.__maximum_torque.unit)
+        pwm_min = self.no_load_electrical_current/self.maximum_electrical_current
+        if abs(self.pwm) <= pwm_min:
+            self.driving_torque = Torque(0, unit = self.maximum_torque.unit)
+            return
+        elif self.pwm > pwm_min:
+            maximum_torque = \
+                self.maximum_torque*((self.pwm*self.maximum_electrical_current - self.no_load_electrical_current)/ \
+                                     (self.maximum_electrical_current - self.no_load_electrical_current))
+        else:
+            maximum_torque = \
+                self.maximum_torque*((self.pwm*self.maximum_electrical_current + self.no_load_electrical_current)/ \
+                                     (self.maximum_electrical_current - self.no_load_electrical_current))
+
+        no_load_speed = self.pwm*self.no_load_speed
+        self.driving_torque = Torque(value = (1 - self.angular_speed/no_load_speed)*maximum_torque.value,
+                                     unit = self.maximum_torque.unit)
 
     @property
     def no_load_electrical_current(self) -> Optional[Current]:
@@ -1332,10 +1348,27 @@ class DCMotor(MotorBase):
         --------
         :py:attr:`electrical_current`
         """
-        self.electrical_current = \
-            Current(value = ((self.__maximum_electrical_current - self.__no_load_electrical_current)*
-                             (self.driving_torque/self.__maximum_torque) + self.__no_load_electrical_current).value,
-                    unit = self.__maximum_electrical_current.unit)
+        maximum_electrical_current = self.pwm*self.maximum_electrical_current
+        pwm_min = self.no_load_electrical_current/self.maximum_electrical_current
+        if abs(self.pwm) <= pwm_min:
+            self.electrical_current = self.pwm/pwm_min*\
+                                      self.no_load_electrical_current.to(self.maximum_electrical_current.unit)
+            return
+        elif self.pwm > pwm_min:
+            no_load_electrical_current = self.no_load_electrical_current
+            maximum_torque = \
+                self.maximum_torque*((maximum_electrical_current - self.no_load_electrical_current)/ \
+                                     (self.maximum_electrical_current - self.no_load_electrical_current))
+        else:
+            no_load_electrical_current = -self.no_load_electrical_current
+            maximum_torque = \
+                self.maximum_torque*((maximum_electrical_current + self.no_load_electrical_current)/ \
+                                     (self.maximum_electrical_current - self.no_load_electrical_current))
+
+        self.electrical_current = Current(value = ((maximum_electrical_current - no_load_electrical_current)*
+                                                   (self.driving_torque/maximum_torque) +
+                                                   no_load_electrical_current).value,
+                                          unit = self.maximum_electrical_current.unit)
 
     @property
     def electrical_current_is_computable(self) -> bool:
@@ -1425,6 +1458,42 @@ class DCMotor(MotorBase):
         super().update_time_variables()
         if self.electrical_current_is_computable:
             self.time_variables['electrical current'].append(self.electrical_current)
+
+    @property
+    def pwm(self) -> Union[float, int]:
+        return self.__pwm
+
+    @pwm.setter
+    def pwm(self, pwm: Union[float, int]):
+        if not isinstance(pwm, float) and not isinstance(pwm, int):
+            raise TypeError("Parameter 'pwm' must be a float or an integer.")
+
+        if (pwm > 1) or (pwm < -1):
+            raise ValueError("Pulse Width Modulation (PWM) must be within -1 and 1. "
+                             "Check DCMotor.pwm_control function.")
+
+        self.__pwm = pwm
+
+    @property
+    def pwm_control(self) -> Optional[Callable[Any, float]]:
+        return self.__pwm_control
+
+    @pwm_control.setter
+    def pwm_control(self, pwm_control: Optional[Callable[Any, float]] = None):
+        if not isinstance(pwm_control, Callable):
+            raise TypeError("Parameter 'pwm_control' must be callable.")
+
+        self.__pwm_control = pwm_control
+
+    @property
+    def pwm_is_computable(self) -> bool:
+        return self.pwm_control is not None
+
+    def compute_motor_control(self, **kargs):
+        if self.pwm_is_computable:
+            self.pwm = self.pwm_control(transmission = kargs['transmission'])
+        else:
+            self.pwm = 1
 
 
 class Flywheel(RotatingObject):

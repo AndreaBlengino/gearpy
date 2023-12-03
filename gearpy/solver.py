@@ -118,6 +118,7 @@ class Solver:
     def _compute_transmission_variables(self):
 
         self._compute_angular_position_and_speed()
+        self._compute_motor_control()
         self._compute_driving_torque()
         self._compute_load_torque()
         self._compute_torque()
@@ -145,6 +146,10 @@ class Solver:
     def _transmit_angular_acceleration(self, gear_ratio, i):
 
         self.transmission.chain[i].angular_acceleration = gear_ratio*self.transmission.chain[i + 1].angular_acceleration
+
+    def _compute_motor_control(self):
+
+        self.transmission.chain[0].compute_motor_control(transmission = self.transmission)
 
     def _compute_driving_torque(self):
 
