@@ -952,7 +952,7 @@ class DCMotor(MotorBase):
             if not isinstance(no_load_electrical_current, Current):
                 raise TypeError(f"Parameter 'no_load_electrical_current' must be an instance of {Current.__name__!r}.")
 
-            if no_load_electrical_current.value <= 0:
+            if no_load_electrical_current.value < 0:
                 raise ValueError("Parameter 'no_load_electrical_current' must be positive.")
 
         if maximum_electrical_current is not None:
