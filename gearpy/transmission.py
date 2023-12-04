@@ -9,7 +9,7 @@ from typing import List, Tuple, Union, Optional
 
 VARIABLES_SORT_ORDER = {'angular position': 0, 'angular speed': 1, 'angular acceleration': 2, 'torque': 3,
                         'driving torque': 4, 'load torque': 5, 'tangential force': 6, 'bending stress': 7,
-                        'contact stress': 8, 'electrical current': 9}
+                        'contact stress': 8, 'electrical current': 9, 'pwm': 10}
 
 
 class Transmission:
@@ -300,9 +300,10 @@ class Transmission:
         UNITS = {'angular position': angular_position_unit, 'angular speed': angular_speed_unit,
                  'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
                  'driving torque': driving_torque_unit, 'load torque': load_torque_unit, 'tangential force': force_unit,
-                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electrical current': current_unit}
+                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electrical current': current_unit,
+                 'pwm': ''}
 
-        columns = [f'{variable} ({UNITS[variable]})' for variable in variables]
+        columns = [f'{variable} ({UNITS[variable]})' if UNITS[variable] != '' else variable for variable in variables]
         data = pd.DataFrame(columns = columns)
 
         for element in self.chain:
@@ -323,6 +324,11 @@ class Transmission:
                                                            for value in element.time_variables['electrical current']])
                     data.loc[element.name, f'electrical current ({current_unit})'] = \
                         interpolation_function(target_time.to('sec').value).take(0)
+
+                if element.pwm_is_computable:
+                    interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
+                                                      y = element.time_variables['pwm'])
+                    data.loc[element.name, 'pwm'] = interpolation_function(target_time.to('sec').value).take(0)
 
             if isinstance(element, GearBase):
                 variable_list = []
@@ -519,16 +525,18 @@ class Transmission:
 
         kinematic_variables = [variable for variable in variables
                                if 'torque' not in variable and 'force' not in variable
-                               and 'stress' not in variable and 'electrical' not in variable]
+                               and 'stress' not in variable and 'electrical' not in variable and 'pwm' not in variable]
         torques_variables = [variable for variable in variables if 'torque' in variable]
         forces_variables = [variable for variable in variables if 'force' in variable]
         stress_variables = [variable for variable in variables if 'stress' in variable]
         electrical_variables = [variable for variable in variables if 'electrical' in variable]
+        pwm_variables = [variable for variable in variables if 'pwm' in variable]
 
         torques_variables_index = len(kinematic_variables)
         forces_variables_index = len(kinematic_variables)
         stress_variables_index = len(kinematic_variables)
         electrical_variables_index = len(kinematic_variables)
+        pwm_variables_index = len(kinematic_variables)
 
         n_variables = len(kinematic_variables)
         if torques_variables:
@@ -536,14 +544,20 @@ class Transmission:
             forces_variables_index += 1
             stress_variables_index += 1
             electrical_variables_index += 1
+            pwm_variables_index += 1
         if forces_variables:
             n_variables += 1
             stress_variables_index += 1
             electrical_variables_index += 1
+            pwm_variables_index += 1
         if stress_variables:
             n_variables += 1
             electrical_variables_index += 1
+            pwm_variables_index += 1
         if electrical_variables:
+            n_variables += 1
+            pwm_variables_index += 1
+        if pwm_variables:
             n_variables += 1
 
         time_values = [instant.to(time_unit).value for instant in self.time]
@@ -551,7 +565,8 @@ class Transmission:
         UNITS = {'angular position': angular_position_unit, 'angular speed': angular_speed_unit,
                  'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
                  'driving torque': torque_unit, 'load torque': torque_unit, 'tangential force': force_unit,
-                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electrical current': current_unit}
+                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electrical current': current_unit,
+                 'pwm': ''}
 
         fig, ax = plt.subplots(nrows = n_variables, ncols = n_elements, sharex = 'all',
                                layout = 'constrained', figsize = figsize)
@@ -580,9 +595,16 @@ class Transmission:
                     axes[electrical_variables_index].plot(time_values,
                                                           [variable_value.to(UNITS['electrical current']).value
                                                            for variable_value in item.time_variables['electrical current']])
+
+                if item.pwm_is_computable and pwm_variables:
+                    axes[pwm_variables_index].plot(time_values,
+                                                   item.time_variables['pwm'])
+
             else:
                 if electrical_variables:
                     axes[electrical_variables_index].axis('off')
+                if pwm_variables:
+                    axes[pwm_variables_index].axis('off')
 
             if isinstance(item, GearBase):
                 if item.tangential_force_is_computable:
@@ -627,12 +649,16 @@ class Transmission:
                     last_row_index -= 1
                 if electrical_variables:
                     last_row_index -= 1
+                if pwm_variables:
+                    last_row_index -= 1
             else:
                 if forces_variables:
                     last_row_index -= 1
                 if stress_variables:
                     last_row_index -= 1
                 if electrical_variables:
+                    last_row_index -= 1
+                if pwm_variables:
                     last_row_index -= 1
 
             axes[last_row_index].set_xlabel(f'time ({time_unit})')
@@ -681,6 +707,15 @@ class Transmission:
                     else:
                         axes = [ax[0]] if n_elements > 1 else [ax]
                     axes[electrical_variables_index].set_ylabel(f'electrical current ({current_unit})')
+
+        if pwm_variables:
+            if isinstance(elements[0], MotorBase):
+                if elements[0].pwm_is_computable:
+                    if n_variables > 1:
+                        axes = ax[:, 0] if n_elements > 1 else ax
+                    else:
+                        axes = [ax[0]] if n_elements > 1 else [ax]
+                    axes[pwm_variables_index].set_ylabel('PWM')
 
         if n_elements > 1 or n_variables > 1:
             for axi in ax.flatten():

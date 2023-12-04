@@ -1428,10 +1428,12 @@ class DCMotor(MotorBase):
             - ``torque``,
             - ``driving torque``,
             - ``load torque``,
-            - ``electrical current``.
+            - ``electrical current``,
+            - ``pwm``.
 
-        ``electrical current`` is listed among time variables only if it is computable indeed, depending on which motor
-        parameters are set at DC motor instantiation. \n
+        ``electrical current`` and ``pwm`` are listed among time variables only if they are computable indeed,
+        depending on which motor parameters was set at DC motor instantiation and whether ``pwm_control`` has been set
+        or not, respectively. \n
         Corresponding values of the dictionary are lists of the respective time variable values. \n
         At each time iteration, the ``Solver`` appends every time variables' values to the relative list in the
         dictionary.
@@ -1458,6 +1460,11 @@ class DCMotor(MotorBase):
         super().update_time_variables()
         if self.electrical_current_is_computable:
             self.time_variables['electrical current'].append(self.electrical_current)
+        if self.pwm_is_computable:
+            if 'pwm' not in self.time_variables.keys():
+                self.time_variables['pwm'] = [self.pwm]
+            else:
+                self.time_variables['pwm'].append(self.pwm)
 
     @property
     def pwm(self) -> Union[float, int]:
