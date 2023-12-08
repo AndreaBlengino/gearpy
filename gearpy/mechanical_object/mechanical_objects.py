@@ -1256,7 +1256,13 @@ class DCMotor(MotorBase):
         --------
         :py:attr:`driving_torque`
         """
-        pwm_min = self.no_load_electrical_current/self.maximum_electrical_current
+        if not self.pwm_is_computable or not self.electrical_current_is_computable:
+            self.driving_torque = Torque(value = (1 - self.angular_speed/self.no_load_speed)*self.maximum_torque.value,
+                                         unit = self.maximum_torque.unit)
+            return
+
+        pwm_min = self.no_load_electrical_current/self.maximum_electrical_current \
+                  if self.electrical_current_is_computable else 0
         if abs(self.pwm) <= pwm_min:
             self.driving_torque = Torque(0, unit = self.maximum_torque.unit)
             return
@@ -1264,12 +1270,13 @@ class DCMotor(MotorBase):
             maximum_torque = \
                 self.maximum_torque*((self.pwm*self.maximum_electrical_current - self.no_load_electrical_current)/ \
                                      (self.maximum_electrical_current - self.no_load_electrical_current))
+            no_load_speed = self.pwm*self.no_load_speed
         else:
             maximum_torque = \
                 self.maximum_torque*((self.pwm*self.maximum_electrical_current + self.no_load_electrical_current)/ \
                                      (self.maximum_electrical_current - self.no_load_electrical_current))
+            no_load_speed = self.pwm*self.no_load_speed
 
-        no_load_speed = self.pwm*self.no_load_speed
         self.driving_torque = Torque(value = (1 - self.angular_speed/no_load_speed)*maximum_torque.value,
                                      unit = self.maximum_torque.unit)
 
@@ -1348,6 +1355,13 @@ class DCMotor(MotorBase):
         --------
         :py:attr:`electrical_current`
         """
+        if not self.pwm_is_computable:
+            self.electrical_current = \
+                Current(value = ((self.maximum_electrical_current - self.no_load_electrical_current)*
+                                 (self.driving_torque/self.maximum_torque) + self.no_load_electrical_current).value,
+                        unit = self.maximum_electrical_current.unit)
+            return
+
         maximum_electrical_current = self.pwm*self.maximum_electrical_current
         pwm_min = self.no_load_electrical_current/self.maximum_electrical_current
         if abs(self.pwm) <= pwm_min:
