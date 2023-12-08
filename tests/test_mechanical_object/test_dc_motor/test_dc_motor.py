@@ -122,18 +122,6 @@ class TestDCMotorElectricalCurrent:
 
 
 @mark.dc_motor
-class TestDCMotorComputeElectricalCurrent:
-
-    @mark.genuine
-    def test_method(self):
-        basic_dc_motor_2.driving_torque = basic_dc_motor_2.maximum_torque/2
-        basic_dc_motor_2.compute_electrical_current()
-
-        assert basic_dc_motor_2.electrical_current is not None
-        assert isinstance(basic_dc_motor_2.electrical_current, Current)
-
-
-@mark.dc_motor
 class TestDCMotorElectricalCurrentIsComputable:
 
     @mark.genuine
