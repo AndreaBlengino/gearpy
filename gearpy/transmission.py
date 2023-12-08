@@ -129,6 +129,8 @@ class Transmission:
             if isinstance(element, MotorBase):
                 if element.electrical_current_is_computable:
                     element.electrical_current = element.time_variables['electrical current'][0]
+                if element.pwm_is_computable:
+                    element.pwm = element.time_variables['pwm'][0]
             if isinstance(element, GearBase):
                 if element.tangential_force_is_computable:
                     element.tangential_force = element.time_variables['tangential force'][0]
@@ -157,7 +159,10 @@ class Transmission:
         """Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
         ``target_time``. The computed time variables are organized in a ``pandas.DataFrame``, returned by the method.
         Each element in the transmission chain is a row of the DataFrame, while the columns are the time variables
-        angular position, angular speed, angular acceleration, torque, driving torque, load torque and tangential force.
+        angular position, angular speed, angular acceleration, torque, driving torque and load torque. The motor can
+        have additional variables electrical current and pwm, while gears can have additional parameters tangential
+        force, bending stress and contact stress, depending on instantiation parameters. \n
+        It is possible to select the variables to be printed with the ``variables`` list. \n
         Each time variable is converted to the relative unit passed as optional parameter. \n
         If the ``target_time`` is not among simulated time steps in the ``time`` list, it computes a linear
         interpolation from the two closest simulated time steps.
@@ -371,12 +376,14 @@ class Transmission:
         """Plots time variables for selected elements in the mechanical transmission chain. \n
         Generates a grid of subplots, one column for each selected element of the transmission chain and one rows for
         each selected time variable. \n
-        Available elements are the ones in the ``chain`` tuple and available variables are: ``'angular position'``,
-        ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'``, ``'load torque'`` and
-        ``'tangential force'``.
+        The available elements are those in ``chain`` tuple and the available variables are: ``'angular position'``,
+        ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``. The
+        motor can have additional variables ``electrical current`` and ``pwm`` while gears can have additional variables
+        ``tangential force``, ``bending stress`` and ``contact stress``, depending on instantiation parameters. \n
         The kinematic variables position, speed and acceleration are separately plotted in the first three rows of the
-        grid, while torques are grouped together in the last fourth row (if kinematic variables are present) and
-        tangential force is plotted in the fifth row (if all other variables are present). \n
+        grid, while torques are grouped together in the fourth row, tangential force is plotted in the fifth row,
+        bending and contact stress are grouped together in the sixth row, electrical current in the seventh one and
+        motor pwm in the last one. \n
         Plotted values' units are managed with optional parameters. \n
         Elements to be plotted can be passed as instances or names (strings) in a list.
 
