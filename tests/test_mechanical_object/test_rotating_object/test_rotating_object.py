@@ -149,8 +149,8 @@ class TestRotatingObjectTimeVariables:
             time_variables_list = ['angular position', 'angular speed', 'angular acceleration', 'torque',
                                    'driving torque', 'load torque']
             if isinstance(rotating_object, MotorBase):
-                if rotating_object.electrical_current_is_computable:
-                    time_variables_list.append('electrical current')
+                if rotating_object.electric_current_is_computable:
+                    time_variables_list.append('electric current')
             elif isinstance(rotating_object, GearBase):
                 if rotating_object.tangential_force_is_computable:
                     time_variables_list.append('tangential force')
@@ -178,9 +178,9 @@ class TestRotatingObjectUpdateTimeVariables:
            tangential_force = forces(),
            bending_stress = stresses(),
            contact_stress = stresses(),
-           electrical_current = currents())
+           electric_current = currents())
     def test_method(self, angular_position, angular_speed, angular_acceleration, torque, driving_torque, load_torque,
-                    tangential_force, bending_stress, contact_stress, electrical_current):
+                    tangential_force, bending_stress, contact_stress, electric_current):
         for rotating_object in basic_rotating_objects:
             rotating_object.angular_position = angular_position
             rotating_object.angular_speed = angular_speed
@@ -189,8 +189,8 @@ class TestRotatingObjectUpdateTimeVariables:
             rotating_object.driving_torque = driving_torque
             rotating_object.load_torque = load_torque
             if isinstance(rotating_object, MotorBase):
-                if rotating_object.electrical_current_is_computable:
-                    rotating_object.electrical_current = electrical_current
+                if rotating_object.electric_current_is_computable:
+                    rotating_object.electric_current = electric_current
             elif isinstance(rotating_object, GearBase):
                 if rotating_object.tangential_force_is_computable:
                     rotating_object.tangential_force = tangential_force
@@ -205,8 +205,8 @@ class TestRotatingObjectUpdateTimeVariables:
             time_variables_list = ['angular position', 'angular speed', 'angular acceleration', 'torque',
                                    'driving torque', 'load torque']
             if isinstance(rotating_object, MotorBase):
-                if rotating_object.electrical_current_is_computable:
-                    time_variables_list.append('electrical current')
+                if rotating_object.electric_current_is_computable:
+                    time_variables_list.append('electric current')
             elif isinstance(rotating_object, GearBase):
                 if rotating_object.tangential_force_is_computable:
                     time_variables_list.append('tangential force')
@@ -224,8 +224,8 @@ class TestRotatingObjectUpdateTimeVariables:
             assert time_variables['driving torque'][-1] == driving_torque
             assert time_variables['load torque'][-1] == load_torque
             if isinstance(rotating_object, MotorBase):
-                if rotating_object.electrical_current_is_computable:
-                    assert time_variables['electrical current'][-1] == electrical_current
+                if rotating_object.electric_current_is_computable:
+                    assert time_variables['electric current'][-1] == electric_current
             if isinstance(rotating_object, GearBase):
                 if rotating_object.tangential_force_is_computable:
                     assert time_variables['tangential force'][-1] == tangential_force

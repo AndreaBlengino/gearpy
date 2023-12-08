@@ -9,7 +9,7 @@ from typing import List, Tuple, Union, Optional
 
 VARIABLES_SORT_ORDER = {'angular position': 0, 'angular speed': 1, 'angular acceleration': 2, 'torque': 3,
                         'driving torque': 4, 'load torque': 5, 'tangential force': 6, 'bending stress': 7,
-                        'contact stress': 8, 'electrical current': 9, 'pwm': 10}
+                        'contact stress': 8, 'electric current': 9, 'pwm': 10}
 
 
 class Transmission:
@@ -127,8 +127,8 @@ class Transmission:
             element.driving_torque = element.time_variables['driving torque'][0]
             element.load_torque = element.time_variables['load torque'][0]
             if isinstance(element, MotorBase):
-                if element.electrical_current_is_computable:
-                    element.electrical_current = element.time_variables['electrical current'][0]
+                if element.electric_current_is_computable:
+                    element.electric_current = element.time_variables['electric current'][0]
                 if element.pwm_is_computable:
                     element.pwm = element.time_variables['pwm'][0]
             if isinstance(element, GearBase):
@@ -160,7 +160,7 @@ class Transmission:
         ``target_time``. The computed time variables are organized in a ``pandas.DataFrame``, returned by the method.
         Each element in the transmission chain is a row of the DataFrame, while the columns are the time variables
         angular position, angular speed, angular acceleration, torque, driving torque and load torque. The motor can
-        have additional variables electrical current and pwm, while gears can have additional parameters tangential
+        have additional variables electric current and pwm, while gears can have additional parameters tangential
         force, bending stress and contact stress, depending on instantiation parameters. \n
         It is possible to select the variables to be printed with the ``variables`` list. \n
         Each time variable is converted to the relative unit passed as optional parameter. \n
@@ -199,8 +199,8 @@ class Transmission:
             Symbol of the unit of measurement to which convert the stress values in the DataFrame. It must be a string.
             Default is ``'MPa'``.
         current_unit : str, optional
-            Symbol of the unit of measurement to which convert the electrical current values in the DataFrame. It must
-            be a string. Default is ``'A'``.
+            Symbol of the unit of measurement to which convert the electric current values in the DataFrame. It must be
+            a string. Default is ``'A'``.
         print_data : bool, optional
             Whether or not to print the computed time variables DataFrame. Default is ``True``.
 
@@ -305,7 +305,7 @@ class Transmission:
         UNITS = {'angular position': angular_position_unit, 'angular speed': angular_speed_unit,
                  'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
                  'driving torque': driving_torque_unit, 'load torque': load_torque_unit, 'tangential force': force_unit,
-                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electrical current': current_unit,
+                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electric current': current_unit,
                  'pwm': ''}
 
         columns = [f'{variable} ({UNITS[variable]})' if UNITS[variable] != '' else variable for variable in variables]
@@ -322,12 +322,12 @@ class Transmission:
                                                            for value in element.time_variables[variable]])
                     data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
 
-            if isinstance(element, MotorBase) and 'electrical current' in variables:
-                if element.electrical_current_is_computable:
+            if isinstance(element, MotorBase) and 'electric current' in variables:
+                if element.electric_current_is_computable:
                     interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
                                                       y = [value.to(current_unit).value
-                                                           for value in element.time_variables['electrical current']])
-                    data.loc[element.name, f'electrical current ({current_unit})'] = \
+                                                           for value in element.time_variables['electric current']])
+                    data.loc[element.name, f'electric current ({current_unit})'] = \
                         interpolation_function(target_time.to('sec').value).take(0)
 
                 if element.pwm_is_computable:
@@ -378,11 +378,11 @@ class Transmission:
         each selected time variable. \n
         The available elements are those in ``chain`` tuple and the available variables are: ``'angular position'``,
         ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``. The
-        motor can have additional variables ``electrical current`` and ``pwm`` while gears can have additional variables
+        motor can have additional variables ``electric current`` and ``pwm`` while gears can have additional variables
         ``tangential force``, ``bending stress`` and ``contact stress``, depending on instantiation parameters. \n
         The kinematic variables position, speed and acceleration are separately plotted in the first three rows of the
         grid, while torques are grouped together in the fourth row, tangential force is plotted in the fifth row,
-        bending and contact stress are grouped together in the sixth row, electrical current in the seventh one and
+        bending and contact stress are grouped together in the sixth row, electric current in the seventh one and
         motor pwm in the last one. \n
         Plotted values' units are managed with optional parameters. \n
         Elements to be plotted can be passed as instances or names (strings) in a list.
@@ -413,7 +413,7 @@ class Transmission:
             Symbol of the unit of measurement to which convert the stress values in the plot. It must be a string.
             Default is ``'MPa'``.
         current_unit : str, optional
-            Symbol of the unit of measurement to which convert the electrical current values in the plot. It must be a
+            Symbol of the unit of measurement to which convert the electric current values in the plot. It must be a
             string. Default is ``'A'``.
         time_unit : str, optional
             Symbol of the unit of measurement to which convert the time values in the plot. It must be a string. Default
@@ -532,17 +532,17 @@ class Transmission:
 
         kinematic_variables = [variable for variable in variables
                                if 'torque' not in variable and 'force' not in variable
-                               and 'stress' not in variable and 'electrical' not in variable and 'pwm' not in variable]
+                               and 'stress' not in variable and 'electric' not in variable and 'pwm' not in variable]
         torques_variables = [variable for variable in variables if 'torque' in variable]
         forces_variables = [variable for variable in variables if 'force' in variable]
         stress_variables = [variable for variable in variables if 'stress' in variable]
-        electrical_variables = [variable for variable in variables if 'electrical' in variable]
+        electric_variables = [variable for variable in variables if 'electric' in variable]
         pwm_variables = [variable for variable in variables if 'pwm' in variable]
 
         torques_variables_index = len(kinematic_variables)
         forces_variables_index = len(kinematic_variables)
         stress_variables_index = len(kinematic_variables)
-        electrical_variables_index = len(kinematic_variables)
+        electric_variables_index = len(kinematic_variables)
         pwm_variables_index = len(kinematic_variables)
 
         n_variables = len(kinematic_variables)
@@ -550,18 +550,18 @@ class Transmission:
             n_variables += 1
             forces_variables_index += 1
             stress_variables_index += 1
-            electrical_variables_index += 1
+            electric_variables_index += 1
             pwm_variables_index += 1
         if forces_variables:
             n_variables += 1
             stress_variables_index += 1
-            electrical_variables_index += 1
+            electric_variables_index += 1
             pwm_variables_index += 1
         if stress_variables:
             n_variables += 1
-            electrical_variables_index += 1
+            electric_variables_index += 1
             pwm_variables_index += 1
-        if electrical_variables:
+        if electric_variables:
             n_variables += 1
             pwm_variables_index += 1
         if pwm_variables:
@@ -572,7 +572,7 @@ class Transmission:
         UNITS = {'angular position': angular_position_unit, 'angular speed': angular_speed_unit,
                  'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
                  'driving torque': torque_unit, 'load torque': torque_unit, 'tangential force': force_unit,
-                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electrical current': current_unit,
+                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electric current': current_unit,
                  'pwm': ''}
 
         fig, ax = plt.subplots(nrows = n_variables, ncols = n_elements, sharex = 'all',
@@ -598,18 +598,18 @@ class Transmission:
                                                    label = label)
 
             if isinstance(item, MotorBase):
-                if item.electrical_current_is_computable and electrical_variables:
-                    axes[electrical_variables_index].plot(time_values,
-                                                          [variable_value.to(UNITS['electrical current']).value
-                                                           for variable_value in item.time_variables['electrical current']])
+                if item.electric_current_is_computable and electric_variables:
+                    axes[electric_variables_index].plot(time_values,
+                                                          [variable_value.to(UNITS['electric current']).value
+                                                           for variable_value in item.time_variables['electric current']])
 
                 if item.pwm_is_computable and pwm_variables:
                     axes[pwm_variables_index].plot(time_values,
                                                    item.time_variables['pwm'])
 
             else:
-                if electrical_variables:
-                    axes[electrical_variables_index].axis('off')
+                if electric_variables:
+                    axes[electric_variables_index].axis('off')
                 if pwm_variables:
                     axes[pwm_variables_index].axis('off')
 
@@ -654,7 +654,7 @@ class Transmission:
                         (not item.bending_stress_is_computable or 'bending stress' not in stress_variables) and \
                         (not item.contact_stress_is_computable or 'contact stress' not in stress_variables):
                     last_row_index -= 1
-                if electrical_variables:
+                if electric_variables:
                     last_row_index -= 1
                 if pwm_variables:
                     last_row_index -= 1
@@ -663,7 +663,7 @@ class Transmission:
                     last_row_index -= 1
                 if stress_variables:
                     last_row_index -= 1
-                if electrical_variables:
+                if electric_variables:
                     last_row_index -= 1
                 if pwm_variables:
                     last_row_index -= 1
@@ -706,14 +706,14 @@ class Transmission:
                         axes[stress_variables_index].legend(title = 'stress', frameon = True)
                         break
 
-        if electrical_variables:
+        if electric_variables:
             if isinstance(elements[0], MotorBase):
-                if elements[0].electrical_current_is_computable:
+                if elements[0].electric_current_is_computable:
                     if n_variables > 1:
                         axes = ax[:, 0] if n_elements > 1 else ax
                     else:
                         axes = [ax[0]] if n_elements > 1 else [ax]
-                    axes[electrical_variables_index].set_ylabel(f'electrical current ({current_unit})')
+                    axes[electric_variables_index].set_ylabel(f'electric current ({current_unit})')
 
         if pwm_variables:
             if isinstance(elements[0], MotorBase):

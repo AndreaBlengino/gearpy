@@ -18,8 +18,8 @@ basic_dc_motor_2 = DCMotor(name = 'motor',
                            inertia_moment = InertiaMoment(1, 'kgm^2'),
                            no_load_speed = AngularSpeed(1000, 'rpm'),
                            maximum_torque = Torque(1, 'Nm'),
-                           no_load_electrical_current = Current(0.1, 'A'),
-                           maximum_electrical_current = Current(1, 'A'))
+                           no_load_electric_current = Current(0.1, 'A'),
+                           maximum_electric_current = Current(1, 'A'))
 
 basic_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
 
@@ -99,21 +99,21 @@ def simple_dc_motors(draw):
 
 
 @composite
-def electrical_dc_motors(draw):
+def electric_dc_motors(draw):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
     no_load_speed_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 5000, max_value = 10000))
     maximum_torque_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1.5, max_value = 5))
-    no_load_electrical_current_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.01, max_value = 5))
-    electrical_current_multiplier = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1.5, max_value = 10))
-    maximum_electrical_current_value = no_load_electrical_current_value*electrical_current_multiplier
+    no_load_electric_current_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.01, max_value = 5))
+    electric_current_multiplier = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1.5, max_value = 10))
+    maximum_electric_current_value = no_load_electric_current_value*electric_current_multiplier
 
     return DCMotor(name = name,
                    inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
                    no_load_speed = AngularSpeed(no_load_speed_value, 'rpm'),
                    maximum_torque = Torque(maximum_torque_value, 'mNm'),
-                   no_load_electrical_current = Current(no_load_electrical_current_value, 'A'),
-                   maximum_electrical_current = Current(maximum_electrical_current_value, 'A'))
+                   no_load_electric_current = Current(no_load_electric_current_value, 'A'),
+                   maximum_electric_current = Current(maximum_electric_current_value, 'A'))
 
 
 @composite
@@ -126,7 +126,7 @@ def flywheels(draw):
 
 @composite
 def transmissions(draw):
-    motor = draw(one_of(simple_dc_motors(), electrical_dc_motors()))
+    motor = draw(one_of(simple_dc_motors(), electric_dc_motors()))
     gears = draw(lists(elements = structural_spur_gears(), min_size = 2))
 
     if len(gears)%2 == 1:
@@ -145,7 +145,7 @@ def transmissions(draw):
 
 @composite
 def solved_transmissions(draw):
-    motor = draw(one_of(simple_dc_motors(), electrical_dc_motors()))
+    motor = draw(one_of(simple_dc_motors(), electric_dc_motors()))
     flywheel = draw(flywheels())
     gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
     gear_2 = SpurGear(name = 'gear 2', n_teeth = 20, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))

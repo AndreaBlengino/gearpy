@@ -110,8 +110,8 @@ class TestTransmissionReset:
             assert copied_element.load_torque == original_element.time_variables['load torque'][0]
             assert copied_element.torque == original_element.time_variables['torque'][0]
             if isinstance(copied_element, MotorBase):
-                if copied_element.electrical_current_is_computable:
-                    assert copied_element.electrical_current == original_element.time_variables['electrical current'][0]
+                if copied_element.electric_current_is_computable:
+                    assert copied_element.electric_current == original_element.time_variables['electric current'][0]
             if isinstance(copied_element, GearBase):
                 if copied_element.tangential_force_is_computable:
                     assert copied_element.tangential_force == original_element.time_variables['tangential force'][0]
@@ -161,8 +161,8 @@ class TestTransmissionSnapshot:
                    f'driving torque ({driving_torque_unit})', f'load torque ({load_torque_unit})',
                    f'tangential force ({force_unit})', f'bending stress ({stress_unit})',
                    f'contact stress ({stress_unit})']
-        if solved_transmission.chain[0].electrical_current_is_computable:
-            columns.append(f'electrical current ({current_unit})')
+        if solved_transmission.chain[0].electric_current_is_computable:
+            columns.append(f'electric current ({current_unit})')
 
         assert isinstance(data, pd.DataFrame)
         assert [element.name for element in solved_transmission.chain] == data.index.to_list()
@@ -249,8 +249,8 @@ class TestTransmissionPlot:
         solved_transmission.plot(elements = list(solved_transmission.chain), variables = ['bending stress'])
         plt.close()
 
-        if solved_transmission.chain[0].electrical_current_is_computable:
-            solved_transmission.plot(elements = list(solved_transmission.chain[:2]), variables = ['electrical current'])
+        if solved_transmission.chain[0].electric_current_is_computable:
+            solved_transmission.plot(elements = list(solved_transmission.chain[:2]), variables = ['electric current'])
             plt.close()
 
 
