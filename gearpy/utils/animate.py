@@ -13,7 +13,11 @@ def dc_motor_characteristics_animation(motor: DCMotor,
                                        angular_speed_unit: Optional[str] = 'rad/s',
                                        torque_unit: Optional[str] = 'Nm',
                                        current_unit: Optional[str] = 'A',
-                                       figsize: Optional[tuple] = None):
+                                       figsize: Optional[tuple] = None,
+                                       line_color: Optional[str] = None,
+                                       marker_color: Optional[str] = None,
+                                       marker_size: Optional[int] = None,
+                                       padding: Optional[float] = 0.1):
 
     fig, ax = plt.subplots(ncols = torque_speed_curve + torque_current_curve, nrows = 1,
                            sharey = 'all', figsize = figsize)
@@ -24,10 +28,12 @@ def dc_motor_characteristics_animation(motor: DCMotor,
     motor_instant_driving_torque = [torque.to(torque_unit).value for torque in motor.time_variables['driving torque']]
     motor_instant_electric_current = [current.to(current_unit).value for current in motor.time_variables['electric current']]
 
+    total_padding = 1 + padding
+
 
     if torque_speed_curve:
         motor_no_speed = motor.no_load_speed.to(angular_speed_unit).value
-        speeds = [-1.1*motor_no_speed, 1.1*motor_no_speed]
+        speeds = [-total_padding*motor_no_speed, total_padding*motor_no_speed]
 
         def compute_torque_speed_curve(maximum_torque, no_load_speed):
             return [maximum_torque*(1 - speed/no_load_speed) for speed in speeds]
@@ -66,18 +72,20 @@ def dc_motor_characteristics_animation(motor: DCMotor,
 
         ax_ts = ax[0] if torque_current_curve else ax
 
-        line_ts, = ax_ts.plot(speeds, torques)
-
-        point_ts, = ax_ts.plot(motor_instant_angular_speed[0], motor_instant_driving_torque[0], marker = 'o')
-
         ax_ts.axhline(y = 0, color = 'black', linewidth = 0.5)
         ax_ts.axvline(x = 0, color = 'black', linewidth = 0.5)
+
+        line_ts, = ax_ts.plot(speeds, torques, color = line_color)
+
+        point_ts, = ax_ts.plot(motor_instant_angular_speed[0], motor_instant_driving_torque[0],
+                               marker = 'o', markerfacecolor = marker_color, markeredgecolor = marker_color,
+                               markersize = marker_size)
 
         ax_ts.set_xlabel(f'angular speed ({angular_speed_unit})')
         ax_ts.set_ylabel(f'torque ({torque_unit})')
 
-        ax_ts.set_xlim(-1.1*motor_no_speed, 1.1*motor_no_speed)
-        ax_ts.set_ylim(-1.1*motor_maximum_torque, 1.1*motor_maximum_torque)
+        ax_ts.set_xlim(-total_padding*motor_no_speed, total_padding*motor_no_speed)
+        ax_ts.set_ylim(-total_padding*motor_maximum_torque, total_padding*motor_maximum_torque)
 
         ax_ts.tick_params(bottom = False, top = False, left = False, right = False)
 
@@ -85,7 +93,7 @@ def dc_motor_characteristics_animation(motor: DCMotor,
     if torque_current_curve:
         motor_no_load_electric_current = motor.no_load_electric_current.to(current_unit).value
         motor_maximum_electric_current = motor.maximum_electric_current.to(current_unit).value
-        currents = [-1.1*motor_maximum_electric_current, 1.1*motor_maximum_electric_current]
+        currents = [-total_padding*motor_maximum_electric_current, total_padding*motor_maximum_electric_current]
 
         def compute_torque_current_curve(maximum_torque, no_load_electric_current, maximum_electric_current):
             return [maximum_torque/(maximum_electric_current - no_load_electric_current)*
@@ -118,17 +126,19 @@ def dc_motor_characteristics_animation(motor: DCMotor,
 
         ax_tc = ax[1] if torque_speed_curve else ax
 
-        line_tc, = ax_tc.plot(currents, torques)
-
-        point_tc, = ax_tc.plot(motor_instant_electric_current[0], motor_instant_driving_torque[0], marker = 'o')
-
         ax_tc.axhline(y = 0, color = 'black', linewidth = 0.5)
         ax_tc.axvline(x = 0, color = 'black', linewidth = 0.5)
+
+        line_tc, = ax_tc.plot(currents, torques, color = line_color)
+
+        point_tc, = ax_tc.plot(motor_instant_electric_current[0], motor_instant_driving_torque[0],
+                               marker = 'o', markerfacecolor = marker_color, markeredgecolor = marker_color,
+                               markersize = marker_size)
 
         ax_tc.set_xlabel(f'electric current ({current_unit})')
         ax_tc.set_ylabel(f'torque ({torque_unit})')
 
-        ax_tc.set_xlim(-1.1*motor_maximum_electric_current, 1.1*motor_maximum_electric_current)
+        ax_tc.set_xlim(-total_padding*motor_maximum_electric_current, total_padding*motor_maximum_electric_current)
 
         ax_tc.tick_params(bottom = False, top = False, left = False, right = False)
 
