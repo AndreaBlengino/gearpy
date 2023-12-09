@@ -2,12 +2,12 @@ from gearpy.mechanical_object import DCMotor
 from gearpy.units import Time
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from typing import List, Optional
+from typing import List, Optional, Union
 
 
 def dc_motor_characteristics_animation(motor: DCMotor,
                                        time: List[Time],
-                                       interval: Optional[int] = 200,
+                                       interval: Optional[Union[float, int]] = 200,
                                        torque_speed_curve: Optional[bool] = True,
                                        torque_current_curve: Optional[bool] = True,
                                        angular_speed_unit: Optional[str] = 'rad/s',
@@ -16,8 +16,73 @@ def dc_motor_characteristics_animation(motor: DCMotor,
                                        figsize: Optional[tuple] = None,
                                        line_color: Optional[str] = None,
                                        marker_color: Optional[str] = None,
-                                       marker_size: Optional[int] = None,
-                                       padding: Optional[float] = 0.1):
+                                       marker_size: Optional[Union[float, int]] = None,
+                                       padding: Optional[Union[float, int]] = 0.1):
+    if not isinstance(motor, DCMotor):
+        raise TypeError(f"Parameter 'motor' must be an instance of {DCMotor.__name__!r}.")
+
+    if not isinstance(time, list):
+        raise TypeError("Parameter 'time' must be a list.")
+
+    if not time:
+        raise ValueError("Parameter 'time' cannot be an empty list.")
+
+    for instant in time:
+        if not isinstance(instant, Time):
+            raise TypeError(f"Each element of 'time' must be an instance of {Time.__name__!r}.")
+
+    if not isinstance(interval, float) and not isinstance(interval, int):
+        raise TypeError("Parameter 'interval' must be a float or an integer.")
+
+    if not isinstance(torque_speed_curve, bool):
+        raise TypeError("Parameter 'torque_speed_curve' must be a bool.")
+
+    if not isinstance(torque_current_curve, bool):
+        raise TypeError("Parameter 'torque_current_curve' must be a bool.")
+
+    if not torque_speed_curve and not torque_current_curve:
+        raise ValueError("At least one of 'torque_speed_curve' and 'torque_current_curve' must be set to 'True'.")
+
+    if torque_current_curve and not motor.electric_current_is_computable:
+        raise ValueError("Parameter 'torque_current_curve' set to 'True', "
+                         "but 'motor' cannot compute 'electric_current' property.")
+
+    if not isinstance(angular_speed_unit, str):
+        raise TypeError("Parameter 'angular_speed_unit' must be a string.")
+
+    if not isinstance(torque_unit, str):
+        raise TypeError("Parameter 'torque_unit' must be a string.")
+
+    if not isinstance(current_unit, str):
+        raise TypeError("Parameter 'current_unit' must be a string.")
+
+    if figsize is not None:
+        if not isinstance(figsize, tuple):
+            raise TypeError("Parameter 'figsize' must be a tuple.")
+
+        if len(figsize) != 2:
+            raise ValueError("Parameter 'figsize' must contain two values, one for width and one for height.")
+
+        if not all([isinstance(dimension, float) or isinstance(dimension, int) for dimension in figsize]):
+            raise TypeError("All elements of 'figsize' must be floats or integers.")
+
+    if line_color is not None:
+        if not isinstance(line_color, str):
+            raise TypeError("Parameter 'line_color' must be a string.")
+
+    if marker_color is not None:
+        if not isinstance(marker_color, str):
+            raise TypeError("Parameter 'marker_color' must be a string.")
+
+    if marker_size is not None:
+        if not isinstance(marker_size, float) and not isinstance(marker_size, int):
+            raise TypeError("Parameter 'marker_size' must be a float or an integer.")
+
+    if not isinstance(padding, float) and not isinstance(padding, int):
+        raise TypeError("Parameter 'padding' must be a float or an integer.")
+
+    if padding < 0:
+        raise ValueError("Parameter 'padding' must be positive or null.")
 
     fig, ax = plt.subplots(ncols = torque_speed_curve + torque_current_curve, nrows = 1,
                            sharey = 'all', figsize = figsize)
@@ -64,7 +129,7 @@ def dc_motor_characteristics_animation(motor: DCMotor,
 
                     torques = compute_torque_speed_curve(maximum_torque = maximum_torque.to(torque_unit).value,
                                                          no_load_speed = no_load_speed.to(angular_speed_unit).value)
-                title = f'time = {time[i]}   -   PWM = {pwm:.2f}'
+                title = f'time = {time[i]}      PWM = {pwm:.2f}'
 
             return torques, title
 
@@ -118,7 +183,7 @@ def dc_motor_characteristics_animation(motor: DCMotor,
                     torques = compute_torque_current_curve(maximum_torque = -motor_maximum_torque,
                                                            no_load_electric_current = -motor_no_load_electric_current,
                                                            maximum_electric_current = -motor_maximum_electric_current)
-                title = f'time = {time[i]}   -   PWM = {pwm:.2f}'
+                title = f'time = {time[i]}      PWM = {pwm:.2f}'
 
             return torques, title
 
