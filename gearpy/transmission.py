@@ -266,34 +266,34 @@ class Transmission:
                     raise ValueError(f"Invalid variable {variable!r}. Available variables are: {valid_variables}.")
 
         if not isinstance(angular_position_unit, str):
-            raise TypeError(f"Parameter 'angular_position_unit' must be a string.")
+            raise TypeError("Parameter 'angular_position_unit' must be a string.")
 
         if not isinstance(angular_speed_unit, str):
-            raise TypeError(f"Parameter 'angular_speed_unit' must be a string.")
+            raise TypeError("Parameter 'angular_speed_unit' must be a string.")
 
         if not isinstance(angular_acceleration_unit, str):
-            raise TypeError(f"Parameter 'angular_acceleration_unit' must be a string.")
+            raise TypeError("Parameter 'angular_acceleration_unit' must be a string.")
 
         if not isinstance(torque_unit, str):
-            raise TypeError(f"Parameter 'torque_unit' must be a string.")
+            raise TypeError("Parameter 'torque_unit' must be a string.")
 
         if not isinstance(driving_torque_unit, str):
-            raise TypeError(f"Parameter 'driving_torque_unit' must be a string.")
+            raise TypeError("Parameter 'driving_torque_unit' must be a string.")
 
         if not isinstance(load_torque_unit, str):
-            raise TypeError(f"Parameter 'load_torque_unit' must be a string.")
+            raise TypeError("Parameter 'load_torque_unit' must be a string.")
 
         if not isinstance(force_unit, str):
-            raise TypeError(f"Parameter 'force_unit' must be a string.")
+            raise TypeError("Parameter 'force_unit' must be a string.")
 
         if not isinstance(stress_unit, str):
-            raise TypeError(f"Parameter 'stress_unit' must be a string.")
+            raise TypeError("Parameter 'stress_unit' must be a string.")
 
         if not isinstance(current_unit, str):
-            raise TypeError(f"Parameter 'current_unit' must be a string.")
+            raise TypeError("Parameter 'current_unit' must be a string.")
 
         if not isinstance(print_data, bool):
-            raise TypeError(f"Parameter 'print_data' must be a bool.")
+            raise TypeError("Parameter 'print_data' must be a bool.")
 
         if variables is None:
             variables = []
