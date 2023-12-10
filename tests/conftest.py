@@ -32,7 +32,9 @@ basic_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 10, inertia_moment = Ine
 transmission_dc_motor = DCMotor(name = 'motor',
                                 inertia_moment = InertiaMoment(1, 'kgm^2'),
                                 no_load_speed = AngularSpeed(1000, 'rpm'),
-                                maximum_torque = Torque(1, 'Nm'))
+                                maximum_torque = Torque(1, 'Nm'),
+                                no_load_electric_current = Current(100, 'mA'),
+                                maximum_electric_current = Current(2000, 'A'))
 transmission_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
 transmission_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
 transmission_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 40, inertia_moment = InertiaMoment(1, 'kgm^2'))
@@ -45,7 +47,7 @@ transmission_spur_gear_2.external_torque = lambda time, angular_position, angula
 transmission_spur_gear_2.angular_position = AngularPosition(0, 'rad')
 transmission_spur_gear_2.angular_speed = AngularSpeed(0, 'rad/s')
 basic_solver = Solver(transmission = basic_transmission)
-basic_solver.run(time_discretization = TimeInterval(1, 'sec'), simulation_time = TimeInterval(2000, 'sec'))
+basic_solver.run(time_discretization = TimeInterval(1, 'sec'), simulation_time = TimeInterval(100, 'sec'))
 
 
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
