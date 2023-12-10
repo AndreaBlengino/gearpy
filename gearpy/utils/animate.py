@@ -163,17 +163,15 @@ def dc_motor_characteristics_animation(motor: DCMotor,
 
     motor_maximum_torque = motor.maximum_torque.to(torque_unit).value
 
-    motor_instant_angular_speed = [speed.to(angular_speed_unit).value
-                                   for speed in motor.time_variables['angular speed']]
     motor_instant_driving_torque = [torque.to(torque_unit).value
                                     for torque in motor.time_variables['driving torque']]
-    motor_instant_electric_current = [current.to(current_unit).value
-                                      for current in motor.time_variables['electric current']]
 
     total_padding = 1 + padding
 
 
     if torque_speed_curve:
+        motor_instant_angular_speed = [speed.to(angular_speed_unit).value
+                                       for speed in motor.time_variables['angular speed']]
         motor_no_speed = motor.no_load_speed.to(angular_speed_unit).value
         speeds = [-total_padding*motor_no_speed, total_padding*motor_no_speed]
 
@@ -233,6 +231,8 @@ def dc_motor_characteristics_animation(motor: DCMotor,
 
 
     if torque_current_curve:
+        motor_instant_electric_current = [current.to(current_unit).value
+                                          for current in motor.time_variables['electric current']]
         motor_no_load_electric_current = motor.no_load_electric_current.to(current_unit).value
         motor_maximum_electric_current = motor.maximum_electric_current.to(current_unit).value
         currents = [-total_padding*motor_maximum_electric_current, total_padding*motor_maximum_electric_current]
@@ -294,12 +294,12 @@ def dc_motor_characteristics_animation(motor: DCMotor,
         if torque_speed_curve:
             torques, title = compute_torque_speed_torques(i = i)
             line_ts.set_data(speeds, torques)
-            point_ts.set_data(motor_instant_angular_speed[i], motor_instant_driving_torque[i])
+            point_ts.set_data([motor_instant_angular_speed[i]], [motor_instant_driving_torque[i]])
 
         if torque_current_curve:
             torques, title = compute_torque_current_torques(i = i)
             line_tc.set_data(currents, torques)
-            point_tc.set_data(motor_instant_electric_current[i], motor_instant_driving_torque[i])
+            point_tc.set_data([motor_instant_electric_current[i]], [motor_instant_driving_torque[i]])
 
         fig.suptitle(title)
 
