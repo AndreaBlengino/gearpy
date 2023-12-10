@@ -172,7 +172,7 @@ class Transmission:
         target_time : Time
             Time to which compute the mechanical transmission time variables snapshot. It must be within minimum and
             maximum simulated time steps in ``time`` parameter.
-        variables: list, optional
+        variables : list, optional
             Time variables to be printed. Default is all available time variables.
         angular_position_unit : str, optional
             Symbol of the unit of measurement to which convert the angular position in the DataFrame. It must be a
@@ -389,10 +389,10 @@ class Transmission:
 
         Parameters
         ----------
-        elements: list, optional
+        elements : list, optional
             Elements of the transmission chain which time variables have to be plotted. Each single element can be
             passed as instance or name (string). Default is all elements in the transmission chain.
-        variables: list, optional
+        variables : list, optional
             Time variables to be plotted. Default is all available time variables.
         angular_position_unit : str, optional
             Symbol of the unit of measurement to which convert the angular position values in the plot. It must be a
@@ -435,12 +435,15 @@ class Transmission:
             - if ``force_unit`` is not a string,
             - if ``stress_unit`` is not a string,
             - if ``current_unit`` is not a string,
-            - if ``time_unit`` is not a string.
+            - if ``time_unit`` is not a string,
+            - if ``figsize`` is not a tuple,
+            - if an element of ``figsize`` is not a float or an integer.
         ValueError
             - If ``elements`` is an empty list,
             - if an element of ``elements`` is not in ``Transmission.chain``,
             - if ``variables`` is an empty list,
-            - if an element of ``variables`` is not a valid time variable.
+            - if an element of ``variables`` is not a valid time variable,
+            - if ``figsize`` has not exactly two elements: one for width and the other for height.
         """
         if elements is not None:
             if not isinstance(elements, list):

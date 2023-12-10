@@ -74,7 +74,7 @@ def dc_motor_characteristics_animation(motor: DCMotor,
         - if ``torque_unit`` is not a string,
         - if ``current_unit`` is not a string,
         - if ``figsize`` is not a tuple,
-        - if an element of ``figsize`` is not a float or an integer
+        - if an element of ``figsize`` is not a float or an integer,
         - if ``line_color`` is not a string,
         - if ``marker_color`` is not a string,
         - if ``marker_size`` is not a float or an integer,

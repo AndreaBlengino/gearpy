@@ -26,7 +26,6 @@ class Solver:
     ValueError
         If ``transmission.chain`` is an empty tuple.
     """
-
     def __init__(self, transmission: Transmission):
         if not isinstance(transmission, Transmission):
             raise TypeError(f"Parameter 'transmission' must be an instance of {Transmission.__name__!r}.")
@@ -68,7 +67,7 @@ class Solver:
             - If ``time_discretization`` is not an instance of ``TimeInterval``,
             - if ``simulation_time`` is not an instance of ``TimeInterval``,
             - if function ``external_torque`` of one gear in the transmission chain does not return an instance of
-            ``Torque``.
+              ``Torque``.
         ValueError
             - If ``time_discretization`` is greater or equal to ``simulation_time``,
             - if function ``external_torque`` has not been defined for any gear of the transmission.
