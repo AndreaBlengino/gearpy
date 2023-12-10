@@ -17,7 +17,8 @@ def dc_motor_characteristics_animation(motor: DCMotor,
                                        line_color: Optional[str] = None,
                                        marker_color: Optional[str] = None,
                                        marker_size: Optional[Union[float, int]] = None,
-                                       padding: Optional[Union[float, int]] = 0.1):
+                                       padding: Optional[Union[float, int]] = 0.1,
+                                       show: Optional[bool] = True) -> FuncAnimation:
     """Generates an animation of a DC motor torque-speed and torque-current characteristic curves and relative working
     points during the simulation. \n
     The characteristic curves may be affected by the motor pulse width modulation (PWM). \n
@@ -60,6 +61,8 @@ def dc_motor_characteristics_animation(motor: DCMotor,
     padding : float or int, optional
         Extra-space to be taken around each motor characteristics extreme points. It is expressed in percent points of
         the extreme point value. Default is ``0.1``, so it is taken 10% space around each characteristic extreme points.
+    show : bool, optional
+        Whether or not to show the animation. Default is ``True``.
 
     Raises
     ------
@@ -78,7 +81,8 @@ def dc_motor_characteristics_animation(motor: DCMotor,
         - if ``line_color`` is not a string,
         - if ``marker_color`` is not a string,
         - if ``marker_size`` is not a float or an integer,
-        - if ``padding`` is not a float or an integer.
+        - if ``padding`` is not a float or an integer,
+        - if ``show`` is not a bool.
     ValueError
         - If ``time`` is an empty list,
         - if both ``torque_speed_curve`` and ``torque_current_curve`` are set to ``False``,
@@ -150,6 +154,9 @@ def dc_motor_characteristics_animation(motor: DCMotor,
 
     if padding < 0:
         raise ValueError("Parameter 'padding' must be positive or null.")
+
+    if not isinstance(show, bool):
+        raise TypeError("Parameter 'show' must be a bool.")
 
     fig, ax = plt.subplots(ncols = torque_speed_curve + torque_current_curve, nrows = 1,
                            sharey = 'all', figsize = figsize)
@@ -304,5 +311,9 @@ def dc_motor_characteristics_animation(motor: DCMotor,
             return line_tc, point_tc,
 
 
-    _ = FuncAnimation(func = update_animation, fig = fig, frames = range(1, len(time) + 1, 1), interval = interval)
-    plt.show()
+    animation = FuncAnimation(func = update_animation, fig = fig, frames = range(1, len(time), 1), interval = interval)
+
+    if show:
+        plt.show()
+
+    return animation
