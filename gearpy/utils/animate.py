@@ -18,6 +18,74 @@ def dc_motor_characteristics_animation(motor: DCMotor,
                                        marker_color: Optional[str] = None,
                                        marker_size: Optional[Union[float, int]] = None,
                                        padding: Optional[Union[float, int]] = 0.1):
+    """Generates an animation of a DC motor torque-speed and torque-current characteristic curves and relative working
+    points during the simulation. \n
+    The characteristic curves may be affected by the motor pulse width modulation (PWM). \n
+    It generates two subplots, one for each characteristic curve. It is possible to isolate a single characteristic to
+    be plotted with optional parameters ``torque_speed_curve`` and ``torque_current_curve``. \n
+    Plotted values' units are managed with optional parameters ``angular_speed_unit``, ``torque_unit`` and
+    ``current_unit``. \n
+    Aesthetic parameters are managed with optional parameters ``figsize``, ``line_color``, ``marker_color``,
+    ``marker_size`` and  ``padding``.
+
+    Parameters
+    ----------
+    motor : DCMotor
+        DC motor whose characteristic curves and working point have to be animated.
+    time : list
+        List of ``Time`` computed by the solver.
+    interval : float or int, optional
+        Delay between animation frames in milliseconds. If not provided defaults to ``200``.
+    torque_speed_curve : bool, optional
+        Whether or not to plot the torque-speed characteristic curve. Default is ``True``.
+    torque_current_curve : bool, optional
+        Whether or not to plot the torque-current characteristic curve. Default is ``True``.
+    angular_speed_unit : str, optional
+        Symbol of the unit of measurement to which convert the angular speed values in the plot. It must be a string.
+        Default is ``'rad/s'``.
+    torque_unit : str, optional
+        Symbol of the unit of measurement to which convert the torque values in the plot. It must be a string. Default
+        is ``'Nm'``.
+    current_unit : str, optional
+        Symbol of the unit of measurement to which convert the electric current values in the plot. It must be a string.
+        Default is ``'A'``.
+    figsize : tuple, optional
+        Width and height of the window size, in inches. If not provided defaults to ``[6.4, 4.8]``.
+    line_color : str, optional
+        Color of the characteristic curve lines. If not provided defaults to ``'#1f77b4'``.
+    marker_color : str, optional
+        Color of the motor working point marker. If not provided defaults to ``'#ff7f0e'``.
+    marker_size : float or int, optional
+        Size, in points, of the motor working point marker. If not provided defaults to ``6``.
+    padding : float or int, optional
+        Extra-space to be taken around each motor characteristics extreme points. It is expressed in percent points of
+        the extreme point value. Default is ``0.1``, so it is taken 10% space around each characteristic extreme points.
+
+    Raises
+    ------
+    TypeError
+        - If ``motor`` is not an instance of ``DCMotor``,
+        - if ``time`` is not a list,
+        - if an element of ``time`` is not an instance of ``Time``,
+        - if ``interval`` is not a float or an integer,
+        - if ``torque_speed_curve`` is not a bool,
+        - if ``torque_current_curve`` is not a bool,
+        - if ``angular_speed_unit`` is not a string,
+        - if ``torque_unit`` is not a string,
+        - if ``current_unit`` is not a string,
+        - if ``figsize`` is not a tuple,
+        - if an element of ``figsize`` is not a float or an integer
+        - if ``line_color`` is not a string,
+        - if ``marker_color`` is not a string,
+        - if ``marker_size`` is not a float or an integer,
+        - if ``padding`` is not a float or an integer.
+    ValueError
+        - If ``time`` is an empty list,
+        - if both ``torque_speed_curve`` and ``torque_current_curve`` are set to ``False``,
+        - if ``torque_current_curve`` is set to ``True`` but ``motor`` cannot compute ``electric_current`` property,
+        - if ``figsize`` has not exactly two elements: one for width and the other for height,
+        - if ``padding`` is negative.
+    """
     if not isinstance(motor, DCMotor):
         raise TypeError(f"Parameter 'motor' must be an instance of {DCMotor.__name__!r}.")
 
@@ -27,8 +95,7 @@ def dc_motor_characteristics_animation(motor: DCMotor,
     if not time:
         raise ValueError("Parameter 'time' cannot be an empty list.")
 
-    for instant in time:
-        if not isinstance(instant, Time):
+    if not all([isinstance(instant, Time) for instant in time]):
             raise TypeError(f"Each element of 'time' must be an instance of {Time.__name__!r}.")
 
     if not isinstance(interval, float) and not isinstance(interval, int):
@@ -89,9 +156,12 @@ def dc_motor_characteristics_animation(motor: DCMotor,
 
     motor_maximum_torque = motor.maximum_torque.to(torque_unit).value
 
-    motor_instant_angular_speed = [speed.to(angular_speed_unit).value for speed in motor.time_variables['angular speed']]
-    motor_instant_driving_torque = [torque.to(torque_unit).value for torque in motor.time_variables['driving torque']]
-    motor_instant_electric_current = [current.to(current_unit).value for current in motor.time_variables['electric current']]
+    motor_instant_angular_speed = [speed.to(angular_speed_unit).value
+                                   for speed in motor.time_variables['angular speed']]
+    motor_instant_driving_torque = [torque.to(torque_unit).value
+                                    for torque in motor.time_variables['driving torque']]
+    motor_instant_electric_current = [current.to(current_unit).value
+                                      for current in motor.time_variables['electric current']]
 
     total_padding = 1 + padding
 
