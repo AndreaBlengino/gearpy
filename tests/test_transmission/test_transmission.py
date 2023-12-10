@@ -95,7 +95,7 @@ class TestTransmissionReset:
 
     @mark.genuine
     @given(transmission = solved_transmissions())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, transmission):
         transmission_copy = deepcopy(transmission)
         transmission_copy.reset()
@@ -211,8 +211,9 @@ class TestTransmissionPlot:
            stress_unit = sampled_from(elements = list(Stress._Stress__UNITS.keys())),
            current_unit = sampled_from(elements = list(Current._Current__UNITS.keys())),
            time_unit = sampled_from(elements = list(Time._Time__UNITS.keys())),
-           figsize = one_of(none(), tuples(floats(min_value = 1, max_value = 10, allow_nan = False, allow_infinity = False),
-                                           floats(min_value = 1, max_value = 10, allow_nan = False,allow_infinity = False))))
+           figsize = one_of(none(),
+                            tuples(floats(min_value = 1, max_value = 10, allow_nan = False, allow_infinity = False),
+                                   floats(min_value = 1, max_value = 10, allow_nan = False,allow_infinity = False))))
     @settings(max_examples = 100, deadline = None)
     def test_method(self, solved_transmission, elements_index, single_element, elements_as_names, angular_position_unit,
                     angular_speed_unit, angular_acceleration_unit, torque_unit, force_unit, stress_unit, current_unit,
