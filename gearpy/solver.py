@@ -1,7 +1,9 @@
 from gearpy.mechanical_object import RotatingObject, MotorBase, GearBase
+from gearpy.motor_control import MotorControlBase
 from gearpy.transmission import Transmission
 from gearpy.units import Time, TimeInterval, Torque
 import numpy as np
+from typing import Optional
 
 
 class Solver:
@@ -26,7 +28,7 @@ class Solver:
     ValueError
         If ``transmission.chain`` is an empty tuple.
     """
-    def __init__(self, transmission: Transmission):
+    def __init__(self, transmission: Transmission, motor_control: Optional[MotorControlBase] = None):
         if not isinstance(transmission, Transmission):
             raise TypeError(f"Parameter 'transmission' must be an instance of {Transmission.__name__!r}.")
 
@@ -39,7 +41,11 @@ class Solver:
         if not all([isinstance(item, RotatingObject) for item in transmission.chain]):
             raise TypeError(f"All elements of 'transmission' must be instances of {RotatingObject.__name__!r}.")
 
+        if not isinstance(motor_control, MotorControlBase) and motor_control is not None:
+            raise TypeError(f"Parameter 'motor_control' must be an instance of {MotorControlBase.__name__!r}.")
+
         self.transmission = transmission
+        self.motor_control = motor_control
 
     def run(self, time_discretization: TimeInterval, simulation_time: TimeInterval):
         """Runs the mechanical transmission simulation. \n
@@ -117,9 +123,9 @@ class Solver:
     def _compute_transmission_variables(self):
 
         self._compute_angular_position_and_speed()
+        self._compute_load_torque()
         self._compute_motor_control()
         self._compute_driving_torque()
-        self._compute_load_torque()
         self._compute_torque()
         self._compute_force()
         self._compute_stress()
@@ -148,7 +154,8 @@ class Solver:
 
     def _compute_motor_control(self):
 
-        self.transmission.chain[0].compute_motor_control(transmission = self.transmission)
+        if self.motor_control is not None:
+            self.motor_control.apply_rules()
 
     def _compute_driving_torque(self):
 
