@@ -2,7 +2,7 @@ from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Cur
     Stress, Time, Torque, UnitBase
 from math import pi, sin, cos, sqrt
 from .mechanical_object_base import RotatingObject, GearBase, MotorBase, lewis_factor_function, Role
-from typing import Callable, Dict, List, Union, Optional, Any
+from typing import Callable, Dict, List, Union, Optional
 
 
 class SpurGear(GearBase):
@@ -971,7 +971,6 @@ class DCMotor(MotorBase):
         self.__maximum_torque = maximum_torque
         self.__no_load_electric_current = no_load_electric_current
         self.__maximum_electric_current = maximum_electric_current
-        self.__pwm_control = None
         self.__pwm = 1
 
         if self.electric_current_is_computable:
@@ -1489,20 +1488,6 @@ class DCMotor(MotorBase):
                              "Check DCMotor.pwm_control function.")
 
         self.__pwm = pwm
-
-    @property
-    def pwm_control(self) -> Optional[Callable[Any, float]]:
-        return self.__pwm_control
-
-    @pwm_control.setter
-    def pwm_control(self, pwm_control: Optional[Callable[Any, float]] = None):
-        if not isinstance(pwm_control, Callable):
-            raise TypeError("Parameter 'pwm_control' must be callable.")
-
-        self.__pwm_control = pwm_control
-
-    def compute_motor_control(self, **kargs):
-        self.pwm = self.pwm_control(transmission = kargs['transmission'])
 
 
 class Flywheel(RotatingObject):

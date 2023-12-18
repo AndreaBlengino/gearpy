@@ -242,9 +242,6 @@ class MotorBase(RotatingObject):
     @abstractmethod
     def compute_torque(self, **kargs): ...
 
-    @abstractmethod
-    def compute_motor_control(self, **kargs): ...
-
 
 class GearBase(RotatingObject):
 
