@@ -129,8 +129,7 @@ class Transmission:
             if isinstance(element, MotorBase):
                 if element.electric_current_is_computable:
                     element.electric_current = element.time_variables['electric current'][0]
-                if element.pwm_is_computable:
-                    element.pwm = element.time_variables['pwm'][0]
+                element.pwm = element.time_variables['pwm'][0]
             if isinstance(element, GearBase):
                 if element.tangential_force_is_computable:
                     element.tangential_force = element.time_variables['tangential force'][0]
@@ -330,10 +329,9 @@ class Transmission:
                     data.loc[element.name, f'electric current ({current_unit})'] = \
                         interpolation_function(target_time.to('sec').value).take(0)
 
-                if element.pwm_is_computable:
-                    interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
-                                                      y = element.time_variables['pwm'])
-                    data.loc[element.name, 'pwm'] = interpolation_function(target_time.to('sec').value).take(0)
+                interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
+                                                  y = element.time_variables['pwm'])
+                data.loc[element.name, 'pwm'] = interpolation_function(target_time.to('sec').value).take(0)
 
             if isinstance(element, GearBase):
                 variable_list = []
@@ -606,7 +604,7 @@ class Transmission:
                                                           [variable_value.to(UNITS['electric current']).value
                                                            for variable_value in item.time_variables['electric current']])
 
-                if item.pwm_is_computable and pwm_variables:
+                if pwm_variables:
                     axes[pwm_variables_index].plot(time_values,
                                                    item.time_variables['pwm'])
 
@@ -720,12 +718,11 @@ class Transmission:
 
         if pwm_variables:
             if isinstance(elements[0], MotorBase):
-                if elements[0].pwm_is_computable:
-                    if n_variables > 1:
-                        axes = ax[:, 0] if n_elements > 1 else ax
-                    else:
-                        axes = [ax[0]] if n_elements > 1 else [ax]
-                    axes[pwm_variables_index].set_ylabel('PWM')
+                if n_variables > 1:
+                    axes = ax[:, 0] if n_elements > 1 else ax
+                else:
+                    axes = [ax[0]] if n_elements > 1 else [ax]
+                axes[pwm_variables_index].set_ylabel('PWM')
 
         if n_elements > 1 or n_variables > 1:
             for axi in ax.flatten():
