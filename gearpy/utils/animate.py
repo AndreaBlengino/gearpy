@@ -179,32 +179,27 @@ def dc_motor_characteristics_animation(motor: DCMotor,
             return [maximum_torque*(1 - speed/no_load_speed) for speed in speeds]
 
         def compute_torque_speed_torques(i):
-            if not motor.pwm_is_computable:
-                torques = compute_torque_speed_curve(maximum_torque = motor_maximum_torque,
-                                                     no_load_speed = motor_no_speed)
-                title = f'time = {time[i]}'
+            pwm = motor.time_variables['pwm'][i]
+            pwm_min = motor.no_load_electric_current/motor.maximum_electric_current
+            if abs(pwm) <= pwm_min:
+                torques = [0, 0]
+            elif pwm > pwm_min:
+                maximum_torque = \
+                    motor.maximum_torque*((pwm*motor.maximum_electric_current - motor.no_load_electric_current)/
+                                          (motor.maximum_electric_current - motor.no_load_electric_current))
+                no_load_speed = pwm*motor.no_load_speed
+
+                torques = compute_torque_speed_curve(maximum_torque = maximum_torque.to(torque_unit).value,
+                                                     no_load_speed = no_load_speed.to(angular_speed_unit).value)
             else:
-                pwm = motor.time_variables['pwm'][i]
-                pwm_min = motor.no_load_electric_current/motor.maximum_electric_current
-                if abs(pwm) <= pwm_min:
-                    torques = [0, 0]
-                elif pwm > pwm_min:
-                    maximum_torque = \
-                        motor.maximum_torque*((pwm*motor.maximum_electric_current - motor.no_load_electric_current)/
-                                              (motor.maximum_electric_current - motor.no_load_electric_current))
-                    no_load_speed = pwm*motor.no_load_speed
+                maximum_torque = \
+                    motor.maximum_torque*((pwm*motor.maximum_electric_current + motor.no_load_electric_current)/
+                                          (motor.maximum_electric_current - motor.no_load_electric_current))
+                no_load_speed = pwm*motor.no_load_speed
 
-                    torques = compute_torque_speed_curve(maximum_torque = maximum_torque.to(torque_unit).value,
-                                                         no_load_speed = no_load_speed.to(angular_speed_unit).value)
-                else:
-                    maximum_torque = \
-                        motor.maximum_torque*((pwm*motor.maximum_electric_current + motor.no_load_electric_current)/
-                                              (motor.maximum_electric_current - motor.no_load_electric_current))
-                    no_load_speed = pwm*motor.no_load_speed
-
-                    torques = compute_torque_speed_curve(maximum_torque = maximum_torque.to(torque_unit).value,
-                                                         no_load_speed = no_load_speed.to(angular_speed_unit).value)
-                title = f'time = {time[i]}      PWM = {pwm:.2f}'
+                torques = compute_torque_speed_curve(maximum_torque = maximum_torque.to(torque_unit).value,
+                                                     no_load_speed = no_load_speed.to(angular_speed_unit).value)
+            title = f'time = {time[i]}      PWM = {pwm:.2f}'
 
             return torques, title
 
@@ -242,25 +237,19 @@ def dc_motor_characteristics_animation(motor: DCMotor,
                                    (current - no_load_electric_current) for current in currents]
 
         def compute_torque_current_torques(i):
-            if not motor.pwm_is_computable:
+            pwm = motor.time_variables['pwm'][i]
+            pwm_min = motor.no_load_electric_current/motor.maximum_electric_current
+            if abs(pwm) <= pwm_min:
+                torques = [0, 0]
+            elif pwm > pwm_min:
                 torques = compute_torque_current_curve(maximum_torque = motor_maximum_torque,
                                                        no_load_electric_current = motor_no_load_electric_current,
                                                        maximum_electric_current = motor_maximum_electric_current)
-                title = f'time = {time[i]}'
             else:
-                pwm = motor.time_variables['pwm'][i]
-                pwm_min = motor.no_load_electric_current/motor.maximum_electric_current
-                if abs(pwm) <= pwm_min:
-                    torques = [0, 0]
-                elif pwm > pwm_min:
-                    torques = compute_torque_current_curve(maximum_torque = motor_maximum_torque,
-                                                           no_load_electric_current = motor_no_load_electric_current,
-                                                           maximum_electric_current = motor_maximum_electric_current)
-                else:
-                    torques = compute_torque_current_curve(maximum_torque = -motor_maximum_torque,
-                                                           no_load_electric_current = -motor_no_load_electric_current,
-                                                           maximum_electric_current = -motor_maximum_electric_current)
-                title = f'time = {time[i]}      PWM = {pwm:.2f}'
+                torques = compute_torque_current_curve(maximum_torque = -motor_maximum_torque,
+                                                       no_load_electric_current = -motor_no_load_electric_current,
+                                                       maximum_electric_current = -motor_maximum_electric_current)
+            title = f'time = {time[i]}      PWM = {pwm:.2f}'
 
             return torques, title
 
