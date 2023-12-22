@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from gearpy.transmission import Transmission
-from typing import Callable, Any, Union
+from .rules_base import RuleBase
 
 
 class MotorControlBase(ABC):
@@ -24,9 +24,9 @@ class MotorControlBase(ABC):
         return self.__rules
 
     @abstractmethod
-    def add_rule(self, rule: Callable[Any, Union[float, int]]):
-        if not isinstance(rule, Callable):
-            raise TypeError(f"Parameter 'rule' must be callable.")
+    def add_rule(self, rule: RuleBase):
+        if not isinstance(rule, RuleBase):
+            raise TypeError(f"Parameter 'rule' must be an instance of {RuleBase.__name__!r}.")
 
         self.__rules.append(rule)
 
