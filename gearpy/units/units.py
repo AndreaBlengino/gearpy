@@ -174,6 +174,173 @@ class AngularPosition(UnitBase):
             return AngularPosition(value = target_value, unit = target_unit)
 
 
+class Angle(AngularPosition):
+    r"""``gearpy.units.units.Angle`` object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for angle.
+    :py:attr:`value` : float or int
+        Angle numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
+
+    def __init__(self, value: Union[float, int], unit: str):
+        super().__init__(value = value, unit = unit)
+
+        if value < 0:
+            raise ValueError("Parameter 'value' must be positive or null.")
+
+        self.__value = value
+        self.__unit = unit
+
+    def __add__(self, other: Union['AngularPosition', 'Angle']) -> Union['AngularPosition', 'Angle']:
+        super().__add__(other = other)
+
+        if isinstance(other, Angle):
+            return Angle(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
+        else:
+            return AngularPosition(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
+
+    def __sub__(self, other: Union['AngularPosition', 'Angle']) -> Union['AngularPosition', 'Angle']:
+        super().__sub__(other = other)
+
+        if isinstance(other, Angle):
+            return Angle(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
+        else:
+            return AngularPosition(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
+
+    def __mul__(self, other: Union[float, int]) -> 'Angle':
+        super().__mul__(other = other)
+
+        if other < 0:
+            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+
+        return Angle(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Angle':
+        super().__rmul__(other = other)
+
+        if other < 0:
+            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+
+        return Angle(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['AngularPosition', float, int]) -> Union['AngularPosition', float]:
+        super().__truediv__(other = other)
+
+        if isinstance(other, AngularPosition):
+            return self.__value/other.to(self.__unit).value
+        else:
+            return Angle(value = self.__value/other, unit = self.__unit)
+
+    @property
+    def value(self) -> Union[float, int]:
+        """Angle numerical value. The relative unit is expressed by the ``unit`` property. It must be positive or null.
+
+        Returns
+        -------
+        float or int
+            Angle numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        ValueError
+            If ``value`` is not positive.
+        """
+        return super().value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for angle. It must be a string.
+        Available units are:
+
+            - ``'rad'`` for radian,
+            - ``'deg'`` for degree,
+            - ``'arcmin'`` for minute of arc,
+            - ``'armsec'`` for second of arc,
+            - ``'rot'`` for rotation.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for angle.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return super().unit
+
+    def to(self, target_unit: str, inplace: bool = False) -> 'Angle':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Angle
+            Converted angle.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Angle`` instantiation.
+
+        >>> from gearpy.units import Angle
+        >>> a = Angle(180, 'deg')
+        >>> a
+        ... 180 deg
+
+        Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current value.
+
+        >>> a.to('rad')
+        ... 3.141592653589793 rad
+        >>> a
+        ... 180 deg
+
+        Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+
+        >>> a.to('arcmin', inplace = True)
+        ... 10800.0 arcmin
+        >>> a
+        ... 10800.0 arcmin
+        """
+        converted = super().to(target_unit = target_unit, inplace = inplace)
+
+        if inplace:
+            self.__value = converted.value
+            self.__unit = converted.unit
+            return self
+        else:
+            return Angle(value = converted.value, unit = converted.unit)
+
+
 class AngularSpeed(UnitBase):
     r"""``gearpy.units.units.AngularSpeed`` object.
 

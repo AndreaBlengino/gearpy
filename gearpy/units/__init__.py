@@ -1,4 +1,5 @@
 from .units import AngularPosition, \
+                   Angle, \
                    AngularSpeed, \
                    AngularAcceleration, \
                    Current, \
