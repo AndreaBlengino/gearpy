@@ -1,7 +1,7 @@
 from gearpy.mechanical_object import SpurGear, MotorBase, RotatingObject, DCMotor
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
 from gearpy.transmission import Transmission
-from gearpy.units import AngularPosition, Current
+from gearpy.units import AngularPosition, Angle, Current
 import numpy as np
 from .rules_base import RuleBase
 from typing import Union, Optional
@@ -13,7 +13,7 @@ class ReachAngularPosition(RuleBase):
                  encoder: AbsoluteRotaryEncoder,
                  transmission: Transmission,
                  target_angular_position: AngularPosition,
-                 braking_angle: AngularPosition):
+                 braking_angle: Angle):
         super().__init__()
 
         if not isinstance(encoder, AbsoluteRotaryEncoder):
@@ -34,8 +34,8 @@ class ReachAngularPosition(RuleBase):
         if not isinstance(target_angular_position, AngularPosition):
             raise TypeError(f"Parameter 'target_angular_position' must be an instance of {AngularPosition.__name__!r}.")
 
-        if not isinstance(braking_angle, AngularPosition):
-            raise TypeError(f"Parameter 'braking_angle' must be an instance of {AngularPosition.__name__!r}.")
+        if not isinstance(braking_angle, Angle):
+            raise TypeError(f"Parameter 'braking_angle' must be an instance of {Angle.__name__!r}.")
 
         self.encoder = encoder
         self.transmission = transmission
@@ -59,7 +59,7 @@ class StartProportionalToAngularPosition(RuleBase):
                  encoder: AbsoluteRotaryEncoder,
                  transmission: Transmission,
                  target_angular_position: AngularPosition,
-                 pwm_overshoot: Union[float, int],
+                 pwm_min_multiplier: Union[float, int],
                  pwm_min: Optional[float] = None):
         super().__init__()
 
@@ -81,11 +81,11 @@ class StartProportionalToAngularPosition(RuleBase):
         if not isinstance(target_angular_position, AngularPosition):
             raise TypeError(f"Parameter 'target_angular_position' must be an instance of {AngularPosition.__name__!r}.")
 
-        if not isinstance(pwm_overshoot, float) and not isinstance(pwm_overshoot, int):
-            raise TypeError(f"Parameter 'pwm_overshoot' must be a float or an integer.")
+        if not isinstance(pwm_min_multiplier, float) and not isinstance(pwm_min_multiplier, int):
+            raise TypeError(f"Parameter 'pwm_min_multiplier' must be a float or an integer.")
 
-        if pwm_overshoot <= 0:
-            raise TypeError(f"Parameter 'pwm_overshoot' must be positive.")
+        if pwm_min_multiplier <= 1:
+            raise TypeError(f"Parameter 'pwm_min_multiplier' must be greater than 1.")
 
         if pwm_min is not None:
             if not isinstance(pwm_min, float) and not isinstance(pwm_min, int):
@@ -97,13 +97,13 @@ class StartProportionalToAngularPosition(RuleBase):
         self.encoder = encoder
         self.transmission = transmission
         self.target_angular_position = target_angular_position
-        self.pwm_overshoot = pwm_overshoot
+        self.pwm_min_multiplier = pwm_min_multiplier
         self.pwm_min = pwm_min
 
     def apply(self) -> Union[float, int]:
         angular_position = self.encoder.get_value()
 
-        computed_pwm_min = (1 + self.pwm_overshoot)*_compute_pwm_min(transmission = self.transmission)
+        computed_pwm_min = self.pwm_min_multiplier*_compute_pwm_min(transmission = self.transmission)
         if computed_pwm_min != 0:
             pwm_min = computed_pwm_min
         else:
@@ -134,11 +134,17 @@ class StartLimitCurrent(RuleBase):
         if not isinstance(motor, DCMotor):
             raise TypeError(f"Parameter 'motor' must be an instance of {DCMotor.__name__!r}.")
 
+        if not motor.electric_current_is_computable:
+            raise ValueError("Parameter 'motor' cannot compute 'electric_current' property.")
+
         if not isinstance(target_angular_position, AngularPosition):
             raise TypeError(f"Parameter 'target_angular_position' must be an instance of {AngularPosition.__name__!r}.")
 
         if not isinstance(limit_electric_current, Current):
             raise TypeError(f"Parameter 'limit_electric_current' must be an instance of {Current.__name__!r}.")
+
+        if limit_electric_current.value <= 0:
+            raise ValueError("Parameter 'limit_electric_current' must be positive.")
 
         self.encoder = encoder
         self.tachometer = tachometer
