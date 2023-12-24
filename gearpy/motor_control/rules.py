@@ -75,6 +75,9 @@ class StartProportionalToAngularPosition(RuleBase):
         if not isinstance(transmission.chain[0], MotorBase):
             raise TypeError(f"First element in 'transmission' must be an instance of {MotorBase.__name__!r}.")
 
+        if not transmission.chain[0].electric_current_is_computable:
+            raise ValueError("The motor in 'transmission' cannot compute 'electric_current' property.")
+
         if not all([isinstance(item, RotatingObject) for item in transmission.chain]):
             raise TypeError(f"All elements of 'transmission' must be instances of {RotatingObject.__name__!r}.")
 
@@ -85,14 +88,14 @@ class StartProportionalToAngularPosition(RuleBase):
             raise TypeError(f"Parameter 'pwm_min_multiplier' must be a float or an integer.")
 
         if pwm_min_multiplier <= 1:
-            raise TypeError(f"Parameter 'pwm_min_multiplier' must be greater than 1.")
+            raise ValueError(f"Parameter 'pwm_min_multiplier' must be greater than 1.")
 
         if pwm_min is not None:
             if not isinstance(pwm_min, float) and not isinstance(pwm_min, int):
                 raise TypeError(f"Parameter 'pwm_min' must be a float or an integer.")
 
             if pwm_min <= 0:
-                raise TypeError(f"Parameter 'pwm_min' must be positive.")
+                raise ValueError(f"Parameter 'pwm_min' must be positive.")
 
         self.encoder = encoder
         self.transmission = transmission
