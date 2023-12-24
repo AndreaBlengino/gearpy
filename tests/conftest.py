@@ -2,7 +2,7 @@ from gearpy.mechanical_object import SpurGear, DCMotor, Flywheel, MatingMaster, 
 from gearpy.solver import Solver
 from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
-    Stress, Surface, Time, TimeInterval, Torque
+    Stress, Surface, Time, TimeInterval, Torque, Angle
 from gearpy.utils import add_fixed_joint, add_gear_mating
 from hypothesis.strategies import composite, text, integers, floats, lists, sampled_from, shared, builds, characters, one_of
 import numpy as np
@@ -53,8 +53,8 @@ basic_solver.run(time_discretization = TimeInterval(1, 'sec'), simulation_time =
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
                   AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'), AngularAcceleration(1, 'rad/s^2'),
                   Current(1, 'A'), Force(1, 'N'), InertiaMoment(1, 'kgm^2'), Length(1, 'm'), Stress(1, 'Pa'),
-                  Surface(1, 'm^2'), Time(1, 'sec'), TimeInterval(1, 'sec'), Torque(1, 'Nm'), basic_dc_motor_1,
-                  basic_spur_gear_1, basic_flywheel, MatingMaster, MatingSlave, SpurGear]
+                  Surface(1, 'm^2'), Time(1, 'sec'), TimeInterval(1, 'sec'), Torque(1, 'Nm'), Angle(1, 'rad'),
+                  basic_dc_motor_1, basic_spur_gear_1, basic_flywheel, MatingMaster, MatingSlave, SpurGear]
 
 
 @composite
