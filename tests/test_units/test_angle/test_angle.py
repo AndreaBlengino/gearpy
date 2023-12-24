@@ -1,5 +1,5 @@
 from gearpy.units import AngularPosition, Angle
-from hypothesis.strategies import floats, sampled_from, one_of, booleans
+from hypothesis.strategies import floats, sampled_from, one_of, booleans, integers
 from hypothesis import given, settings
 from tests.test_units.test_angle.conftest import basic_angle, angles
 from pytest import mark, raises
@@ -58,6 +58,22 @@ class TestAngleRepr:
 
 
 @mark.units
+class TestLengthFormat:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
+           unit = sampled_from(elements = units_list),
+           total_digits = integers(min_value = 1, max_value = 10),
+           decimal_digits = integers(min_value = 1, max_value = 10))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit, total_digits, decimal_digits):
+        angle = Angle(value = value, unit = unit)
+
+        assert angle.__format__(f'{total_digits}.{decimal_digits}f') == f'{angle:{total_digits}.{decimal_digits}f}'
+
+
+@mark.units
 class TestAngleAbs:
 
 
@@ -70,6 +86,18 @@ class TestAngleAbs:
 
         assert abs(angle) == Angle(value = abs(value), unit = unit)
         assert abs(angle).value >= 0
+
+
+@mark.units
+class TestAngleNeg:
+
+
+    @mark.error
+    def test_method(self):
+        angle = Angle(value = 1, unit = 'rad')
+
+        with raises(ValueError):
+            assert -angle
 
 
 @mark.units

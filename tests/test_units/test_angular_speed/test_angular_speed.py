@@ -1,5 +1,5 @@
 from gearpy.units import AngularPosition, AngularSpeed, Time
-from hypothesis.strategies import floats, sampled_from, one_of, booleans
+from hypothesis.strategies import floats, sampled_from, one_of, booleans, integers
 from hypothesis import given, settings
 from tests.test_units.test_angular_speed.conftest import basic_angular_speed, angular_speeds, times
 from pytest import mark, raises
@@ -52,6 +52,22 @@ class TestAngularSpeedRepr:
 
 
 @mark.units
+class TestAngularSpeedFormat:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list),
+           total_digits = integers(min_value = 1, max_value = 10),
+           decimal_digits = integers(min_value = 1, max_value = 10))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit, total_digits, decimal_digits):
+        angular_speed = AngularSpeed(value = value, unit = unit)
+
+        assert angular_speed.__format__(f'{total_digits}.{decimal_digits}f') == f'{angular_speed:{total_digits}.{decimal_digits}f}'
+
+
+@mark.units
 class TestAngularSpeedAbs:
 
 
@@ -64,6 +80,20 @@ class TestAngularSpeedAbs:
 
         assert abs(angular_speed) == AngularSpeed(value = abs(value), unit = unit)
         assert abs(angular_speed).value >= 0
+
+
+@mark.units
+class TestAngularSpeedNeg:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        angular_speed = AngularSpeed(value = value, unit = unit)
+
+        assert -angular_speed == AngularSpeed(value = -value, unit = unit)
 
 
 @mark.units

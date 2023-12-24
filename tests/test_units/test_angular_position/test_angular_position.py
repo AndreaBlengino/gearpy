@@ -1,5 +1,5 @@
 from gearpy.units import AngularPosition
-from hypothesis.strategies import floats, sampled_from, one_of, booleans
+from hypothesis.strategies import floats, sampled_from, one_of, booleans, integers
 from hypothesis import given, settings
 from tests.test_units.test_angular_position.conftest import basic_angular_position, angular_positions
 from pytest import mark, raises
@@ -52,6 +52,22 @@ class TestAngularPositionRepr:
 
 
 @mark.units
+class TestAngularPositionFormat:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list),
+           total_digits = integers(min_value = 1, max_value = 10),
+           decimal_digits = integers(min_value = 1, max_value = 10))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit, total_digits, decimal_digits):
+        angular_position = AngularPosition(value = value, unit = unit)
+
+        assert angular_position.__format__(f'{total_digits}.{decimal_digits}f') == f'{angular_position:{total_digits}.{decimal_digits}f}'
+
+
+@mark.units
 class TestAngularPositionAbs:
 
 
@@ -64,6 +80,20 @@ class TestAngularPositionAbs:
 
         assert abs(angular_position) == AngularPosition(value = abs(value), unit = unit)
         assert abs(angular_position).value >= 0
+
+
+@mark.units
+class TestAngularPositionNeg:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        angular_position = AngularPosition(value = value, unit = unit)
+
+        assert -angular_position == AngularPosition(value = -value, unit = unit)
 
 
 @mark.units

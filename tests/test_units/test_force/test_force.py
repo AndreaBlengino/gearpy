@@ -1,5 +1,5 @@
 from gearpy.units import Force, Surface, Stress
-from hypothesis.strategies import floats, sampled_from, one_of, booleans
+from hypothesis.strategies import floats, sampled_from, one_of, booleans, integers
 from hypothesis import given, settings
 from tests.test_units.test_force.conftest import basic_force, forces
 from tests.test_units.test_surface.conftest import surfaces
@@ -53,6 +53,22 @@ class TestForceRepr:
 
 
 @mark.units
+class TestForceFormat:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list),
+           total_digits = integers(min_value = 1, max_value = 10),
+           decimal_digits = integers(min_value = 1, max_value = 10))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit, total_digits, decimal_digits):
+        force = Force(value = value, unit = unit)
+
+        assert force.__format__(f'{total_digits}.{decimal_digits}f') == f'{force:{total_digits}.{decimal_digits}f}'
+
+
+@mark.units
 class TestForceAbs:
 
 
@@ -65,6 +81,20 @@ class TestForceAbs:
 
         assert abs(force) == Force(value = abs(value), unit = unit)
         assert abs(force).value >= 0
+
+
+@mark.units
+class TestForceNeg:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        force = Force(value = value, unit = unit)
+
+        assert -force == Force(value = -value, unit = unit)
 
 
 @mark.units

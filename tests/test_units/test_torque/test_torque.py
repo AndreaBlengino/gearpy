@@ -1,5 +1,5 @@
 from gearpy.units import AngularAcceleration, InertiaMoment, Torque, Length, Force
-from hypothesis.strategies import floats, sampled_from, one_of, booleans
+from hypothesis.strategies import floats, sampled_from, one_of, booleans, integers
 from hypothesis import given, settings
 from tests.test_units.test_inertia_moment.conftest import inertia_moments
 from tests.test_units.test_torque.conftest import basic_torque, torques
@@ -54,6 +54,22 @@ class TestTorqueRepr:
 
 
 @mark.units
+class TestTorqueFormat:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list),
+           total_digits = integers(min_value = 1, max_value = 10),
+           decimal_digits = integers(min_value = 1, max_value = 10))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit, total_digits, decimal_digits):
+        torque = Torque(value = value, unit = unit)
+
+        assert torque.__format__(f'{total_digits}.{decimal_digits}f') == f'{torque:{total_digits}.{decimal_digits}f}'
+
+
+@mark.units
 class TestTorqueAbs:
 
 
@@ -66,6 +82,20 @@ class TestTorqueAbs:
 
         assert abs(torque) == Torque(value = abs(value), unit = unit)
         assert abs(torque).value >= 0
+
+
+@mark.units
+class TestTorqueNeg:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        torque = Torque(value = value, unit = unit)
+
+        assert -torque == Torque(value = -value, unit = unit)
 
 
 @mark.units

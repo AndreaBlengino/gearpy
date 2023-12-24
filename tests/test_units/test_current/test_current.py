@@ -1,5 +1,5 @@
 from gearpy.units import Current
-from hypothesis.strategies import floats, sampled_from, one_of, booleans
+from hypothesis.strategies import floats, sampled_from, one_of, booleans, integers
 from hypothesis import given, settings
 from tests.test_units.test_current.conftest import basic_current, currents
 from pytest import mark, raises
@@ -52,6 +52,22 @@ class TestCurrentRepr:
 
 
 @mark.units
+class TestCurrentFormat:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list),
+           total_digits = integers(min_value = 1, max_value = 10),
+           decimal_digits = integers(min_value = 1, max_value = 10))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit, total_digits, decimal_digits):
+        current = Current(value = value, unit = unit)
+
+        assert current.__format__(f'{total_digits}.{decimal_digits}f') == f'{current:{total_digits}.{decimal_digits}f}'
+
+
+@mark.units
 class TestCurrentAbs:
 
 
@@ -64,6 +80,20 @@ class TestCurrentAbs:
 
         assert abs(current) == Current(value = abs(value), unit = unit)
         assert abs(current).value >= 0
+
+
+@mark.units
+class TestCurrentNeg:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        current = Current(value = value, unit = unit)
+
+        assert -current == Current(value = -value, unit = unit)
 
 
 @mark.units

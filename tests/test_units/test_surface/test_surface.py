@@ -1,5 +1,5 @@
 from gearpy.units import Surface
-from hypothesis.strategies import floats, sampled_from, one_of, booleans
+from hypothesis.strategies import floats, sampled_from, one_of, booleans, integers
 from hypothesis import given, settings
 from tests.test_units.test_surface.conftest import basic_surface, surfaces
 from pytest import mark, raises
@@ -58,6 +58,22 @@ class TestSurfaceRepr:
 
 
 @mark.units
+class TestSurfaceFormat:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
+           unit = sampled_from(elements = units_list),
+           total_digits = integers(min_value = 1, max_value = 10),
+           decimal_digits = integers(min_value = 1, max_value = 10))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit, total_digits, decimal_digits):
+        surface = Surface(value = value, unit = unit)
+
+        assert surface.__format__(f'{total_digits}.{decimal_digits}f') == f'{surface:{total_digits}.{decimal_digits}f}'
+
+
+@mark.units
 class TestSurfaceAbs:
 
 
@@ -70,6 +86,18 @@ class TestSurfaceAbs:
 
         assert abs(surface) == Surface(value = abs(value), unit = unit)
         assert abs(surface).value >= 0
+
+
+@mark.units
+class TestSurfaceNeg:
+
+
+    @mark.error
+    def test_method(self):
+        surface = Surface(value = 1, unit = 'm^2')
+
+        with raises(ValueError):
+            assert -surface
 
 
 @mark.units
