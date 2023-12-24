@@ -1,4 +1,5 @@
 from gearpy.mechanical_object import SpurGear, DCMotor, Flywheel, MatingMaster, MatingSlave
+from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.solver import Solver
 from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
@@ -48,6 +49,8 @@ transmission_spur_gear_2.angular_position = AngularPosition(0, 'rad')
 transmission_spur_gear_2.angular_speed = AngularSpeed(0, 'rad/s')
 basic_solver = Solver(transmission = basic_transmission)
 basic_solver.run(time_discretization = TimeInterval(1, 'sec'), simulation_time = TimeInterval(100, 'sec'))
+
+basic_encoder = AbsoluteRotaryEncoder(target = basic_spur_gear_1)
 
 
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
@@ -124,6 +127,11 @@ def flywheels(draw):
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
 
     return Flywheel(name = name, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
+
+
+@composite
+def rotating_objects(draw):
+    return draw(one_of(simple_spur_gears(), structural_spur_gears(), simple_dc_motors(), electric_dc_motors(), flywheels()))
 
 
 @composite
