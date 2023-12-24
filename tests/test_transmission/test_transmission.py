@@ -163,6 +163,7 @@ class TestTransmissionSnapshot:
                    f'contact stress ({stress_unit})']
         if solved_transmission.chain[0].electric_current_is_computable:
             columns.append(f'electric current ({current_unit})')
+        columns.append('pwm')
 
         assert isinstance(data, pd.DataFrame)
         assert [element.name for element in solved_transmission.chain] == data.index.to_list()
@@ -253,6 +254,9 @@ class TestTransmissionPlot:
         if solved_transmission.chain[0].electric_current_is_computable:
             solved_transmission.plot(elements = list(solved_transmission.chain[:2]), variables = ['electric current'])
             plt.close()
+
+        solved_transmission.plot(elements = list(solved_transmission.chain), variables = ['pwm'])
+        plt.close()
 
 
     @mark.error
