@@ -1,7 +1,7 @@
 from gearpy.motor_control import ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.units import AngularPosition, Angle
-from hypothesis import given, settings
+from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import integers, floats
 from pytest import mark, raises
 from tests.test_rules.test_reach_angular_position.conftest import TransmissionFake
@@ -19,7 +19,7 @@ class TestReachAngularPositionInit:
            transmission = transmissions(),
            target_angular_position = angular_positions(),
            braking_angle = angles())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, element_index, transmission, target_angular_position, braking_angle):
         element_index %= len(transmission.chain)
         encoder = AbsoluteRotaryEncoder(target = transmission.chain[element_index])
