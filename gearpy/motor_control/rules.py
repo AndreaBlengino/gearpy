@@ -171,10 +171,7 @@ class StartLimitCurrent(RuleBase):
                                                 maximum_electric_current)))
 
 
-def _compute_static_error(braking_angle: AngularPosition, transmission: Transmission):
-    if not isinstance(braking_angle, AngularPosition):
-        raise TypeError(f"Parameter 'braking_angle' must be an instance of {AngularPosition.__name__!r}.")
-
+def _compute_static_error(braking_angle: Angle, transmission: Transmission):
     maximum_torque = transmission.chain[0].maximum_torque
     load_torque = transmission.chain[0].load_torque
 
