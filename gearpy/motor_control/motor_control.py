@@ -1,7 +1,5 @@
 from gearpy.transmission import Transmission
-from gearpy.units import Angle
 from .motor_control_base import MotorControlBase
-from .rules import _compute_static_error, _compute_pwm_min
 from .rules_base import RuleBase
 
 
@@ -28,21 +26,12 @@ class PWMControl(MotorControlBase):
         if applied_rules >= 2:
             raise ValueError("At least two rules are simultaneously applicable. Check PWM rules conditions.")
         elif applied_rules == 1:
-            pwm = [self.saturate_pwm(pwm_value) for pwm_value in pwm_values if pwm_value is not None][0]
+            pwm = [self._saturate_pwm(pwm_value) for pwm_value in pwm_values if pwm_value is not None][0]
         else:
             pwm = 1
 
         self.transmission.chain[0].pwm = pwm
 
-    def compute_static_error(self, braking_angle: Angle):
-        if not isinstance(braking_angle, Angle):
-            raise TypeError(f"Parameter 'braking_angle' must be an instance of {Angle.__name__!r}.")
-
-        return _compute_static_error(transmission = self.transmission, braking_angle = braking_angle)
-
-    def compute_pwm_min(self):
-        return _compute_pwm_min(transmission = self.transmission)
-
     @staticmethod
-    def saturate_pwm(pwm):
+    def _saturate_pwm(pwm):
         return min(max(pwm, -1), 1)
