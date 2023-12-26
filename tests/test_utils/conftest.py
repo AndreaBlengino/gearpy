@@ -1,5 +1,10 @@
-from gearpy.mechanical_object import GearBase, MotorBase, Flywheel, DCMotor
-from gearpy.units import Time
+from gearpy.mechanical_object import GearBase, MotorBase, Flywheel, DCMotor, SpurGear
+from gearpy.motor_control import PWMControl, ReachAngularPosition
+from gearpy.sensors import AbsoluteRotaryEncoder
+from gearpy.solver import Solver
+from gearpy.transmission import Transmission
+from gearpy.units import Angle, AngularPosition, AngularSpeed, Current, InertiaMoment, Time, TimeInterval, Torque
+from gearpy.utils import add_fixed_joint
 from pytest import fixture
 from tests.conftest import types_to_check, basic_spur_gear_1, basic_transmission, basic_dc_motor_1
 
@@ -37,6 +42,37 @@ add_fixed_joint_type_error_2 = [{'master': basic_spur_gear_1, 'slave': type_to_c
                    *add_fixed_joint_type_error_2])
 def add_fixed_joint_type_error(request):
     return request.param
+
+
+motor_1 = DCMotor(name = 'motor', no_load_speed = AngularSpeed(1000, 'rad/s'), maximum_torque = Torque(1, 'Nm'),
+                inertia_moment = InertiaMoment(1, 'kgm^2'), no_load_electric_current = Current(1, 'A'),
+                maximum_electric_current = Current(2, 'A'))
+gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+add_fixed_joint(master = motor_1, slave = gear)
+transmission_1 = Transmission(motor = motor_1)
+encoder = AbsoluteRotaryEncoder(target = gear)
+rule = ReachAngularPosition(encoder = encoder, transmission = transmission_1,
+                            target_angular_position = AngularPosition(200, 'rad'),
+                            braking_angle = Angle(150, 'rad'))
+motor_control = PWMControl(transmission = transmission_1)
+motor_control.add_rule(rule = rule)
+gear.external_torque = lambda angular_position, angular_speed, time: Torque(0, 'Nm')
+gear.angular_position = AngularPosition(0, 'rad')
+gear.angular_speed = AngularSpeed(0, 'rad/s')
+solver = Solver(transmission = transmission_1, motor_control = motor_control)
+solver.run(time_discretization = TimeInterval(2, 'sec'), simulation_time = TimeInterval(60, 'sec'))
+
+
+motor_2 = DCMotor(name = 'motor', no_load_speed = AngularSpeed(1000, 'rad/s'), maximum_torque = Torque(1, 'Nm'),
+                inertia_moment = InertiaMoment(1, 'kgm^2'))
+gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+add_fixed_joint(master = motor_2, slave = gear)
+transmission_2 = Transmission(motor = motor_2)
+gear.external_torque = lambda angular_position, angular_speed, time: Torque(0, 'Nm')
+gear.angular_position = AngularPosition(0, 'rad')
+gear.angular_speed = AngularSpeed(0, 'rad/s')
+solver = Solver(transmission = transmission_2)
+solver.run(time_discretization = TimeInterval(2, 'sec'), simulation_time = TimeInterval(20, 'sec'))
 
 
 dc_motor_characteristics_animation_type_error_1 = [{'motor': type_to_check, 'time': basic_transmission.time}

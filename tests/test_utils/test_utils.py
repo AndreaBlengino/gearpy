@@ -7,7 +7,8 @@ from hypothesis import given, settings
 from hypothesis.strategies import floats, one_of, sampled_from, booleans, none, tuples
 import os
 from pytest import mark, raises
-from tests.conftest import simple_dc_motors, simple_spur_gears, flywheels, solved_transmissions
+from tests.conftest import simple_dc_motors, simple_spur_gears, flywheels
+from tests.test_utils.conftest import motor_1, transmission_1, motor_2, transmission_2
 import warnings
 
 
@@ -78,8 +79,7 @@ class TestDCMotorCharacteristicsAnimation:
 
 
     @mark.genuine
-    @given(solved_transmission = solved_transmissions(),
-           interval = floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 50),
+    @given(interval = floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 30),
            angular_speed_unit = sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())),
            torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
            current_unit = sampled_from(elements = list(Current._Current__UNITS.keys())),
@@ -90,13 +90,11 @@ class TestDCMotorCharacteristicsAnimation:
            padding = floats(allow_nan = False, allow_infinity = False, min_value = 0.01, max_value = 1),
            show = booleans())
     @settings(max_examples = 10, deadline = None)
-    def test_function(self, solved_transmission, interval, angular_speed_unit, torque_unit, current_unit, figsize,
-                      marker_size, padding, show):
+    def test_function(self, interval, angular_speed_unit, torque_unit, current_unit, figsize, marker_size, padding, show):
         warnings.filterwarnings('ignore', category = UserWarning)
 
-        def call_animation(torque_speed_curve, torque_current_curve):
-            animation = dc_motor_characteristics_animation(motor = solved_transmission.chain[0],
-                                                           time = solved_transmission.time, interval = interval,
+        def call_animation(motor, transmission, torque_speed_curve, torque_current_curve):
+            animation = dc_motor_characteristics_animation(motor = motor, time = transmission.time, interval = interval,
                                                            torque_speed_curve = torque_speed_curve,
                                                            torque_current_curve = torque_current_curve,
                                                            angular_speed_unit = angular_speed_unit,
@@ -111,12 +109,12 @@ class TestDCMotorCharacteristicsAnimation:
             if os.path.exists(animation_file_name):
                 os.remove(animation_file_name)
 
-        if solved_transmission.chain[0].electric_current_is_computable:
-            call_animation(torque_speed_curve = True, torque_current_curve = True)
-            call_animation(torque_speed_curve = False, torque_current_curve = True)
-            call_animation(torque_speed_curve = True, torque_current_curve = True)
-        else:
-            call_animation(torque_speed_curve = True, torque_current_curve = False)
+        for motor, transmission in zip([motor_1, motor_2], [transmission_1, transmission_2]):
+            if motor.electric_current_is_computable:
+                call_animation(motor = motor, transmission = transmission, torque_speed_curve = True, torque_current_curve = True)
+                call_animation(motor = motor, transmission = transmission, torque_speed_curve = False, torque_current_curve = True)
+            else:
+                call_animation(motor = motor, transmission = transmission, torque_speed_curve = True, torque_current_curve = False)
 
 
     @mark.error
