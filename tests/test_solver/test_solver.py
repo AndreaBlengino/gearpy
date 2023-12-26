@@ -1,4 +1,5 @@
 from gearpy.mechanical_object import DCMotor, SpurGear
+from gearpy.motor_control import PWMControl
 from gearpy.solver import Solver
 from gearpy.transmission import Transmission
 from gearpy.units import Torque, InertiaMoment, AngularSpeed, AngularPosition, TimeInterval
@@ -59,8 +60,9 @@ class TestSolverRun:
         transmission.chain[-1].angular_position = initial_angular_position
         transmission.chain[-1].angular_speed = initial_angular_speed
         transmission.chain[-1].external_torque = lambda time, angular_position, angular_speed: Torque(0.001, 'Nm')
+        motor_control = PWMControl(transmission = transmission)
+        solver = Solver(transmission = transmission, motor_control = motor_control)
         simulation_time_1 = time_discretization_1*simulation_steps_1
-        solver = Solver(transmission = transmission)
         solver.run(time_discretization = time_discretization_1, simulation_time = simulation_time_1)
 
         assert len(transmission.time) == len(np.arange(time_discretization_1.value,

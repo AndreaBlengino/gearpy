@@ -1,9 +1,10 @@
 from gearpy.mechanical_object import RotatingObject, MotorBase, SpurGear, DCMotor
+from gearpy.motor_control import MotorControlBase
 from gearpy.transmission import Transmission
 from gearpy.units import AngularSpeed, InertiaMoment, Length, Torque, TimeInterval
 from gearpy.utils import add_fixed_joint
 from pytest import fixture
-from tests.conftest import types_to_check, basic_spur_gear_1, basic_dc_motor_1
+from tests.conftest import types_to_check, basic_spur_gear_1, basic_dc_motor_1, basic_transmission
 
 
 motor_transmission_solver_init_type_error = DCMotor(name = 'name', inertia_moment = InertiaMoment(1, 'kgm^2'),
@@ -34,9 +35,14 @@ solver_init_type_error_2 = [{'transmission': TransmissionFake([type_to_check, ba
 solver_init_type_error_3 = [{'transmission': TransmissionFake([basic_dc_motor_1, type_to_check])}
                             for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)]
 
+solver_init_type_error_4 = [{'transmission': basic_transmission, 'motor_control': type_to_check}
+                            for type_to_check in types_to_check if not isinstance(type_to_check, MotorControlBase)
+                            and type_to_check is not None]
+
 @fixture(params = [*solver_init_type_error_1,
                    *solver_init_type_error_2,
-                   *solver_init_type_error_3])
+                   *solver_init_type_error_3,
+                   *solver_init_type_error_4])
 def solver_init_type_error(request):
     return request.param
 
