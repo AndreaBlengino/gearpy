@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from gearpy.mechanical_object import MotorBase, RotatingObject
 from gearpy.transmission import Transmission
 from .rules_base import RuleBase
 
@@ -9,6 +10,15 @@ class MotorControlBase(ABC):
     def __init__(self, transmission: Transmission):
         if not isinstance(transmission, Transmission):
             raise TypeError(f"Parameter 'transmission' must be an instance of {Transmission.__name__!r}.")
+
+        if not transmission.chain:
+            raise ValueError("Parameter 'transmission.chain' cannot be an empty tuple.")
+
+        if not isinstance(transmission.chain[0], MotorBase):
+            raise TypeError(f"First element in 'transmission' must be an instance of {MotorBase.__name__!r}.")
+
+        if not all([isinstance(item, RotatingObject) for item in transmission.chain]):
+            raise TypeError(f"All elements of 'transmission' must be instances of {RotatingObject.__name__!r}.")
 
         self.__transmission = transmission
         self.__rules = []
