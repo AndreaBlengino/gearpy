@@ -136,8 +136,15 @@ def rotating_objects(draw):
 
 
 @composite
-def transmissions(draw):
-    motor = draw(one_of(simple_dc_motors(), electric_dc_motors()))
+def transmissions(draw, allow_simple_motors = True, allow_electric_motors = True):
+    if allow_simple_motors and allow_electric_motors:
+        motor = draw(one_of(simple_dc_motors(), electric_dc_motors()))
+    elif allow_simple_motors and not allow_electric_motors:
+        motor = draw(simple_dc_motors())
+    elif not allow_simple_motors and allow_electric_motors:
+        motor = draw(electric_dc_motors())
+    else:
+        raise ValueError("At least one of 'allow_simple_motors' and 'allow_electric_motors' must be True.")
     gears = draw(lists(elements = structural_spur_gears(), min_size = 2))
 
     if len(gears)%2 == 1:

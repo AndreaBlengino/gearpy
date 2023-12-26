@@ -9,9 +9,10 @@ basic_current = Current(1, 'A')
 
 
 @composite
-def currents(draw):
-    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    unit = draw(sampled_from(elements = list(Current._Current__UNITS.keys())))
+def currents(draw, min_value = -1000, max_value = 1000, unit = None):
+    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = min_value, max_value = max_value))
+    if unit is None:
+        unit = draw(sampled_from(elements = list(Current._Current__UNITS.keys())))
 
     return Current(value = value, unit = unit)
 

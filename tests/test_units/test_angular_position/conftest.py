@@ -9,9 +9,10 @@ basic_angular_position = AngularPosition(1, 'rad')
 
 
 @composite
-def angular_positions(draw):
-    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    unit = draw(sampled_from(elements = list(AngularPosition._AngularPosition__UNITS.keys())))
+def angular_positions(draw, min_value = -1000, max_value = 1000, unit = None):
+    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = min_value, max_value = max_value))
+    if unit is None:
+        unit = draw(sampled_from(elements = list(AngularPosition._AngularPosition__UNITS.keys())))
 
     return AngularPosition(value = value, unit = unit)
 

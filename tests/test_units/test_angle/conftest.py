@@ -9,9 +9,10 @@ basic_angle = Angle(1, 'rad')
 
 
 @composite
-def angles(draw):
-    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0, max_value = 1000))
-    unit = draw(sampled_from(elements = list(Angle._AngularPosition__UNITS.keys())))
+def angles(draw, min_value = 0, max_value = 1000, unit = None):
+    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = min_value, max_value = max_value))
+    if unit is None:
+        unit = draw(sampled_from(elements = list(Angle._AngularPosition__UNITS.keys())))
 
     return Angle(value = value, unit = unit)
 
