@@ -17,21 +17,20 @@ class TestStartLimitCurrentInit:
     @mark.genuine
     @given(motor = electric_dc_motors(),
            target_angular_position = angular_positions(),
-           limit_electric_current = currents())
+           limit_electric_current = currents(min_value = 1, max_value = 10))
     @settings(max_examples = 100)
     def test_method(self, motor, target_angular_position, limit_electric_current):
-        if limit_electric_current.value > 0:
-            encoder = AbsoluteRotaryEncoder(target = motor)
-            tachometer = Tachometer(target = motor)
-            rule = StartLimitCurrent(encoder = encoder, tachometer = tachometer, motor = motor,
-                                     target_angular_position = target_angular_position,
-                                     limit_electric_current = limit_electric_current)
+        encoder = AbsoluteRotaryEncoder(target = motor)
+        tachometer = Tachometer(target = motor)
+        rule = StartLimitCurrent(encoder = encoder, tachometer = tachometer, motor = motor,
+                                 target_angular_position = target_angular_position,
+                                 limit_electric_current = limit_electric_current)
 
-            assert rule.encoder == encoder
-            assert rule.tachometer == tachometer
-            assert rule.motor == motor
-            assert rule.limit_electric_current == limit_electric_current
-            assert rule.target_angular_position == target_angular_position
+        assert rule.encoder == encoder
+        assert rule.tachometer == tachometer
+        assert rule.motor == motor
+        assert rule.limit_electric_current == limit_electric_current
+        assert rule.target_angular_position == target_angular_position
 
 
     @mark.error
@@ -52,21 +51,20 @@ class TestStartLimitCurrentApply:
 
     @given(motor = electric_dc_motors(),
            current_angular_position = angular_positions(),
-           limit_electric_current = currents(),
+           limit_electric_current = currents(min_value = 1, max_value = 10),
            target_angular_position_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 1000),
            current_angular_speed = angular_speeds())
     def test_method(self, motor, current_angular_position, limit_electric_current, target_angular_position_multiplier,
                     current_angular_speed):
         warnings.filterwarnings('ignore', category = RuntimeWarning)
-        if limit_electric_current.value > 0:
-            encoder = AbsoluteRotaryEncoder(target = motor)
-            tachometer = Tachometer(target = motor)
-            rule = StartLimitCurrent(encoder = encoder, tachometer = tachometer, motor = motor,
-                                     target_angular_position = current_angular_position*target_angular_position_multiplier,
-                                     limit_electric_current = limit_electric_current)
-            motor.angular_position = current_angular_position
-            motor.angular_speed = current_angular_speed
+        encoder = AbsoluteRotaryEncoder(target = motor)
+        tachometer = Tachometer(target = motor)
+        rule = StartLimitCurrent(encoder = encoder, tachometer = tachometer, motor = motor,
+                                 target_angular_position = current_angular_position*target_angular_position_multiplier,
+                                 limit_electric_current = limit_electric_current)
+        motor.angular_position = current_angular_position
+        motor.angular_speed = current_angular_speed
 
-            pwm = rule.apply()
-            if pwm is not None:
-                assert isinstance(pwm, int) or isinstance(pwm, float)
+        pwm = rule.apply()
+        if pwm is not None:
+            assert isinstance(pwm, int) or isinstance(pwm, float)

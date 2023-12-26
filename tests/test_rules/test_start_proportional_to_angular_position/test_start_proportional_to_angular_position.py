@@ -5,11 +5,10 @@ from gearpy.transmission import Transmission
 from gearpy.units import AngularPosition, InertiaMoment, AngularSpeed, Torque, Current
 from gearpy.utils import add_fixed_joint
 from hypothesis import given, settings
-from hypothesis.strategies import integers, floats, one_of, none
+from hypothesis.strategies import integers, floats, one_of, none, booleans
 from pytest import mark, raises
 from tests.conftest import transmissions
 from tests.test_units.test_angular_position.conftest import angular_positions
-from tests.test_units.test_torque.conftest import torques
 
 
 @mark.rules
@@ -18,25 +17,24 @@ class TestStartProportionalToAngularPositionInit:
 
     @mark.genuine
     @given(element_index = integers(min_value = 0),
-           transmission = transmissions(),
+           transmission = transmissions(allow_simple_motors = False),
            target_angular_position = angular_positions(),
            pwm_min_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1, exclude_min = True, max_value = 1000),
            pwm_min = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1),
                             none()))
     @settings(max_examples = 100)
     def test_method(self, element_index, transmission, target_angular_position, pwm_min_multiplier, pwm_min):
-        if transmission.chain[0].electric_current_is_computable:
-            element_index %= len(transmission.chain)
-            encoder = AbsoluteRotaryEncoder(target = transmission.chain[element_index])
-            rule = StartProportionalToAngularPosition(encoder = encoder, transmission = transmission,
-                                                      target_angular_position = target_angular_position,
-                                                      pwm_min_multiplier = pwm_min_multiplier, pwm_min = pwm_min)
+        element_index %= len(transmission.chain)
+        encoder = AbsoluteRotaryEncoder(target = transmission.chain[element_index])
+        rule = StartProportionalToAngularPosition(encoder = encoder, transmission = transmission,
+                                                  target_angular_position = target_angular_position,
+                                                  pwm_min_multiplier = pwm_min_multiplier, pwm_min = pwm_min)
 
-            assert rule.encoder == encoder
-            assert rule.transmission == transmission
-            assert rule.target_angular_position == target_angular_position
-            assert rule.pwm_min_multiplier == pwm_min_multiplier
-            assert rule.pwm_min == pwm_min
+        assert rule.encoder == encoder
+        assert rule.transmission == transmission
+        assert rule.target_angular_position == target_angular_position
+        assert rule.pwm_min_multiplier == pwm_min_multiplier
+        assert rule.pwm_min == pwm_min
 
 
     @mark.error
@@ -63,12 +61,12 @@ class TestStartProportionalToAngularPositionApply:
            pwm_min = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1),
                             none()),
            target_angular_position_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 1000),
-           load_torque = torques())
+           load_torque_time_variable = booleans())
     @settings(max_examples = 100)
     def test_method(self, element_index, transmission, current_angular_position, pwm_min_multiplier, pwm_min,
-                    target_angular_position_multiplier, load_torque):
+                    target_angular_position_multiplier, load_torque_time_variable):
         if transmission.chain[0].electric_current_is_computable:
-            if transmission.chain[0].no_load_electric_current.value != 0:
+            if transmission.chain[0].no_load_electric_current.value > 0:
                 element_index %= len(transmission.chain)
                 encoder = AbsoluteRotaryEncoder(target = transmission.chain[element_index])
                 rule = StartProportionalToAngularPosition(encoder = encoder, transmission = transmission,
@@ -77,10 +75,9 @@ class TestStartProportionalToAngularPositionApply:
                                                           pwm_min_multiplier = pwm_min_multiplier,
                                                           pwm_min = pwm_min)
                 transmission.chain[element_index].angular_position = AngularPosition(value = current_angular_position, unit = 'rad')
-                if transmission.chain[0].time_variables['load torque']:
-                    transmission.chain[0].time_variables['load torque'][0] = load_torque
-                else:
-                    transmission.chain[0].load_torque = load_torque
+                transmission.chain[0].load_torque = Torque(0, 'Nm')
+                if load_torque_time_variable:
+                    transmission.chain[0].update_time_variables()
 
                 pwm = rule.apply()
                 if pwm is not None:
@@ -98,10 +95,9 @@ class TestStartProportionalToAngularPositionApply:
                                                                                                 unit = 'rad'),
                                                       pwm_min_multiplier = pwm_min_multiplier, pwm_min = pwm_min)
             motor.angular_position = AngularPosition(value = current_angular_position, unit = 'rad')
-            if motor.time_variables['load torque']:
-                motor.time_variables['load torque'][0] = Torque(0, 'Nm')
-            else:
-                motor.load_torque = Torque(0, 'Nm')
+            motor.load_torque = Torque(0, 'Nm')
+            if load_torque_time_variable:
+                motor.update_time_variables()
 
             pwm = rule.apply()
             if pwm is not None:
@@ -122,10 +118,7 @@ class TestStartProportionalToAngularPositionApply:
                                                   pwm_min_multiplier = 2)
 
         motor.angular_position = AngularPosition(0, 'rad')
-        if motor.time_variables['load torque']:
-            motor.time_variables['load torque'][0] = Torque(0, 'Nm')
-        else:
-            motor.load_torque = Torque(0, 'Nm')
+        motor.load_torque = Torque(0, 'Nm')
 
         with raises(ValueError):
             rule.apply()

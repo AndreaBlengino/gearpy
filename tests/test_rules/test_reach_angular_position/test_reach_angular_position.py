@@ -1,8 +1,8 @@
 from gearpy.motor_control import ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder
-from gearpy.units import AngularPosition, Angle
+from gearpy.units import AngularPosition, Angle, Torque
 from hypothesis import given, settings, HealthCheck
-from hypothesis.strategies import integers, floats
+from hypothesis.strategies import integers, floats, booleans
 from pytest import mark, raises
 from tests.test_rules.test_reach_angular_position.conftest import TransmissionFake
 from tests.conftest import basic_encoder, transmissions
@@ -54,9 +54,11 @@ class TestReachAngularPositionApply:
            transmission = transmissions(),
            current_angular_position = floats(allow_nan = False, allow_infinity = False, min_value = 1, max_value = 1000),
            braking_angle_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 1000),
-           target_angular_position_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 3, max_value = 1000))
+           target_angular_position_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 3, max_value = 1000),
+           available_load_torque = booleans())
     @settings(max_examples = 100)
-    def test_method(self, element_index, transmission, current_angular_position, braking_angle_multiplier, target_angular_position_multiplier):
+    def test_method(self, element_index, transmission, current_angular_position, braking_angle_multiplier,
+                    target_angular_position_multiplier, available_load_torque):
         element_index %= len(transmission.chain)
         encoder = AbsoluteRotaryEncoder(target = transmission.chain[element_index])
         rule = ReachAngularPosition(encoder = encoder, transmission = transmission,
@@ -65,6 +67,8 @@ class TestReachAngularPositionApply:
                                     braking_angle = Angle(value = current_angular_position*braking_angle_multiplier,
                                                           unit = 'rad'))
         transmission.chain[element_index].angular_position = AngularPosition(value = current_angular_position, unit = 'rad')
+        if available_load_torque:
+            transmission.chain[0].load_torque = Torque(0, 'Nm')
         pwm = rule.apply()
 
         if pwm is not None:
