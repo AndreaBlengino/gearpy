@@ -1,7 +1,7 @@
 from gearpy.mechanical_object import DCMotor, SpurGear
 from gearpy.units import Length, Torque, Current
 from hypothesis import given, settings
-from hypothesis.strategies import text
+from hypothesis.strategies import text, floats, booleans
 from pytest import mark, raises
 from tests.conftest import basic_dc_motor_1, basic_dc_motor_2
 from tests.test_units.test_angular_speed.conftest import angular_speeds
@@ -17,17 +17,16 @@ class TestDCMotorInit:
     @mark.genuine
     @given(name = text(min_size = 1),
            inertia_moment = inertia_moments(),
-           no_load_speed = angular_speeds(),
-           maximum_torque = torques())
+           no_load_speed = angular_speeds(min_value = 1, max_value = 1000),
+           maximum_torque = torques(min_value = 1, max_value = 10))
     @settings(max_examples = 100)
     def test_method(self, name, inertia_moment, no_load_speed, maximum_torque):
-        if no_load_speed.value > 0 and maximum_torque.value > 0:
-            motor = DCMotor(name = name, inertia_moment = inertia_moment, no_load_speed = no_load_speed, maximum_torque = maximum_torque)
+        motor = DCMotor(name = name, inertia_moment = inertia_moment, no_load_speed = no_load_speed, maximum_torque = maximum_torque)
 
-            assert motor.name == name
-            assert motor.inertia_moment == inertia_moment
-            assert motor.no_load_speed == no_load_speed
-            assert motor.maximum_torque == maximum_torque
+        assert motor.name == name
+        assert motor.inertia_moment == inertia_moment
+        assert motor.no_load_speed == no_load_speed
+        assert motor.maximum_torque == maximum_torque
 
 
     @mark.error
@@ -67,14 +66,25 @@ class TestDCMotorComputeTorque:
     @mark.genuine
     @given(name = text(min_size = 1),
            inertia_moment = inertia_moments(),
-           no_load_speed = angular_speeds(),
-           maximum_torque = torques(),
-           speed = angular_speeds())
+           no_load_speed = angular_speeds(min_value = 1e-10, max_value = 1000),
+           maximum_torque = torques(min_value = 1e-10, max_value = 10),
+           no_load_electric_current = currents(min_value = 1, max_value = 2, unit = 'A'),
+           maximum_electric_current = currents(min_value = 5, max_value = 10, unit = 'A'),
+           speed = angular_speeds(),
+           electric_motor = booleans())
     @settings(max_examples = 100)
-    def test_method(self, name, inertia_moment, no_load_speed, maximum_torque, speed):
-        if no_load_speed.value > 1e-10 and maximum_torque.value > 1e-10:
-            motor = DCMotor(name = name, inertia_moment = inertia_moment, no_load_speed = no_load_speed, maximum_torque = maximum_torque)
-            motor.angular_speed = speed
+    def test_method(self, name, inertia_moment, no_load_speed, maximum_torque, no_load_electric_current,
+                    maximum_electric_current, speed, electric_motor):
+        if electric_motor:
+            motor = DCMotor(name = name, inertia_moment = inertia_moment, no_load_speed = no_load_speed,
+                            maximum_torque = maximum_torque, no_load_electric_current = no_load_electric_current,
+                            maximum_electric_current = maximum_electric_current)
+        else:
+            motor = DCMotor(name = name, inertia_moment = inertia_moment, no_load_speed = no_load_speed,
+                            maximum_torque = maximum_torque)
+        motor.angular_speed = speed
+        for pwm in [-1, 0, 1]:
+            motor.pwm = pwm
             motor.compute_torque()
 
             assert isinstance(motor.driving_torque, Torque)
@@ -87,20 +97,20 @@ class TestDCMotorComputeElectricCurrent:
     @mark.genuine
     @given(name = text(min_size = 1),
            inertia_moment = inertia_moments(),
-           no_load_speed = angular_speeds(),
-           maximum_torque = torques(),
-           no_load_electric_current = currents(),
-           maximum_electric_current = currents(),
+           no_load_speed = angular_speeds(min_value = 1e-10, max_value = 1000),
+           maximum_torque = torques(min_value = 1e-10, max_value = 10),
+           no_load_electric_current = currents(min_value = 0, max_value = 0.1, unit = 'A'),
+           maximum_electric_current = currents(min_value = 0.2, max_value = 10, unit = 'A'),
            driving_torque = torques())
     @settings(max_examples = 100)
     def test_method(self, name, inertia_moment, no_load_speed, maximum_torque, no_load_electric_current,
                     maximum_electric_current, driving_torque):
-        if no_load_speed.value > 1e-10 and maximum_torque.value > 1e-10 and no_load_electric_current.value > 1e-10 and \
-           maximum_electric_current.value > 1e-10 and maximum_electric_current > no_load_electric_current:
-            motor = DCMotor(name = name, inertia_moment = inertia_moment, no_load_speed = no_load_speed,
-                            maximum_torque = maximum_torque, no_load_electric_current =  no_load_electric_current,
-                            maximum_electric_current = maximum_electric_current)
-            motor.driving_torque = driving_torque
+        motor = DCMotor(name = name, inertia_moment = inertia_moment, no_load_speed = no_load_speed,
+                        maximum_torque = maximum_torque, no_load_electric_current =  no_load_electric_current,
+                        maximum_electric_current = maximum_electric_current)
+        motor.driving_torque = driving_torque
+        for pwm in [-1, 0, 1]:
+            motor.pwm = pwm
             motor.compute_electric_current()
 
             assert isinstance(motor.electric_current, Current)
@@ -109,12 +119,14 @@ class TestDCMotorComputeElectricCurrent:
 @mark.dc_motor
 class TestDCMotorElectricCurrent:
 
+
     @mark.genuine
     def test_property(self):
         electric_current = Current(1, 'A')
         basic_dc_motor_1.electric_current = electric_current
 
         assert basic_dc_motor_1.electric_current == electric_current
+
 
     @mark.error
     def test_raises_type_error(self, dc_motor_electric_current_type_error):
@@ -125,6 +137,7 @@ class TestDCMotorElectricCurrent:
 @mark.dc_motor
 class TestDCMotorElectricCurrentIsComputable:
 
+
     @mark.genuine
     def test_property(self):
         for motor in [basic_dc_motor_1, basic_dc_motor_2]:
@@ -132,3 +145,28 @@ class TestDCMotorElectricCurrentIsComputable:
                 assert not motor.electric_current_is_computable
             else:
                 assert motor.electric_current_is_computable
+
+
+@mark.dc_motor
+class TestDCMotorPWM:
+
+
+    @mark.genuine
+    @given(pwm = floats(allow_nan = False, allow_infinity = False, min_value = -1, max_value = 1))
+    @settings(max_examples = 100)
+    def test_property(self, pwm):
+        basic_dc_motor_1.pwm = pwm
+
+        assert basic_dc_motor_1.pwm == pwm
+
+
+    @mark.error
+    def test_raises_type_error(self, dc_motor_pwm_type_error):
+        with raises(TypeError):
+            basic_dc_motor_1.pwm = dc_motor_pwm_type_error
+
+
+    @mark.error
+    def test_raises_value_error(self, dc_motor_pwm_value_error):
+        with raises(ValueError):
+            basic_dc_motor_1.pwm = dc_motor_pwm_value_error

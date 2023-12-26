@@ -207,6 +207,7 @@ class TestRotatingObjectUpdateTimeVariables:
             if isinstance(rotating_object, MotorBase):
                 if rotating_object.electric_current_is_computable:
                     time_variables_list.append('electric current')
+                time_variables_list.append('pwm')
             elif isinstance(rotating_object, GearBase):
                 if rotating_object.tangential_force_is_computable:
                     time_variables_list.append('tangential force')

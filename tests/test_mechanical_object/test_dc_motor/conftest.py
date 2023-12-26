@@ -61,3 +61,14 @@ def dc_motor_drives_type_error(request):
                    if not isinstance(type_to_check, Current) and type_to_check is not None])
 def dc_motor_electric_current_type_error(request):
     return request.param
+
+
+@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
+                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
+def dc_motor_pwm_type_error(request):
+    return request.param
+
+
+@fixture(params = [-2, 2])
+def dc_motor_pwm_value_error(request):
+    return request.param
