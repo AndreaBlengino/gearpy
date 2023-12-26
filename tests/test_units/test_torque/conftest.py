@@ -9,9 +9,10 @@ basic_torque = Torque(1, 'Nm')
 
 
 @composite
-def torques(draw):
-    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    unit = draw(sampled_from(elements = list(Torque._Torque__UNITS.keys())))
+def torques(draw, min_value = -1000, max_value = 1000, unit = None):
+    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = min_value, max_value = max_value))
+    if unit is None:
+        unit = draw(sampled_from(elements = list(Torque._Torque__UNITS.keys())))
 
     return Torque(value = value, unit = unit)
 
