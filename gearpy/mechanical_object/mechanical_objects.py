@@ -899,7 +899,7 @@ class DCMotor(MotorBase):
     :py:attr:`name` : str
         Name of the DC motor.
     :py:attr:`drives` : RotatingObject
-        Rotating object driven by DC motor, it can be another gear.
+        Rotating object driven by DC motor, it can be a flywheel or a gear.
     :py:attr:`angular_position` : AngularPosition
         Angular position of the DC motor.
     :py:attr:`angular_speed` : AngularSpeed
@@ -925,7 +925,9 @@ class DCMotor(MotorBase):
     :py:attr:`electric_current_is_computable` : bool
         Whether or not is possible to compute the electric current absorbed by the DC motor.
     :py:attr:`electric_current` : Current
-        Electrical current absorbed by the DC motor.
+        Electric current absorbed by the DC motor.
+    :py:attr:`pwm` : float or int
+        Pulse Width Modulation duty cycle of the supply voltage of the DC motor.
     :py:attr:`time_variables` : dict
         Time variables of the DC motor.
 
@@ -949,7 +951,7 @@ class DCMotor(MotorBase):
         super().__init__(name = name, inertia_moment = inertia_moment)
 
         if not isinstance(no_load_speed, AngularSpeed):
-            raise TypeError(f"Parameter 'no_load_speed' must be an instance of {AngularSpeed.__name__!r}")
+            raise TypeError(f"Parameter 'no_load_speed' must be an instance of {AngularSpeed.__name__!r}.")
 
         if not isinstance(maximum_torque, Torque):
             raise TypeError(f"Parameter 'maximum_torque' must be an instance of {Torque.__name__!r}.")
@@ -1011,7 +1013,7 @@ class DCMotor(MotorBase):
 
     @property
     def drives(self) -> RotatingObject:
-        """Rotating object driven by DC motor, it can be another gear. It must be a ``RotatingObject``.
+        """Rotating object driven by DC motor, it can be a flywheel or a gear. It must be a ``RotatingObject``.
 
         Returns
         -------
@@ -1118,7 +1120,7 @@ class DCMotor(MotorBase):
         TypeError
             If ``no_load_speed`` is not an instance of ``AngularSpeed``.
         ValueError
-            If ``no_load_speed`` is not positive.
+            If ``no_load_speed`` is negative or null.
 
         Se Also
         -------
@@ -1142,7 +1144,7 @@ class DCMotor(MotorBase):
         TypeError
             If ``maximum_torque`` is not an instance of ``Torque``.
         ValueError
-            If ``maximum_torque`` is not positive.
+            If ``maximum_torque`` is negative or null.
 
         Se Also
         -------
@@ -1245,8 +1247,9 @@ class DCMotor(MotorBase):
         return super().inertia_moment
 
     def compute_torque(self):
-        r"""Computes the driving torque developed by the DC motor. The driving torque depends on ``no_load_speed`` and
-        ``maximum_torque`` of the DC motor and its instantaneous ``angular_speed``.
+        r"""Computes the driving torque developed by the DC motor. \n
+        The driving torque depends on the two constants ``no_load_speed`` and ``maximum_torque`` and the two variables
+        ``angular_speed`` and ``pwm`` of the DCMotor.
         The computed torque has the same unit of ``maximum_torque``.
 
         Notes
@@ -1254,18 +1257,44 @@ class DCMotor(MotorBase):
         The computation is based on the following relationship:
 
         .. math::
-            T \left( \dot{\theta} \right) = T_{max} \left( 1 - \frac{\dot{\theta}}{\dot{\theta}_0} \right)
+            T \left( \dot{\theta} , T_{max}^D , \dot{\theta}_0^D \right) =
+            T_{max}^D \left( 1 - \frac{\dot{\theta}}{\dot{\theta}_0^D} \right)
 
         where:
 
             - :math:`T` is the DC motor developed driving torque,
             - :math:`\dot{\theta}` is the actual DC motor angular speed,
+            - :math:`T_{max}^D` is the DC motor maximum torque developed by the DC motor keeping into account ``pwm``,
+            - :math:`\dot{\theta}_0^D` is the DC motor no load angular speed keeping into account ``pwm``.
+
+        The maximum torque can be computed as:
+
+        .. math::
+            T_{max}^D \left( D \right) = T_{max} \frac{D \, i_{max} - i_0}{i_{max} - i_0}
+
+        and the no load angular speed can be computed as:
+
+        .. math::
+            \dot{\theta}_0^D \left( D \right) = D \, \dot{\theta}_0
+
+        where:
+
+            - :math:`D` is the DC motor supply voltage PWM duty cycle (``pwm``),
             - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
+            - :math:`i_{max}` is the DC motor maximum electric current (``maximum_electric_current``),
+            - :math:`i_0` is the DC motor no load electric current (``no_load_electric_current``),
             - :math:`\dot{\theta}_0` is the DC motor no load angular speed (``no_load_speed``).
+
+        If the ``pwm`` is lower than a critical threshold, then the motor cannot develop any torque, so the
+        ``driving_torque`` will be null. The critical ``pwm`` value can be computed as:
+
+        .. math::
+            D_{lim} = \frac{i_0}{i_{max}}
 
         See Also
         --------
         :py:attr:`driving_torque`
+        :py:attr:`pwm`
         """
         if not self.electric_current_is_computable:
             self.driving_torque = Torque(value = (1 - self.angular_speed/self.no_load_speed)*self.maximum_torque.value,
@@ -1294,7 +1323,7 @@ class DCMotor(MotorBase):
     @property
     def no_load_electric_current(self) -> Optional[Current]:
         """No load electric current absorbed by the DC motor. It must be an instance of ``Current``. Its value must be
-        positive or null. \n
+        positive or null and lower than ``maximum_electric_current``. \n
         It is the electric current absorbed by the DC motor when no load is applied to its rotor. \n
         Once set at the DC motor instantiation, it cannot be changed afterwards.
 
@@ -1308,7 +1337,8 @@ class DCMotor(MotorBase):
         TypeError
             If ``no_load_electric_current`` is not an instance of ``Current``.
         ValueError
-            If ``no_load_electric_current`` is not positive or null.
+            - If ``no_load_electric_current`` is negative,
+            - if ``no_load_electric_current`` is higher than or equal to ``maximum_electric_current``.
 
         Se Also
         -------
@@ -1319,7 +1349,7 @@ class DCMotor(MotorBase):
     @property
     def maximum_electric_current(self) -> Optional[Current]:
         """Maximum electric current absorbed by the DC motor. It must be an instance of ``Current``. Its value must be
-        positive. \n
+        positive and greater than ``no_load_electric_current``. \n
         It is the maximum electric current the DC motor can absorb when its rotor is kept still by the load. \n
         Once set at the DC motor instantiation, it cannot be changed afterwards.
 
@@ -1333,7 +1363,8 @@ class DCMotor(MotorBase):
         TypeError
             If ``maximum_electric_current`` is not an instance of ``Current``.
         ValueError
-            If ``maximum_electric_current`` is not positive.
+            - If ``maximum_electric_current`` is negative or null,
+            - if ``maximum_electric_current`` is lower than or equal to ``no_load_electric_current``.
 
         Se Also
         -------
@@ -1342,9 +1373,9 @@ class DCMotor(MotorBase):
         return self.__maximum_electric_current
 
     def compute_electric_current(self):
-        r"""Computes the electric current absorbed by the DC motor. The absorbed electric current depends on
-        ``no_load_electric_current`` and ``maximum_electric_current`` of the DC motor and its instantaneous
-        ``driving_torque``.
+        r"""Computes the electric current absorbed by the DC motor. The absorbed electric current depends on the two
+        constants ``no_load_electric_current`` and ``maximum_electric_current`` and the two variables ``driving_torque``
+        and ``pwm`` of the DC motor.
         The computed electric current has the same unit of ``maximum_electric_current``.
 
         Notes
@@ -1352,19 +1383,48 @@ class DCMotor(MotorBase):
         The computation is based on the following relationship:
 
         .. math::
-            i \left( T \right) = \left( i_{max} - i_0 \right) \frac{T}{T_{max}} + i_0
+            i \left( T \right) = \left( i_{max}^D - i_0 \right) \frac{T}{T_{max}^D} + i_0
 
         where:
 
             - :math:`i` is the electric current absorbed by the DC motor,
             - :math:`T` is the DC motor developed driving torque,
-            - :math:`i_{max}` is the maximum electric current absorbed by the DC motor (``maximum_electric_current``),
+            - :math:`i_{max}^D` is the maximum electric current absorbed by the DC motor keeping into account ``pwm``,
             - :math:`i_0` is the no load electric current absorbed by the DC motor (``no_load_electric_current``),
-            - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``).
+            - :math:`T_{max}^D` is the DC motor maximum torque developed by the DC motor keeping into account ``pwm``.
+
+        The maximum torque can be computed as:
+
+        .. math::
+            T_{max}^D \left( D \right) = T_{max} \frac{D \, i_{max} - i_0}{i_{max} - i_0}
+
+        and the maximum electric current can be computed as:
+
+        .. math::
+            i_{max}^D \left( D \right) = D \, i_{max}
+
+        where:
+
+            - :math:`D` is the DC motor supply voltage PWM duty cycle (``pwm``),
+            - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
+            - :math:`i_{max}` is the DC motor maximum electric current (``maximum_electric_current``),
+            - :math:`i_0` is the DC motor no load electric current (``no_load_electric_current``).
+
+        If the ``pwm`` is lower than a critical threshold, then the motor cannot develop any torque, so the
+        ``electrical_current`` will depend only on ``pwm`` value. The critical ``pwm`` value can be computed as:
+
+        .. math::
+            D_{lim} = \frac{i_0}{i_{max}}
+
+        and the relative electric current can be computed as:
+
+        .. math::
+            i_{lim} \left( D \right) = D \, i_{max}
 
         See Also
         --------
         :py:attr:`electric_current`
+        :py:attr:`pwm`
         """
         maximum_electric_current = self.pwm*self.maximum_electric_current
         pwm_min = self.no_load_electric_current/self.maximum_electric_current
@@ -1413,12 +1473,12 @@ class DCMotor(MotorBase):
 
     @property
     def electric_current(self) -> Optional[Current]:
-        """Electrical current absorbed by the DC motor. It must be an instance of ``Current``.
+        """Electric current absorbed by the DC motor. It must be an instance of ``Current``.
 
         Returns
         -------
         Current
-            Electrical current absorbed by the DC motor.
+            Electric current absorbed by the DC motor.
 
         Raises
         ------
@@ -1452,9 +1512,8 @@ class DCMotor(MotorBase):
             - ``electric current``,
             - ``pwm``.
 
-        ``electric current`` and ``pwm`` are listed among time variables only if they are computable indeed,
-        depending on which motor parameters was set at DC motor instantiation and whether ``pwm_control`` has been set
-        or not, respectively. \n
+        ``electric current`` is listed among time variables only if it is computable indeed, depending on which motor
+        parameters was set at DC motor instantiation. \n
         Corresponding values of the dictionary are lists of the respective time variable values. \n
         At each time iteration, the ``Solver`` appends every time variables' values to the relative list in the
         dictionary.
@@ -1488,6 +1547,35 @@ class DCMotor(MotorBase):
 
     @property
     def pwm(self) -> Union[float, int]:
+        """Pulse Width Modulation duty cycle of the supply voltage of the DC motor. \n
+        It must be a float or an integer within ``-1`` and ``1``. \n
+        In general the duty cycle can be between ``0`` and ``1``, but ``pwm`` can be between ``-1`` and ``1``, in order
+        to take into account the voltage sign with respect to the direction of rotation:
+
+        - if ``pwm`` is positive, then the supply voltage pushes the motor to rotate in the `positive` direction,
+        - if ``pwm`` is negative, then the supply voltage pushes the motor to rotate in the `negative` direction,
+        - if ``pwm`` is null, then the supply voltage is null to and the motor does not develop any driving torque.
+
+        The ``pwm`` value has an impact on the ``driving_torque`` developed and the ``electric_current`` absorbed by
+        the DC motor.
+
+        Returns
+        -------
+        float or int
+            Pulse Width Modulation duty cycle of the supply voltage of the DC motor.
+
+        Raises
+        ------
+        TypeError
+            If ``pwm`` is not a float or an integer.
+        ValueError
+            If ``pwm`` is not within ``-1`` and ``1``.
+
+        See Also
+        --------
+        :py:meth:`compute_torque`
+        :py:meth:`compute_electric_current`
+        """
         return self.__pwm
 
     @pwm.setter
