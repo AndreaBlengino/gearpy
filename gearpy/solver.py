@@ -24,7 +24,8 @@ class Solver:
     TypeError
         - If ``transmission`` is not an instance of ``Transmission``,
         - if the first element in ``transmission`` is not an instance of ``MotorBase``,
-        - if an element of ``transmission`` is not an instance of ``RotatingObject``.
+        - if an element of ``transmission`` is not an instance of ``RotatingObject``,
+        - if ``motor_control`` is not an instance of ``MotorControlBase``.
     ValueError
         If ``transmission.chain`` is an empty tuple.
     """
@@ -49,16 +50,20 @@ class Solver:
 
     def run(self, time_discretization: TimeInterval, simulation_time: TimeInterval):
         """Runs the mechanical transmission simulation. \n
-        Firstly it computes the whole mechanical transmission equivalent moment of inertia with respect to the last
-        gear, by multiplying each element's moment of inertia, starting from the motor, by it gear ratio with respect to
-        the following element in the transmission chain and sum them up. \n
-        Then for each time step and for each mechanical transmission element, it computes the angular position and
-        angular speed, from the last element in the transmission chain to the first one. Then it computes driving
-        torque, load load torque, net torque, electrical current for motors (if computable), tangential force, bending
-        stress and contact stress for gears (if computable) and finally it computes the angular acceleration of each
-        mechanical transmission element. \n
-        Finally, for each time step it performs a time integration to compute angular position and speed of the last
-        element in the transmission chain.
+        The simulation is performed in several steps:
+
+        - it computes the whole mechanical transmission equivalent moment of inertia with respect to the last
+          gear, by multiplying each element's moment of inertia, starting from the motor, by it gear ratio with respect
+          to the following element in the transmission chain and sum them up
+        - for each time step and for each mechanical transmission element, it computes:
+
+          - the angular position and angular speed, from the last element in the transmission chain to the first one
+          - the driving torque, load load torque, net torque, electrical current for motors (if computable), tangential
+            force, bending stress and contact stress for gears (if computable)
+          - the angular acceleration of each mechanical transmission element.
+
+        - for each time step it performs a time integration to compute angular position and speed of the last element in
+          the transmission chain.
 
         Parameters
         ----------
@@ -80,7 +85,7 @@ class Solver:
 
         Notes
         -----
-        If ``transmission.chain`` is an empty list, it perform the simulation starting the time from ``0 sec``;
+        If ``transmission.chain.time`` is an empty list, it perform the simulation starting the time from ``0 sec``;
         otherwise it concatenates another simulation to existing values of time and time variables.
         """
         if not isinstance(time_discretization, TimeInterval):
