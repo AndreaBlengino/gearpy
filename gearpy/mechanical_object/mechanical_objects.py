@@ -874,7 +874,7 @@ class SpurGear(GearBase):
 
     def update_time_variables(self) -> None:
         """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
-        dictionary) to corresponding list (value of the dictionary). \n
+        dictionary) to corresponding list (value of the dictionary).
 
         See Also
         --------
@@ -1531,7 +1531,7 @@ class DCMotor(MotorBase):
 
     def update_time_variables(self) -> None:
         """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
-        dictionary) to corresponding list (value of the dictionary). \n
+        dictionary) to corresponding list (value of the dictionary).
 
         See Also
         --------
@@ -1675,7 +1675,7 @@ class Flywheel(RotatingObject):
     @driven_by.setter
     def driven_by(self, driven_by: RotatingObject):
         if not isinstance(driven_by, RotatingObject):
-            raise TypeError(f"Parameter 'driven_by' must be a {RotatingObject.__name__!r}")
+            raise TypeError(f"Parameter 'driven_by' must be a {RotatingObject.__name__!r}.")
 
         self.__driven_by = driven_by
 
@@ -1698,7 +1698,7 @@ class Flywheel(RotatingObject):
     @drives.setter
     def drives(self, drives: RotatingObject):
         if not isinstance(drives, RotatingObject):
-            raise TypeError(f"Parameter 'drives' must be a {RotatingObject.__name__!r}")
+            raise TypeError(f"Parameter 'drives' must be a {RotatingObject.__name__!r}.")
 
         self.__drives = drives
 
@@ -1864,7 +1864,7 @@ class Flywheel(RotatingObject):
         TypeError
             If ``master_gear_ratio`` is not a float.
         ValueError
-            If ``master_gear_ratio`` is not positive.
+            If ``master_gear_ratio`` is negative or null.
         """
         return self.__master_gear_ratio
 
@@ -1941,9 +1941,7 @@ class Flywheel(RotatingObject):
 
     def update_time_variables(self) -> None:
         """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
-        dictionary) to corresponding list (value of the dictionary). \n
-        Time variables are ``angular_position``, ``angular_speed``, ``angular_acceleration``, ``torque``,
-        ``driving_torque`` and ``load_torque`` of the flywheel.
+        dictionary) to corresponding list (value of the dictionary).
 
         See Also
         --------
