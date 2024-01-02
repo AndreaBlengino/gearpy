@@ -27,9 +27,9 @@ class SpurGear(GearBase):
     :py:attr:`lewis_factor` : float
         Factor used to compute stresses on the gear tooth.
     :py:attr:`driven_by` : RotatingObject
-        Rotating object that drives the gear, for example a motor or another gear.
+        Rotating object that drives the gear, for example a motor, a flywheel or another gear.
     :py:attr:`drives` : RotatingObject
-        Rotating object driven by the gear, it can be another gear.
+        Rotating object driven by the gear, it can be a flywheel or another gear.
     :py:attr:`master_gear_ratio` : float
         Gear ratio of the mating between the gear and its driving gear.
     :py:attr:`master_gear_efficiency` : float or int
@@ -200,17 +200,29 @@ class SpurGear(GearBase):
         -------
         Length
             Face width of the gear.
+
+        Raises
+        ------
+        TypeError
+            If ``face_width`` is not an instance of ``Length``.
         """
         return super().face_width
 
     @property
     def elastic_modulus(self) -> Optional[Stress]:
-        """Elastic modulus of the material of the gear. It must be an instance of ``Stress``.
+        """Elastic modulus of the material of the gear. It must be an instance of ``Stress``. It must be positive.
 
         Returns
         -------
         Stress
             Elastic modulus of the material of the gear.
+
+        Raises
+        ------
+        TypeError
+            If ``elastic_modulus`` is not an instance of ``Stress``.
+        ValueError
+            If ``elastic_modulus`` value is negative or null.
         """
         return super().elastic_modulus
 
@@ -230,7 +242,8 @@ class SpurGear(GearBase):
 
     @property
     def driven_by(self) -> RotatingObject:
-        """Rotating object that drives the gear, for example a motor or another gear. It must be a ``RotatingObject``.
+        """Rotating object that drives the gear, for example a motor, a flywheel or another gear. It must be a
+        ``RotatingObject``.
 
         Returns
         -------
@@ -250,7 +263,7 @@ class SpurGear(GearBase):
 
     @property
     def drives(self) -> RotatingObject:
-        """Rotating object driven by the gear, it can be another gear. It must be a ``RotatingObject``.
+        """Rotating object driven by the gear, it can be a flywheel or another gear. It must be a ``RotatingObject``.
 
         Returns
         -------
@@ -286,7 +299,7 @@ class SpurGear(GearBase):
         TypeError
             If ``master_gear_ratio`` is not a float.
         ValueError
-            If ``master_gear_ratio`` is not positive.
+            If ``master_gear_ratio`` is negative or null.
         """
         return super().master_gear_ratio
 
@@ -322,8 +335,8 @@ class SpurGear(GearBase):
     @property
     def mating_role(self) -> Role:
         """Role of the gear in the gear mating. To set this parameter use ``add_gear_mating``. \n
-        If the gear drives the mate, then it is the "master" gear and its role is ``MatingMaster``, otherwise it is the
-        "slave" one and its role is ``MatingSlave``.
+        If the gear drives the mate one, then it is the "master" gear and its role is ``MatingMaster``, otherwise it is
+        the "slave" one and its role is ``MatingSlave``.
 
         Returns
         -------
@@ -436,7 +449,6 @@ class SpurGear(GearBase):
 
     @torque.setter
     def torque(self, torque: Torque):
-
         super(SpurGear, type(self)).torque.fset(self, torque)
 
     @property
