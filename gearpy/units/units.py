@@ -86,11 +86,11 @@ class AngularPosition(UnitBase):
         """Symbol of the unit of measurement for angular position. It must be a string.
         Available units are:
 
-            - ``'rad'`` for radian,
-            - ``'deg'`` for degree,
-            - ``'arcmin'`` for minute of arc,
-            - ``'armsec'`` for second of arc,
-            - ``'rot'`` for rotation.
+        - ``'rad'`` for radian,
+        - ``'deg'`` for degree,
+        - ``'arcmin'`` for minute of arc,
+        - ``'armsec'`` for second of arc,
+        - ``'rot'`` for rotation.
 
         Returns
         -------
@@ -262,11 +262,11 @@ class Angle(AngularPosition):
         """Symbol of the unit of measurement for angle. It must be a string.
         Available units are:
 
-            - ``'rad'`` for radian,
-            - ``'deg'`` for degree,
-            - ``'arcmin'`` for minute of arc,
-            - ``'armsec'`` for second of arc,
-            - ``'rot'`` for rotation.
+        - ``'rad'`` for radian,
+        - ``'deg'`` for degree,
+        - ``'arcmin'`` for minute of arc,
+        - ``'armsec'`` for second of arc,
+        - ``'rot'`` for rotation.
 
         Returns
         -------
@@ -433,15 +433,15 @@ class AngularSpeed(UnitBase):
         """Symbol of the unit of measurement for angular speed. It must be a string.
         Available units are:
 
-            - ``'rad/s'`` for radian per second,
-            - ``'rad/min'`` for radian per minute,
-            - ``'rad/h'`` for radian per hour,
-            - ``'deg/s'`` for degree per second,
-            - ``'deg/min'`` for degree per minute,
-            - ``'deg/h'`` for degree per hour,
-            - ``'rps'`` for revolutions per second,
-            - ``'rpm'`` for revolutions per minute,
-            - ``'rph'`` for revolutions per hour.
+        - ``'rad/s'`` for radian per second,
+        - ``'rad/min'`` for radian per minute,
+        - ``'rad/h'`` for radian per hour,
+        - ``'deg/s'`` for degree per second,
+        - ``'deg/min'`` for degree per minute,
+        - ``'deg/h'`` for degree per hour,
+        - ``'rps'`` for revolutions per second,
+        - ``'rpm'`` for revolutions per minute,
+        - ``'rph'`` for revolutions per hour.
 
         Returns
         -------
@@ -614,9 +614,9 @@ class AngularAcceleration(UnitBase):
         """Symbol of the unit of measurement for angular acceleration. It must be a string.
         Available units are:
 
-            - ``'rad/s^2'`` for radian per second squared,
-            - ``'deg/s^2'`` for degree per second squared,
-            - ``'rot/s^2'`` for rotation per second squared.
+        - ``'rad/s^2'`` for radian per second squared,
+        - ``'deg/s^2'`` for degree per second squared,
+        - ``'rot/s^2'`` for rotation per second squared.
 
         Returns
         -------
@@ -800,14 +800,14 @@ class InertiaMoment(UnitBase):
         """Symbol of the unit of measurement for moment of inertia. It must be a string.
         Available units are:
 
-            - ``'kgm^2'`` for kilogram-square meter,
-            - ``'kgdm^2'`` for kilogram-square decimeter,
-            - ``'kgcm^2'`` for kilogram-square centimeter,
-            - ``'kgmm^2'`` for kilogram-square millimeter,
-            - ``'gm^2'`` for gram-square meter,
-            - ``'gdm^2'`` for gram-square decimeter,
-            - ``'gcm^2'`` for gram-square centimeter,
-            - ``'gmm^2'`` for gram-square millimeter.
+        - ``'kgm^2'`` for kilogram-square meter,
+        - ``'kgdm^2'`` for kilogram-square decimeter,
+        - ``'kgcm^2'`` for kilogram-square centimeter,
+        - ``'kgmm^2'`` for kilogram-square millimeter,
+        - ``'gm^2'`` for gram-square meter,
+        - ``'gdm^2'`` for gram-square decimeter,
+        - ``'gcm^2'`` for gram-square centimeter,
+        - ``'gmm^2'`` for gram-square millimeter.
 
         Returns
         -------
@@ -992,23 +992,23 @@ class Torque(UnitBase):
         """Symbol of the unit of measurement for Torque. It must be a string.
         Available units are:
 
-            - ``'Nm'`` for newton-meter,
-            - ``'mNm'`` for milli-newton-meter,
-            - ``'mNdm'`` for milli-newton-decimeter,
-            - ``'mNcm'`` for milli-newton-centimeter,
-            - ``'mNmm'`` for milli-newton-millimeter,
-            - ``'kNm'`` for kilo-newton-meter,
-            - ``'kNdm'`` for kilo-newton-decimeter,
-            - ``'kNcm'`` for kilo-newton-centimeter,
-            - ``'kNmm'`` for kilo-newton-millimeter,
-            - ``'kgfm'`` for kilogram force-meter,
-            - ``'kgfdm'`` for kilogram force-decimeter,
-            - ``'kgfcm'`` for kilogram force-centimeter,
-            - ``'kgfmm'`` for kilogram force-millimeter,
-            - ``'gfm'`` for gram force-meter,
-            - ``'gfdm'`` for gram force-decimeter,
-            - ``'gfcm'`` for gram force-centimeter,
-            - ``'gfmm'`` for gram force-millimeter.
+        - ``'Nm'`` for newton-meter,
+        - ``'mNm'`` for milli-newton-meter,
+        - ``'mNdm'`` for milli-newton-decimeter,
+        - ``'mNcm'`` for milli-newton-centimeter,
+        - ``'mNmm'`` for milli-newton-millimeter,
+        - ``'kNm'`` for kilo-newton-meter,
+        - ``'kNdm'`` for kilo-newton-decimeter,
+        - ``'kNcm'`` for kilo-newton-centimeter,
+        - ``'kNmm'`` for kilo-newton-millimeter,
+        - ``'kgfm'`` for kilogram force-meter,
+        - ``'kgfdm'`` for kilogram force-decimeter,
+        - ``'kgfcm'`` for kilogram force-centimeter,
+        - ``'kgfmm'`` for kilogram force-millimeter,
+        - ``'gfm'`` for gram force-meter,
+        - ``'gfdm'`` for gram force-decimeter,
+        - ``'gfcm'`` for gram force-centimeter,
+        - ``'gfmm'`` for gram force-millimeter.
 
         Returns
         -------
@@ -1187,10 +1187,10 @@ class Time(UnitBase):
         """Symbol of the unit of measurement for time. It must be a string.
         Available units are:
 
-            - ``'sec'`` for second,
-            - ``'min'`` for minute,
-            - ``'hour'`` for hour,
-            - ``'ms'`` for millisecond.
+        - ``'sec'`` for second,
+        - ``'min'`` for minute,
+        - ``'hour'`` for hour,
+        - ``'ms'`` for millisecond.
 
         Returns
         -------
@@ -1362,10 +1362,10 @@ class TimeInterval(Time):
         """Symbol of the unit of measurement for time interval. It must be a string.
         Available units are:
 
-            - ``'sec'`` for second,
-            - ``'min'`` for minute,
-            - ``'hour'`` for hour,
-            - ``'ms'`` for millisecond.
+        - ``'sec'`` for second,
+        - ``'min'`` for minute,
+        - ``'hour'`` for hour,
+        - ``'ms'`` for millisecond.
 
         Returns
         -------
@@ -1530,10 +1530,10 @@ class Length(UnitBase):
         """Symbol of the unit of measurement for length. It must be a string.
         Available units are:
 
-            - ``'m'`` for meter,
-            - ``'dm'`` for decimeter,
-            - ``'cm'`` for centimeter,
-            - ``'mm'`` for millimeter.
+        - ``'m'`` for meter,
+        - ``'dm'`` for decimeter,
+        - ``'cm'`` for centimeter,
+        - ``'mm'`` for millimeter.
 
         Returns
         -------
@@ -1705,10 +1705,10 @@ class Surface(UnitBase):
         """Symbol of the unit of measurement for surface. It must be a string.
         Available units are:
 
-            - ``'m^2'`` for square meter,
-            - ``'dm^2'`` for square decimeter,
-            - ``'cm^2'`` for square centimeter,
-            - ``'mm^2'`` for square millimeter.
+        - ``'m^2'`` for square meter,
+        - ``'dm^2'`` for square decimeter,
+        - ``'cm^2'`` for square centimeter,
+        - ``'mm^2'`` for square millimeter.
 
         Returns
         -------
@@ -1880,11 +1880,11 @@ class Force(UnitBase):
         """Symbol of the unit of measurement for force. It must be a string.
         Available units are:
 
-            - ``'N'`` for newton,
-            - ``'mN'`` for milli-newton,
-            - ``'kN'`` for kilo-newton,
-            - ``'kgf'`` for kilogram force,
-            - ``'gf'`` for gram force.
+        - ``'N'`` for newton,
+        - ``'mN'`` for milli-newton,
+        - ``'kN'`` for kilo-newton,
+        - ``'kgf'`` for kilogram force,
+        - ``'gf'`` for gram force.
 
         Returns
         -------
@@ -2051,10 +2051,10 @@ class Stress(UnitBase):
         """Symbol of the unit of measurement for stress. It must be a string.
         Available units are:
 
-            - ``'Pa'`` for pascal,
-            - ``'kPa'`` for kilo-pascal,
-            - ``'MPa'`` for mega-pascal,
-            - ``'GPa'`` for giga-pascal.
+        - ``'Pa'`` for pascal,
+        - ``'kPa'`` for kilo-pascal,
+        - ``'MPa'`` for mega-pascal,
+        - ``'GPa'`` for giga-pascal.
 
         Returns
         -------
@@ -2220,9 +2220,9 @@ class Current(UnitBase):
         """Symbol of the unit of measurement for electrical current. It must be a string.
         Available units are:
 
-            - ``'A'`` for ampere,
-            - ``'mA'`` for milli-ampere,
-            - ``'uA'`` for micro-ampere.
+        - ``'A'`` for ampere,
+        - ``'mA'`` for milli-ampere,
+        - ``'uA'`` for micro-ampere.
 
         Returns
         -------

@@ -706,13 +706,13 @@ class SpurGear(GearBase):
 
         where:
 
-          - :math:`F_t` is the tangential force applied on the tooth,
-          - :math:`b` is the gear face width,
-          - :math:`\alpha` is the pressure angle of the gear, always equal to 20 degrees,
-          - :math:`D_1` is the gear reference diameter,
-          - :math:`D_2` is the mating gear reference diameter,
-          - :math:`E_1` is the gear elastic modulus,
-          - :math:`E_2` is the mating gear elastic modulus.
+        - :math:`F_t` is the tangential force applied on the tooth,
+        - :math:`b` is the gear face width,
+        - :math:`\alpha` is the pressure angle of the gear, always equal to 20 degrees,
+        - :math:`D_1` is the gear reference diameter,
+        - :math:`D_2` is the mating gear reference diameter,
+        - :math:`E_1` is the gear elastic modulus,
+        - :math:`E_2` is the mating gear elastic modulus.
 
         See Also
         --------
@@ -845,15 +845,15 @@ class SpurGear(GearBase):
         """Time variables of the gear. Each time variable is stored as a dictionary key-value pair. The available time
         variables are:
 
-            - ``angular position``,
-            - ``angular speed``,
-            - ``angular acceleration``,
-            - ``torque``,
-            - ``driving torque``,
-            - ``load torque``,
-            - ``tangential force``,
-            - ``bending stress``,
-            - ``contact stress``.
+        - ``angular position``,
+        - ``angular speed``,
+        - ``angular acceleration``,
+        - ``torque``,
+        - ``driving torque``,
+        - ``load torque``,
+        - ``tangential force``,
+        - ``bending stress``,
+        - ``contact stress``.
 
         ``tangential force``, ``bending stress`` and ``contact stress`` are listed among time variables only if they are
         computable indeed, depending on which gear parameters are set at gear instantiation. \n
@@ -1262,10 +1262,10 @@ class DCMotor(MotorBase):
 
         where:
 
-            - :math:`T` is the DC motor developed driving torque,
-            - :math:`\dot{\theta}` is the actual DC motor angular speed,
-            - :math:`T_{max}^D` is the DC motor maximum torque developed by the DC motor keeping into account ``pwm``,
-            - :math:`\dot{\theta}_0^D` is the DC motor no load angular speed keeping into account ``pwm``.
+        - :math:`T` is the DC motor developed driving torque,
+        - :math:`\dot{\theta}` is the actual DC motor angular speed,
+        - :math:`T_{max}^D` is the DC motor maximum torque developed by the DC motor keeping into account ``pwm``,
+        - :math:`\dot{\theta}_0^D` is the DC motor no load angular speed keeping into account ``pwm``.
 
         The maximum torque can be computed as:
 
@@ -1279,11 +1279,11 @@ class DCMotor(MotorBase):
 
         where:
 
-            - :math:`D` is the DC motor supply voltage PWM duty cycle (``pwm``),
-            - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
-            - :math:`i_{max}` is the DC motor maximum electric current (``maximum_electric_current``),
-            - :math:`i_0` is the DC motor no load electric current (``no_load_electric_current``),
-            - :math:`\dot{\theta}_0` is the DC motor no load angular speed (``no_load_speed``).
+        - :math:`D` is the DC motor supply voltage PWM duty cycle (``pwm``),
+        - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
+        - :math:`i_{max}` is the DC motor maximum electric current (``maximum_electric_current``),
+        - :math:`i_0` is the DC motor no load electric current (``no_load_electric_current``),
+        - :math:`\dot{\theta}_0` is the DC motor no load angular speed (``no_load_speed``).
 
         If the ``pwm`` is lower than a critical threshold, then the motor cannot develop any torque, so the
         ``driving_torque`` will be null. The critical ``pwm`` value can be computed as:
@@ -1387,11 +1387,11 @@ class DCMotor(MotorBase):
 
         where:
 
-            - :math:`i` is the electric current absorbed by the DC motor,
-            - :math:`T` is the DC motor developed driving torque,
-            - :math:`i_{max}^D` is the maximum electric current absorbed by the DC motor keeping into account ``pwm``,
-            - :math:`i_0` is the no load electric current absorbed by the DC motor (``no_load_electric_current``),
-            - :math:`T_{max}^D` is the DC motor maximum torque developed by the DC motor keeping into account ``pwm``.
+        - :math:`i` is the electric current absorbed by the DC motor,
+        - :math:`T` is the DC motor developed driving torque,
+        - :math:`i_{max}^D` is the maximum electric current absorbed by the DC motor keeping into account ``pwm``,
+        - :math:`i_0` is the no load electric current absorbed by the DC motor (``no_load_electric_current``),
+        - :math:`T_{max}^D` is the DC motor maximum torque developed by the DC motor keeping into account ``pwm``.
 
         The maximum torque can be computed as:
 
@@ -1405,10 +1405,10 @@ class DCMotor(MotorBase):
 
         where:
 
-            - :math:`D` is the DC motor supply voltage PWM duty cycle (``pwm``),
-            - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
-            - :math:`i_{max}` is the DC motor maximum electric current (``maximum_electric_current``),
-            - :math:`i_0` is the DC motor no load electric current (``no_load_electric_current``).
+        - :math:`D` is the DC motor supply voltage PWM duty cycle (``pwm``),
+        - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
+        - :math:`i_{max}` is the DC motor maximum electric current (``maximum_electric_current``),
+        - :math:`i_0` is the DC motor no load electric current (``no_load_electric_current``).
 
         If the ``pwm`` is lower than a critical threshold, then the motor cannot develop any torque, so the
         ``electrical_current`` will depend only on ``pwm`` value. The critical ``pwm`` value can be computed as:
@@ -1503,14 +1503,14 @@ class DCMotor(MotorBase):
         """Time variables of the DC motor. Each time variable is stored as a dictionary key-value pair. The available
         time variables are:
 
-            - ``angular position``,
-            - ``angular speed``,
-            - ``angular acceleration``,
-            - ``torque``,
-            - ``driving torque``,
-            - ``load torque``,
-            - ``electric current``,
-            - ``pwm``.
+        - ``angular position``,
+        - ``angular speed``,
+        - ``angular acceleration``,
+        - ``torque``,
+        - ``driving torque``,
+        - ``load torque``,
+        - ``electric current``,
+        - ``pwm``.
 
         ``electric current`` is listed among time variables only if it is computable indeed, depending on which motor
         parameters was set at DC motor instantiation. \n
@@ -1917,12 +1917,12 @@ class Flywheel(RotatingObject):
         """Time variables of the flywheel. Each time variable is stored as a dictionary key-value pair. The available
         time variables are:
 
-            - ``angular_position``,
-            - ``angular_speed``,
-            - ``angular_acceleration``,
-            - ``torque``,
-            - ``driving_torque``,
-            - ``load_torque``.
+        - ``angular_position``,
+        - ``angular_speed``,
+        - ``angular_acceleration``,
+        - ``torque``,
+        - ``driving_torque``,
+        - ``load_torque``.
 
         Corresponding values of the dictionary are lists of the respective time variable values. \n
         At each time iteration, the ``Solver`` appends every time variables' values to the relative list in the
