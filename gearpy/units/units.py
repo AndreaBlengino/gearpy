@@ -30,7 +30,7 @@ class AngularPosition(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -159,7 +159,7 @@ class AngularPosition(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -219,7 +219,7 @@ class Angle(AngularPosition):
         super().__mul__(other = other)
 
         if other < 0:
-            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+            raise ValueError('Cannot perform a multiplication by a negative number.')
 
         return Angle(value = self.__value*other, unit = self.__unit)
 
@@ -227,7 +227,7 @@ class Angle(AngularPosition):
         super().__rmul__(other = other)
 
         if other < 0:
-            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+            raise ValueError('Cannot perform a multiplication by a negative number.')
 
         return Angle(value = self.__value*other, unit = self.__unit)
 
@@ -253,7 +253,7 @@ class Angle(AngularPosition):
         TypeError
             If ``value`` is not a float or an integer.
         ValueError
-            If ``value`` is not positive.
+            If ``value`` is negative.
         """
         return super().value
 
@@ -372,7 +372,7 @@ class AngularSpeed(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -512,7 +512,7 @@ class AngularSpeed(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -552,7 +552,7 @@ class AngularAcceleration(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -687,7 +687,7 @@ class AngularAcceleration(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -732,7 +732,7 @@ class InertiaMoment(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if value <= 0:
             raise ValueError("Parameter 'value' must be positive.")
@@ -748,7 +748,7 @@ class InertiaMoment(UnitBase):
                             f'{other.__class__.__name__}.')
 
         if other <= 0:
-            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+            raise ValueError('Cannot perform a multiplication by a negative number or by zero.')
 
         return InertiaMoment(value = self.__value*other, unit = self.__unit)
 
@@ -760,7 +760,7 @@ class InertiaMoment(UnitBase):
                             f'{self.__class__.__name__}.')
 
         if other <= 0:
-            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+            raise ValueError('Cannot perform a multiplication by a negative number or by zero.')
 
         return InertiaMoment(value = self.__value*other, unit = self.__unit)
 
@@ -791,7 +791,7 @@ class InertiaMoment(UnitBase):
         TypeError
             If ``value`` is not a float or an integer.
         ValueError
-            If ``value`` is not positive.
+            If ``value`` is negative or null.
         """
         return self.__value
 
@@ -878,7 +878,7 @@ class InertiaMoment(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -932,7 +932,7 @@ class Torque(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -1079,7 +1079,7 @@ class Torque(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -1120,7 +1120,7 @@ class Time(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -1259,7 +1259,7 @@ class Time(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -1319,7 +1319,7 @@ class TimeInterval(Time):
         super().__mul__(other = other)
 
         if other <= 0:
-            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+            raise ValueError('Cannot perform a multiplication by a negative number or by zero.')
 
         return TimeInterval(value = self.__value*other, unit = self.__unit)
 
@@ -1327,7 +1327,7 @@ class TimeInterval(Time):
         super().__rmul__(other = other)
 
         if other <= 0:
-            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+            raise ValueError('Cannot perform a multiplication by a negative number or by zero.')
 
         return TimeInterval(value = self.__value*other, unit = self.__unit)
 
@@ -1353,7 +1353,7 @@ class TimeInterval(Time):
         TypeError
             If ``value`` is not a float or an integer.
         ValueError
-            If ``value`` is not positive.
+            If ``value`` is negative or null.
         """
         return super().value
 
@@ -1466,7 +1466,7 @@ class Length(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if value <= 0:
             raise ValueError("Parameter 'value' must be positive.")
@@ -1521,7 +1521,7 @@ class Length(UnitBase):
         TypeError
             If ``value`` is not a float or an integer.
         ValueError
-            If ``value`` is not positive.
+            If ``value`` is negative or null.
         """
         return self.__value
 
@@ -1603,7 +1603,7 @@ class Length(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -1644,7 +1644,7 @@ class Surface(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if value <= 0:
             raise ValueError("Parameter 'value' must be positive.")
@@ -1696,7 +1696,7 @@ class Surface(UnitBase):
         TypeError
             If ``value`` is not a float or an integer.
         ValueError
-            If ``value`` is not positive.
+            If ``value`` is negative or null.
         """
         return self.__value
 
@@ -1779,7 +1779,7 @@ class Surface(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -1821,7 +1821,7 @@ class Force(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -1954,7 +1954,7 @@ class Force(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -1995,7 +1995,7 @@ class Stress(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -2124,7 +2124,7 @@ class Stress(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -2164,7 +2164,7 @@ class Current(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -2292,7 +2292,7 @@ class Current(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
