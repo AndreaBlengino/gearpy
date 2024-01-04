@@ -39,7 +39,7 @@ class Transmission:
     TypeError
         If ``motor`` parameter is not an instance of ``MotorBase``.
     ValueError
-        If ``motor.drives`` is ``None``.
+        If ``motor`` is not connected to any other element.
     NameError
         If two or more elements in the transmission chain share the same name.
     """
@@ -156,11 +156,12 @@ class Transmission:
                  current_unit: Optional[str] = 'A',
                  print_data: Optional[bool] = True) -> pd.DataFrame:
         """Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
-        ``target_time``. The computed time variables are organized in a ``pandas.DataFrame``, returned by the method.
-        Each element in the transmission chain is a row of the DataFrame, while the columns are the time variables
-        angular position, angular speed, angular acceleration, torque, driving torque and load torque. The motor can
-        have additional variables electric current and pwm, while gears can have additional parameters tangential
-        force, bending stress and contact stress, depending on instantiation parameters. \n
+        ``target_time``. \n
+        It returns a ``pandas.DataFrame`` with the computed time variables. Each element in the transmission chain is a
+        row of the DataFrame, while the columns are the time variables ``'angular position'``, ``'angular speed'``,
+        ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``. The motor can have
+        additional variables ``'electric current'`` and ``'pwm'``, while gears can have additional parameters
+        ``'tangential force'``, ``'bending stress'`` and ``'contact stress'``, depending on instantiation parameters. \n
         It is possible to select the variables to be printed with the ``variables`` list. \n
         Each time variable is converted to the relative unit passed as optional parameter. \n
         If the ``target_time`` is not among simulated time steps in the ``time`` list, it computes a linear
@@ -372,16 +373,14 @@ class Transmission:
              time_unit: Optional[str] = 'sec',
              figsize: Optional[tuple] = None):
         """Plots time variables for selected elements in the mechanical transmission chain. \n
-        Generates a grid of subplots, one column for each selected element of the transmission chain and one rows for
+        It generates a grid of subplots, one column for each selected element of the transmission chain and one rows for
         each selected time variable. \n
         The available elements are those in ``chain`` tuple and the available variables are: ``'angular position'``,
         ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``. The
         motor can have additional variables ``electric current`` and ``pwm`` while gears can have additional variables
         ``tangential force``, ``bending stress`` and ``contact stress``, depending on instantiation parameters. \n
-        The kinematic variables position, speed and acceleration are separately plotted in the first three rows of the
-        grid, while torques are grouped together in the fourth row, tangential force is plotted in the fifth row,
-        bending and contact stress are grouped together in the sixth row, electric current in the seventh one and
-        motor pwm in the last one. \n
+        The time variables are plotted in the described order, from the top row to the bottom one; torques are grouped
+        together in a single row as well as stresses are grouped together.
         Plotted values' units are managed with optional parameters. \n
         Elements to be plotted can be passed as instances or names (strings) in a list.
 
