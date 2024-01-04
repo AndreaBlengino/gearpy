@@ -21,9 +21,10 @@ def dc_motor_characteristics_animation(motor: DCMotor,
                                        show: Optional[bool] = True) -> FuncAnimation:
     """Generates an animation of a DC motor torque-speed and torque-current characteristic curves and relative working
     points during the simulation. \n
-    The characteristic curves may be affected by the motor pulse width modulation (PWM). \n
+    Each simulated time step is a frame on the animation. \n
     It generates two subplots, one for each characteristic curve. It is possible to isolate a single characteristic to
     be plotted with optional parameters ``torque_speed_curve`` and ``torque_current_curve``. \n
+    The characteristic curves can be modified by the motor pulse width modulation ``pwm``. \n
     Plotted values' units are managed with optional parameters ``angular_speed_unit``, ``torque_unit`` and
     ``current_unit``. \n
     Aesthetic parameters are managed with optional parameters ``figsize``, ``line_color``, ``marker_color``,

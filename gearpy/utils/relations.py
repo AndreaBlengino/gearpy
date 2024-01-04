@@ -30,10 +30,10 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
         - if ``master`` and ``slave`` have different values for ``module``.
     """
     if not isinstance(master, GearBase):
-        raise TypeError("Parameter 'master' must be an instance of GearBase.")
+        raise TypeError(f"Parameter 'master' must be an instance of {GearBase.__name__!r}.")
 
     if not isinstance(slave, GearBase):
-        raise TypeError("Parameter 'slave' must be an instance of GearBase.")
+        raise TypeError(f"Parameter 'slave' must be an instance of {GearBase.__name__!r}.")
 
     if not isinstance(efficiency, float) and not isinstance(efficiency, int):
         raise TypeError("Parameter 'efficiency' must be a float or an integer.")
@@ -74,10 +74,11 @@ def add_fixed_joint(master: Union[MotorBase, GearBase, Flywheel], slave: Union[G
         - it ``slave`` is not an instance of ``GearBase`` or ``Flywheel``.
     """
     if not isinstance(master, MotorBase) and not isinstance(master, GearBase) and not isinstance(master, Flywheel):
-        raise TypeError("Parameter 'master' must be an instance of MotorBase, GearBase or Flywheel.")
+        raise TypeError(f"Parameter 'master' must be an instance of {MotorBase.__name__!r}, {GearBase.__name__!r} or "
+                        f"{Flywheel.__name__!r}.")
 
     if not isinstance(slave, GearBase) and not isinstance(slave, Flywheel):
-        raise TypeError("Parameter 'slave' must be an instance of GearBase or Flywheel.")
+        raise TypeError(f"Parameter 'slave' must be an instance of {GearBase.__name__!r} or {Flywheel.__name__!r}.")
 
     master.drives = slave
     slave.driven_by = master
