@@ -2,6 +2,9 @@ rules
 =====
 
 
+.. py:module:: rules
+
+
 .. currentmodule:: gearpy.motor_control
 .. autoclass:: gearpy.motor_control.ReachAngularPosition
    :members:

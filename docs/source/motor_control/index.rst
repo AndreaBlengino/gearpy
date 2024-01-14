@@ -11,4 +11,5 @@ motor_control
 .. toctree::
    :hidden:
 
+   PWMControl/index
    rules/index
