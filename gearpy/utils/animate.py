@@ -90,6 +90,14 @@ def dc_motor_characteristics_animation(motor: DCMotor,
         - if ``torque_current_curve`` is set to ``True`` but ``motor`` cannot compute ``electric_current`` property,
         - if ``figsize`` has not exactly two elements: one for width and the other for height,
         - if ``padding`` is negative.
+
+    See Also
+    --------
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.angular_speed`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.driving_torque`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.electric_current`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
     """
     if not isinstance(motor, DCMotor):
         raise TypeError(f"Parameter 'motor' must be an instance of {DCMotor.__name__!r}.")

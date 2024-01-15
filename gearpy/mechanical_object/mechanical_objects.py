@@ -176,6 +176,10 @@ class SpurGear(GearBase):
         ------
         TypeError
             If ``module`` is not an instance of ``Length``.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Length`
         """
         return super().module
 
@@ -189,6 +193,10 @@ class SpurGear(GearBase):
         -------
         Length
             Reference diameter of the gear.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Length`
         """
         return super().reference_diameter
 
@@ -205,6 +213,10 @@ class SpurGear(GearBase):
         ------
         TypeError
             If ``face_width`` is not an instance of ``Length``.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Length`
         """
         return super().face_width
 
@@ -223,6 +235,10 @@ class SpurGear(GearBase):
             If ``elastic_modulus`` is not an instance of ``Stress``.
         ValueError
             If ``elastic_modulus`` value is negative or null.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Stress`
         """
         return super().elastic_modulus
 
@@ -254,6 +270,11 @@ class SpurGear(GearBase):
         ------
         TypeError
             If ``driven_by`` is not an instance of ``RotatingObject``.
+
+        See Also
+        --------
+        :py:func:`gearpy.utils.relations.add_gear_mating`
+        :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return super().driven_by
 
@@ -274,6 +295,11 @@ class SpurGear(GearBase):
         ------
         TypeError
             If ``drives`` is not an instance of ``RotatingObject``.
+
+        See Also
+        --------
+        :py:func:`gearpy.utils.relations.add_gear_mating`
+        :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return super().drives
 
@@ -300,6 +326,11 @@ class SpurGear(GearBase):
             If ``master_gear_ratio`` is not a float.
         ValueError
             If ``master_gear_ratio`` is negative or null.
+
+        See Also
+        --------
+        :py:func:`gearpy.utils.relations.add_gear_mating`
+        :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return super().master_gear_ratio
 
@@ -325,6 +356,11 @@ class SpurGear(GearBase):
             If ``master_gear_efficiency`` is not a float or an integer.
         ValueError
             If ``master_gear_efficiency`` is not within ``0`` and ``1``.
+
+        See Also
+        --------
+        :py:func:`gearpy.utils.relations.add_gear_mating`
+        :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return super().master_gear_efficiency
 
@@ -1013,7 +1049,8 @@ class DCMotor(MotorBase):
 
     @property
     def drives(self) -> RotatingObject:
-        """Rotating object driven by DC motor, it can be a flywheel or a gear. It must be a ``RotatingObject``.
+        """Rotating object driven by DC motor, it can be a flywheel or a gear. It must be a ``RotatingObject``. \n
+        To set this property use :py:func:`gearpy.utils.relations.add_fixed_joint`.
 
         Returns
         -------
@@ -1024,6 +1061,10 @@ class DCMotor(MotorBase):
         ------
         TypeError
             If ``drives`` is not an instance of ``RotatingObject``.
+
+        See Also
+        --------
+        :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return super().drives
 
@@ -1423,6 +1464,8 @@ class DCMotor(MotorBase):
 
         See Also
         --------
+        :py:attr:`no_load_electric_current`
+        :py:attr:`maximum_electric_current`
         :py:attr:`electric_current`
         :py:attr:`pwm`
         """
@@ -1658,7 +1701,8 @@ class Flywheel(RotatingObject):
 
     @property
     def driven_by(self) -> RotatingObject:
-        """Rotating object that drives the flywheel, for example a motor or a gear. It must be a ``RotatingObject``.
+        """Rotating object that drives the flywheel, for example a motor or a gear. It must be a ``RotatingObject``. \n
+        To set this property use :py:func:`gearpy.utils.relations.add_fixed_joint`.
 
         Returns
         -------
@@ -1669,6 +1713,10 @@ class Flywheel(RotatingObject):
         ------
         TypeError
             If ``driven_by`` is not an instance of ``RotatingObject``.
+
+        See Also
+        --------
+        :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return self.__driven_by
 
@@ -1681,7 +1729,8 @@ class Flywheel(RotatingObject):
 
     @property
     def drives(self) -> RotatingObject:
-        """Rotating object driven by the flywheel, it can be a gear. It must be a ``RotatingObject``.
+        """Rotating object driven by the flywheel, it can be a gear. It must be a ``RotatingObject``. \n
+        To set this property use :py:func:`gearpy.utils.relations.add_fixed_joint`.
 
         Returns
         -------
@@ -1692,6 +1741,10 @@ class Flywheel(RotatingObject):
         ------
         TypeError
             If ``drives`` is not an instance of ``RotatingObject``.
+
+        See Also
+        --------
+        :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return self.__drives
 
@@ -1865,6 +1918,10 @@ class Flywheel(RotatingObject):
             If ``master_gear_ratio`` is not a float.
         ValueError
             If ``master_gear_ratio`` is negative or null.
+
+        See Also
+        --------
+        :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return self.__master_gear_ratio
 
@@ -1888,6 +1945,10 @@ class Flywheel(RotatingObject):
         -------
         float or int
             Efficiency of the fixed joint between the flywheel and its driving rotating object.
+
+        See Also
+        --------
+        :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return self.__master_gear_efficiency
 

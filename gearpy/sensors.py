@@ -60,6 +60,10 @@ class AbsoluteRotaryEncoder:
         ------
         TypeError
             If ``unit`` is not a string.
+
+        See Also
+        --------
+        :py:func:`gearpy.units.units.AngularPosition`
         """
         if not isinstance(unit, str) and unit is not None:
             raise TypeError("Parameter 'unit' must be a string.")
@@ -127,6 +131,10 @@ class Tachometer:
         ------
         TypeError
             If ``unit`` is not a string.
+
+        See Also
+        --------
+        :py:func:`gearpy.units.units.AngularSpeed`
         """
         if not isinstance(unit, str) and unit is not None:
             raise TypeError("Parameter 'unit' must be a string.")

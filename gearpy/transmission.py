@@ -76,6 +76,12 @@ class Transmission:
         -------
         tuple
             Elements in the transmission chain.
+
+        See Also
+        --------
+        :py:class:`gearpy.mechanical_object.mechanical_objects.DCMotor`
+        :py:class:`gearpy.mechanical_object.mechanical_objects.Flywheel`
+        :py:class:`gearpy.mechanical_object.mechanical_objects.SpurGear`
         """
         return self.__chain
 
@@ -90,6 +96,11 @@ class Transmission:
         -------
         list
             List of the simulated time steps.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Time`
+        :py:class:`gearpy.solver.Solver`
         """
         return self.__time
 
@@ -106,6 +117,10 @@ class Transmission:
         ------
         TypeError
             If ``instant`` is not an instance of ``gearpy.units.Time``.
+
+        See Also
+        --------
+        :py:attr:`time`
         """
         if not isinstance(instant, Time):
             raise TypeError(f"Parameter 'instant' must be instances of {Time.__name__!r}.")
@@ -116,6 +131,13 @@ class Transmission:
     def reset(self):
         """Resets computed time variables. \n
         For each element in the mechanical transmission chain, it resets each time variables and also ``time`` property.
+
+        See Also
+        --------
+        :py:attr:`time`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
         """
         self.__time = []
 
@@ -232,6 +254,14 @@ class Transmission:
             - if ``target_time`` is outside simulation interval,
             - if ``variables`` is an empty list,
             - if an element of ``variables`` is not a valid time variable.
+
+        See Also
+        --------
+        :py:attr:`time`
+        :py:attr:`chain`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
         """
         if not all([isinstance(instant, Time) for instant in self.time]):
             raise TypeError(f"Every element of the 'time' list must be an instance of {Time.__name__!r}.")
@@ -441,6 +471,14 @@ class Transmission:
             - if ``variables`` is an empty list,
             - if an element of ``variables`` is not a valid time variable,
             - if ``figsize`` has not exactly two elements: one for width and the other for height.
+
+        See Also
+        --------
+        :py:attr:`time`
+        :py:attr:`chain`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
         """
         if elements is not None:
             if not isinstance(elements, list):

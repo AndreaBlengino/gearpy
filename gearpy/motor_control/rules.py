@@ -28,6 +28,14 @@ class ReachAngularPosition(RuleBase):
         - if ``braking_angle`` is not an instance of ``Angle``.
     ValueError
         If ``transmission.chain`` is an empty tuple.
+
+    See Also
+    --------
+    :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
+    :py:class:`gearpy.transmission.Transmission`
+    :py:class:`gearpy.units.units.AngularPosition`
+    :py:class:`gearpy.units.units.Angle`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
     """
 
     def __init__(self,
@@ -155,6 +163,13 @@ class StartProportionalToAngularPosition(RuleBase):
         - if the ``transmission`` motor cannot compute ``electric_current`` property,
         - if ``pwm_min_multiplier`` is less than or equal to ``1``,
         - if ``pwm_min`` is defined and it is negative or null.
+
+    See Also
+    --------
+    :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
+    :py:class:`gearpy.transmission.Transmission`
+    :py:class:`gearpy.units.units.AngularPosition`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
     """
 
     def __init__(self,
@@ -313,6 +328,15 @@ class StartLimitCurrent(RuleBase):
     ValueError
         - If the ``motor`` cannot compute ``electric_current`` property,
         - if ``limit_electric_current`` is negative or null.
+
+    See Also
+    --------
+    :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
+    :py:class:`gearpy.sensors.Tachometer`
+    :py:class:`gearpy.mechanical_object.mechanical_objects.DCMotor`
+    :py:class:`gearpy.units.units.AngularPosition`
+    :py:class:`gearpy.units.units.Current`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
     """
 
     def __init__(self,

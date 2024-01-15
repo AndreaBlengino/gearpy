@@ -45,6 +45,10 @@ class PWMControl(MotorControlBase):
         -------
         Transmission
             Transmission to be controlled by applying a ``pwm`` to its motor.
+
+        See Also
+        --------
+        :py:class:`gearpy.transmission.Transmission`
         """
         return super().transmission
 

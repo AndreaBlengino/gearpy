@@ -28,6 +28,11 @@ class Solver:
         - if ``motor_control`` is not an instance of ``MotorControlBase``.
     ValueError
         If ``transmission.chain`` is an empty tuple.
+
+    See Also
+    --------
+    :py:class:`gearpy.transmission.Transmission`
+    :py:class:`gearpy.motor_control.motor_control.PWMControl`
     """
     def __init__(self, transmission: Transmission, motor_control: Optional[MotorControlBase] = None):
         if not isinstance(transmission, Transmission):
@@ -87,6 +92,10 @@ class Solver:
         -----
         If ``transmission.chain.time`` is an empty list, it perform the simulation starting the time from ``0 sec``;
         otherwise it concatenates another simulation to existing values of time and time variables.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.TimeInterval`
         """
         if not isinstance(time_discretization, TimeInterval):
             raise TypeError(f"Parameter 'time_discretization' must be an instance of {TimeInterval.__name__!r}.")
