@@ -7,7 +7,6 @@ Transmission
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
 
 
 .. toctree::
