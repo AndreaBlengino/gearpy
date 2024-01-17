@@ -352,17 +352,18 @@ class Transmission:
                                                            for value in element.time_variables[variable]])
                     data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
 
-            if isinstance(element, MotorBase) and 'electric current' in variables:
-                if element.electric_current_is_computable:
-                    interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
-                                                      y = [value.to(current_unit).value
-                                                           for value in element.time_variables['electric current']])
-                    data.loc[element.name, f'electric current ({current_unit})'] = \
-                        interpolation_function(target_time.to('sec').value).take(0)
-
+            if isinstance(element, MotorBase):
                 interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
                                                   y = element.time_variables['pwm'])
                 data.loc[element.name, 'pwm'] = interpolation_function(target_time.to('sec').value).take(0)
+
+                if 'electric current' in variables:
+                    if element.electric_current_is_computable:
+                        interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
+                                                          y = [value.to(current_unit).value
+                                                               for value in element.time_variables['electric current']])
+                        data.loc[element.name, f'electric current ({current_unit})'] = \
+                            interpolation_function(target_time.to('sec').value).take(0)
 
             if isinstance(element, GearBase):
                 variable_list = []
@@ -382,6 +383,8 @@ class Transmission:
                                                       y = [value.to(unit).value
                                                            for value in element.time_variables[variable]])
                     data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
+
+        data.fillna(value = '', inplace = True)
 
         if print_data:
             print(f'Mechanical Transmission Status at Time = {target_time}')
