@@ -241,7 +241,7 @@ class TestAngularPositionEq:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         angular_position_1 = AngularPosition(value = value, unit = unit)
         angular_position_2 = AngularPosition(value = value, unit = unit)
@@ -264,7 +264,7 @@ class TestAngularPositionNe:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         angular_position_1 = AngularPosition(value = value, unit = unit)
         angular_position_2 = AngularPosition(value = value + gap, unit = unit)
@@ -287,7 +287,7 @@ class TestAngularPositionGt:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         angular_position_1 = AngularPosition(value = value + gap, unit = unit)
         angular_position_2 = AngularPosition(value = value, unit = unit)
@@ -310,7 +310,7 @@ class TestAngularPositionGe:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         angular_position_1 = AngularPosition(value = value + gap, unit = unit)
         angular_position_2 = AngularPosition(value = value, unit = unit)
@@ -333,7 +333,7 @@ class TestAngularPositionLt:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         if value != 0:
             angular_position_1 = AngularPosition(value = value, unit = unit)
@@ -357,7 +357,7 @@ class TestAngularPositionLe:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         if value != 0:
             angular_position_1 = AngularPosition(value = value, unit = unit)

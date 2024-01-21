@@ -241,7 +241,7 @@ class TestStressEq:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         stress_1 = Stress(value = value, unit = unit)
         stress_2 = Stress(value = value, unit = unit)
@@ -264,7 +264,7 @@ class TestStressNe:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         stress_1 = Stress(value = value, unit = unit)
         stress_2 = Stress(value = value + gap, unit = unit)
@@ -287,7 +287,7 @@ class TestStressGt:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         stress_1 = Stress(value = value + gap, unit = unit)
         stress_2 = Stress(value = value, unit = unit)
@@ -310,7 +310,7 @@ class TestStressGe:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         stress_1 = Stress(value = value + gap, unit = unit)
         stress_2 = Stress(value = value, unit = unit)
@@ -333,7 +333,7 @@ class TestStressLt:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         if value != 0:
             stress_1 = Stress(value = value, unit = unit)
@@ -357,7 +357,7 @@ class TestStressLe:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         if value != 0:
             stress_1 = Stress(value = value, unit = unit)

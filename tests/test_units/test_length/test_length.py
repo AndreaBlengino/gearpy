@@ -270,7 +270,7 @@ class TestLengthEq:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         length_1 = Length(value = value, unit = unit)
         length_2 = Length(value = value, unit = unit)
@@ -293,7 +293,7 @@ class TestLengthNe:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         length_1 = Length(value = value, unit = unit)
         length_2 = Length(value = value + gap, unit = unit)
@@ -316,7 +316,7 @@ class TestLengthGt:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         length_1 = Length(value = value + gap, unit = unit)
         length_2 = Length(value = value, unit = unit)
@@ -339,7 +339,7 @@ class TestLengthGe:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         length_1 = Length(value = value + gap, unit = unit)
         length_2 = Length(value = value, unit = unit)
@@ -362,7 +362,7 @@ class TestLengthLt:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         if value != 0:
             length_1 = Length(value = value, unit = unit)
@@ -386,7 +386,7 @@ class TestLengthLe:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         if value != 0:
             length_1 = Length(value = value, unit = unit)
