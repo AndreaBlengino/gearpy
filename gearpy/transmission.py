@@ -4,7 +4,12 @@ from gearpy.units import Time
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.interpolate import interp1d
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Optional
+
+
+VARIABLES_SORT_ORDER = {'angular position': 0, 'angular speed': 1, 'angular acceleration': 2, 'torque': 3,
+                        'driving torque': 4, 'load torque': 5, 'tangential force': 6, 'bending stress': 7,
+                        'contact stress': 8, 'electric current': 9, 'pwm': 10}
 
 
 class Transmission:
@@ -21,6 +26,8 @@ class Transmission:
     -------
     :py:meth:`plot`
         Plots time variables for each element in the mechanical transmission chain.
+    :py:meth:`reset`
+        Resets computed time variables.
     :py:meth:`snapshot`
         Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
         ``target_time``.
@@ -32,7 +39,7 @@ class Transmission:
     TypeError
         If ``motor`` parameter is not an instance of ``MotorBase``.
     ValueError
-        If ``motor.drives`` is ``None``.
+        If ``motor`` is not connected to any other element.
     NameError
         If two or more elements in the transmission chain share the same name.
     """
@@ -69,6 +76,12 @@ class Transmission:
         -------
         tuple
             Elements in the transmission chain.
+
+        See Also
+        --------
+        :py:class:`gearpy.mechanical_object.mechanical_objects.DCMotor`
+        :py:class:`gearpy.mechanical_object.mechanical_objects.Flywheel`
+        :py:class:`gearpy.mechanical_object.mechanical_objects.SpurGear`
         """
         return self.__chain
 
@@ -83,6 +96,11 @@ class Transmission:
         -------
         list
             List of the simulated time steps.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Time`
+        :py:class:`gearpy.solver.Solver`
         """
         return self.__time
 
@@ -99,6 +117,10 @@ class Transmission:
         ------
         TypeError
             If ``instant`` is not an instance of ``gearpy.units.Time``.
+
+        See Also
+        --------
+        :py:attr:`time`
         """
         if not isinstance(instant, Time):
             raise TypeError(f"Parameter 'instant' must be instances of {Time.__name__!r}.")
@@ -106,21 +128,63 @@ class Transmission:
         self.__time.append(instant)
 
 
+    def reset(self):
+        """Resets computed time variables. \n
+        For each element in the mechanical transmission chain, it resets each time variables and also ``time`` property.
+
+        See Also
+        --------
+        :py:attr:`time`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
+        """
+        self.__time = []
+
+        for element in self.chain:
+            element.angular_position = element.time_variables['angular position'][0]
+            element.angular_speed = element.time_variables['angular speed'][0]
+            element.angular_acceleration = element.time_variables['angular acceleration'][0]
+            element.torque = element.time_variables['torque'][0]
+            element.driving_torque = element.time_variables['driving torque'][0]
+            element.load_torque = element.time_variables['load torque'][0]
+            if isinstance(element, MotorBase):
+                if element.electric_current_is_computable:
+                    element.electric_current = element.time_variables['electric current'][0]
+                element.pwm = element.time_variables['pwm'][0]
+            if isinstance(element, GearBase):
+                if element.tangential_force_is_computable:
+                    element.tangential_force = element.time_variables['tangential force'][0]
+                    if element.bending_stress_is_computable:
+                        element.bending_stress = element.time_variables['bending stress'][0]
+                        if element.contact_stress_is_computable:
+                            element.contact_stress = element.time_variables['contact stress'][0]
+
+            for variable in element.time_variables.keys():
+                element.time_variables[variable] = []
+
+
     def snapshot(self,
                  target_time: Time,
-                 angular_position_unit: str = 'rad',
-                 angular_speed_unit: str = 'rad/s',
-                 angular_acceleration_unit: str = 'rad/s^2',
-                 torque_unit: str = 'Nm',
-                 driving_torque_unit: str = 'Nm',
-                 load_torque_unit: str = 'Nm',
-                 force_unit: str = 'N',
-                 stress_unit: str = 'MPa',
-                 print_data: bool = True) -> pd.DataFrame:
+                 variables: Optional[List[str]] = None,
+                 angular_position_unit: Optional[str] = 'rad',
+                 angular_speed_unit: Optional[str] = 'rad/s',
+                 angular_acceleration_unit: Optional[str] = 'rad/s^2',
+                 torque_unit: Optional[str] = 'Nm',
+                 driving_torque_unit: Optional[str] = 'Nm',
+                 load_torque_unit: Optional[str] = 'Nm',
+                 force_unit: Optional[str] = 'N',
+                 stress_unit: Optional[str] = 'MPa',
+                 current_unit: Optional[str] = 'A',
+                 print_data: Optional[bool] = True) -> pd.DataFrame:
         """Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
-        ``target_time``. The computed time variables are organized in a ``pandas.DataFrame``, returned by the method.
-        Each element in the transmission chain is a row of the DataFrame, while the columns are the time variables
-        angular position, angular speed, angular acceleration, torque, driving torque, load torque and tangential force.
+        ``target_time``. \n
+        It returns a ``pandas.DataFrame`` with the computed time variables. Each element in the transmission chain is a
+        row of the DataFrame, while the columns are the time variables ``'angular position'``, ``'angular speed'``,
+        ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``. The motor can have
+        additional variables ``'electric current'`` and ``'pwm'``, while gears can have additional parameters
+        ``'tangential force'``, ``'bending stress'`` and ``'contact stress'``, depending on instantiation parameters. \n
+        It is possible to select the variables to be printed with the ``variables`` list. \n
         Each time variable is converted to the relative unit passed as optional parameter. \n
         If the ``target_time`` is not among simulated time steps in the ``time`` list, it computes a linear
         interpolation from the two closest simulated time steps.
@@ -130,6 +194,8 @@ class Transmission:
         target_time : Time
             Time to which compute the mechanical transmission time variables snapshot. It must be within minimum and
             maximum simulated time steps in ``time`` parameter.
+        variables : list, optional
+            Time variables to be printed. Default is all available time variables.
         angular_position_unit : str, optional
             Symbol of the unit of measurement to which convert the angular position in the DataFrame. It must be a
             string. Default is ``'rad'``.
@@ -149,11 +215,14 @@ class Transmission:
             Symbol of the unit of measurement to which convert the load torque in the DataFrame. It must be a string.
             Default is ``'Nm'``.
         force_unit : str, optional
-            Symbol of the unit of measurement to which convert the force values in the plot. It must be a string.
+            Symbol of the unit of measurement to which convert the force values in the DataFrame. It must be a string.
             Default is ``'N'``.
         stress_unit : str, optional
-            Symbol of the unit of measurement to which convert the stress values in the plot. It must be a string.
+            Symbol of the unit of measurement to which convert the stress values in the DataFrame. It must be a string.
             Default is ``'MPa'``.
+        current_unit : str, optional
+            Symbol of the unit of measurement to which convert the electric current values in the DataFrame. It must be
+            a string. Default is ``'A'``.
         print_data : bool, optional
             Whether or not to print the computed time variables DataFrame. Default is ``True``.
 
@@ -168,6 +237,8 @@ class Transmission:
         TypeError
             - If an element of ``time`` is not an instance of ``Time``,
             - if ``target_time`` is not an instance of ``Time``,
+            - if ``variables`` is not a list,
+            - if an element of ``variables`` is not a string,
             - if ``angular_position_unit`` is not a string,
             - if ``angular_speed_unit`` is not a string,
             - if ``angular_acceleration_unit`` is not a string,
@@ -176,9 +247,21 @@ class Transmission:
             - if ``load_torque_unit`` is not a string,
             - if ``force_unit`` is not a string,
             - if ``stress_unit`` is not a string,
+            - if ``current_unit`` is not a string,
             - if ``print_data`` is not a bool.
         ValueError
-            If ``time`` is an empty list.
+            - If ``time`` is an empty list,
+            - if ``target_time`` is outside simulation interval,
+            - if ``variables`` is an empty list,
+            - if an element of ``variables`` is not a valid time variable.
+
+        See Also
+        --------
+        :py:attr:`time`
+        :py:attr:`chain`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
         """
         if not all([isinstance(instant, Time) for instant in self.time]):
             raise TypeError(f"Every element of the 'time' list must be an instance of {Time.__name__!r}.")
@@ -189,63 +272,109 @@ class Transmission:
         if not isinstance(target_time, Time):
             raise TypeError(f"Parameter 'target_time' must be an instance of {Time.__name__!r}.")
 
+        if (target_time < min(self.time)) or (target_time > max(self.time)):
+            raise ValueError(f"Parameter 'target_time' must be within simulation interval "
+                             f"{min(self.time)} - {max(self.time)}.")
+
+        if variables is not None:
+            if not isinstance(variables, list):
+                raise TypeError("Parameter 'variables' must be a list.")
+
+            if not variables:
+                raise ValueError("Parameter 'variables' cannot be an empty list.")
+
+            valid_variables = []
+            for element in self.chain:
+                valid_variables.extend(element.time_variables.keys())
+            valid_variables = list(set(valid_variables))
+            valid_variables.sort(key = lambda variable: VARIABLES_SORT_ORDER[variable])
+            for variable in variables:
+                if not isinstance(variable, str):
+                    raise TypeError("Each element of 'variables' must be a string.")
+
+                if variable not in valid_variables:
+                    raise ValueError(f"Invalid variable {variable!r}. Available variables are: {valid_variables}.")
+
         if not isinstance(angular_position_unit, str):
-            raise TypeError(f"Parameter 'angular_position_unit' must be a string.")
+            raise TypeError("Parameter 'angular_position_unit' must be a string.")
 
         if not isinstance(angular_speed_unit, str):
-            raise TypeError(f"Parameter 'angular_speed_unit' must be a string.")
+            raise TypeError("Parameter 'angular_speed_unit' must be a string.")
 
         if not isinstance(angular_acceleration_unit, str):
-            raise TypeError(f"Parameter 'angular_acceleration_unit' must be a string.")
+            raise TypeError("Parameter 'angular_acceleration_unit' must be a string.")
 
         if not isinstance(torque_unit, str):
-            raise TypeError(f"Parameter 'torque_unit' must be a string.")
+            raise TypeError("Parameter 'torque_unit' must be a string.")
 
         if not isinstance(driving_torque_unit, str):
-            raise TypeError(f"Parameter 'driving_torque_unit' must be a string.")
+            raise TypeError("Parameter 'driving_torque_unit' must be a string.")
 
         if not isinstance(load_torque_unit, str):
-            raise TypeError(f"Parameter 'load_torque_unit' must be a string.")
+            raise TypeError("Parameter 'load_torque_unit' must be a string.")
 
         if not isinstance(force_unit, str):
-            raise TypeError(f"Parameter 'force_unit' must be a string.")
+            raise TypeError("Parameter 'force_unit' must be a string.")
 
         if not isinstance(stress_unit, str):
-            raise TypeError(f"Parameter 'stress_unit' must be a string.")
+            raise TypeError("Parameter 'stress_unit' must be a string.")
+
+        if not isinstance(current_unit, str):
+            raise TypeError("Parameter 'current_unit' must be a string.")
 
         if not isinstance(print_data, bool):
-            raise TypeError(f"Parameter 'print_data' must be a bool.")
+            raise TypeError("Parameter 'print_data' must be a bool.")
 
-        data = pd.DataFrame(columns = [f'angular position ({angular_position_unit})',
-                                       f'angular speed ({angular_speed_unit})',
-                                       f'angular acceleration ({angular_acceleration_unit})',
-                                       f'torque ({torque_unit})',
-                                       f'driving torque ({driving_torque_unit})',
-                                       f'load torque ({load_torque_unit})',
-                                       f'tangential force ({force_unit})',
-                                       f'bending stress ({stress_unit})',
-                                       f'contact stress ({stress_unit})'])
+        if variables is None:
+            variables = []
+            for element in self.chain:
+                variables.extend(element.time_variables.keys())
+        variables = list(set(variables))
+        variables.sort(key = lambda variable: VARIABLES_SORT_ORDER[variable])
+
+        UNITS = {'angular position': angular_position_unit, 'angular speed': angular_speed_unit,
+                 'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
+                 'driving torque': driving_torque_unit, 'load torque': load_torque_unit, 'tangential force': force_unit,
+                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electric current': current_unit,
+                 'pwm': ''}
+
+        columns = [f'{variable} ({UNITS[variable]})' if UNITS[variable] != '' else variable for variable in variables]
+        data = pd.DataFrame(columns = columns)
 
         for element in self.chain:
             for variable, unit in zip(['angular position', 'angular speed', 'angular acceleration',
                                        'torque', 'driving torque', 'load torque'],
                                       [angular_position_unit, angular_speed_unit, angular_acceleration_unit,
                                        torque_unit, driving_torque_unit, load_torque_unit]):
+                if variable in variables:
+                    interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
+                                                      y = [value.to(unit).value
+                                                           for value in element.time_variables[variable]])
+                    data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
+
+            if isinstance(element, MotorBase):
                 interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
-                                                  y = [value.to(unit).value
-                                                       for value in element.time_variables[variable]])
-                data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
+                                                  y = element.time_variables['pwm'])
+                data.loc[element.name, 'pwm'] = interpolation_function(target_time.to('sec').value).take(0)
+
+                if 'electric current' in variables:
+                    if element.electric_current_is_computable:
+                        interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
+                                                          y = [value.to(current_unit).value
+                                                               for value in element.time_variables['electric current']])
+                        data.loc[element.name, f'electric current ({current_unit})'] = \
+                            interpolation_function(target_time.to('sec').value).take(0)
 
             if isinstance(element, GearBase):
                 variable_list = []
                 unit_list  = []
-                if element.tangential_force_is_computable:
+                if element.tangential_force_is_computable and 'tangential force' in variables:
                     variable_list.append('tangential force')
                     unit_list.append(force_unit)
-                    if element.bending_stress_is_computable:
+                    if element.bending_stress_is_computable and 'bending stress' in variables:
                         variable_list.append('bending stress')
                         unit_list.append(stress_unit)
-                        if element.contact_stress_is_computable:
+                        if element.contact_stress_is_computable and 'contact stress' in variables:
                             variable_list.append('contact stress')
                             unit_list.append(stress_unit)
 
@@ -255,6 +384,8 @@ class Transmission:
                                                            for value in element.time_variables[variable]])
                     data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
 
+        data.fillna(value = '', inplace = True)
+
         if print_data:
             print(f'Mechanical Transmission Status at Time = {target_time}')
             print(data.to_string())
@@ -263,34 +394,35 @@ class Transmission:
 
 
     def plot(self,
-             elements: List[Union[RotatingObject, str]] = None,
-             variables: List[str] = None,
-             angular_position_unit: str = 'rad',
-             angular_speed_unit: str = 'rad/s',
-             angular_acceleration_unit: str = 'rad/s^2',
-             torque_unit: str = 'Nm',
-             force_unit: str = 'N',
-             stress_unit: str = 'MPa',
-             time_unit: str = 'sec',
-             figsize: Union[None, tuple] = None):
+             elements: Optional[List[Union[RotatingObject, str]]] = None,
+             variables: Optional[List[str]] = None,
+             angular_position_unit: Optional[str] = 'rad',
+             angular_speed_unit: Optional[str] = 'rad/s',
+             angular_acceleration_unit: Optional[str] = 'rad/s^2',
+             torque_unit: Optional[str] = 'Nm',
+             force_unit: Optional[str] = 'N',
+             stress_unit: Optional[str] = 'MPa',
+             current_unit: Optional[str] = 'A',
+             time_unit: Optional[str] = 'sec',
+             figsize: Optional[tuple] = None):
         """Plots time variables for selected elements in the mechanical transmission chain. \n
-        Generates a grid of subplots, one column for each selected element of the transmission chain and one rows for
+        It generates a grid of subplots, one column for each selected element of the transmission chain and one rows for
         each selected time variable. \n
-        Available elements are the ones in the ``chain`` tuple and available variables are: ``'angular position'``,
-        ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'``, ``'load torque'`` and
-        ``'tangential force'``.
-        The kinematic variables position, speed and acceleration are separately plotted in the first three rows of the
-        grid, while torques are grouped together in the last fourth row (if kinematic variables are present) and
-        tangential force is plotted in the fifth row (if all other variables are present). \n
+        The available elements are those in ``chain`` tuple and the available variables are: ``'angular position'``,
+        ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``. The
+        motor can have additional variables ``electric current`` and ``pwm`` while gears can have additional variables
+        ``tangential force``, ``bending stress`` and ``contact stress``, depending on instantiation parameters. \n
+        The time variables are plotted in the described order, from the top row to the bottom one; torques are grouped
+        together in a single row as well as stresses are grouped together.
         Plotted values' units are managed with optional parameters. \n
         Elements to be plotted can be passed as instances or names (strings) in a list.
 
         Parameters
         ----------
-        elements: list, optional
+        elements : list, optional
             Elements of the transmission chain which time variables have to be plotted. Each single element can be
             passed as instance or name (string). Default is all elements in the transmission chain.
-        variables: list, optional
+        variables : list, optional
             Time variables to be plotted. Default is all available time variables.
         angular_position_unit : str, optional
             Symbol of the unit of measurement to which convert the angular position values in the plot. It must be a
@@ -310,6 +442,9 @@ class Transmission:
         stress_unit : str, optional
             Symbol of the unit of measurement to which convert the stress values in the plot. It must be a string.
             Default is ``'MPa'``.
+        current_unit : str, optional
+            Symbol of the unit of measurement to which convert the electric current values in the plot. It must be a
+            string. Default is ``'A'``.
         time_unit : str, optional
             Symbol of the unit of measurement to which convert the time values in the plot. It must be a string. Default
             is ``'sec'``.
@@ -329,12 +464,24 @@ class Transmission:
             - if ``torque_unit`` is not a string,
             - if ``force_unit`` is not a string,
             - if ``stress_unit`` is not a string,
-            - if ``time_unit`` is not a string.
+            - if ``current_unit`` is not a string,
+            - if ``time_unit`` is not a string,
+            - if ``figsize`` is not a tuple,
+            - if an element of ``figsize`` is not a float or an integer.
         ValueError
             - If ``elements`` is an empty list,
             - if an element of ``elements`` is not in ``Transmission.chain``,
             - if ``variables`` is an empty list,
-            - if an element of ``variables`` is not a valid time variable.
+            - if an element of ``variables`` is not a valid time variable,
+            - if ``figsize`` has not exactly two elements: one for width and the other for height.
+
+        See Also
+        --------
+        :py:attr:`time`
+        :py:attr:`chain`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
         """
         if elements is not None:
             if not isinstance(elements, list):
@@ -369,6 +516,7 @@ class Transmission:
             for element in self.chain:
                 valid_variables.extend(element.time_variables.keys())
             valid_variables = list(set(valid_variables))
+            valid_variables.sort(key = lambda variable: VARIABLES_SORT_ORDER[variable])
             for variable in variables:
                 if not isinstance(variable, str):
                     raise TypeError("Each element of 'variables' must be a string.")
@@ -394,6 +542,9 @@ class Transmission:
         if not isinstance(stress_unit, str):
             raise TypeError("Parameter 'stress_unit' must be a string.")
 
+        if not isinstance(current_unit, str):
+            raise TypeError("Parameter 'current_unit' must be a string.")
+
         if not isinstance(time_unit, str):
             raise TypeError("Parameter 'time_unit' must be a string.")
 
@@ -417,34 +568,44 @@ class Transmission:
             variables = []
             for element in elements:
                 variables.extend(element.time_variables.keys())
-            variables = list(set(variables))
-        else:
-            variables = list(set(variables))
-
-        SORT_ORDER = {'angular position': 0, 'angular speed': 1, 'angular acceleration': 2,
-                      'torque': 3, 'driving torque': 4, 'load torque': 5, 'tangential force': 6, 'bending stress': 7,
-                      'contact stress': 8}
-        variables.sort(key = lambda variable: SORT_ORDER[variable])
+        variables = list(set(variables))
+        variables.sort(key = lambda variable: VARIABLES_SORT_ORDER[variable])
 
         kinematic_variables = [variable for variable in variables
-                               if 'torque' not in variable and 'force' not in variable and 'stress' not in variable]
+                               if 'torque' not in variable and 'force' not in variable
+                               and 'stress' not in variable and 'electric' not in variable and 'pwm' not in variable]
         torques_variables = [variable for variable in variables if 'torque' in variable]
         forces_variables = [variable for variable in variables if 'force' in variable]
         stress_variables = [variable for variable in variables if 'stress' in variable]
+        electric_variables = [variable for variable in variables if 'electric' in variable]
+        pwm_variables = [variable for variable in variables if 'pwm' in variable]
 
         torques_variables_index = len(kinematic_variables)
         forces_variables_index = len(kinematic_variables)
         stress_variables_index = len(kinematic_variables)
+        electric_variables_index = len(kinematic_variables)
+        pwm_variables_index = len(kinematic_variables)
 
         n_variables = len(kinematic_variables)
         if torques_variables:
             n_variables += 1
             forces_variables_index += 1
             stress_variables_index += 1
+            electric_variables_index += 1
+            pwm_variables_index += 1
         if forces_variables:
             n_variables += 1
             stress_variables_index += 1
+            electric_variables_index += 1
+            pwm_variables_index += 1
         if stress_variables:
+            n_variables += 1
+            electric_variables_index += 1
+            pwm_variables_index += 1
+        if electric_variables:
+            n_variables += 1
+            pwm_variables_index += 1
+        if pwm_variables:
             n_variables += 1
 
         time_values = [instant.to(time_unit).value for instant in self.time]
@@ -452,7 +613,8 @@ class Transmission:
         UNITS = {'angular position': angular_position_unit, 'angular speed': angular_speed_unit,
                  'angular acceleration': angular_acceleration_unit, 'torque': torque_unit,
                  'driving torque': torque_unit, 'load torque': torque_unit, 'tangential force': force_unit,
-                 'bending stress': stress_unit, 'contact stress': stress_unit}
+                 'bending stress': stress_unit, 'contact stress': stress_unit, 'electric current': current_unit,
+                 'pwm': ''}
 
         fig, ax = plt.subplots(nrows = n_variables, ncols = n_elements, sharex = 'all',
                                layout = 'constrained', figsize = figsize)
@@ -475,6 +637,22 @@ class Transmission:
                                                    [variable_value.to(UNITS[variable]).value
                                                     for variable_value in item.time_variables[variable]],
                                                    label = label)
+
+            if isinstance(item, MotorBase):
+                if item.electric_current_is_computable and electric_variables:
+                    axes[electric_variables_index].plot(time_values,
+                                                          [variable_value.to(UNITS['electric current']).value
+                                                           for variable_value in item.time_variables['electric current']])
+
+                if pwm_variables:
+                    axes[pwm_variables_index].plot(time_values,
+                                                   item.time_variables['pwm'])
+
+            else:
+                if electric_variables:
+                    axes[electric_variables_index].axis('off')
+                if pwm_variables:
+                    axes[pwm_variables_index].axis('off')
 
             if isinstance(item, GearBase):
                 if item.tangential_force_is_computable:
@@ -508,17 +686,27 @@ class Transmission:
                     axes[stress_variables_index].axis('off')
 
             last_row_index = n_variables - 1
-            if not isinstance(item, GearBase):
-                if forces_variables:
-                    last_row_index -= 1
-                if stress_variables:
-                    last_row_index -= 1
-            else:
+            if isinstance(item, MotorBase):
+                pass
+            elif isinstance(item, GearBase):
                 if forces_variables and not item.tangential_force_is_computable:
                     last_row_index -= 1
                 if stress_variables and \
                         (not item.bending_stress_is_computable or 'bending stress' not in stress_variables) and \
                         (not item.contact_stress_is_computable or 'contact stress' not in stress_variables):
+                    last_row_index -= 1
+                if electric_variables:
+                    last_row_index -= 1
+                if pwm_variables:
+                    last_row_index -= 1
+            else:
+                if forces_variables:
+                    last_row_index -= 1
+                if stress_variables:
+                    last_row_index -= 1
+                if electric_variables:
+                    last_row_index -= 1
+                if pwm_variables:
                     last_row_index -= 1
 
             axes[last_row_index].set_xlabel(f'time ({time_unit})')
@@ -558,6 +746,23 @@ class Transmission:
                         axes[stress_variables_index].set_ylabel(f'stress ({stress_unit})')
                         axes[stress_variables_index].legend(title = 'stress', frameon = True)
                         break
+
+        if electric_variables:
+            if isinstance(elements[0], MotorBase):
+                if elements[0].electric_current_is_computable:
+                    if n_variables > 1:
+                        axes = ax[:, 0] if n_elements > 1 else ax
+                    else:
+                        axes = [ax[0]] if n_elements > 1 else [ax]
+                    axes[electric_variables_index].set_ylabel(f'electric current ({current_unit})')
+
+        if pwm_variables:
+            if isinstance(elements[0], MotorBase):
+                if n_variables > 1:
+                    axes = ax[:, 0] if n_elements > 1 else ax
+                else:
+                    axes = [ax[0]] if n_elements > 1 else [ax]
+                axes[pwm_variables_index].set_ylabel('PWM')
 
         if n_elements > 1 or n_variables > 1:
             for axi in ax.flatten():

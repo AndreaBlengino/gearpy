@@ -7,7 +7,6 @@ Transmission
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
 
 
 .. toctree::
@@ -15,6 +14,7 @@ Transmission
 
    chain
    plot
+   reset
    snapshot
    time
    update_time

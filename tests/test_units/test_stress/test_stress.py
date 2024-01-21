@@ -1,5 +1,5 @@
 from gearpy.units import Stress
-from hypothesis.strategies import floats, sampled_from, one_of, booleans
+from hypothesis.strategies import floats, sampled_from, one_of, booleans, integers
 from hypothesis import given, settings
 from tests.test_units.test_stress.conftest import basic_stress, stresses
 from pytest import mark, raises
@@ -52,6 +52,22 @@ class TestStressRepr:
 
 
 @mark.units
+class TestStressFormat:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list),
+           total_digits = integers(min_value = 1, max_value = 10),
+           decimal_digits = integers(min_value = 1, max_value = 10))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit, total_digits, decimal_digits):
+        stress = Stress(value = value, unit = unit)
+
+        assert stress.__format__(f'{total_digits}.{decimal_digits}f') == f'{stress:{total_digits}.{decimal_digits}f}'
+
+
+@mark.units
 class TestStressAbs:
 
 
@@ -64,6 +80,20 @@ class TestStressAbs:
 
         assert abs(stress) == Stress(value = abs(value), unit = unit)
         assert abs(stress).value >= 0
+
+
+@mark.units
+class TestStressNeg:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
+           unit = sampled_from(elements = units_list))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit):
+        stress = Stress(value = value, unit = unit)
+
+        assert -stress == Stress(value = -value, unit = unit)
 
 
 @mark.units
@@ -177,19 +207,19 @@ class TestStressTruediv:
                             stresses()))
     @settings(max_examples = 100)
     def test_method(self, value, unit, divider):
-        torque = Stress(value = value, unit = unit)
+        stress = Stress(value = value, unit = unit)
 
         if isinstance(divider, Stress):
             if abs(divider.value) >= 1e-300:
-                result = torque/divider
+                result = stress/divider
                 assert isinstance(result, float)
-                assert result == torque.value/divider.to(unit).value
+                assert result == stress.value/divider.to(unit).value
         else:
             if divider != 0:
-                result = torque/divider
+                result = stress/divider
                 assert isinstance(result, Stress)
-                assert result.value == torque.value/divider
-                assert result.unit == torque.unit
+                assert result.value == stress.value/divider
+                assert result.unit == stress.unit
 
 
     @mark.error

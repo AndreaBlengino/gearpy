@@ -3,6 +3,7 @@ from . import gear_data
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Stress, \
     Time, Torque, UnitBase
 from importlib import resources as imp_resources
+from inspect import signature
 import pandas as pd
 from scipy.interpolate import interp1d
 from typing import Callable, Dict, List, Union
@@ -26,7 +27,7 @@ class MechanicalObject(ABC):
             raise TypeError("Parameter 'name' must be a string.")
 
         if name == '':
-            raise ValueError("Parameter 'name' cannot be an empty string")
+            raise ValueError("Parameter 'name' cannot be an empty string.")
 
         self.__name = name
 
@@ -174,7 +175,7 @@ class MotorBase(RotatingObject):
     @abstractmethod
     def drives(self, drives: RotatingObject):
         if not isinstance(drives, RotatingObject):
-            raise TypeError(f"Parameter 'drives' must be a {RotatingObject.__name__!r}")
+            raise TypeError(f"Parameter 'drives' must be an instance of {RotatingObject.__name__!r}.")
 
         self.__drives = drives
 
@@ -239,7 +240,7 @@ class MotorBase(RotatingObject):
         super(MotorBase, type(self)).load_torque.fset(self, load_torque)
 
     @abstractmethod
-    def compute_torque(self) -> Torque: ...
+    def compute_torque(self, **kargs): ...
 
 
 class GearBase(RotatingObject):
@@ -334,7 +335,7 @@ class GearBase(RotatingObject):
     @abstractmethod
     def driven_by(self, driven_by: RotatingObject):
         if not isinstance(driven_by, RotatingObject):
-            raise TypeError(f"Parameter 'driven_by' must be a {RotatingObject.__name__!r}")
+            raise TypeError(f"Parameter 'driven_by' must be an instance of {RotatingObject.__name__!r}.")
 
         self.__driven_by = driven_by
 
@@ -347,7 +348,7 @@ class GearBase(RotatingObject):
     @abstractmethod
     def drives(self, drives: RotatingObject):
         if not isinstance(drives, RotatingObject):
-            raise TypeError(f"Parameter 'drives' must be a {RotatingObject.__name__!r}")
+            raise TypeError(f"Parameter 'drives' must be an instance of {RotatingObject.__name__!r}.")
 
         self.__drives = drives
 
@@ -532,6 +533,11 @@ class GearBase(RotatingObject):
     def external_torque(self, external_torque: Callable[[AngularPosition, AngularSpeed, Time], Torque]):
         if not isinstance(external_torque, Callable):
             raise TypeError("Parameter 'external_torque' must be callable.")
+
+        sig = signature(external_torque)
+        for parameter in ['angular_position', 'angular_speed', 'time']:
+            if parameter not in sig.parameters.keys():
+                raise KeyError(f"Function 'external_torque' misses parameter {parameter!r}.")
 
         self.__external_torque = external_torque
 

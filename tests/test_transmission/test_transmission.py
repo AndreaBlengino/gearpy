@@ -1,16 +1,16 @@
-from gearpy.mechanical_object import DCMotor, SpurGear
-from gearpy.solver import Solver
+from copy import deepcopy
+from gearpy.mechanical_object import DCMotor, SpurGear, MotorBase, GearBase
 from gearpy.transmission import Transmission
-from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Force, InertiaMoment, Length, Stress, Torque, Time
+from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
+    Stress, Torque, Time
 from gearpy.utils import add_gear_mating, add_fixed_joint
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import lists, floats, sampled_from, booleans, one_of, none, integers, tuples
 import matplotlib.pyplot as plt
 import pandas as pd
 from pytest import mark, raises
-from tests.conftest import dc_motors, simple_spur_gears, flywheels, time_intervals, transmissions, basic_transmission, solved_transmissions
-from tests.test_units.test_angular_position.conftest import angular_positions
-from tests.test_units.test_angular_speed.conftest import angular_speeds
+from tests.conftest import simple_dc_motors, simple_spur_gears, flywheels, transmissions, basic_transmission, \
+    solved_transmissions
 from tests.test_units.test_time.conftest import times
 import warnings
 
@@ -20,7 +20,7 @@ class TestTransmissionInit:
 
 
     @mark.genuine
-    @given(motor = dc_motors(),
+    @given(motor = simple_dc_motors(),
            flywheel = flywheels(),
            gears = lists(elements = simple_spur_gears(), min_size = 1))
     @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
@@ -72,6 +72,7 @@ class TestTransmissionInit:
 @mark.transmission
 class TestTransmissionUpdateTime:
 
+
     @mark.genuine
     @given(transmission = transmissions(),
            instant = times())
@@ -89,15 +90,46 @@ class TestTransmissionUpdateTime:
 
 
 @mark.transmission
+class TestTransmissionReset:
+
+
+    @mark.genuine
+    @given(transmission = solved_transmissions())
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
+    def test_method(self, transmission):
+        transmission_copy = deepcopy(transmission)
+        transmission_copy.reset()
+
+        assert transmission_copy.time == []
+
+        for copied_element, original_element in zip(transmission_copy.chain, transmission.chain):
+            assert copied_element.angular_position == original_element.time_variables['angular position'][0]
+            assert copied_element.angular_speed == original_element.time_variables['angular speed'][0]
+            assert copied_element.angular_acceleration == original_element.time_variables['angular acceleration'][0]
+            assert copied_element.driving_torque == original_element.time_variables['driving torque'][0]
+            assert copied_element.load_torque == original_element.time_variables['load torque'][0]
+            assert copied_element.torque == original_element.time_variables['torque'][0]
+            if isinstance(copied_element, MotorBase):
+                if copied_element.electric_current_is_computable:
+                    assert copied_element.electric_current == original_element.time_variables['electric current'][0]
+            if isinstance(copied_element, GearBase):
+                if copied_element.tangential_force_is_computable:
+                    assert copied_element.tangential_force == original_element.time_variables['tangential force'][0]
+                    if copied_element.bending_stress_is_computable:
+                        assert copied_element.bending_stress == original_element.time_variables['bending stress'][0]
+                        if copied_element.contact_stress_is_computable:
+                            assert copied_element.contact_stress == original_element.time_variables['contact stress'][0]
+
+            for variable_values in copied_element.time_variables.values():
+                assert variable_values == []
+
+
+@mark.transmission
 class TestTransmissionSnapshot:
 
 
     @mark.genuine
-    @given(time_discretization = time_intervals(),
-           simulation_steps = floats(min_value = 5, max_value = 1000, allow_nan = False, allow_infinity = False),
-           transmission = transmissions(),
-           initial_angular_position = angular_positions(),
-           initial_angular_speed = angular_speeds(),
+    @given(solved_transmission = solved_transmissions(),
            target_time_fraction = floats(min_value = 1e-10, max_value = 1 - 1e-10, allow_nan = False, allow_infinity = False),
            angular_position_unit = sampled_from(elements = list(AngularPosition._AngularPosition__UNITS.keys())),
            angular_speed_unit = sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())),
@@ -107,52 +139,60 @@ class TestTransmissionSnapshot:
            load_torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
            force_unit = sampled_from(elements = list(Force._Force__UNITS.keys())),
            stress_unit = sampled_from(elements = list(Stress._Stress__UNITS.keys())),
+           current_unit = sampled_from(elements = list(Current._Current__UNITS.keys())),
            print_data = booleans())
     @settings(max_examples = 100, deadline = None)
-    def test_method(self, time_discretization, simulation_steps, transmission, initial_angular_position,
-                    initial_angular_speed, target_time_fraction, angular_position_unit, angular_speed_unit,
+    def test_method(self, solved_transmission, target_time_fraction, angular_position_unit, angular_speed_unit,
                     angular_acceleration_unit, torque_unit, driving_torque_unit, load_torque_unit, force_unit,
-                    stress_unit, print_data):
-        warnings.filterwarnings('ignore', category = RuntimeWarning)
+                    stress_unit, current_unit, print_data):
 
-        transmission.chain[-1].angular_position = initial_angular_position
-        transmission.chain[-1].angular_speed = initial_angular_speed
-        transmission.chain[-1].external_torque = lambda time, angular_position, angular_speed: Torque(0.001, 'Nm')
-        simulation_time = time_discretization*simulation_steps
-        solver = Solver(time_discretization = time_discretization,
-                        simulation_time = simulation_time,
-                        transmission = transmission)
-        solver.run()
+        target_time = target_time_fraction*(solved_transmission.time[-1] - solved_transmission.time[0])
 
-        data = transmission.snapshot(target_time = (simulation_time - time_discretization)*target_time_fraction,
-                                     angular_position_unit = angular_position_unit, angular_speed_unit = angular_speed_unit,
-                                     angular_acceleration_unit = angular_acceleration_unit, torque_unit = torque_unit,
-                                     driving_torque_unit = driving_torque_unit, load_torque_unit = load_torque_unit,
-                                     force_unit = force_unit, stress_unit = stress_unit, print_data = print_data)
+        data = solved_transmission.snapshot(target_time = target_time, angular_position_unit = angular_position_unit,
+                                            angular_speed_unit = angular_speed_unit,
+                                            angular_acceleration_unit = angular_acceleration_unit,
+                                            torque_unit = torque_unit, driving_torque_unit = driving_torque_unit,
+                                            load_torque_unit = load_torque_unit, force_unit = force_unit,
+                                            stress_unit = stress_unit, current_unit = current_unit,
+                                            print_data = print_data)
+
+        columns = [f'angular position ({angular_position_unit})', f'angular speed ({angular_speed_unit})',
+                   f'angular acceleration ({angular_acceleration_unit})', f'torque ({torque_unit})',
+                   f'driving torque ({driving_torque_unit})', f'load torque ({load_torque_unit})',
+                   f'tangential force ({force_unit})', f'bending stress ({stress_unit})',
+                   f'contact stress ({stress_unit})']
+        if solved_transmission.chain[0].electric_current_is_computable:
+            columns.append(f'electric current ({current_unit})')
+        columns.append('pwm')
 
         assert isinstance(data, pd.DataFrame)
-        assert [element.name for element in transmission.chain] == data.index.to_list()
-        assert [f'angular position ({angular_position_unit})', f'angular speed ({angular_speed_unit})',
-                f'angular acceleration ({angular_acceleration_unit})', f'torque ({torque_unit})',
-                f'driving torque ({driving_torque_unit})', f'load torque ({load_torque_unit})']
+        assert [element.name for element in solved_transmission.chain] == data.index.to_list()
+        assert columns == data.columns.to_list()
 
 
     @mark.error
     def test_raises_type_error(self, transmission_snapshot_type_error):
-        with raises(TypeError):
-            if transmission_snapshot_type_error:
+        if transmission_snapshot_type_error:
+            with raises(TypeError):
                 basic_transmission.snapshot(**transmission_snapshot_type_error)
-            else:
-                basic_transmission.update_time(Time(1, 'sec'))
-                basic_transmission.time[0] = 1
-                basic_transmission.snapshot(target_time = Time(1, 'sec'))
+        else:
+            transmission_copy = deepcopy(basic_transmission)
+            transmission_copy.update_time(Time(1, 'sec'))
+            transmission_copy.time[0] = 1
+            with raises(TypeError):
+                transmission_copy.snapshot(target_time = Time(1, 'sec'))
 
 
     @mark.error
-    def test_raises_value_error(self):
-        with raises(ValueError):
-            basic_transmission.time.clear()
-            basic_transmission.snapshot(target_time = Time(1, 'sec'))
+    def test_raises_value_error(self, transmission_snapshot_value_error):
+        if transmission_snapshot_value_error:
+            with raises(ValueError):
+                basic_transmission.snapshot(**transmission_snapshot_value_error)
+        else:
+            transmission_copy = deepcopy(basic_transmission)
+            transmission_copy.time.clear()
+            with raises(ValueError):
+                transmission_copy.snapshot(target_time = Time(1, 'sec'))
 
 
 @mark.transmission
@@ -170,13 +210,15 @@ class TestTransmissionPlot:
            torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
            force_unit = sampled_from(elements = list(Force._Force__UNITS.keys())),
            stress_unit = sampled_from(elements = list(Stress._Stress__UNITS.keys())),
+           current_unit = sampled_from(elements = list(Current._Current__UNITS.keys())),
            time_unit = sampled_from(elements = list(Time._Time__UNITS.keys())),
-           figsize = one_of(none(), tuples(floats(min_value = 1, max_value = 10, allow_nan = False, allow_infinity = False),
-                                           floats(min_value = 1, max_value = 10, allow_nan = False,allow_infinity = False))))
+           figsize = one_of(none(),
+                            tuples(floats(min_value = 1, max_value = 10, allow_nan = False, allow_infinity = False),
+                                   floats(min_value = 1, max_value = 10, allow_nan = False,allow_infinity = False))))
     @settings(max_examples = 100, deadline = None)
     def test_method(self, solved_transmission, elements_index, single_element, elements_as_names, angular_position_unit,
-                    angular_speed_unit, angular_acceleration_unit, torque_unit, force_unit, stress_unit, time_unit,
-                    figsize):
+                    angular_speed_unit, angular_acceleration_unit, torque_unit, force_unit, stress_unit, current_unit,
+                    time_unit, figsize):
         warnings.filterwarnings('ignore', category = UserWarning)
         warnings.filterwarnings('ignore', category = RuntimeWarning)
 
@@ -194,7 +236,7 @@ class TestTransmissionPlot:
                                  angular_speed_unit = angular_speed_unit,
                                  angular_acceleration_unit = angular_acceleration_unit, torque_unit = torque_unit,
                                  force_unit = force_unit, stress_unit = stress_unit, time_unit = time_unit,
-                                 figsize = figsize)
+                                 current_unit = current_unit, figsize = figsize)
         plt.close()
 
         solved_transmission.plot(elements = elements)
@@ -203,10 +245,17 @@ class TestTransmissionPlot:
         solved_transmission.plot(elements = [solved_transmission.chain[0]], variables = ['angular position'])
         plt.close()
 
-        solved_transmission.plot(elements = list(solved_transmission.chain[:2]), variables = ['tangential force'])
+        solved_transmission.plot(elements = list(solved_transmission.chain), variables = ['tangential force'])
         plt.close()
 
-        solved_transmission.plot(elements = list(solved_transmission.chain[:2]), variables = ['bending stress'])
+        solved_transmission.plot(elements = list(solved_transmission.chain), variables = ['bending stress'])
+        plt.close()
+
+        if solved_transmission.chain[0].electric_current_is_computable:
+            solved_transmission.plot(elements = list(solved_transmission.chain[:2]), variables = ['electric current'])
+            plt.close()
+
+        solved_transmission.plot(elements = list(solved_transmission.chain), variables = ['pwm'])
         plt.close()
 
 

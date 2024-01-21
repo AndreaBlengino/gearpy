@@ -6,6 +6,7 @@ from hypothesis.strategies import text, floats, integers, functions
 from pytest import mark, raises
 from tests.conftest import basic_spur_gear_1, basic_spur_gear_2
 from tests.test_units.test_inertia_moment.conftest import inertia_moments
+from tests.test_units.test_torque.conftest import torques
 
 
 @mark.spur_gear
@@ -327,7 +328,8 @@ class TestSpurGearExternalTorque:
 
 
     @mark.genuine
-    @given(external_torque = functions())
+    @given(external_torque = functions(like = lambda angular_position, angular_speed, time: Torque(1, 'Nm'),
+                                       returns = torques()))
     @settings(max_examples = 100)
     def test_property(self, external_torque):
         basic_spur_gear_1.external_torque = external_torque
@@ -339,3 +341,9 @@ class TestSpurGearExternalTorque:
     def test_raises_type_error(self, spur_gear_external_torque_type_error):
         with raises(TypeError):
             basic_spur_gear_1.external_torque = spur_gear_external_torque_type_error
+
+
+    @mark.error
+    def test_raises_key_error(self, spur_gear_external_torque_key_error):
+        with raises(KeyError):
+            basic_spur_gear_1.external_torque = spur_gear_external_torque_key_error

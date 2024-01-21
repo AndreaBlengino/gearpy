@@ -1,5 +1,5 @@
 from gearpy.units import Length, Surface
-from hypothesis.strategies import floats, sampled_from, one_of, booleans
+from hypothesis.strategies import floats, sampled_from, one_of, booleans, integers
 from hypothesis import given, settings
 from tests.test_units.test_length.conftest import basic_length, lengths
 from pytest import mark, raises
@@ -58,6 +58,22 @@ class TestLengthRepr:
 
 
 @mark.units
+class TestLengthFormat:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
+           unit = sampled_from(elements = units_list),
+           total_digits = integers(min_value = 1, max_value = 10),
+           decimal_digits = integers(min_value = 1, max_value = 10))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit, total_digits, decimal_digits):
+        length = Length(value = value, unit = unit)
+
+        assert length.__format__(f'{total_digits}.{decimal_digits}f') == f'{length:{total_digits}.{decimal_digits}f}'
+
+
+@mark.units
 class TestLengthAbs:
 
 
@@ -70,6 +86,18 @@ class TestLengthAbs:
 
         assert abs(length) == Length(value = abs(value), unit = unit)
         assert abs(length).value >= 0
+
+
+@mark.units
+class TestLengthNeg:
+
+
+    @mark.error
+    def test_method(self):
+        length = Length(value = 1, unit = 'm')
+
+        with raises(ValueError):
+            assert -length
 
 
 @mark.units

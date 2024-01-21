@@ -28,12 +28,21 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
     ValueError
         - If ``efficiency`` is not within ``0`` and ``1``,
         - if ``master`` and ``slave`` have different values for ``module``.
+
+    See Also
+    --------
+    :py:class:`gearpy.mechanical_object.mechanical_objects.SpurGear`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.master_gear_ratio`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.master_gear_efficiency`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.mating_role`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.drives`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.driven_by`
     """
     if not isinstance(master, GearBase):
-        raise TypeError("Parameter 'master' must be an instance of GearBase.")
+        raise TypeError(f"Parameter 'master' must be an instance of {GearBase.__name__!r}.")
 
     if not isinstance(slave, GearBase):
-        raise TypeError("Parameter 'slave' must be an instance of GearBase.")
+        raise TypeError(f"Parameter 'slave' must be an instance of {GearBase.__name__!r}.")
 
     if not isinstance(efficiency, float) and not isinstance(efficiency, int):
         raise TypeError("Parameter 'efficiency' must be a float or an integer.")
@@ -72,12 +81,23 @@ def add_fixed_joint(master: Union[MotorBase, GearBase, Flywheel], slave: Union[G
     TypeError
         - If ``master`` is not an instance of ``MotorBase`` or ``GearBase`` or ``Flywheel``,
         - it ``slave`` is not an instance of ``GearBase`` or ``Flywheel``.
+
+    See Also
+    --------
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.drives`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.drives`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.driven_by`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.master_gear_ratio`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.drives`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.driven_by`
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.master_gear_ratio`
     """
     if not isinstance(master, MotorBase) and not isinstance(master, GearBase) and not isinstance(master, Flywheel):
-        raise TypeError("Parameter 'master' must be an instance of MotorBase, GearBase or Flywheel.")
+        raise TypeError(f"Parameter 'master' must be an instance of {MotorBase.__name__!r}, {GearBase.__name__!r} or "
+                        f"{Flywheel.__name__!r}.")
 
     if not isinstance(slave, GearBase) and not isinstance(slave, Flywheel):
-        raise TypeError("Parameter 'slave' must be an instance of GearBase or Flywheel.")
+        raise TypeError(f"Parameter 'slave' must be an instance of {GearBase.__name__!r} or {Flywheel.__name__!r}.")
 
     master.drives = slave
     slave.driven_by = master

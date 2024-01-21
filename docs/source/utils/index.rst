@@ -13,3 +13,4 @@ utils
 
    add_fixed_joint
    add_gear_mating
+   dc_motor_characteristics_animation

@@ -1,5 +1,5 @@
 from gearpy.units import InertiaMoment
-from hypothesis.strategies import floats, sampled_from, one_of, booleans
+from hypothesis.strategies import floats, sampled_from, one_of, booleans, integers
 from hypothesis import given, settings
 from tests.test_units.test_inertia_moment.conftest import basic_inertia_moment, inertia_moments
 from pytest import mark, raises
@@ -58,6 +58,22 @@ class TestInertiaMomentRepr:
 
 
 @mark.units
+class TestInertiaMomentFormat:
+
+
+    @mark.genuine
+    @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
+           unit = sampled_from(elements = units_list),
+           total_digits = integers(min_value = 1, max_value = 10),
+           decimal_digits = integers(min_value = 1, max_value = 10))
+    @settings(max_examples = 100)
+    def test_method(self, value, unit, total_digits, decimal_digits):
+        inertia_moment = InertiaMoment(value = value, unit = unit)
+
+        assert inertia_moment.__format__(f'{total_digits}.{decimal_digits}f') == f'{inertia_moment:{total_digits}.{decimal_digits}f}'
+
+
+@mark.units
 class TestInertiaMomentAbs:
 
 
@@ -70,6 +86,18 @@ class TestInertiaMomentAbs:
 
         assert abs(inertia_moment) == InertiaMoment(value = abs(value), unit = unit)
         assert abs(inertia_moment).value >= 0
+
+
+@mark.units
+class TestInertiaMomentNeg:
+
+
+    @mark.error
+    def test_method(self):
+        inertia_moment = InertiaMoment(value = 1, unit = 'kgm^2')
+
+        with raises(ValueError):
+            assert -inertia_moment
 
 
 @mark.units

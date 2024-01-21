@@ -21,8 +21,14 @@ class UnitBase(ABC):
     def __repr__(self):
         return f'{self.value} {self.unit}'
 
+    def __format__(self, format_spec):
+        return f'{self.value:{format_spec}} {self.unit}'
+
     def __abs__(self):
         return self.__class__(abs(self.value), self.unit)
+
+    def __neg__(self):
+        return self.__class__(-self.value, self.unit)
 
     def __add__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
@@ -39,7 +45,7 @@ class UnitBase(ABC):
             return self.__class__(value = self.value - other.to(self.unit).value, unit = self.unit)
         except ValueError:
             if self.value - other.to(self.unit).value <= 0:
-                raise ValueError('Cannot perform the subtraction because the result is not positive.')
+                raise ValueError('Cannot perform the subtraction because the result is negative or null.')
 
     @abstractmethod
     def __mul__(self, other: Union[float, int]) -> None: ...
@@ -61,7 +67,7 @@ class UnitBase(ABC):
 
     def __eq__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}.')
 
         if self.unit == other.unit:
             return self.value == other.value
@@ -70,7 +76,7 @@ class UnitBase(ABC):
 
     def __ne__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}.')
 
         if self.unit == other.unit:
             return self.value != other.value
@@ -79,7 +85,7 @@ class UnitBase(ABC):
 
     def __gt__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}.')
 
         if self.unit == other.unit:
             return self.value > other.value
@@ -88,7 +94,7 @@ class UnitBase(ABC):
 
     def __ge__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}.')
 
         if self.unit == other.unit:
             return self.value >= other.value
@@ -97,7 +103,7 @@ class UnitBase(ABC):
 
     def __lt__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}.')
 
         if self.unit == other.unit:
             return self.value < other.value
@@ -106,7 +112,7 @@ class UnitBase(ABC):
 
     def __le__(self, other: 'UnitBase') -> None:
         if not isinstance(other, self.__class__) and not issubclass(self.__class__, other.__class__):
-            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}')
+            raise TypeError(f'Cannot compare {self.__class__.__name__} and {other.__class__.__name__}.')
 
         if self.unit == other.unit:
             return self.value <= other.value

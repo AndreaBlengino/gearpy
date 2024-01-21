@@ -9,9 +9,10 @@ basic_angular_speed = AngularSpeed(1, 'rad/s')
 
 
 @composite
-def angular_speeds(draw):
-    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    unit = draw(sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())))
+def angular_speeds(draw, min_value = -1000, max_value = 1000, unit = None):
+    value = draw(floats(allow_nan = False, allow_infinity = False, min_value = min_value, max_value = max_value))
+    if unit is None:
+        unit = draw(sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())))
 
     return AngularSpeed(value = value, unit = unit)
 

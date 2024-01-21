@@ -30,7 +30,7 @@ class AngularPosition(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -86,11 +86,11 @@ class AngularPosition(UnitBase):
         """Symbol of the unit of measurement for angular position. It must be a string.
         Available units are:
 
-            - ``'rad'`` for radian,
-            - ``'deg'`` for degree,
-            - ``'arcmin'`` for minute of arc,
-            - ``'armsec'`` for second of arc,
-            - ``'rot'`` for rotation.
+        - ``'rad'`` for radian,
+        - ``'deg'`` for degree,
+        - ``'arcmin'`` for minute of arc,
+        - ``'armsec'`` for second of arc,
+        - ``'rot'`` for rotation.
 
         Returns
         -------
@@ -159,7 +159,7 @@ class AngularPosition(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -172,6 +172,173 @@ class AngularPosition(UnitBase):
             return self
         else:
             return AngularPosition(value = target_value, unit = target_unit)
+
+
+class Angle(AngularPosition):
+    r"""``gearpy.units.units.Angle`` object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for angle.
+    :py:attr:`value` : float or int
+        Angle numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
+
+    def __init__(self, value: Union[float, int], unit: str):
+        super().__init__(value = value, unit = unit)
+
+        if value < 0:
+            raise ValueError("Parameter 'value' must be positive or null.")
+
+        self.__value = value
+        self.__unit = unit
+
+    def __add__(self, other: Union['AngularPosition', 'Angle']) -> Union['AngularPosition', 'Angle']:
+        super().__add__(other = other)
+
+        if isinstance(other, Angle):
+            return Angle(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
+        else:
+            return AngularPosition(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
+
+    def __sub__(self, other: Union['AngularPosition', 'Angle']) -> Union['AngularPosition', 'Angle']:
+        super().__sub__(other = other)
+
+        if isinstance(other, Angle):
+            return Angle(value = self.__value - other.to(self.__unit).value, unit = self.__unit)
+        else:
+            return AngularPosition(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
+
+    def __mul__(self, other: Union[float, int]) -> 'Angle':
+        super().__mul__(other = other)
+
+        if other < 0:
+            raise ValueError('Cannot perform a multiplication by a negative number.')
+
+        return Angle(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Angle':
+        super().__rmul__(other = other)
+
+        if other < 0:
+            raise ValueError('Cannot perform a multiplication by a negative number.')
+
+        return Angle(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['AngularPosition', float, int]) -> Union['AngularPosition', float]:
+        super().__truediv__(other = other)
+
+        if isinstance(other, AngularPosition):
+            return self.__value/other.to(self.__unit).value
+        else:
+            return Angle(value = self.__value/other, unit = self.__unit)
+
+    @property
+    def value(self) -> Union[float, int]:
+        """Angle numerical value. The relative unit is expressed by the ``unit`` property. It must be positive or null.
+
+        Returns
+        -------
+        float or int
+            Angle numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        ValueError
+            If ``value`` is negative.
+        """
+        return super().value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for angle. It must be a string.
+        Available units are:
+
+        - ``'rad'`` for radian,
+        - ``'deg'`` for degree,
+        - ``'arcmin'`` for minute of arc,
+        - ``'armsec'`` for second of arc,
+        - ``'rot'`` for rotation.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for angle.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return super().unit
+
+    def to(self, target_unit: str, inplace: bool = False) -> 'Angle':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Angle
+            Converted angle.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Angle`` instantiation.
+
+        >>> from gearpy.units import Angle
+        >>> a = Angle(180, 'deg')
+        >>> a
+        ... 180 deg
+
+        Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current value.
+
+        >>> a.to('rad')
+        ... 3.141592653589793 rad
+        >>> a
+        ... 180 deg
+
+        Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+
+        >>> a.to('arcmin', inplace = True)
+        ... 10800.0 arcmin
+        >>> a
+        ... 10800.0 arcmin
+        """
+        converted = super().to(target_unit = target_unit, inplace = inplace)
+
+        if inplace:
+            self.__value = converted.value
+            self.__unit = converted.unit
+            return self
+        else:
+            return Angle(value = converted.value, unit = converted.unit)
 
 
 class AngularSpeed(UnitBase):
@@ -205,7 +372,7 @@ class AngularSpeed(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -266,15 +433,15 @@ class AngularSpeed(UnitBase):
         """Symbol of the unit of measurement for angular speed. It must be a string.
         Available units are:
 
-            - ``'rad/s'`` for radian per second,
-            - ``'rad/min'`` for radian per minute,
-            - ``'rad/h'`` for radian per hour,
-            - ``'deg/s'`` for degree per second,
-            - ``'deg/min'`` for degree per minute,
-            - ``'deg/h'`` for degree per hour,
-            - ``'rps'`` for revolutions per second,
-            - ``'rpm'`` for revolutions per minute,
-            - ``'rph'`` for revolutions per hour.
+        - ``'rad/s'`` for radian per second,
+        - ``'rad/min'`` for radian per minute,
+        - ``'rad/h'`` for radian per hour,
+        - ``'deg/s'`` for degree per second,
+        - ``'deg/min'`` for degree per minute,
+        - ``'deg/h'`` for degree per hour,
+        - ``'rps'`` for revolutions per second,
+        - ``'rpm'`` for revolutions per minute,
+        - ``'rph'`` for revolutions per hour.
 
         Returns
         -------
@@ -345,7 +512,7 @@ class AngularSpeed(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -385,7 +552,7 @@ class AngularAcceleration(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -447,9 +614,9 @@ class AngularAcceleration(UnitBase):
         """Symbol of the unit of measurement for angular acceleration. It must be a string.
         Available units are:
 
-            - ``'rad/s^2'`` for radian per second squared,
-            - ``'deg/s^2'`` for degree per second squared,
-            - ``'rot/s^2'`` for rotation per second squared.
+        - ``'rad/s^2'`` for radian per second squared,
+        - ``'deg/s^2'`` for degree per second squared,
+        - ``'rot/s^2'`` for rotation per second squared.
 
         Returns
         -------
@@ -520,7 +687,7 @@ class AngularAcceleration(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -565,7 +732,7 @@ class InertiaMoment(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if value <= 0:
             raise ValueError("Parameter 'value' must be positive.")
@@ -581,7 +748,7 @@ class InertiaMoment(UnitBase):
                             f'{other.__class__.__name__}.')
 
         if other <= 0:
-            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+            raise ValueError('Cannot perform a multiplication by a negative number or by zero.')
 
         return InertiaMoment(value = self.__value*other, unit = self.__unit)
 
@@ -593,7 +760,7 @@ class InertiaMoment(UnitBase):
                             f'{self.__class__.__name__}.')
 
         if other <= 0:
-            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+            raise ValueError('Cannot perform a multiplication by a negative number or by zero.')
 
         return InertiaMoment(value = self.__value*other, unit = self.__unit)
 
@@ -624,7 +791,7 @@ class InertiaMoment(UnitBase):
         TypeError
             If ``value`` is not a float or an integer.
         ValueError
-            If ``value`` is not positive.
+            If ``value`` is negative or null.
         """
         return self.__value
 
@@ -633,14 +800,14 @@ class InertiaMoment(UnitBase):
         """Symbol of the unit of measurement for moment of inertia. It must be a string.
         Available units are:
 
-            - ``'kgm^2'`` for kilogram-square meter,
-            - ``'kgdm^2'`` for kilogram-square decimeter,
-            - ``'kgcm^2'`` for kilogram-square centimeter,
-            - ``'kgmm^2'`` for kilogram-square millimeter,
-            - ``'gm^2'`` for gram-square meter,
-            - ``'gdm^2'`` for gram-square decimeter,
-            - ``'gcm^2'`` for gram-square centimeter,
-            - ``'gmm^2'`` for gram-square millimeter.
+        - ``'kgm^2'`` for kilogram-square meter,
+        - ``'kgdm^2'`` for kilogram-square decimeter,
+        - ``'kgcm^2'`` for kilogram-square centimeter,
+        - ``'kgmm^2'`` for kilogram-square millimeter,
+        - ``'gm^2'`` for gram-square meter,
+        - ``'gdm^2'`` for gram-square decimeter,
+        - ``'gcm^2'`` for gram-square centimeter,
+        - ``'gmm^2'`` for gram-square millimeter.
 
         Returns
         -------
@@ -711,7 +878,7 @@ class InertiaMoment(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -765,7 +932,7 @@ class Torque(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -825,23 +992,23 @@ class Torque(UnitBase):
         """Symbol of the unit of measurement for Torque. It must be a string.
         Available units are:
 
-            - ``'Nm'`` for newton-meter,
-            - ``'mNm'`` for milli-newton-meter,
-            - ``'mNdm'`` for milli-newton-decimeter,
-            - ``'mNcm'`` for milli-newton-centimeter,
-            - ``'mNmm'`` for milli-newton-millimeter,
-            - ``'kNm'`` for kilo-newton-meter,
-            - ``'kNdm'`` for kilo-newton-decimeter,
-            - ``'kNcm'`` for kilo-newton-centimeter,
-            - ``'kNmm'`` for kilo-newton-millimeter,
-            - ``'kgfm'`` for kilogram force-meter,
-            - ``'kgfdm'`` for kilogram force-decimeter,
-            - ``'kgfcm'`` for kilogram force-centimeter,
-            - ``'kgfmm'`` for kilogram force-millimeter,
-            - ``'gfm'`` for gram force-meter,
-            - ``'gfdm'`` for gram force-decimeter,
-            - ``'gfcm'`` for gram force-centimeter,
-            - ``'gfmm'`` for gram force-millimeter.
+        - ``'Nm'`` for newton-meter,
+        - ``'mNm'`` for milli-newton-meter,
+        - ``'mNdm'`` for milli-newton-decimeter,
+        - ``'mNcm'`` for milli-newton-centimeter,
+        - ``'mNmm'`` for milli-newton-millimeter,
+        - ``'kNm'`` for kilo-newton-meter,
+        - ``'kNdm'`` for kilo-newton-decimeter,
+        - ``'kNcm'`` for kilo-newton-centimeter,
+        - ``'kNmm'`` for kilo-newton-millimeter,
+        - ``'kgfm'`` for kilogram force-meter,
+        - ``'kgfdm'`` for kilogram force-decimeter,
+        - ``'kgfcm'`` for kilogram force-centimeter,
+        - ``'kgfmm'`` for kilogram force-millimeter,
+        - ``'gfm'`` for gram force-meter,
+        - ``'gfdm'`` for gram force-decimeter,
+        - ``'gfcm'`` for gram force-centimeter,
+        - ``'gfmm'`` for gram force-millimeter.
 
         Returns
         -------
@@ -912,7 +1079,7 @@ class Torque(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -953,7 +1120,7 @@ class Time(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -1020,10 +1187,10 @@ class Time(UnitBase):
         """Symbol of the unit of measurement for time. It must be a string.
         Available units are:
 
-            - ``'sec'`` for second,
-            - ``'min'`` for minute,
-            - ``'hour'`` for hour,
-            - ``'ms'`` for millisecond.
+        - ``'sec'`` for second,
+        - ``'min'`` for minute,
+        - ``'hour'`` for hour,
+        - ``'ms'`` for millisecond.
 
         Returns
         -------
@@ -1092,7 +1259,7 @@ class Time(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -1152,7 +1319,7 @@ class TimeInterval(Time):
         super().__mul__(other = other)
 
         if other <= 0:
-            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+            raise ValueError('Cannot perform a multiplication by a negative number or by zero.')
 
         return TimeInterval(value = self.__value*other, unit = self.__unit)
 
@@ -1160,7 +1327,7 @@ class TimeInterval(Time):
         super().__rmul__(other = other)
 
         if other <= 0:
-            raise ValueError('Cannot perform a multiplication by a non-positive number.')
+            raise ValueError('Cannot perform a multiplication by a negative number or by zero.')
 
         return TimeInterval(value = self.__value*other, unit = self.__unit)
 
@@ -1186,7 +1353,7 @@ class TimeInterval(Time):
         TypeError
             If ``value`` is not a float or an integer.
         ValueError
-            If ``value`` is not positive.
+            If ``value`` is negative or null.
         """
         return super().value
 
@@ -1195,10 +1362,10 @@ class TimeInterval(Time):
         """Symbol of the unit of measurement for time interval. It must be a string.
         Available units are:
 
-            - ``'sec'`` for second,
-            - ``'min'`` for minute,
-            - ``'hour'`` for hour,
-            - ``'ms'`` for millisecond.
+        - ``'sec'`` for second,
+        - ``'min'`` for minute,
+        - ``'hour'`` for hour,
+        - ``'ms'`` for millisecond.
 
         Returns
         -------
@@ -1299,7 +1466,7 @@ class Length(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if value <= 0:
             raise ValueError("Parameter 'value' must be positive.")
@@ -1354,7 +1521,7 @@ class Length(UnitBase):
         TypeError
             If ``value`` is not a float or an integer.
         ValueError
-            If ``value`` is not positive.
+            If ``value`` is negative or null.
         """
         return self.__value
 
@@ -1363,10 +1530,10 @@ class Length(UnitBase):
         """Symbol of the unit of measurement for length. It must be a string.
         Available units are:
 
-            - ``'m'`` for meter,
-            - ``'dm'`` for decimeter,
-            - ``'cm'`` for centimeter,
-            - ``'mm'`` for millimeter.
+        - ``'m'`` for meter,
+        - ``'dm'`` for decimeter,
+        - ``'cm'`` for centimeter,
+        - ``'mm'`` for millimeter.
 
         Returns
         -------
@@ -1436,7 +1603,7 @@ class Length(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -1477,7 +1644,7 @@ class Surface(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if value <= 0:
             raise ValueError("Parameter 'value' must be positive.")
@@ -1529,7 +1696,7 @@ class Surface(UnitBase):
         TypeError
             If ``value`` is not a float or an integer.
         ValueError
-            If ``value`` is not positive.
+            If ``value`` is negative or null.
         """
         return self.__value
 
@@ -1538,10 +1705,10 @@ class Surface(UnitBase):
         """Symbol of the unit of measurement for surface. It must be a string.
         Available units are:
 
-            - ``'m^2'`` for square meter,
-            - ``'dm^2'`` for square decimeter,
-            - ``'cm^2'`` for square centimeter,
-            - ``'mm^2'`` for square millimeter.
+        - ``'m^2'`` for square meter,
+        - ``'dm^2'`` for square decimeter,
+        - ``'cm^2'`` for square centimeter,
+        - ``'mm^2'`` for square millimeter.
 
         Returns
         -------
@@ -1612,7 +1779,7 @@ class Surface(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -1654,7 +1821,7 @@ class Force(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -1694,7 +1861,7 @@ class Force(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Force numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+        """Force numerical value. The relative unit is expressed by the ``unit`` property.
 
         Returns
         -------
@@ -1713,11 +1880,11 @@ class Force(UnitBase):
         """Symbol of the unit of measurement for force. It must be a string.
         Available units are:
 
-            - ``'N'`` for newton,
-            - ``'mN'`` for milli-newton,
-            - ``'kN'`` for kilo-newton,
-            - ``'kgf'`` for kilogram force,
-            - ``'gf'`` for gram force.
+        - ``'N'`` for newton,
+        - ``'mN'`` for milli-newton,
+        - ``'kN'`` for kilo-newton,
+        - ``'kgf'`` for kilogram force,
+        - ``'gf'`` for gram force.
 
         Returns
         -------
@@ -1787,7 +1954,7 @@ class Force(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -1828,7 +1995,7 @@ class Stress(UnitBase):
 
         if unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         self.__value = value
         self.__unit = unit
@@ -1865,7 +2032,7 @@ class Stress(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Stress numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+        """Stress numerical value. The relative unit is expressed by the ``unit`` property.
 
         Returns
         -------
@@ -1884,10 +2051,10 @@ class Stress(UnitBase):
         """Symbol of the unit of measurement for stress. It must be a string.
         Available units are:
 
-            - ``'Pa'`` for pascal,
-            - ``'kPa'`` for kilo-pascal,
-            - ``'MPa'`` for mega-pascal,
-            - ``'GPa'`` for giga-pascal.
+        - ``'Pa'`` for pascal,
+        - ``'kPa'`` for kilo-pascal,
+        - ``'MPa'`` for mega-pascal,
+        - ``'GPa'`` for giga-pascal.
 
         Returns
         -------
@@ -1957,7 +2124,7 @@ class Stress(UnitBase):
 
         if target_unit not in self.__UNITS.keys():
             raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
-                           f"Available units are: {list(self.__UNITS.keys())}")
+                           f"Available units are: {list(self.__UNITS.keys())}.")
 
         if target_unit != self.__unit:
             target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
@@ -1970,3 +2137,171 @@ class Stress(UnitBase):
             return self
         else:
             return Stress(value = target_value, unit = target_unit)
+
+
+class Current(UnitBase):
+    r"""``gearpy.units.units.Current`` object.
+
+    Attributes
+    ----------
+    :py:attr:`unit` : str
+        Symbol of the unit of measurement for electrical current.
+    :py:attr:`value` : float or int
+        Electrical current numerical value.
+
+    Methods
+    -------
+    :py:meth:`to`
+        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    """
+
+    __UNITS = {'A': 1,
+               'mA': 1e-3,
+               'uA': 1e-6}
+
+    def __init__(self, value: Union[float, int], unit: str):
+        super().__init__(value = value, unit = unit)
+
+        if unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}.")
+
+        self.__value = value
+        self.__unit = unit
+
+    def __mul__(self, other: Union[float, int]) -> 'Current':
+        super().__mul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        return Current(value = self.__value*other, unit = self.__unit)
+
+    def __rmul__(self, other: Union[float, int]) -> 'Current':
+        super().__rmul__(other = other)
+
+        if not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to multiply a {other.__class__.__name__} by an '
+                            f'{self.__class__.__name__}.')
+
+        return Current(value = self.__value*other, unit = self.__unit)
+
+    def __truediv__(self, other: Union['Current', float, int]) -> Union['Current', float]:
+        super().__truediv__(other = other)
+
+        if not isinstance(other, Current) and not isinstance(other, float) and not isinstance(other, int):
+            raise TypeError(f'It is not allowed to divide an {self.__class__.__name__} by a '
+                            f'{other.__class__.__name__}.')
+
+        if isinstance(other, Current):
+            return self.__value/other.to(self.__unit).value
+        else:
+            return Current(value = self.__value/other, unit = self.__unit)
+
+    @property
+    def value(self) -> Union[float, int]:
+        """Electrical current numerical value. The relative unit is expressed by the ``unit`` property.
+
+        Returns
+        -------
+        float or int
+            Electrical current numerical value.
+
+        Raises
+        ------
+        TypeError
+            If ``value`` is not a float or an integer.
+        """
+        return self.__value
+
+    @property
+    def unit(self) -> str:
+        """Symbol of the unit of measurement for electrical current. It must be a string.
+        Available units are:
+
+        - ``'A'`` for ampere,
+        - ``'mA'`` for milli-ampere,
+        - ``'uA'`` for micro-ampere.
+
+        Returns
+        -------
+        str
+            Symbol of the unit of measurement for electrical current.
+
+        Raises
+        ------
+        TypeError
+            If ``unit`` is not a string.
+        KeyError
+            If the ``unit`` is not among available ones.
+        """
+        return self.__unit
+
+    def to(self, target_unit: str, inplace: bool = False) -> 'Current':
+        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
+        the converted ``value`` and the ``target_unit`` as ``unit``.
+
+        Parameters
+        ----------
+        target_unit : str
+            Target unit to which convert the electrical current value.
+        inplace : bool, optional
+            Whether or not to override the current instance value. Default is ``False``, so it does not override the
+            current value.
+
+        Returns
+        -------
+        Current
+            Converted electrical current.
+
+        Raises
+        ------
+        TypeError
+            - If ``target_unit`` is not a string,
+            - if ``inplace`` is not a bool.
+        KeyError
+            If the ``target_unit`` is not among available ones.
+
+        Examples
+        --------
+        ``Current`` instantiation.
+
+        >>> from gearpy.units import Current
+        >>> i = Current(1, 'A')
+        >>> i
+        ... 1 A
+
+        Conversion from ampere to milli-ampere with ``inplace = False`` by default, so it does not override the current
+        value.
+
+        >>> i.to('mA')
+        ... 1000.0 mA
+        >>> i
+        ... 1 A
+
+        Conversion from ampere to milli-ampere with ``inplace = True``, in order to override the current value.
+
+        >>> i.to('mA', inplace = True)
+        ... 1000.0 mA
+        >>> i
+        ... 1000.0 mA
+        """
+        super().to(target_unit = target_unit, inplace = inplace)
+
+        if target_unit not in self.__UNITS.keys():
+            raise KeyError(f"{self.__class__.__name__} unit '{target_unit}' not available. "
+                           f"Available units are: {list(self.__UNITS.keys())}.")
+
+        if target_unit != self.__unit:
+            target_value = self.__value*self.__UNITS[self.__unit]/self.__UNITS[target_unit]
+        else:
+            target_value = self.__value
+
+        if inplace:
+            self.__value = target_value
+            self.__unit = target_unit
+            return self
+        else:
+            return Current(value = target_value, unit = target_unit)
