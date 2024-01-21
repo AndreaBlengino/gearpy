@@ -1,7 +1,8 @@
 ### System in Analysis
 
 The mechanical transmission to be studied is the one described in the 
-**5 - DC Motor PWM Control** example.  
+[5 - DC Motor PWM Control](https://gearpy.readthedocs.io/en/latest/examples/5_dc_motor_pwm_control/index.html) 
+example.  
 
 ### Model Set Up
 

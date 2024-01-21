@@ -1,7 +1,8 @@
 ### System in Analysis
 
 The mechanical transmission to be studied is the one described in the 
-**4 - DC Motor Electric Analysis** example.  
+[4 - DC Motor Electric Analysis](https://gearpy.readthedocs.io/en/latest/examples/4_dc_motor_electric_analysis/index.html) 
+example.  
 In that example, the motor absorbs its *maximum electric current* at the
 start up, 5 A, which may be too much for the system. Such a high current
 may demagnetize the magnet inside the motor itself, so we want to keep 

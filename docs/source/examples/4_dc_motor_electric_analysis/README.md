@@ -1,7 +1,8 @@
 ### System in Analysis
 
 The mechanical transmission to be studied is the one described in the 
-**2 - Complex External Torque** example.  
+[2 - Complex External Torque](https://gearpy.readthedocs.io/en/latest/examples/2_complex_external_torque/index.html) 
+example.  
 
 ### Model Set Up
 

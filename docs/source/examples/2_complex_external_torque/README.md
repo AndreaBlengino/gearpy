@@ -1,7 +1,8 @@
 ### System in Analysis
 
 The mechanical transmission to be studied is the one described in the 
-**1 - Simple Transmission Chain** example.
+[1 - Simple Transmission Chain](https://gearpy.readthedocs.io/en/latest/examples/1_simple_transmission_chain/index.html) 
+example.
 
 ### Model Set Up
 
