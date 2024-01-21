@@ -20,7 +20,7 @@ motor = DCMotor(name = 'motor',
                 maximum_electric_current = Current(5, 'A'))
 ```
 
-The remaining set up of the model stays the same.
+The remaining set up of the model stay the same.
 
 ### Results Analysis
 

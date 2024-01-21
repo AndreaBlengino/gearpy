@@ -53,7 +53,7 @@ gear_6 = SpurGear(name = 'gear 6',
 ```
 
 All gears are made in steel, which yield stress is 250 MPa.  
-The remaining set up of the model stays the same.
+The remaining set up of the model stay the same.
 
 ### Results Analysis
 

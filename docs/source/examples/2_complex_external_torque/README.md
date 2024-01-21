@@ -32,7 +32,7 @@ def ext_torque(time, angular_position, angular_speed):
 gear_6.external_torque = ext_torque
 ```
 
-The remaining set up of the model stays the same.
+The remaining set up of the model stay the same.
 
 ### Results Analysis
 
