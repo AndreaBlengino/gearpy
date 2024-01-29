@@ -66,10 +66,26 @@ class ReachAngularPosition(RuleBase):
         if not isinstance(braking_angle, Angle):
             raise TypeError(f"Parameter 'braking_angle' must be an instance of {Angle.__name__!r}.")
 
-        self.encoder = encoder
-        self.transmission = transmission
-        self.target_angular_position = target_angular_position
-        self.braking_angle = braking_angle
+        self.__encoder = encoder
+        self.__transmission = transmission
+        self.__target_angular_position = target_angular_position
+        self.__braking_angle = braking_angle
+
+    @property
+    def encoder(self) -> AbsoluteRotaryEncoder:
+        return self.__encoder
+
+    @property
+    def transmission(self) -> Transmission:
+        return self.__transmission
+
+    @property
+    def target_angular_position(self) -> AngularPosition:
+        return self.__target_angular_position
+
+    @property
+    def braking_angle(self) -> Angle:
+        return self.__braking_angle
 
     def apply(self) -> Union[None, float, int]:
         r"""Computes the ``pwm`` to apply to the ``transmission`` motor in order to reach a ``target_angular_position``
@@ -214,11 +230,31 @@ class StartProportionalToAngularPosition(RuleBase):
             if pwm_min <= 0:
                 raise ValueError(f"Parameter 'pwm_min' must be positive.")
 
-        self.encoder = encoder
-        self.transmission = transmission
-        self.target_angular_position = target_angular_position
-        self.pwm_min_multiplier = pwm_min_multiplier
-        self.pwm_min = pwm_min
+        self.__encoder = encoder
+        self.__transmission = transmission
+        self.__target_angular_position = target_angular_position
+        self.__pwm_min_multiplier = pwm_min_multiplier
+        self.__pwm_min = pwm_min
+
+    @property
+    def encoder(self) -> AbsoluteRotaryEncoder:
+        return self.__encoder
+
+    @property
+    def transmission(self) -> Transmission:
+        return self.__transmission
+
+    @property
+    def target_angular_position(self) -> AngularPosition:
+        return self.__target_angular_position
+
+    @property
+    def pwm_min_multiplier(self) -> Union[float, int]:
+        return self.__pwm_min_multiplier
+
+    @property
+    def pwm_min(self) -> Union[None, float, int]:
+        return self.__pwm_min
 
     def apply(self) -> Union[None, float, int]:
         r"""Computes the ``pwm`` to apply to the ``transmission`` motor, proportional to the ``encoder``'s ``target``
@@ -368,11 +404,31 @@ class StartLimitCurrent(RuleBase):
         if limit_electric_current.value <= 0:
             raise ValueError("Parameter 'limit_electric_current' must be positive.")
 
-        self.encoder = encoder
-        self.tachometer = tachometer
-        self.motor = motor
-        self.limit_electric_current = limit_electric_current
-        self.target_angular_position = target_angular_position
+        self.__encoder = encoder
+        self.__tachometer = tachometer
+        self.__motor = motor
+        self.__limit_electric_current = limit_electric_current
+        self.__target_angular_position = target_angular_position
+
+    @property
+    def encoder(self) -> AbsoluteRotaryEncoder:
+        return self.__encoder
+
+    @property
+    def tachometer(self) -> Tachometer:
+        return self.__tachometer
+
+    @property
+    def motor(self) -> DCMotor:
+        return self.__motor
+
+    @property
+    def limit_electric_current(self) -> Current:
+        return self.__limit_electric_current
+
+    @property
+    def target_angular_position(self) -> AngularPosition:
+        return self.__target_angular_position
 
     def apply(self) -> Union[None, float, int]:
         r"""Computes the ``pwm`` to apply to the ``motor`` in order to limit its absorbed electric current to be lower
