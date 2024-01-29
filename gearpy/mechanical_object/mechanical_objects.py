@@ -1627,8 +1627,7 @@ class DCMotor(MotorBase):
             raise TypeError("Parameter 'pwm' must be a float or an integer.")
 
         if (pwm > 1) or (pwm < -1):
-            raise ValueError("Pulse Width Modulation (PWM) must be within -1 and 1. "
-                             "Check DCMotor.pwm_control function.")
+            raise ValueError("Pulse Width Modulation (PWM) must be within -1 and 1.")
 
         self.__pwm = pwm
 
