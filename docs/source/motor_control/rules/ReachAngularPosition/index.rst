@@ -13,3 +13,7 @@ ReachAngularPosition
    :hidden:
 
    apply
+   braking_angle
+   encoder
+   target_angular_position
+   transmission

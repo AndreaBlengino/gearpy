@@ -13,3 +13,8 @@ StartProportionalToAngularPosition
    :hidden:
 
    apply
+   encoder
+   pwm_min
+   pwm_min_multiplier
+   target_angular_position
+   transmission

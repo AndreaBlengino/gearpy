@@ -13,3 +13,8 @@ StartLimitCurrent
    :hidden:
 
    apply
+   encoder
+   limit_electric_current
+   motor
+   tachometer
+   target_angular_position
