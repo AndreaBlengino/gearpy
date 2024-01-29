@@ -11,10 +11,23 @@ class ReachAngularPosition(RuleBase):
     """gearpy.motor_control.rules.ReachAngularPosition object. \n
     It can be used to make the ``encoder``'s ``target`` reach a ``target_angular_position`` within a ``braking_angle``.
 
+    Attributes
+    ----------
+    :py:attr:`encoder` : AbsoluteRotaryEncoder
+        Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
+        ``target_angular_position``.
+    :py:attr:`transmission` : Transmission
+        Transmission whose motor's ``pwm`` is controlled in order to reach a specific angular position.
+    :py:attr:`target_angular_position` : AngularPosition
+        Angular position to be reached by the ``encoder``'s target.
+    :py:attr:`braking_angle` : Angle
+        Angle within which the motor's ``pwm`` is controlled in order to brake and reach the
+        ``target_angular_position``.
+
     Methods
     -------
     :py:meth:`apply`
-        Computes the ``pwm`` to apply to the ``transmission`` motor in order to reach a ``target_angular_position`` by
+        Computes the ``pwm`` to apply to the ``transmission``'s motor in order to reach a ``target_angular_position`` by
         the ``target`` rotating object of the ``encoder``, within a specific ``braking_angle``.
 
     Raises
@@ -31,10 +44,6 @@ class ReachAngularPosition(RuleBase):
 
     See Also
     --------
-    :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
-    :py:class:`gearpy.transmission.Transmission`
-    :py:class:`gearpy.units.units.AngularPosition`
-    :py:class:`gearpy.units.units.Angle`
     :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
     """
 
@@ -73,23 +82,82 @@ class ReachAngularPosition(RuleBase):
 
     @property
     def encoder(self) -> AbsoluteRotaryEncoder:
+        """Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
+        ``target_angular_position``.
+
+        Returns
+        -------
+        AbsoluteRotaryEncoder
+            Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
+            ``target_angular_position``.
+
+        Notes
+        -----
+        This parameter serves as a remainder for the user about the need to use an encoder in the mechanism, otherwise
+        this type of control cannot be applied.
+
+        See Also
+        --------
+        :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
+        """
         return self.__encoder
 
     @property
     def transmission(self) -> Transmission:
+        """Transmission whose motor's ``pwm`` is controlled in order to reach a specific angular position.
+
+        Returns
+        -------
+        Transmission
+            Transmission whose motor's ``pwm`` is controlled in order to reach a specific angular position.
+
+        See Also
+        --------
+        :py:class:`gearpy.transmission.Transmission`
+        """
         return self.__transmission
 
     @property
     def target_angular_position(self) -> AngularPosition:
+        """Angular position to be reached by the ``encoder``'s target. The rule is applied up until the ``encoder``'s
+        target's ``angular_position`` equals the ``target_angular_position``.
+
+        Returns
+        -------
+        AngularPosition
+            Angular position to be reached by the ``encoder``'s target.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.AngularPosition`
+        """
         return self.__target_angular_position
 
     @property
     def braking_angle(self) -> Angle:
+        """Angle within which the motor's ``pwm`` is controlled in order to brake and reach the
+        ``target_angular_position``. \n
+        The rule is applied only if the difference between ``target_angular_position`` and the ``encoder``'s target
+        ``angular_position`` is lower than or equal to the ``braking_angle``. \n
+        The lower the ``braking_angle`` the higher the deceleration of the system, thus the higher the vibrations
+        produced.
+
+        Returns
+        -------
+        Angle
+            Angle within which the motor's ``pwm`` is controlled in order to brake and reach the
+            ``target_angular_position``.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Angle`
+        """
         return self.__braking_angle
 
     def apply(self) -> Union[None, float, int]:
-        r"""Computes the ``pwm`` to apply to the ``transmission`` motor in order to reach a ``target_angular_position``
-        by the ``target`` rotating object of the ``encoder``, within a specific ``braking_angle``.
+        r"""Computes the ``pwm`` to apply to the ``transmission``'s DC motor in order to reach a
+        ``target_angular_position`` by the ``target`` rotating object of the ``encoder``, within a specific
+        ``braking_angle``.
 
         Returns
         -------
@@ -158,6 +226,21 @@ class StartProportionalToAngularPosition(RuleBase):
     ``pwm`` increases up to ``1`` when the ``encoder``'s ``target``'s ``angular_position`` equals
     ``target_angular_position``.
 
+    Attributes
+    ----------
+    :py:attr:`encoder` : AbsoluteRotaryEncoder
+        Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
+        ``target_angular_position``.
+    :py:attr:`transmission` : Transmission
+        Transmission whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
+        ``angular_position``.
+    :py:attr:`target_angular_position` : AngularPosition
+        Angular position to be reached by the ``encoder``'s target.
+    :py:attr:`pwm_min_multiplier` : float or int
+        Multiplication factor of motor's minimum ``pwm``.
+    :py:attr:`pwm_min` : float or int, optional
+        Minimum ``pwm`` to be used in case the ``transmission``'s motor minimum ``pwm`` is null.
+
     Methods
     -------
     :py:meth:`apply`
@@ -182,9 +265,6 @@ class StartProportionalToAngularPosition(RuleBase):
 
     See Also
     --------
-    :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
-    :py:class:`gearpy.transmission.Transmission`
-    :py:class:`gearpy.units.units.AngularPosition`
     :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
     """
 
@@ -238,22 +318,94 @@ class StartProportionalToAngularPosition(RuleBase):
 
     @property
     def encoder(self) -> AbsoluteRotaryEncoder:
+        """Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
+        ``target_angular_position``.
+
+        Returns
+        -------
+        AbsoluteRotaryEncoder
+            Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
+            ``target_angular_position``.
+
+        Notes
+        -----
+        This parameter serves as a remainder for the user about the need to use an encoder in the mechanism, otherwise
+        this type of control cannot be applied.
+
+        See Also
+        --------
+        :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
+        """
         return self.__encoder
 
     @property
     def transmission(self) -> Transmission:
+        """Transmission whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
+        ``angular_position``.
+
+        Returns
+        -------
+        Transmission
+            Transmission whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
+            ``angular_position``.
+
+        See Also
+        --------
+        :py:class:`gearpy.transmission.Transmission`
+        """
         return self.__transmission
 
     @property
     def target_angular_position(self) -> AngularPosition:
+        """Angular position to be reached by the ``encoder``'s target. The rule is applied up until the ``encoder``'s
+        target's ``angular_position`` equals the ``target_angular_position``.
+
+        Returns
+        -------
+        AngularPosition
+            Angular position to be reached by the ``encoder``'s target.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.AngularPosition`
+        """
         return self.__target_angular_position
 
     @property
     def pwm_min_multiplier(self) -> Union[float, int]:
+        """Multiplication factor of motor's minimum ``pwm``. \n
+        The ``transmission``'s motor has a minimum ``pwm`` which, as is, cannot be used to control the motor, since at
+        this value the motor will remain still. So, in order to properly control the motor motion, it is required to
+        apply a ``pwm`` greater than the minimum ``pwm``, therefore the motor minimum ``pwm`` is multiplied by
+        ``pwm_min_multiplier`` to get a starting ``pwm`` to be applied to the motor.
+
+        Returns
+        -------
+        float or int
+            Multiplication factor of motor's minimum ``pwm``.
+
+        See Also
+        --------
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+        """
         return self.__pwm_min_multiplier
 
     @property
     def pwm_min(self) -> Union[None, float, int]:
+        """Minimum ``pwm`` to be used in case the ``transmission``'s motor minimum ``pwm`` is null. \n
+        If the motor's minimum ``pwm`` is null, then it is useless to multiply this value by ``pwm_min_multiplier`` in
+        order to get a starting ``pwm``; therefore, only in this case, ``pwm_min`` is directly used as starting ``pwm``.
+
+        Returns
+        -------
+        None or float or int
+            Minimum ``pwm`` to be used in case the ``transmission``'s motor minimum ``pwm`` is null.
+
+        See Also
+        --------
+        :py:attr:`pwm_min_multiplier`
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+        """
         return self.__pwm_min
 
     def apply(self) -> Union[None, float, int]:
@@ -342,9 +494,23 @@ class StartProportionalToAngularPosition(RuleBase):
 class StartLimitCurrent(RuleBase):
     """gearpy.motor_control.rules.StartLimitCurrent object. \n
     It can be used to make a gradual start of the transmission's motion and limit the ``motor`` absorbed electric
-    current to be lower than a ``limit_electric_current`` value. It computes a ``pwm`` to apply to the ``motor`` up
-    until the ``encoder``'s ``target``'s ``angular_position`` equals ``target_angular_position``. \n
+    current to be lower than or equal to a ``limit_electric_current`` value. It computes a ``pwm`` to apply to the
+    ``motor`` up until the ``encoder``'s ``target``'s ``angular_position`` equals ``target_angular_position``. \n
     For an optimal ``pwm`` management, it is suggested to set the ``motor`` as the ``tachometer``'s ``target``.
+
+    Attributes
+    ----------
+    :py:attr:`encoder` : AbsoluteRotaryEncoder
+        Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
+        ``target_angular_position``.
+    :py:attr:`tachometer` : Tachometer
+        Sensor used to measure the ``angular_speed`` of a ``RotatingObject``.
+    :py:attr:`motor` : DCMotor
+        Motor that has to be controlled through ``pwm`` value.
+    :py:attr:`limit_electric_current` : Current
+        Maximum allowable electric current to be absorbed by the ``motor``.
+    :py:attr:`target_angular_position` : AngularPosition
+        Angular position to be reached by the ``encoder``'s target.
 
     Methods
     -------
@@ -367,11 +533,6 @@ class StartLimitCurrent(RuleBase):
 
     See Also
     --------
-    :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
-    :py:class:`gearpy.sensors.Tachometer`
-    :py:class:`gearpy.mechanical_object.mechanical_objects.DCMotor`
-    :py:class:`gearpy.units.units.AngularPosition`
-    :py:class:`gearpy.units.units.Current`
     :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
     """
 
@@ -412,22 +573,91 @@ class StartLimitCurrent(RuleBase):
 
     @property
     def encoder(self) -> AbsoluteRotaryEncoder:
+        """Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
+        ``target_angular_position``.
+
+        Returns
+        -------
+        AbsoluteRotaryEncoder
+            Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
+            ``target_angular_position``.
+
+        Notes
+        -----
+        This parameter serves as a remainder for the user about the need to use an encoder in the mechanism, otherwise
+        this type of control cannot be applied.
+
+        See Also
+        --------
+        :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
+        """
         return self.__encoder
 
     @property
     def tachometer(self) -> Tachometer:
+        """Sensor used to measure the ``angular_speed`` of a ``RotatingObject``.
+
+        Returns
+        -------
+        Tachometer
+            Sensor used to measure the ``angular_speed`` of a ``RotatingObject``.
+
+        Notes
+        -----
+        This parameter serves as a remainder for the user about the need to use a tachometer in the mechanism,
+        otherwise this type of control cannot be applied.
+
+        See Also
+        --------
+        :py:class:`gearpy.sensors.Tachometer`
+        """
         return self.__tachometer
 
     @property
     def motor(self) -> DCMotor:
+        """Motor that has to be controlled through ``pwm`` value.
+
+        Returns
+        -------
+        DCMotor
+           Motor that has to be controlled through ``pwm`` value.
+
+        See Also
+        --------
+        :py:class:`gearpy.mechanical_object.mechanical_objects.DCMotor`
+        """
         return self.__motor
 
     @property
     def limit_electric_current(self) -> Current:
+        """Maximum allowable electric current to be absorbed by the ``motor``. While the rule is applied, the absorbed
+        electric current is equal to or lower than this value.
+
+        Returns
+        -------
+        Current
+            Maximum allowable electric current to be absorbed by the ``DCMotor``.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.Current`
+        """
         return self.__limit_electric_current
 
     @property
     def target_angular_position(self) -> AngularPosition:
+        """Angular position to be reached by the ``encoder``'s target. The rule is applied up until the ``encoder``'s
+        target's ``angular_position`` equals the ``target_angular_position``.
+
+        Returns
+        -------
+        AngularPosition
+            Angular position to be reached by the ``encoder``'s target.
+
+        See Also
+        --------
+        :py:class:`gearpy.units.units.AngularPosition`
+        """
         return self.__target_angular_position
 
     def apply(self) -> Union[None, float, int]:
