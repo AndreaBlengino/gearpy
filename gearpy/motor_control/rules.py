@@ -715,6 +715,40 @@ class StartLimitCurrent(RuleBase):
 
 
 class ConstantPWM(RuleBase):
+    """gearpy.motor_control.rules.ConstantPWM object. \n
+    It can be used to make a gradual start of the ``transmission``'s motion, in order to avoid a peak in the
+    ``transmission``'s DC motor absorbed electric current. \n
+    It checks whether the ``timer`` is active and, if so, it sets the ``pwm`` of ``transmission`` motor to the constant
+    ``target_pwm_value``.
+
+    Attributes
+    ----------
+    :py:attr:`timer` : Timer
+        Timer which, when active, sets the control of ``transmission`` motor ``pwm``.
+    :py:attr:`transmission` : Transmission
+        Transmission whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
+    :py:attr:`target_pwm_min` : float or int
+        Target value to set ``transmission`` motor ``pwm`` when the ``timer`` is active.
+
+    Methods
+    -------
+    :py:meth:`apply`
+        Checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``transmission`` motor,
+        equal to ``target_pwm_value``.
+
+    Raises
+    ------
+    TypeError
+        - If ``timer`` is not an instance of ``Timer``,
+        - if ``transmission`` is not an instance of ``Transmission``,
+        - if ``target_pwm_value`` is not a float or an integer.
+    ValueError
+        If ``target_pwm_value`` is not within ``-1`` and ``1``.
+
+    See Also
+    --------
+    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+    """
 
     def __init__(self,
                  timer: Timer,
@@ -740,17 +774,75 @@ class ConstantPWM(RuleBase):
 
     @property
     def timer(self) -> Timer:
+        """Timer which, when active, sets the control of ``transmission`` motor ``pwm``.
+
+        Returns
+        -------
+        Timer
+            Timer which, when active, sets the control of ``transmission`` motor ``pwm``.
+
+        Raises
+        ------
+        TypeError
+            If ``timer`` is not an instance of ``Timer``.
+
+        See Also
+        --------
+        :py:class:`gearpy.sensors.Timer`
+        """
         return self.__timer
 
     @property
     def transmission(self) -> Transmission:
+        """Transmission whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
+
+        Returns
+        -------
+        Transmission
+            Transmission whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
+
+        Raises
+        ------
+        TypeError
+            If ``transmission`` is not an instance of ``Transmission``.
+
+        See Also
+        --------
+        :py:class:`gearpy.transmission.Transmission`
+        """
         return self.__transmission
 
     @property
     def target_pwm_value(self) -> Union[float, int]:
+        """Target value to set ``transmission`` motor ``pwm`` when the ``timer`` is active.
+
+        Returns
+        -------
+        float or int
+            Target value to set ``transmission`` motor ``pwm`` when the ``timer`` is active.
+
+        Raises
+        ------
+        TypeError
+            If ``target_pwm_value`` is not a float or an integer.
+        ValueError
+            If ``target_pwm_value`` is not within ``-1`` and ``1``.
+
+        See Also
+        --------
+        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+        """
         return self.__target_pwm_value
 
     def apply(self) -> Union[None, float, int]:
+        r"""Checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``transmission`` motor,
+        equal to ``target_pwm_value``.
+
+        Returns
+        -------
+        float or int or None
+            PWM value to apply to the motor, equal to ``target_pwm_value``.
+        """
         if self.timer.is_active(current_time = self.transmission.time[-1]):
             return self.target_pwm_value
 
