@@ -143,3 +143,30 @@ class Tachometer:
             return self.__target.angular_speed
         else:
             return self.__target.angular_speed.to(unit).value
+
+
+class Timer:
+
+    def __init__(self, start_time: Time, duration: TimeInterval):
+        if not isinstance(start_time, Time):
+            raise TypeError(f"Parameter 'start_time' must be an instance of {Time.__name__!r}.")
+
+        if not isinstance(duration, TimeInterval):
+            raise TypeError(f"Parameter 'duration' must be an instance of {TimeInterval.__name__!r}.")
+
+        self.__start_time = start_time
+        self.__duration = duration
+
+    @property
+    def start_time(self) -> Time:
+        return self.__start_time
+
+    @property
+    def duration(self) -> TimeInterval:
+        return self.__duration
+
+    def is_active(self, current_time: Time) -> bool:
+        if not isinstance(current_time, Time):
+            raise TypeError(f"Parameter 'current_time' must be an instance of {Time.__name__!r}.")
+
+        return (current_time >= self.start_time) and ((current_time - self.start_time) <= self.duration)
