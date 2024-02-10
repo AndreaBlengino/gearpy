@@ -719,8 +719,7 @@ class ConstantPWM(RuleBase):
     def __init__(self,
                  timer: Timer,
                  transmission: Transmission,
-                 target_pwm_value: Union[float, int],
-                 ):
+                 target_pwm_value: Union[float, int]):
         super().__init__()
 
         if not isinstance(timer, Timer):
