@@ -4,7 +4,7 @@ from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
 from gearpy.transmission import Transmission
 from gearpy.units import Angle, AngularSpeed, AngularPosition, Current, InertiaMoment, Torque
 from gearpy.utils import add_fixed_joint
-from hypothesis import given, settings
+from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import integers, floats, booleans
 from pytest import mark, raises
 from tests.conftest import transmissions, basic_transmission
@@ -21,7 +21,7 @@ class TestPWMControlInit:
 
     @mark.genuine
     @given(transmission = transmissions())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, transmission):
         motor_control = PWMControl(transmission = transmission)
 
@@ -56,7 +56,7 @@ class TestPWMControlAddRule:
            limit_electric_current = currents(min_value = 10, max_value = 15, unit = 'A'),
            element_index = integers(min_value = 0),
            use_limit_current_rule = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, transmission, start_target_angular_position, reach_target_angular_position,
                     pwm_min_multiplier, pwm_min, braking_angle, limit_electric_current, element_index, use_limit_current_rule):
         element_index %= len(transmission.chain)
@@ -106,7 +106,7 @@ class TestPWMControlApplyRules:
            use_limit_current_rule = booleans(),
            current_angular_position = angular_positions(min_value = 0, max_value = 200_000, unit = 'rad'),
            current_angular_speed = angular_speeds())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, transmission, start_target_angular_position, reach_target_angular_position,
                     pwm_min_multiplier, pwm_min, braking_angle, limit_electric_current, element_index,
                     use_limit_current_rule, current_angular_position, current_angular_speed):

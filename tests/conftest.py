@@ -56,10 +56,13 @@ basic_timer = Timer(start_time = Time(0, 'sec'), duration = TimeInterval(5, 'sec
 
 
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
-                  AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'), AngularAcceleration(1, 'rad/s^2'),
-                  Current(1, 'A'), Force(1, 'N'), InertiaMoment(1, 'kgm^2'), Length(1, 'm'), Stress(1, 'Pa'),
-                  Surface(1, 'm^2'), Time(1, 'sec'), TimeInterval(1, 'sec'), Torque(1, 'Nm'), Angle(1, 'rad'),
-                  basic_dc_motor_1, basic_spur_gear_1, basic_flywheel, MatingMaster, MatingSlave, SpurGear]
+                  AngularPosition(1, 'rad'), AngularSpeed(1, 'rad/s'),
+                  AngularAcceleration(1, 'rad/s^2'), Current(1, 'A'),
+                  Force(1, 'N'), InertiaMoment(1, 'kgm^2'), Length(1, 'm'),
+                  Stress(1, 'Pa'), Surface(1, 'm^2'), Time(1, 'sec'),
+                  TimeInterval(1, 'sec'), Torque(1, 'Nm'), Angle(1, 'rad'),
+                  basic_dc_motor_1, basic_spur_gear_1, basic_flywheel, basic_solver, basic_transmission, basic_encoder,
+                  basic_tachometer, basic_timer, MatingMaster, MatingSlave, SpurGear]
 
 
 @composite

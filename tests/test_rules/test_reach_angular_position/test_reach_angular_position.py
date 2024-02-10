@@ -56,7 +56,7 @@ class TestReachAngularPositionApply:
            braking_angle_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 1000),
            target_angular_position_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 3, max_value = 1000),
            available_load_torque = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, element_index, transmission, current_angular_position, braking_angle_multiplier,
                     target_angular_position_multiplier, available_load_torque):
         element_index %= len(transmission.chain)

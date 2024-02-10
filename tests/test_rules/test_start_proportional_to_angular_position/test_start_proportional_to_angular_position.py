@@ -4,7 +4,7 @@ from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.transmission import Transmission
 from gearpy.units import AngularPosition, InertiaMoment, AngularSpeed, Torque, Current
 from gearpy.utils import add_fixed_joint
-from hypothesis import given, settings
+from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import integers, floats, one_of, none, booleans
 from pytest import mark, raises
 from tests.conftest import transmissions
@@ -22,7 +22,7 @@ class TestStartProportionalToAngularPositionInit:
            pwm_min_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1, exclude_min = True, max_value = 1000),
            pwm_min = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1),
                             none()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, element_index, transmission, target_angular_position, pwm_min_multiplier, pwm_min):
         element_index %= len(transmission.chain)
         encoder = AbsoluteRotaryEncoder(target = transmission.chain[element_index])
@@ -62,7 +62,7 @@ class TestStartProportionalToAngularPositionApply:
                             none()),
            target_angular_position_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 1000),
            load_torque_time_variable = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, element_index, transmission, current_angular_position, pwm_min_multiplier, pwm_min,
                     target_angular_position_multiplier, load_torque_time_variable):
         if transmission.chain[0].electric_current_is_computable:

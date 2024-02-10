@@ -1,5 +1,5 @@
 from gearpy.motor_control import ConstantPWM
-from hypothesis import given, settings
+from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import floats
 from pytest import mark, raises
 from tests.conftest import transmissions
@@ -16,7 +16,7 @@ class TestConstantPWMInit:
     @given(timer = timers(),
            transmission = transmissions(),
            target_pwm_value = floats(allow_nan = False, allow_infinity = False, min_value = -1, max_value = 1))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, timer, transmission, target_pwm_value):
         rule = ConstantPWM(timer = timer, transmission = transmission, target_pwm_value = target_pwm_value)
 
@@ -45,6 +45,7 @@ class TestConstantPWMApply:
            transmission = transmissions(),
            target_pwm_value = floats(allow_nan = False, allow_infinity = False, min_value = -1, max_value = 1),
            current_time = times())
+    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, timer, transmission, target_pwm_value, current_time):
         warnings.filterwarnings('ignore', category = RuntimeWarning)
         rule = ConstantPWM(timer = timer, transmission = transmission, target_pwm_value = target_pwm_value)
