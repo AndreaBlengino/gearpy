@@ -12,6 +12,6 @@ Timer
 .. toctree::
    :hidden:
 
-   start_time
    duration
    is_active
+   start_time
