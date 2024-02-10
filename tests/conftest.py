@@ -1,5 +1,5 @@
 from gearpy.mechanical_object import SpurGear, DCMotor, Flywheel, MatingMaster, MatingSlave
-from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
+from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
 from gearpy.solver import Solver
 from gearpy.transmission import Transmission
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
@@ -52,6 +52,7 @@ basic_solver.run(time_discretization = TimeInterval(1, 'sec'), simulation_time =
 
 basic_encoder = AbsoluteRotaryEncoder(target = basic_spur_gear_1)
 basic_tachometer = Tachometer(target = basic_spur_gear_1)
+basic_timer = Timer(start_time = Time(0, 'sec'), duration = TimeInterval(5, 'sec'))
 
 
 types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, np.array([0]),
