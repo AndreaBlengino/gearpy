@@ -302,7 +302,7 @@ class TestTimeIntervalNe:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100, deadline = None, deadline = None)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         time_interval_1 = TimeInterval(value = value, unit = unit)
         time_interval_2 = TimeInterval(value = value + gap, unit = unit)
@@ -325,7 +325,7 @@ class TestTimeIntervalGt:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100, deadline = None, deadline = None)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         time_interval_1 = TimeInterval(value = value + gap, unit = unit)
         time_interval_2 = TimeInterval(value = value, unit = unit)
@@ -348,7 +348,7 @@ class TestTimeIntervalGe:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False, max_value = 1000))
-    @settings(max_examples = 100, deadline = None, deadline = None)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         time_interval_1 = TimeInterval(value = value + gap, unit = unit)
         time_interval_2 = TimeInterval(value = value, unit = unit)
@@ -371,7 +371,7 @@ class TestTimeIntervalLt:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100, deadline = None, deadline = None)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         if value != 0:
             time_interval_1 = TimeInterval(value = value, unit = unit)
@@ -395,7 +395,7 @@ class TestTimeIntervalLe:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            gap = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = False, max_value = 1000))
-    @settings(max_examples = 100, deadline = None, deadline = None)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, gap):
         if value != 0:
             time_interval_1 = TimeInterval(value = value, unit = unit)
