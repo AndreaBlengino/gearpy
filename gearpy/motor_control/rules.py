@@ -1,5 +1,5 @@
 from gearpy.mechanical_object import SpurGear, MotorBase, RotatingObject, DCMotor
-from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
+from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
 from gearpy.transmission import Transmission
 from gearpy.units import AngularPosition, Angle, Current
 import numpy as np
@@ -712,6 +712,48 @@ class StartLimitCurrent(RuleBase):
                         np.sqrt(speed_ratio**2 + electric_ratio**2 +
                                 2*speed_ratio*((self.limit_electric_current - 2*no_load_electric_current)/
                                                 maximum_electric_current)))
+
+
+class ConstantPWM(RuleBase):
+
+    def __init__(self,
+                 timer: Timer,
+                 transmission: Transmission,
+                 target_pwm_value: Union[float, int],
+                 ):
+        super().__init__()
+
+        if not isinstance(timer, Timer):
+            raise TypeError(f"Parameter 'timer' must be an instance of {Timer.__name__!r}.")
+
+        if not isinstance(transmission, Transmission):
+            raise TypeError(f"Parameter 'transmission' must be an instance of {Transmission.__name__!r}.")
+
+        if not isinstance(target_pwm_value, float) and not isinstance(target_pwm_value, int):
+            raise TypeError(f"Parameter 'target_pwm_value' must be a float or an integer.")
+
+        if (target_pwm_value < -1) or (target_pwm_value > 1):
+            raise ValueError(f"Parameter 'target_pwm_value' must be within -1 and 1.")
+
+        self.__timer = timer
+        self.__transmission = transmission
+        self.__target_pwm_value = target_pwm_value
+
+    @property
+    def timer(self) -> Timer:
+        return self.__timer
+
+    @property
+    def transmission(self) -> Transmission:
+        return self.__transmission
+
+    @property
+    def target_pwm_value(self) -> Union[float, int]:
+        return self.__target_pwm_value
+
+    def apply(self) -> Union[None, float, int]:
+        if self.timer.is_active(current_time = self.transmission.time[-1]):
+            return self.target_pwm_value
 
 
 def _compute_static_error(braking_angle: Angle, transmission: Transmission) -> Union[Angle, AngularPosition]:
