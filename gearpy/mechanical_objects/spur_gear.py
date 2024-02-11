@@ -1,6 +1,6 @@
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, \
+from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Angle, Force, InertiaMoment, Length, \
     Stress, Time, Torque, UnitBase
-from math import pi, sin, cos, sqrt
+from math import sin, cos, sqrt
 from .mechanical_object_base import RotatingObject, GearBase, lewis_factor_function, Role
 from .mating_roles import MatingMaster, MatingSlave
 from typing import Callable, Dict, List, Union, Optional
@@ -101,7 +101,7 @@ class SpurGear(GearBase):
 
                 if self.contact_stress_is_computable:
                     self.time_variables['contact stress'] = []
-                    self.__PRESSURE_ANGLE = 20/180*pi
+                    self.__PRESSURE_ANGLE = Angle(20, 'deg')
 
     @property
     def name(self) -> str:
@@ -790,9 +790,10 @@ class SpurGear(GearBase):
 
         equivalent_elastic_modulus = 2*self.elastic_modulus* \
                                      (mate_elastic_modulus/(self.elastic_modulus + mate_elastic_modulus))
-        inverse_curvature_sum = sin(self.__PRESSURE_ANGLE)/2*self.reference_diameter* \
+        inverse_curvature_sum = sin(self.__PRESSURE_ANGLE.to('rad').value)/2*self.reference_diameter* \
                                 (mate_reference_diameter/(self.reference_diameter + mate_reference_diameter))
-        contact_pressure = self.tangential_force/cos(self.__PRESSURE_ANGLE)/(self.face_width*inverse_curvature_sum)
+        contact_pressure = self.tangential_force/cos(self.__PRESSURE_ANGLE.to('rad').value)/ \
+                                                    (self.face_width*inverse_curvature_sum)
 
         self.contact_stress = Stress(value = 0.262922*sqrt(equivalent_elastic_modulus.to('Pa').value*
                                                            contact_pressure.to('Pa').value),
