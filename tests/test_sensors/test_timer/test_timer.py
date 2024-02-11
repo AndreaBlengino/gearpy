@@ -1,5 +1,5 @@
 from gearpy.sensors import Timer
-from gearpy.units import AngularSpeed, Time, TimeInterval
+from gearpy.units import Time, TimeInterval
 from hypothesis import given, settings
 from pytest import mark, raises
 from tests.conftest import basic_timer
