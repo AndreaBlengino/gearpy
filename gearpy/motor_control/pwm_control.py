@@ -11,7 +11,7 @@ class PWMControl(MotorControlBase):
     :py:attr:`powertrain` : Powertrain
         Powertrain to be controlled by applying a ``pwm`` to its motor.
     :py:attr:`rules` : list
-        List of the ``pwm`` rules to be applied.
+        The list of the ``pwm`` rules to be applied.
 
     Methods
     -------
@@ -59,7 +59,7 @@ class PWMControl(MotorControlBase):
         Returns
         -------
         list
-            List of the ``pwm`` rules to be applied.
+            The list of the ``pwm`` rules to be applied.
 
         See Also
         --------

@@ -14,7 +14,7 @@ class ConstantPWM(RuleBase):
     Attributes
     ----------
     :py:attr:`timer` : Timer
-        Timer which, when active, sets the control of ``powertrain`` motor ``pwm``.
+        The timer which, when active, sets the control of ``powertrain`` motor ``pwm``.
     :py:attr:`powertrain` : Powertrain
         Powertrain whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
     :py:attr:`target_pwm_min` : float or int
@@ -69,7 +69,7 @@ class ConstantPWM(RuleBase):
         Returns
         -------
         Timer
-            Timer which, when active, sets the control of ``powertrain`` motor ``pwm``.
+            The timer which, when active, sets the control of ``powertrain`` motor ``pwm``.
 
         Raises
         ------

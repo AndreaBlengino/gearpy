@@ -89,7 +89,7 @@ class AngularPosition(UnitBase):
         - ``'rad'`` for radian,
         - ``'deg'`` for degree,
         - ``'arcmin'`` for minute of arc,
-        - ``'armsec'`` for second of arc,
+        - ``'arcsec'`` for second of arc,
         - ``'rot'`` for rotation.
 
         Returns
@@ -116,8 +116,8 @@ class AngularPosition(UnitBase):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -265,7 +265,7 @@ class Angle(AngularPosition):
         - ``'rad'`` for radian,
         - ``'deg'`` for degree,
         - ``'arcmin'`` for minute of arc,
-        - ``'armsec'`` for second of arc,
+        - ``'arcsec'`` for second of arc,
         - ``'rot'`` for rotation.
 
         Returns
@@ -292,8 +292,8 @@ class Angle(AngularPosition):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -467,8 +467,8 @@ class AngularSpeed(UnitBase):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -642,8 +642,8 @@ class AngularAcceleration(UnitBase):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -833,8 +833,8 @@ class InertiaMoment(UnitBase):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -955,7 +955,8 @@ class Torque(UnitBase):
 
         return Torque(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['InertiaMoment', 'Length', 'Torque', float, int]) -> Union['AngularAcceleration', 'Force', float, 'Torque']:
+    def __truediv__(self, other: Union['InertiaMoment', 'Length', 'Torque', float, int]) \
+            -> Union['AngularAcceleration', 'Force', float, 'Torque']:
         super().__truediv__(other = other)
 
         if not isinstance(other, InertiaMoment) and not isinstance(other, Length) and not isinstance(other, Torque) \
@@ -1034,8 +1035,8 @@ class Torque(UnitBase):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -1125,7 +1126,8 @@ class Time(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) -> Union['AngularPosition', 'AngularSpeed', 'Time']:
+    def __mul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) \
+            -> Union['AngularPosition', 'AngularSpeed', 'Time']:
         super().__mul__(other = other)
 
         if not isinstance(other, AngularAcceleration) and not isinstance(other, AngularSpeed) \
@@ -1140,7 +1142,8 @@ class Time(UnitBase):
         else:
             return Time(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) -> Union['AngularPosition', 'AngularSpeed', 'Time']:
+    def __rmul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) \
+            -> Union['AngularPosition', 'AngularSpeed', 'Time']:
         super().__rmul__(other = other)
 
         if not isinstance(other, AngularAcceleration) and not isinstance(other, AngularSpeed) \
@@ -1216,8 +1219,8 @@ class Time(UnitBase):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -1391,8 +1394,8 @@ class TimeInterval(Time):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -1559,8 +1562,8 @@ class Length(UnitBase):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -1734,8 +1737,8 @@ class Surface(UnitBase):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -1910,8 +1913,8 @@ class Force(UnitBase):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -2080,8 +2083,8 @@ class Stress(UnitBase):
         target_unit : str
             Target unit to which convert the current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------
@@ -2248,8 +2251,8 @@ class Current(UnitBase):
         target_unit : str
             Target unit to which convert the electrical current value.
         inplace : bool, optional
-            Whether or not to override the current instance value. Default is ``False``, so it does not override the
-            current value.
+            Whether to override the current instance value. Default is ``False``, so it does not override the current
+            value.
 
         Returns
         -------

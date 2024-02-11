@@ -21,7 +21,7 @@ class ReachAngularPosition(RuleBase):
     :py:attr:`target_angular_position` : AngularPosition
         Angular position to be reached by the ``encoder``'s target.
     :py:attr:`braking_angle` : Angle
-        Angle within which the motor's ``pwm`` is controlled in order to brake and reach the
+        The angle within which the motor's ``pwm`` is controlled in order to brake and reach the
         ``target_angular_position``.
 
     Methods
@@ -145,7 +145,7 @@ class ReachAngularPosition(RuleBase):
         Returns
         -------
         Angle
-            Angle within which the motor's ``pwm`` is controlled in order to brake and reach the
+            The angle within which the motor's ``pwm`` is controlled in order to brake and reach the
             ``target_angular_position``.
 
         See Also

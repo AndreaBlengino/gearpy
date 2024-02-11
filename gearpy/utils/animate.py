@@ -35,13 +35,13 @@ def dc_motor_characteristics_animation(motor: DCMotor,
     motor : DCMotor
         DC motor whose characteristic curves and working point have to be animated.
     time : list
-        List of ``Time`` computed by the solver.
+        The list of ``Time`` computed by the solver.
     interval : float or int, optional
         Delay between animation frames in milliseconds. If not provided defaults to ``200``.
     torque_speed_curve : bool, optional
-        Whether or not to plot the torque-speed characteristic curve. Default is ``True``.
+        Whether to plot the torque-speed characteristic curve. Default is ``True``.
     torque_current_curve : bool, optional
-        Whether or not to plot the torque-current characteristic curve. Default is ``True``.
+        Whether to plot the torque-current characteristic curve. Default is ``True``.
     angular_speed_unit : str, optional
         Symbol of the unit of measurement to which convert the angular speed values in the plot. It must be a string.
         Default is ``'rad/s'``.
@@ -63,7 +63,7 @@ def dc_motor_characteristics_animation(motor: DCMotor,
         Extra-space to be taken around each motor characteristics extreme points. It is expressed in percent points of
         the extreme point value. Default is ``0.1``, so it is taken 10% space around each characteristic extreme points.
     show : bool, optional
-        Whether or not to show the animation. Default is ``True``.
+        Whether to show the animation. Default is ``True``.
 
     Raises
     ------
@@ -109,7 +109,7 @@ def dc_motor_characteristics_animation(motor: DCMotor,
         raise ValueError("Parameter 'time' cannot be an empty list.")
 
     if not all([isinstance(instant, Time) for instant in time]):
-            raise TypeError(f"Each element of 'time' must be an instance of {Time.__name__!r}.")
+        raise TypeError(f"Each element of 'time' must be an instance of {Time.__name__!r}.")
 
     if not isinstance(interval, float) and not isinstance(interval, int):
         raise TypeError("Parameter 'interval' must be a float or an integer.")

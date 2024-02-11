@@ -17,7 +17,7 @@ class Solver:
     Methods
     -------
     :py:meth:`run`
-        Runs the mechanical powertrain simulation.
+        Runs the powertrain simulation.
 
     Raises
     ------
@@ -54,18 +54,18 @@ class Solver:
         self.motor_control = motor_control
 
     def run(self, time_discretization: TimeInterval, simulation_time: TimeInterval):
-        """Runs the mechanical powertrain simulation. \n
+        """Runs the powertrain simulation. \n
         The simulation is performed in several steps:
 
-        - it computes the whole mechanical powertrain equivalent moment of inertia with respect to the last
+        - it computes the whole powertrain equivalent moment of inertia with respect to the last
           gear, by multiplying each element's moment of inertia, starting from the motor, by it gear ratio with respect
           to the following element in the powertrain elements and sum them up
-        - for each time step and for each mechanical powertrain element, it computes:
+        - for each time step and for each powertrain element, it computes:
 
           - the angular position and angular speed, from the last element in the powertrain elements to the first one
           - the driving torque, load torque, net torque, electrical current for motors (if computable), tangential
             force, bending stress and contact stress for gears (if computable)
-          - the angular acceleration of each mechanical powertrain element.
+          - the angular acceleration of each powertrain element.
 
         - for each time step it performs a time integration to compute angular position and speed of the last element in
           the powertrain elements.
@@ -90,7 +90,7 @@ class Solver:
 
         Notes
         -----
-        If ``powertrain.elements.time`` is an empty list, it perform the simulation starting the time from ``0 sec``;
+        If ``powertrain.elements.time`` is an empty list, it performs the simulation starting the time from ``0 sec``;
         otherwise it concatenates another simulation to existing values of time and time variables.
 
         See Also

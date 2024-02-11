@@ -3,7 +3,7 @@ from typing import Union
 
 
 def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, int]):
-    """Creates a gear mating between two existing gears. This mating is used to compose the mechanical Powertrain. \n
+    """Creates a gear mating between two existing gears. This mating is used to compose the ``Powertrain``. \n
     The ratio of the angular speed of the ``master`` gear over the angular speed of the ``slave`` gear is equal to the
     ratio of the ``slave`` gear number of teeth over the ``master`` gear number of teeth. \n
     The ``master`` gear is closest to the motor and transfers a fraction of the driving torque to the ``slave`` one,

@@ -235,7 +235,7 @@ class StartProportionalToAngularPosition(RuleBase):
 
         If both the load torque on the ``powertrain`` DC motor :math:`T_l` and the motor no load electric current
         :math:`i_0` are null, then also the computed *candidate* minimum applicable ``pwm`` :math:`D_{min}^c` is null.
-        Only in this case, the compuded *candidate* minimum applicable ``pwm`` is discarded and it is taken into account
+        Only in this case, the computed *candidate* minimum applicable ``pwm`` is discarded and it is taken into account
         the ``pwm_min`` parameter, which must have been set (don't used otherwise):
 
         .. math::

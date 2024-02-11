@@ -35,7 +35,7 @@ class DCMotor(MotorBase):
     :py:attr:`maximum_electric_current` : Current
         Maximum electric current absorbed by the DC motor.
     :py:attr:`electric_current_is_computable` : bool
-        Whether or not is possible to compute the electric current absorbed by the DC motor.
+        Whether is possible to compute the electric current absorbed by the DC motor.
     :py:attr:`electric_current` : Current
         Electric current absorbed by the DC motor.
     :py:attr:`pwm` : float or int
@@ -106,8 +106,8 @@ class DCMotor(MotorBase):
     @property
     def name(self) -> str:
         """Name of the DC motor. It must be a non-empty string. \n
-        It must be an unique name, not shared by other elements in the powertrain elements. \n
-        Once set at the DC motor instantiation, it cannot be changed afterwards.
+        It must be a unique name, not shared by other elements in the powertrain elements. \n
+        Once set at the DC motor instantiation, it cannot be changed afterward.
 
         Returns
         -------
@@ -225,7 +225,7 @@ class DCMotor(MotorBase):
         """No load angular speed of the DC motor. It must be an instance of ``AngularSpeed``. Its value must be
         positive. \n
         It is the angular speed at which the DC motor rotates when no load is applied to its rotor. \n
-        Once set at the DC motor instantiation, it cannot be changed afterwards.
+        Once set at the DC motor instantiation, it cannot be changed afterward.
 
         Returns
         -------
@@ -247,9 +247,10 @@ class DCMotor(MotorBase):
 
     @property
     def maximum_torque(self) -> Torque:
-        """Maximum torque developed by the DC motor. It must be an instance of ``Torque``. Its value must be positive. \n
+        """Maximum torque developed by the DC motor. It must be an instance of ``Torque``. Its value must be
+        positive. \n
         It is the maximum torque the DC motor can develop when its rotor is kept still by the load. \n
-        Once set at the DC motor instantiation, it cannot be changed afterwards.
+        Once set at the DC motor instantiation, it cannot be changed afterward.
 
         Returns
         -------
@@ -345,7 +346,7 @@ class DCMotor(MotorBase):
     @property
     def inertia_moment(self) -> InertiaMoment:
         """Moment of inertia of the DC motor's rotor. It must be an instance of ``InertiaMoment``. \n
-        Once set at the DC motor instantiation, it cannot be changed afterwards.
+        Once set at the DC motor instantiation, it cannot be changed afterward.
 
         Returns
         -------
@@ -425,12 +426,12 @@ class DCMotor(MotorBase):
             return
         elif self.pwm > pwm_min:
             maximum_torque = \
-                self.maximum_torque*((self.pwm*self.maximum_electric_current - self.no_load_electric_current)/ \
+                self.maximum_torque*((self.pwm*self.maximum_electric_current - self.no_load_electric_current)/
                                      (self.maximum_electric_current - self.no_load_electric_current))
             no_load_speed = self.pwm*self.no_load_speed
         else:
             maximum_torque = \
-                self.maximum_torque*((self.pwm*self.maximum_electric_current + self.no_load_electric_current)/ \
+                self.maximum_torque*((self.pwm*self.maximum_electric_current + self.no_load_electric_current)/
                                      (self.maximum_electric_current - self.no_load_electric_current))
             no_load_speed = self.pwm*self.no_load_speed
 
@@ -442,7 +443,7 @@ class DCMotor(MotorBase):
         """No load electric current absorbed by the DC motor. It must be an instance of ``Current``. Its value must be
         positive or null and lower than ``maximum_electric_current``. \n
         It is the electric current absorbed by the DC motor when no load is applied to its rotor. \n
-        Once set at the DC motor instantiation, it cannot be changed afterwards.
+        Once set at the DC motor instantiation, it cannot be changed afterward.
 
         Returns
         -------
@@ -468,7 +469,7 @@ class DCMotor(MotorBase):
         """Maximum electric current absorbed by the DC motor. It must be an instance of ``Current``. Its value must be
         positive and greater than ``no_load_electric_current``. \n
         It is the maximum electric current the DC motor can absorb when its rotor is kept still by the load. \n
-        Once set at the DC motor instantiation, it cannot be changed afterwards.
+        Once set at the DC motor instantiation, it cannot be changed afterward.
 
         Returns
         -------
@@ -557,12 +558,12 @@ class DCMotor(MotorBase):
         elif self.pwm > pwm_min:
             no_load_electric_current = self.no_load_electric_current
             maximum_torque = \
-                self.maximum_torque*((maximum_electric_current - self.no_load_electric_current)/ \
+                self.maximum_torque*((maximum_electric_current - self.no_load_electric_current)/
                                      (self.maximum_electric_current - self.no_load_electric_current))
         else:
             no_load_electric_current = -self.no_load_electric_current
             maximum_torque = \
-                self.maximum_torque*((maximum_electric_current + self.no_load_electric_current)/ \
+                self.maximum_torque*((maximum_electric_current + self.no_load_electric_current)/
                                      (self.maximum_electric_current - self.no_load_electric_current))
 
         self.electric_current = Current(value = ((maximum_electric_current - no_load_electric_current)*
@@ -572,7 +573,7 @@ class DCMotor(MotorBase):
 
     @property
     def electric_current_is_computable(self) -> bool:
-        """Whether or not is possible to compute the electric current absorbed by the DC motor. The electric current
+        """Whether is possible to compute the electric current absorbed by the DC motor. The electric current
         computation depends on the value of ``no_load_electric_current`` and ``maximum_electric_current``, so if
         these optional parameters have been set at DC motor instantiation, then it is possible to compute the absorbed
         electric current and this property is ``True``, otherwise is ``False``.
@@ -580,7 +581,7 @@ class DCMotor(MotorBase):
         Returns
         -------
         bool
-            Whether or not is possible to compute the electric current absorbed by the DC motor.
+            Whether is possible to compute the electric current absorbed by the DC motor.
 
         See Also
         --------

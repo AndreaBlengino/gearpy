@@ -25,11 +25,11 @@ class Powertrain:
     Methods
     -------
     :py:meth:`plot`
-        Plots time variables for each element in the mechanical powertrain elements.
+        Plots time variables for each element in the powertrain elements.
     :py:meth:`reset`
         Resets computed time variables.
     :py:meth:`snapshot`
-        Computes a snapshot of the time variables of the elements in the mechanical powertrain at the specified
+        Computes a snapshot of the time variables of the elements in the powertrain at the specified
         ``target_time``.
     :py:meth:`update_time`
         Updates the ``Powertrain.time`` list by appending the ``instant`` simulated time step.
@@ -95,7 +95,7 @@ class Powertrain:
         Returns
         -------
         list
-            List of the simulated time steps.
+            The list of the simulated time steps.
 
         See Also
         --------
@@ -130,7 +130,7 @@ class Powertrain:
 
     def reset(self):
         """Resets computed time variables. \n
-        For each element in the mechanical powertrain elements, it resets each time variables and also ``time``
+        For each element in the powertrain elements, it resets each time variables and also ``time``
         property.
 
         See Also
@@ -178,7 +178,7 @@ class Powertrain:
                  stress_unit: Optional[str] = 'MPa',
                  current_unit: Optional[str] = 'A',
                  print_data: Optional[bool] = True) -> pd.DataFrame:
-        """Computes a snapshot of the time variables of the elements in the mechanical powertrain at the specified
+        """Computes a snapshot of the time variables of the elements in the powertrain at the specified
         ``target_time``. \n
         It returns a ``pandas.DataFrame`` with the computed time variables. Each element in the powertrain elements is a
         row of the DataFrame, while the columns are the time variables ``'angular position'``, ``'angular speed'``,
@@ -193,8 +193,8 @@ class Powertrain:
         Parameters
         ----------
         target_time : Time
-            Time to which compute the mechanical powertrain time variables snapshot. It must be within minimum and
-            maximum simulated time steps in ``time`` parameter.
+            The time to which compute the powertrain time variables' snapshot. It must be within minimum and maximum
+            simulated time steps in ``time`` parameter.
         variables : list, optional
             Time variables to be printed. Default is all available time variables.
         angular_position_unit : str, optional
@@ -225,12 +225,12 @@ class Powertrain:
             Symbol of the unit of measurement to which convert the electric current values in the DataFrame. It must be
             a string. Default is ``'A'``.
         print_data : bool, optional
-            Whether or not to print the computed time variables DataFrame. Default is ``True``.
+            Whether to print the computed time variables DataFrame. Default is ``True``.
 
         Returns
         -------
         pandas.DataFrame
-            DataFrame containing time variables values at the specified ``target_time`` for each element in the
+            The DataFrame containing time variables values at the specified ``target_time`` for each element in the
             powertrain elements.
 
         Raises
@@ -369,7 +369,7 @@ class Powertrain:
 
             if isinstance(element, GearBase):
                 variable_list = []
-                unit_list  = []
+                unit_list = []
                 if element.tangential_force_is_computable and 'tangential force' in variables:
                     variable_list.append('tangential force')
                     unit_list.append(force_unit)
@@ -408,7 +408,7 @@ class Powertrain:
              current_unit: Optional[str] = 'A',
              time_unit: Optional[str] = 'sec',
              figsize: Optional[tuple] = None):
-        """Plots time variables for selected elements in the mechanical powertrain elements. \n
+        """Plots time variables for selected elements in the powertrain elements. \n
         It generates a grid of subplots, one column for each selected element of the powertrain elements and one rows
         for each selected time variable. \n
         The available elements are those in ``elements`` tuple and the available variables are: ``'angular position'``,
@@ -672,9 +672,9 @@ class Powertrain:
                                                                for variable_value in item.time_variables[variable]],
                                                               label = variable.replace('stress', '').replace(' ', ''))
 
-                        if stress_variables \
-                                and not item.bending_stress_is_computable and not item.contact_stress_is_computable:
-                                axes[stress_variables_index].axis('off')
+                        if stress_variables and not item.bending_stress_is_computable \
+                                and not item.contact_stress_is_computable:
+                            axes[stress_variables_index].axis('off')
 
                 else:
                     if forces_variables:

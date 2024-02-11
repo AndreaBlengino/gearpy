@@ -73,7 +73,7 @@ class Timer:
         -------
         bool
             Whether ``current_time`` is greater than or equal to ``start_time`` but lower than or equal to
-            ``start_time`` + ``durtation``.
+            ``start_time`` + ``duration``.
 
         Raises
         ------

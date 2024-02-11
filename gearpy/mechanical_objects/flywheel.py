@@ -52,8 +52,8 @@ class Flywheel(RotatingObject):
     @property
     def name(self) -> str:
         """Name of the flywheel. It must be a non-empty string. \n
-        It must be an unique name, not shared by other elements in the powertrain elements. \n
-        Once set at the flywheel instantiation, it cannot be changed afterwards.
+        It must be a unique name, not shared by other elements in the powertrain elements. \n
+        Once set at the flywheel instantiation, it cannot be changed afterward.
 
         Returns
         -------
@@ -325,7 +325,7 @@ class Flywheel(RotatingObject):
     @property
     def inertia_moment(self) -> InertiaMoment:
         """Moment of inertia of the flywheel. It must be an instance of ``InertiaMoment``. \n
-        Once set at the flywheel instantiation, it cannot be changed afterwards.
+        Once set at the flywheel instantiation, it cannot be changed afterward.
 
         Returns
         -------
