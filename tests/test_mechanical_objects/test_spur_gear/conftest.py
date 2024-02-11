@@ -66,6 +66,7 @@ def spur_gear_driven_by_type_error(request):
 def spur_gear_drives_type_error(request):
     return request.param
 
+
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)])
 def spur_gear_master_gear_ratio_type_error(request):
     return request.param

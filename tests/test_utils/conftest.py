@@ -1,10 +1,10 @@
-from gearpy.mechanical_objects import GearBase, MotorBase, Flywheel, DCMotor, SpurGear
+from gearpy.mechanical_objects import GearBase, MotorBase, Flywheel, DCMotor, SpurGear, HelicalGear
 from gearpy.motor_control import PWMControl
 from gearpy.motor_control.rules import ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain
-from gearpy.units import Angle, AngularPosition, AngularSpeed, Current, InertiaMoment, Time, TimeInterval, Torque
+from gearpy.units import Angle, AngularPosition, AngularSpeed, Current, InertiaMoment, Length, Time, TimeInterval, Torque
 from gearpy.utils import add_fixed_joint
 from pytest import fixture
 from tests.conftest import types_to_check, basic_spur_gear_1, basic_powertrain, basic_dc_motor_1
@@ -27,7 +27,30 @@ def add_gear_mating_type_error(request):
     return request.param
 
 
-@fixture(params = [-1, 2, 0.5])
+@fixture(params = [{'gear_1': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'gear_2': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'efficiency': -1},
+                   {'gear_1': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'gear_2': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'efficiency': 2},
+                   {'gear_1': SpurGear(name = 'gear 1', n_teeth = 10, module = Length(1, 'mm'),
+                                       inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'gear_2': SpurGear(name = 'gear 1', n_teeth = 10, module = Length(2, 'mm'),
+                                       inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'efficiency': 0.9},
+                   {'gear_1': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'gear_2': HelicalGear(name = 'gear 1', n_teeth = 10, helix_angle = Angle(30, 'deg'),
+                                          inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'efficiency': 0.9},
+                   {'gear_1': HelicalGear(name = 'gear 1', n_teeth = 10, helix_angle = Angle(30, 'deg'),
+                                          inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'gear_2': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'efficiency': 0.9},
+                   {'gear_1': HelicalGear(name = 'gear 1', n_teeth = 10, helix_angle = Angle(20, 'deg'),
+                                          inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'gear_2': HelicalGear(name = 'gear 1', n_teeth = 10, helix_angle = Angle(30, 'deg'),
+                                          inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'efficiency': 0.9}])
 def add_gear_mating_value_error(request):
     return request.param
 

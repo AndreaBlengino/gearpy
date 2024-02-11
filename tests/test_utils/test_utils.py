@@ -1,5 +1,5 @@
-from gearpy.mechanical_objects import SpurGear, MatingMaster, MatingSlave
-from gearpy.units import InertiaMoment, Length, AngularSpeed, Torque, Current
+from gearpy.mechanical_objects import MatingMaster, MatingSlave
+from gearpy.units import AngularSpeed, Torque, Current
 from gearpy.utils import add_gear_mating, add_fixed_joint, dc_motor_characteristics_animation
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -7,7 +7,7 @@ from hypothesis import given, settings
 from hypothesis.strategies import floats, one_of, sampled_from, booleans, none, tuples
 import os
 from pytest import mark, raises
-from tests.conftest import simple_dc_motors, simple_spur_gears, flywheels
+from tests.conftest import simple_dc_motors, simple_spur_gears, simple_helical_gears, flywheels
 from tests.test_utils.conftest import motor_1, powertrain_1, motor_2, powertrain_2
 import warnings
 
@@ -41,15 +41,10 @@ class TestAddGearMating:
 
     @mark.error
     def test_raises_value_error(self, add_gear_mating_value_error):
-        gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
-        gear_2 = SpurGear(name = 'gear 2', n_teeth = 20, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
-        gear_3 = SpurGear(name = 'gear 3', n_teeth = 20, module = Length(2, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
-        if add_gear_mating_value_error < 0 or add_gear_mating_value_error > 1:
-            with raises(ValueError):
-                add_gear_mating(master = gear_1, slave = gear_2, efficiency = add_gear_mating_value_error)
-        else:
-            with raises(ValueError):
-                add_gear_mating(master = gear_1, slave = gear_3, efficiency = add_gear_mating_value_error)
+        with raises(ValueError):
+            add_gear_mating(master = add_gear_mating_value_error['gear_1'],
+                            slave = add_gear_mating_value_error['gear_2'],
+                            efficiency = add_gear_mating_value_error['efficiency'])
 
 
 @mark.utils
@@ -57,8 +52,8 @@ class TestAddFixedJoint:
 
 
     @mark.genuine
-    @given(master = one_of(simple_dc_motors(), simple_spur_gears(), flywheels()),
-           slave = one_of(simple_spur_gears(), flywheels()))
+    @given(master = one_of(simple_dc_motors(), simple_spur_gears(), simple_helical_gears(), flywheels()),
+           slave = one_of(simple_spur_gears(), simple_helical_gears(), flywheels()))
     @settings(max_examples = 100)
     def test_function(self, master, slave):
         add_fixed_joint(master = master, slave = slave)
