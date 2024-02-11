@@ -1,4 +1,4 @@
-from gearpy.mechanical_objects import SpurGear, DCMotor, Flywheel, MatingMaster, MatingSlave
+from gearpy.mechanical_objects import SpurGear, HelicalGear, DCMotor, Flywheel, MatingMaster, MatingSlave
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain
@@ -27,7 +27,15 @@ basic_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, '
 basic_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
 
 basic_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                           module = Length(1, 'mm'), face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
+                             module = Length(1, 'mm'), face_width = Length(5, 'mm'),
+                             elastic_modulus = Stress(100, 'GPa'))
+
+basic_helical_gear_1 = HelicalGear(name = 'gear 1', n_teeth = 10, helix_angle = Angle(30, 'deg'),
+                                   inertia_moment = InertiaMoment(1, 'kgm^2'))
+
+basic_helical_gear_2 = HelicalGear(name = 'gear 2', n_teeth = 10, helix_angle = Angle(30, 'deg'),
+                                   inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'),
+                                   face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
 
 
 powertrain_dc_motor = DCMotor(name = 'motor',
@@ -37,16 +45,20 @@ powertrain_dc_motor = DCMotor(name = 'motor',
                               no_load_electric_current = Current(100, 'mA'),
                               maximum_electric_current = Current(2000, 'A'))
 powertrain_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
-powertrain_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
-powertrain_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 40, inertia_moment = InertiaMoment(1, 'kgm^2'))
+powertrain_spur_gear_1 = SpurGear(name = 'spur gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+powertrain_spur_gear_2 = SpurGear(name = 'spur gear 2', n_teeth = 40, inertia_moment = InertiaMoment(1, 'kgm^2'))
+powertrain_helical_gear_1 = HelicalGear(name = 'helical gear 1', n_teeth = 10, helix_angle = Angle(30, 'deg'), inertia_moment = InertiaMoment(1, 'kgm^2'))
+powertrain_helical_gear_2 = HelicalGear(name = 'helical gear 2', n_teeth = 40, helix_angle = Angle(30, 'deg'), inertia_moment = InertiaMoment(1, 'kgm^2'))
 add_fixed_joint(master = powertrain_dc_motor, slave = powertrain_flywheel)
 add_fixed_joint(master = powertrain_flywheel, slave = powertrain_spur_gear_1)
 add_gear_mating(master = powertrain_spur_gear_1, slave = powertrain_spur_gear_2, efficiency = 0.9)
+add_fixed_joint(master = powertrain_spur_gear_2, slave = powertrain_helical_gear_1)
+add_gear_mating(master = powertrain_helical_gear_1, slave = powertrain_helical_gear_2, efficiency = 0.9)
 basic_powertrain = Powertrain(motor = powertrain_dc_motor)
 
-powertrain_spur_gear_2.external_torque = lambda time, angular_position, angular_speed: Torque(1, 'mNm')
-powertrain_spur_gear_2.angular_position = AngularPosition(0, 'rad')
-powertrain_spur_gear_2.angular_speed = AngularSpeed(0, 'rad/s')
+powertrain_helical_gear_2.external_torque = lambda time, angular_position, angular_speed: Torque(1, 'mNm')
+powertrain_helical_gear_2.angular_position = AngularPosition(0, 'rad')
+powertrain_helical_gear_2.angular_speed = AngularSpeed(0, 'rad/s')
 basic_solver = Solver(powertrain = basic_powertrain)
 basic_solver.run(time_discretization = TimeInterval(1, 'sec'), simulation_time = TimeInterval(100, 'sec'))
 
@@ -61,8 +73,9 @@ types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, 
                   Force(1, 'N'), InertiaMoment(1, 'kgm^2'), Length(1, 'm'),
                   Stress(1, 'Pa'), Surface(1, 'm^2'), Time(1, 'sec'),
                   TimeInterval(1, 'sec'), Torque(1, 'Nm'), Angle(1, 'rad'),
-                  basic_dc_motor_1, basic_spur_gear_1, basic_flywheel, basic_solver, basic_powertrain, basic_encoder,
-                  basic_tachometer, basic_timer, MatingMaster, MatingSlave, SpurGear]
+                  basic_dc_motor_1, basic_spur_gear_1, basic_helical_gear_1, basic_helical_gear_2, basic_flywheel,
+                  basic_solver, basic_powertrain, basic_encoder, basic_tachometer, basic_timer, MatingMaster,
+                  MatingSlave, SpurGear]
 
 
 @composite
@@ -93,6 +106,34 @@ def structural_spur_gears(draw):
 
     return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
                     module = module, face_width = face_width, elastic_modulus = elastic_modulus)
+
+
+@composite
+def simple_helical_gears(draw):
+    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
+    n_teeth = draw(integers(min_value = 10, max_value = 100))
+    helix_angle = Angle(30, 'deg')
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+
+    return HelicalGear(name = name, n_teeth = n_teeth, helix_angle = helix_angle,
+                       inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
+
+
+@composite
+def structural_helical_gears(draw):
+    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
+    n_teeth = draw(integers(min_value = 10, max_value = 100))
+    helix_angle = Angle(30, 'deg')
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    module = Length(1, 'mm')
+    face_width_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    face_width = Length(face_width_value, 'mm')
+    elastic_modulus_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    elastic_modulus = Stress(elastic_modulus_value, 'GPa')
+
+    return HelicalGear(name = name, n_teeth = n_teeth, helix_angle = helix_angle,
+                       inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'), module = module,
+                       face_width = face_width, elastic_modulus = elastic_modulus)
 
 
 @composite
@@ -136,7 +177,8 @@ def flywheels(draw):
 
 @composite
 def rotating_objects(draw):
-    return draw(one_of(simple_spur_gears(), structural_spur_gears(), simple_dc_motors(), electric_dc_motors(), flywheels()))
+    return draw(one_of(simple_spur_gears(), structural_spur_gears(), simple_helical_gears(), structural_helical_gears(),
+                       simple_dc_motors(), electric_dc_motors(), flywheels()))
 
 
 @composite
@@ -149,10 +191,16 @@ def powertrains(draw, allow_simple_motors = True, allow_electric_motors = True):
         motor = draw(electric_dc_motors())
     else:
         raise ValueError("At least one of 'allow_simple_motors' and 'allow_electric_motors' must be True.")
-    gears = draw(lists(elements = structural_spur_gears(), min_size = 2))
+    spur_gears = draw(lists(elements = structural_spur_gears(), min_size = 2))
+    helical_gears = draw(lists(elements = structural_helical_gears(), min_size = 2))
 
-    if len(gears)%2 == 1:
-        gears = gears[:-1]
+    if len(spur_gears)%2 == 1:
+        spur_gears = spur_gears[:-1]
+
+    if len(helical_gears)%2 == 1:
+        helical_gears = helical_gears[:-1]
+
+    gears = [*spur_gears, *helical_gears]
 
     add_fixed_joint(master = motor, slave = gears[0])
 
@@ -171,21 +219,33 @@ def solved_powertrains(draw):
     flywheel = draw(flywheels())
     gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
     gear_2 = SpurGear(name = 'gear 2', n_teeth = 20, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
-    simple_gears = draw(lists(elements = simple_spur_gears(), min_size = 2, max_size = 4))
-    structural_gears = draw(lists(elements = structural_spur_gears(), min_size = 2, max_size = 4))
+    simple_spur_gear_set = draw(lists(elements = simple_spur_gears(), min_size = 2, max_size = 4))
+    structural_spur_gear_set = draw(lists(elements = structural_spur_gears(), min_size = 2, max_size = 4))
+    simple_helical_gear_set = draw(lists(elements = simple_helical_gears(), min_size = 2, max_size = 4))
+    structural_helical_gear_set = draw(lists(elements = structural_helical_gears(), min_size = 2, max_size = 4))
 
-    if len(simple_gears)%2 == 1:
-        simple_gears = simple_gears[:-1]
+    if len(simple_spur_gear_set)%2 == 1:
+        simple_spur_gear_set = simple_spur_gear_set[:-1]
 
-    if len(structural_gears)%2 == 1:
-        structural_gears = structural_gears[:-1]
+    if len(structural_spur_gear_set)%2 == 1:
+        structural_spur_gear_set = structural_spur_gear_set[:-1]
 
-    simple_gears = list(zip(*(iter(simple_gears),)*2))
-    structural_gears = list(zip(*(iter(structural_gears),)*2))
+    if len(simple_helical_gear_set)%2 == 1:
+        simple_helical_gear_set = simple_helical_gear_set[:-1]
+
+    if len(structural_helical_gear_set)%2 == 1:
+        structural_helical_gear_set = structural_helical_gear_set[:-1]
+
+    simple_spur_gear_set = list(zip(*(iter(simple_spur_gear_set),)*2))
+    structural_spur_gear_set = list(zip(*(iter(structural_spur_gear_set),)*2))
+    simple_helical_gear_set = list(zip(*(iter(simple_helical_gear_set),)*2))
+    structural_helical_gear_set = list(zip(*(iter(structural_helical_gear_set),)*2))
 
     gears = []
-    gears.extend(simple_gears)
-    gears.extend(structural_gears)
+    gears.extend(simple_spur_gear_set)
+    gears.extend(structural_spur_gear_set)
+    gears.extend(simple_helical_gear_set)
+    gears.extend(structural_helical_gear_set)
     shuffle(gears)
 
     gears = [element for pair in gears for element in pair]
