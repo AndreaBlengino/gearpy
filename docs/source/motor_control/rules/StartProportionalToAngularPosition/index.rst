@@ -2,8 +2,8 @@ StartProportionalToAngularPosition
 ==================================
 
 
-.. currentmodule:: gearpy.motor_control
-.. autoclass:: gearpy.motor_control.StartProportionalToAngularPosition
+.. currentmodule:: gearpy.motor_control.rules.start_proportional_to_angular_position
+.. autoclass:: gearpy.motor_control.rules.start_proportional_to_angular_position.StartProportionalToAngularPosition
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,10 +1,10 @@
-from gearpy.motor_control import ReachAngularPosition
+from gearpy.motor_control.rules import ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.units import AngularPosition, Angle, Torque
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import integers, floats, booleans
 from pytest import mark, raises
-from tests.test_rules.test_reach_angular_position.conftest import PowertrainFake
+from tests.test_motor_control.test_rules.test_reach_angular_position.conftest import PowertrainFake
 from tests.conftest import basic_encoder, powertrains
 from tests.test_units.test_angular_position.conftest import angular_positions
 from tests.test_units.test_angle.conftest import angles

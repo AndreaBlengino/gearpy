@@ -2,8 +2,8 @@ ConstantPWM
 ===========
 
 
-.. currentmodule:: gearpy.motor_control
-.. autoclass:: gearpy.motor_control.ConstantPWM
+.. currentmodule:: gearpy.motor_control.rules.constant_pwm
+.. autoclass:: gearpy.motor_control.rules.constant_pwm.ConstantPWM
    :members:
    :undoc-members:
    :show-inheritance:

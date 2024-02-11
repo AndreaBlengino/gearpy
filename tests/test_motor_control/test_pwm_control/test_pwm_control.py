@@ -1,5 +1,6 @@
 from gearpy.mechanical_objects import DCMotor, SpurGear
-from gearpy.motor_control import PWMControl, StartLimitCurrent, StartProportionalToAngularPosition, ReachAngularPosition
+from gearpy.motor_control import PWMControl
+from gearpy.motor_control.rules import StartLimitCurrent, StartProportionalToAngularPosition, ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
 from gearpy.powertrain import Powertrain
 from gearpy.units import Angle, AngularSpeed, AngularPosition, Current, InertiaMoment, Torque
@@ -8,7 +9,7 @@ from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import integers, floats, booleans
 from pytest import mark, raises
 from tests.conftest import powertrains, basic_powertrain
-from tests.test_pwm_control.conftest import PowertrainFake
+from tests.test_motor_control.test_pwm_control.conftest import PowertrainFake
 from tests.test_units.test_angular_position.conftest import angular_positions
 from tests.test_units.test_angular_speed.conftest import angular_speeds
 from tests.test_units.test_angle.conftest import angles

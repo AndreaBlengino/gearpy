@@ -1,4 +1,4 @@
-from gearpy.motor_control import StartLimitCurrent
+from gearpy.motor_control.rules import StartLimitCurrent
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import floats

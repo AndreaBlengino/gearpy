@@ -5,32 +5,32 @@ rules
 .. py:module:: rules
 
 
-.. currentmodule:: gearpy.motor_control
-.. autoclass:: gearpy.motor_control.ReachAngularPosition
+.. currentmodule:: gearpy.motor_control.rules
+.. autoclass:: gearpy.motor_control.rules.reach_angular_position.ReachAngularPosition
    :members:
    :undoc-members:
    :show-inheritance:
    :no-index:
 
 
-.. currentmodule:: gearpy.motor_control
-.. autoclass:: gearpy.motor_control.StartLimitCurrent
+.. currentmodule:: gearpy.motor_control.rules
+.. autoclass:: gearpy.motor_control.rules.start_limit_current.StartLimitCurrent
    :members:
    :undoc-members:
    :show-inheritance:
    :no-index:
 
 
-.. currentmodule:: gearpy.motor_control
-.. autoclass:: gearpy.motor_control.StartProportionalToAngularPosition
+.. currentmodule:: gearpy.motor_control.rules
+.. autoclass:: gearpy.motor_control.rules.start_proportional_to_angular_position.StartProportionalToAngularPosition
    :members:
    :undoc-members:
    :show-inheritance:
    :no-index:
 
 
-.. currentmodule:: gearpy.motor_control
-.. autoclass:: gearpy.motor_control.ConstantPWM
+.. currentmodule:: gearpy.motor_control.rules
+.. autoclass:: gearpy.motor_control.rules.constant_pwm.ConstantPWM
    :members:
    :undoc-members:
    :show-inheritance:

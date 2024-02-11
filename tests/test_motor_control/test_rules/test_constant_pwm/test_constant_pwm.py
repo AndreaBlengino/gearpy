@@ -1,4 +1,4 @@
-from gearpy.motor_control import ConstantPWM
+from gearpy.motor_control.rules import ConstantPWM
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import floats
 from pytest import mark, raises

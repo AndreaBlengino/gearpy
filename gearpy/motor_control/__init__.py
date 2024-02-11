@@ -1,4 +1,4 @@
 from .motor_control_base import MotorControlBase
-from .motor_control import PWMControl
-from .rules import ReachAngularPosition, StartProportionalToAngularPosition, StartLimitCurrent, ConstantPWM
-from .rules_base import RuleBase
+from .pwm_control import PWMControl
+from gearpy.motor_control.rules.rules_base import RuleBase
+from gearpy.motor_control import rules

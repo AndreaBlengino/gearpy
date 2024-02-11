@@ -1,6 +1,6 @@
 from gearpy.powertrain import Powertrain
 from .motor_control_base import MotorControlBase
-from .rules_base import RuleBase
+from gearpy.motor_control.rules.rules_base import RuleBase
 
 
 class PWMControl(MotorControlBase):

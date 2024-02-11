@@ -1,5 +1,5 @@
 from gearpy.mechanical_objects import DCMotor, SpurGear
-from gearpy.motor_control import StartProportionalToAngularPosition
+from gearpy.motor_control.rules import StartProportionalToAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularPosition, InertiaMoment, AngularSpeed, Torque, Current

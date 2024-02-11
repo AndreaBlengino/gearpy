@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from gearpy.mechanical_objects import MotorBase, RotatingObject
 from gearpy.powertrain import Powertrain
-from .rules_base import RuleBase
+from gearpy.motor_control.rules.rules_base import RuleBase
 
 
 class MotorControlBase(ABC):

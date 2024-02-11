@@ -2,8 +2,8 @@ ReachAngularPosition
 ====================
 
 
-.. currentmodule:: gearpy.motor_control
-.. autoclass:: gearpy.motor_control.ReachAngularPosition
+.. currentmodule:: gearpy.motor_control.rules.reach_angular_position
+.. autoclass:: gearpy.motor_control.rules.reach_angular_position.ReachAngularPosition
    :members:
    :undoc-members:
    :show-inheritance:
