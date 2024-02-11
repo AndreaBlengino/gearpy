@@ -2,7 +2,7 @@ from gearpy.motor_control import ConstantPWM
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import floats
 from pytest import mark, raises
-from tests.conftest import transmissions
+from tests.conftest import powertrains
 from tests.test_units.test_time.conftest import times
 from tests.test_sensors.test_timer.conftest import timers
 import warnings
@@ -14,14 +14,14 @@ class TestConstantPWMInit:
 
     @mark.genuine
     @given(timer = timers(),
-           transmission = transmissions(),
+           powertrain = powertrains(),
            target_pwm_value = floats(allow_nan = False, allow_infinity = False, min_value = -1, max_value = 1))
     @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
-    def test_method(self, timer, transmission, target_pwm_value):
-        rule = ConstantPWM(timer = timer, transmission = transmission, target_pwm_value = target_pwm_value)
+    def test_method(self, timer, powertrain, target_pwm_value):
+        rule = ConstantPWM(timer = timer, powertrain = powertrain, target_pwm_value = target_pwm_value)
 
         assert rule.timer == timer
-        assert rule.transmission == transmission
+        assert rule.powertrain == powertrain
         assert rule.target_pwm_value == target_pwm_value
 
 
@@ -42,14 +42,14 @@ class TestConstantPWMApply:
 
 
     @given(timer = timers(),
-           transmission = transmissions(),
+           powertrain = powertrains(),
            target_pwm_value = floats(allow_nan = False, allow_infinity = False, min_value = -1, max_value = 1),
            current_time = times())
     @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
-    def test_method(self, timer, transmission, target_pwm_value, current_time):
+    def test_method(self, timer, powertrain, target_pwm_value, current_time):
         warnings.filterwarnings('ignore', category = RuntimeWarning)
-        rule = ConstantPWM(timer = timer, transmission = transmission, target_pwm_value = target_pwm_value)
-        transmission.update_time(instant = current_time)
+        rule = ConstantPWM(timer = timer, powertrain = powertrain, target_pwm_value = target_pwm_value)
+        powertrain.update_time(instant = current_time)
 
         pwm = rule.apply()
         if pwm is not None:

@@ -1,6 +1,6 @@
 ### System in Analysis
 
-The mechanical transmission to be studied is the one described in the 
+The mechanical powertrain to be studied is the one described in the 
 [2 - Complex External Torque](https://gearpy.readthedocs.io/en/latest/examples/2_complex_external_torque/index.html) 
 example.  
 The teeth of all gears must be verified for static bending and contact 
@@ -61,14 +61,14 @@ The remaining set up of the model stay the same.
 We can get a snapshot of the system at a particular time of interest:
 
 ```python
-transmission.snapshot(target_time = Time(10, 'sec'),
-                      torque_unit = 'mNm',
-                      driving_torque_unit = 'mNm',
-                      load_torque_unit = 'mNm')
+powertrain.snapshot(target_time = Time(10, 'sec'),
+                    torque_unit = 'mNm',
+                    driving_torque_unit = 'mNm',
+                    load_torque_unit = 'mNm')
 ```
 
 ```text
-Mechanical Transmission Status at Time = 10 sec
+Mechanical Powertrain Status at Time = 10 sec
           angular position (rad)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (mNm)  driving torque (mNm)  load torque (mNm) tangential force (N) bending stress (MPa) contact stress (MPa)  pwm
 motor               11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912                                                                 1.0
 flywheel            11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912                                                                    
@@ -85,12 +85,12 @@ variables and focus the plot only on interesting elements and variables.
 We can also specify a more convenient unit to use when plotting torques:
 
 ```python
-transmission.plot(figsize = (12, 8),
-                  elements = [gear_1, gear_2, gear_3, gear_4, gear_5, gear_6],
-                  angular_position_unit = 'rot',
-                  torque_unit = 'mNm',
-                  variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
-                               'contact stress'])
+powertrain.plot(figsize = (12, 8),
+                elements = [gear_1, gear_2, gear_3, gear_4, gear_5, gear_6],
+                angular_position_unit = 'rot',
+                torque_unit = 'mNm',
+                variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
+                             'contact stress'])
 ```
 
 ![](images/plot_1.png)
@@ -103,12 +103,12 @@ gears, and increase in the last gears, so we can draw a more clean plot
 and focus on the last two gears only:
 
 ```python
-transmission.plot(figsize = (12, 8),
-                  elements = [gear_5, gear_6],
-                  angular_position_unit = 'rot',
-                  torque_unit = 'mNm',
-                  variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
-                               'contact stress'])
+powertrain.plot(figsize = (12, 8),
+                elements = [gear_5, gear_6],
+                angular_position_unit = 'rot',
+                torque_unit = 'mNm',
+                variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
+                             'contact stress'])
 ```
 
 ![](images/plot_2.png)

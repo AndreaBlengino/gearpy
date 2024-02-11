@@ -105,7 +105,7 @@ class SpurGear(GearBase):
     @property
     def name(self) -> str:
         """Name of the spur gear. It must be a non-empty string. \n
-        It must be an unique name, not shared by other elements in the transmission chain. \n
+        It must be an unique name, not shared by other elements in the powertrain elements. \n
         Once set at the spur gear instantiation, it cannot be changed afterwards.
 
         Returns
@@ -1030,7 +1030,7 @@ class DCMotor(MotorBase):
     @property
     def name(self) -> str:
         """Name of the DC motor. It must be a non-empty string. \n
-        It must be an unique name, not shared by other elements in the transmission chain. \n
+        It must be an unique name, not shared by other elements in the powertrain elements. \n
         Once set at the DC motor instantiation, it cannot be changed afterwards.
 
         Returns
@@ -1681,7 +1681,7 @@ class Flywheel(RotatingObject):
     @property
     def name(self) -> str:
         """Name of the flywheel. It must be a non-empty string. \n
-        It must be an unique name, not shared by other elements in the transmission chain. \n
+        It must be an unique name, not shared by other elements in the powertrain elements. \n
         Once set at the flywheel instantiation, it cannot be changed afterwards.
 
         Returns
@@ -1902,7 +1902,7 @@ class Flywheel(RotatingObject):
     @property
     def master_gear_ratio(self) -> float:
         """Gear ratio of the fixed joint between the flywheel and its driving rotating object. It must be a positive a
-        float. Since the relation between the flywheel and its neighbor elements in the transmission chain is always a
+        float. Since the relation between the flywheel and its neighbor elements in the powertrain elements is always a
         fixed joint, the gear ratio will be set to ``1`` by :py:func:`gearpy.utils.relations.add_fixed_joint`. \n
         To set this property use :py:func:`gearpy.utils.relations.add_fixed_joint`.
 
@@ -1937,8 +1937,8 @@ class Flywheel(RotatingObject):
     @property
     def master_gear_efficiency(self) -> float:
         """Efficiency of the fixed joint between the flywheel and its driving rotating object. Since the relation
-        between the flywheel and its neighbor elements in the transmission chain is always a fixed joint, the efficiency
-        is always equal to ``1`` and cannot be overwritten.
+        between the flywheel and its neighbor elements in the powertrain elements is always a fixed joint, the
+        efficiency is always equal to ``1`` and cannot be overwritten.
 
         Returns
         -------

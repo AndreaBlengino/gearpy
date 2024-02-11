@@ -1,14 +1,14 @@
 from gearpy.mechanical_object import DCMotor, SpurGear
 from gearpy.motor_control import PWMControl, StartLimitCurrent, StartProportionalToAngularPosition, ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
-from gearpy.transmission import Transmission
+from gearpy.powertrain import Powertrain
 from gearpy.units import Angle, AngularSpeed, AngularPosition, Current, InertiaMoment, Torque
 from gearpy.utils import add_fixed_joint
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import integers, floats, booleans
 from pytest import mark, raises
-from tests.conftest import transmissions, basic_transmission
-from tests.test_pwm_control.conftest import TransmissionFake
+from tests.conftest import powertrains, basic_powertrain
+from tests.test_pwm_control.conftest import PowertrainFake
 from tests.test_units.test_angular_position.conftest import angular_positions
 from tests.test_units.test_angular_speed.conftest import angular_speeds
 from tests.test_units.test_angle.conftest import angles
@@ -20,12 +20,12 @@ class TestPWMControlInit:
 
 
     @mark.genuine
-    @given(transmission = transmissions())
+    @given(powertrain = powertrains())
     @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
-    def test_method(self, transmission):
-        motor_control = PWMControl(transmission = transmission)
+    def test_method(self, powertrain):
+        motor_control = PWMControl(powertrain = powertrain)
 
-        assert motor_control.transmission == transmission
+        assert motor_control.powertrain == powertrain
         assert isinstance(motor_control.rules, list)
         assert not motor_control.rules
 
@@ -39,7 +39,7 @@ class TestPWMControlInit:
     @mark.error
     def test_raises_value_error(self):
         with raises(ValueError):
-            PWMControl(transmission = TransmissionFake([]))
+            PWMControl(powertrain = PowertrainFake([]))
 
 
 @mark.motor_control
@@ -47,7 +47,7 @@ class TestPWMControlAddRule:
 
 
     @mark.genuine
-    @given(transmission = transmissions(allow_simple_motors = False),
+    @given(powertrain = powertrains(allow_simple_motors = False),
            start_target_angular_position = angular_positions(),
            reach_target_angular_position = angular_positions(),
            pwm_min_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1 + 1e-10, exclude_min = True, max_value = 10),
@@ -57,23 +57,23 @@ class TestPWMControlAddRule:
            element_index = integers(min_value = 0),
            use_limit_current_rule = booleans())
     @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
-    def test_method(self, transmission, start_target_angular_position, reach_target_angular_position,
+    def test_method(self, powertrain, start_target_angular_position, reach_target_angular_position,
                     pwm_min_multiplier, pwm_min, braking_angle, limit_electric_current, element_index, use_limit_current_rule):
-        element_index %= len(transmission.chain)
-        encoder = AbsoluteRotaryEncoder(target = transmission.chain[element_index])
+        element_index %= len(powertrain.elements)
+        encoder = AbsoluteRotaryEncoder(target = powertrain.elements[element_index])
 
         if use_limit_current_rule:
-            tachometer = Tachometer(target = transmission.chain[element_index])
-            start_rule = StartLimitCurrent(encoder = encoder, tachometer = tachometer, motor = transmission.chain[0],
+            tachometer = Tachometer(target = powertrain.elements[element_index])
+            start_rule = StartLimitCurrent(encoder = encoder, tachometer = tachometer, motor = powertrain.elements[0],
                                            target_angular_position = start_target_angular_position,
                                            limit_electric_current = limit_electric_current)
         else:
-            start_rule = StartProportionalToAngularPosition(encoder = encoder, transmission = transmission,
+            start_rule = StartProportionalToAngularPosition(encoder = encoder, powertrain = powertrain,
                                                             target_angular_position = start_target_angular_position,
                                                             pwm_min_multiplier = pwm_min_multiplier, pwm_min = pwm_min)
-        reach_rule = ReachAngularPosition(encoder = encoder, transmission = transmission,
+        reach_rule = ReachAngularPosition(encoder = encoder, powertrain = powertrain,
                                           target_angular_position = reach_target_angular_position, braking_angle = braking_angle)
-        motor_control = PWMControl(transmission = transmission)
+        motor_control = PWMControl(powertrain = powertrain)
         motor_control.add_rule(rule = start_rule)
         motor_control.add_rule(rule = reach_rule)
 
@@ -84,7 +84,7 @@ class TestPWMControlAddRule:
 
     @mark.error
     def test_raises_type_error(self, pwm_control_add_rule_type_error):
-        motor_control = PWMControl(transmission = basic_transmission)
+        motor_control = PWMControl(powertrain = basic_powertrain)
         with raises(TypeError):
             motor_control.add_rule(*pwm_control_add_rule_type_error)
 
@@ -94,7 +94,7 @@ class TestPWMControlApplyRules:
 
 
     @mark.genuine
-    @given(transmission = transmissions(allow_simple_motors = False),
+    @given(powertrain = powertrains(allow_simple_motors = False),
            start_target_angular_position = angular_positions(min_value = 100, max_value = 200, unit = 'rad'),
            reach_target_angular_position = angular_positions(min_value = 100_000, max_value = 200_000, unit = 'rad'),
            pwm_min_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1 + 1e-10,
@@ -107,35 +107,35 @@ class TestPWMControlApplyRules:
            current_angular_position = angular_positions(min_value = 0, max_value = 200_000, unit = 'rad'),
            current_angular_speed = angular_speeds())
     @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
-    def test_method(self, transmission, start_target_angular_position, reach_target_angular_position,
+    def test_method(self, powertrain, start_target_angular_position, reach_target_angular_position,
                     pwm_min_multiplier, pwm_min, braking_angle, limit_electric_current, element_index,
                     use_limit_current_rule, current_angular_position, current_angular_speed):
-        element_index %= len(transmission.chain)
-        encoder = AbsoluteRotaryEncoder(target = transmission.chain[element_index])
-        transmission.chain[element_index].angular_position = current_angular_position
+        element_index %= len(powertrain.elements)
+        encoder = AbsoluteRotaryEncoder(target = powertrain.elements[element_index])
+        powertrain.elements[element_index].angular_position = current_angular_position
 
         if use_limit_current_rule:
-            tachometer = Tachometer(target = transmission.chain[element_index])
-            transmission.chain[element_index].angular_speed = current_angular_speed
-            start_rule = StartLimitCurrent(encoder = encoder, tachometer = tachometer, motor = transmission.chain[0],
+            tachometer = Tachometer(target = powertrain.elements[element_index])
+            powertrain.elements[element_index].angular_speed = current_angular_speed
+            start_rule = StartLimitCurrent(encoder = encoder, tachometer = tachometer, motor = powertrain.elements[0],
                                            target_angular_position = start_target_angular_position,
                                            limit_electric_current = limit_electric_current)
         else:
-            if transmission.chain[0].time_variables['load torque']:
-                transmission.chain[0].time_variables['load torque'][0] = Torque(0, 'Nm')
+            if powertrain.elements[0].time_variables['load torque']:
+                powertrain.elements[0].time_variables['load torque'][0] = Torque(0, 'Nm')
             else:
-                transmission.chain[0].load_torque = Torque(0, 'Nm')
-            start_rule = StartProportionalToAngularPosition(encoder = encoder, transmission = transmission,
+                powertrain.elements[0].load_torque = Torque(0, 'Nm')
+            start_rule = StartProportionalToAngularPosition(encoder = encoder, powertrain = powertrain,
                                                             target_angular_position = start_target_angular_position,
                                                             pwm_min_multiplier = pwm_min_multiplier, pwm_min = pwm_min)
-        reach_rule = ReachAngularPosition(encoder = encoder, transmission = transmission,
+        reach_rule = ReachAngularPosition(encoder = encoder, powertrain = powertrain,
                                           target_angular_position = reach_target_angular_position,
                                           braking_angle = braking_angle)
-        motor_control = PWMControl(transmission = transmission)
+        motor_control = PWMControl(powertrain = powertrain)
         motor_control.add_rule(rule = start_rule)
         motor_control.add_rule(rule = reach_rule)
         motor_control.apply_rules()
-        pwm = basic_transmission.chain[0].pwm
+        pwm = basic_powertrain.elements[0].pwm
 
         assert pwm is not None
         assert isinstance(pwm, float) or isinstance(pwm, int)
@@ -149,21 +149,21 @@ class TestPWMControlApplyRules:
                         maximum_electric_current = Current(2, 'A'))
         gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
         add_fixed_joint(master = motor, slave = gear)
-        transmission = Transmission(motor = motor)
+        powertrain = Powertrain(motor = motor)
         encoder = AbsoluteRotaryEncoder(target = motor)
         motor.angular_position = AngularPosition(10, 'rad')
-        if transmission.chain[0].time_variables['load torque']:
-            transmission.chain[0].time_variables['load torque'][0] = Torque(0, 'Nm')
+        if powertrain.elements[0].time_variables['load torque']:
+            powertrain.elements[0].time_variables['load torque'][0] = Torque(0, 'Nm')
         else:
-            transmission.chain[0].load_torque = Torque(0, 'Nm')
+            powertrain.elements[0].load_torque = Torque(0, 'Nm')
 
-        start_rule = StartProportionalToAngularPosition(encoder = encoder, transmission = transmission,
+        start_rule = StartProportionalToAngularPosition(encoder = encoder, powertrain = powertrain,
                                                         target_angular_position = AngularPosition(1000, 'rad'),
                                                         pwm_min_multiplier = 1.1, pwm_min = 0.2)
-        reach_rule = ReachAngularPosition(encoder = encoder, transmission = transmission,
+        reach_rule = ReachAngularPosition(encoder = encoder, powertrain = powertrain,
                                           target_angular_position = AngularPosition(1, 'rad'),
                                           braking_angle = Angle(3, 'rad'))
-        motor_control = PWMControl(transmission = transmission)
+        motor_control = PWMControl(powertrain = powertrain)
         motor_control.add_rule(rule = start_rule)
         motor_control.add_rule(rule = reach_rule)
 

@@ -1,6 +1,6 @@
 ### System in Analysis
 
-The mechanical transmission to be studied is the one described in the 
+The mechanical powertrain to be studied is the one described in the 
 [5 - DC Motor PWM Control](https://gearpy.readthedocs.io/en/latest/examples/5_dc_motor_pwm_control/index.html) 
 example.  
 
@@ -12,7 +12,7 @@ We can get an animation of the DC motor's working characteristics:
 from gearpy.utils import dc_motor_characteristics_animation
 
 dc_motor_characteristics_animation(motor = motor,
-                                   time = transmission.time,
+                                   time = powertrain.time,
                                    interval = 10,
                                    figsize = (10, 5),
                                    torque_unit = 'mNm',

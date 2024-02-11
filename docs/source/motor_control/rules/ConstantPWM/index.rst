@@ -13,6 +13,6 @@ ConstantPWM
    :hidden:
 
    apply
+   powertrain
    target_pwm_value
    timer
-   transmission

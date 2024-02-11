@@ -15,5 +15,5 @@ ReachAngularPosition
    apply
    braking_angle
    encoder
+   powertrain
    target_angular_position
-   transmission

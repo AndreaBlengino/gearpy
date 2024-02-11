@@ -1,6 +1,6 @@
 from gearpy.mechanical_object import SpurGear, MotorBase, RotatingObject, DCMotor
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
-from gearpy.transmission import Transmission
+from gearpy.powertrain import Powertrain
 from gearpy.units import AngularPosition, Angle, Current
 import numpy as np
 from .rules_base import RuleBase
@@ -16,8 +16,8 @@ class ReachAngularPosition(RuleBase):
     :py:attr:`encoder` : AbsoluteRotaryEncoder
         Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
         ``target_angular_position``.
-    :py:attr:`transmission` : Transmission
-        Transmission whose motor's ``pwm`` is controlled in order to reach a specific angular position.
+    :py:attr:`powertrain` : Powertrain
+        Powertrain whose motor's ``pwm`` is controlled in order to reach a specific angular position.
     :py:attr:`target_angular_position` : AngularPosition
         Angular position to be reached by the ``encoder``'s target.
     :py:attr:`braking_angle` : Angle
@@ -27,20 +27,20 @@ class ReachAngularPosition(RuleBase):
     Methods
     -------
     :py:meth:`apply`
-        Computes the ``pwm`` to apply to the ``transmission``'s motor in order to reach a ``target_angular_position`` by
+        Computes the ``pwm`` to apply to the ``powertrain``'s motor in order to reach a ``target_angular_position`` by
         the ``target`` rotating object of the ``encoder``, within a specific ``braking_angle``.
 
     Raises
     ------
     TypeError
         - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
-        - if ``transmission`` is not an instance of ``Transmission``,
-        - if the first element in ``transmission`` is not an instance of ``MotorBase``,
-        - if an element of ``transmission`` is not an instance of ``RotatingObject``,
+        - if ``powertrain`` is not an instance of ``Powertrain``,
+        - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
+        - if an element of ``powertrain`` is not an instance of ``RotatingObject``,
         - if ``target_angular_position`` is not an instance of ``AngularPosition``,
         - if ``braking_angle`` is not an instance of ``Angle``.
     ValueError
-        If ``transmission.chain`` is an empty tuple.
+        If ``powertrain.elements`` is an empty tuple.
 
     See Also
     --------
@@ -49,7 +49,7 @@ class ReachAngularPosition(RuleBase):
 
     def __init__(self,
                  encoder: AbsoluteRotaryEncoder,
-                 transmission: Transmission,
+                 powertrain: Powertrain,
                  target_angular_position: AngularPosition,
                  braking_angle: Angle):
         super().__init__()
@@ -57,17 +57,17 @@ class ReachAngularPosition(RuleBase):
         if not isinstance(encoder, AbsoluteRotaryEncoder):
             raise TypeError(f"Parameter 'encoder' must be an instance of {AbsoluteRotaryEncoder.__name__!r}.")
 
-        if not isinstance(transmission, Transmission):
-            raise TypeError(f"Parameter 'transmission' must be an instance of {Transmission.__name__!r}.")
+        if not isinstance(powertrain, Powertrain):
+            raise TypeError(f"Parameter 'powertrain' must be an instance of {Powertrain.__name__!r}.")
 
-        if not transmission.chain:
-            raise ValueError("Parameter 'transmission.chain' cannot be an empty tuple.")
+        if not powertrain.elements:
+            raise ValueError("Parameter 'powertrain.elements' cannot be an empty tuple.")
 
-        if not isinstance(transmission.chain[0], MotorBase):
-            raise TypeError(f"First element in 'transmission' must be an instance of {MotorBase.__name__!r}.")
+        if not isinstance(powertrain.elements[0], MotorBase):
+            raise TypeError(f"First element in 'powertrain' must be an instance of {MotorBase.__name__!r}.")
 
-        if not all([isinstance(item, RotatingObject) for item in transmission.chain]):
-            raise TypeError(f"All elements of 'transmission' must be instances of {RotatingObject.__name__!r}.")
+        if not all([isinstance(item, RotatingObject) for item in powertrain.elements]):
+            raise TypeError(f"All elements of 'powertrain' must be instances of {RotatingObject.__name__!r}.")
 
         if not isinstance(target_angular_position, AngularPosition):
             raise TypeError(f"Parameter 'target_angular_position' must be an instance of {AngularPosition.__name__!r}.")
@@ -76,7 +76,7 @@ class ReachAngularPosition(RuleBase):
             raise TypeError(f"Parameter 'braking_angle' must be an instance of {Angle.__name__!r}.")
 
         self.__encoder = encoder
-        self.__transmission = transmission
+        self.__powertrain = powertrain
         self.__target_angular_position = target_angular_position
         self.__braking_angle = braking_angle
 
@@ -103,19 +103,19 @@ class ReachAngularPosition(RuleBase):
         return self.__encoder
 
     @property
-    def transmission(self) -> Transmission:
-        """Transmission whose motor's ``pwm`` is controlled in order to reach a specific angular position.
+    def powertrain(self) -> Powertrain:
+        """Powertrain whose motor's ``pwm`` is controlled in order to reach a specific angular position.
 
         Returns
         -------
-        Transmission
-            Transmission whose motor's ``pwm`` is controlled in order to reach a specific angular position.
+        Powertrain
+            Powertrain whose motor's ``pwm`` is controlled in order to reach a specific angular position.
 
         See Also
         --------
-        :py:class:`gearpy.transmission.Transmission`
+        :py:class:`gearpy.powertrain.Powertrain`
         """
-        return self.__transmission
+        return self.__powertrain
 
     @property
     def target_angular_position(self) -> AngularPosition:
@@ -155,7 +155,7 @@ class ReachAngularPosition(RuleBase):
         return self.__braking_angle
 
     def apply(self) -> Union[None, float, int]:
-        r"""Computes the ``pwm`` to apply to the ``transmission``'s DC motor in order to reach a
+        r"""Computes the ``pwm`` to apply to the ``powertrain``'s DC motor in order to reach a
         ``target_angular_position`` by the ``target`` rotating object of the ``encoder``, within a specific
         ``braking_angle``.
 
@@ -166,18 +166,18 @@ class ReachAngularPosition(RuleBase):
 
         Notes
         -----
-        It computes the ``transmission``'s *static error* according to the following formula:
+        It computes the ``powertrain``'s *static error* according to the following formula:
 
         .. math::
             \theta_{err} \left( T_l \right) = \frac{T_l}{T_{max}} \, \frac{\theta_b}{\eta_t}
 
         where:
 
-        - :math:`\theta_{err}` is the ``transmission`` static error,
-        - :math:`T_l` is the load torque on the ``transmission`` DC motor,
-        - :math:`T_{max}` is the maximum torque developed by the ``transmission`` DC motor,
+        - :math:`\theta_{err}` is the ``powertrain`` static error,
+        - :math:`T_l` is the load torque on the ``powertrain`` DC motor,
+        - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor,
         - :math:`\theta_b` is the ``braking_angle`` parameter,
-        - :math:`\eta_t` is the ``transmission`` overall efficiency, computed as:
+        - :math:`\eta_t` is the ``powertrain`` overall efficiency, computed as:
 
         .. math::
             \eta_t = \prod_{i = 1}^N \eta_i
@@ -185,7 +185,7 @@ class ReachAngularPosition(RuleBase):
         where:
 
         - :math:`\eta_i` is the mechanical mating efficiency of the mating between two gears,
-        - :math:`N` is the total number of gear matings in the ``transmission``.
+        - :math:`N` is the total number of gear matings in the ``powertrain``.
 
         Then it checks the applicability condition, defined as:
 
@@ -209,7 +209,7 @@ class ReachAngularPosition(RuleBase):
         angular_position = self.encoder.get_value()
 
         regime_angular_position_error = _compute_static_error(braking_angle = self.braking_angle,
-                                                              transmission = self.transmission)
+                                                              powertrain = self.powertrain)
         braking_starting_angle = self.target_angular_position - self.braking_angle + regime_angular_position_error
 
         if angular_position >= braking_starting_angle:
@@ -218,11 +218,11 @@ class ReachAngularPosition(RuleBase):
 
 class StartProportionalToAngularPosition(RuleBase):
     """gearpy.motor_control.rules.StartProportionalToAngularPosition object. \n
-    It can be used to make a gradual start of the ``transmission``'s motion, in order to avoid a peak in the
-    ``transmission``'s DC motor absorbed electric current. \n
-    It computes a ``pwm`` to apply to the ``transmission``'s DC motor which increases linearly with the ``encoder``'s
+    It can be used to make a gradual start of the ``powertrain``'s motion, in order to avoid a peak in the
+    ``powertrain``'s DC motor absorbed electric current. \n
+    It computes a ``pwm`` to apply to the ``powertrain``'s DC motor which increases linearly with the ``encoder``'s
     ``target`` rotating object's ``angular_position``. The computed ``pwm`` starts from a minimum value, based on
-    ``transmission``'s elements properties and ``pwm_min_multiplier`` or solely on ``pwm_min`` parameter. The computed
+    ``powertrain``'s elements properties and ``pwm_min_multiplier`` or solely on ``pwm_min`` parameter. The computed
     ``pwm`` increases up to ``1`` when the ``encoder``'s ``target``'s ``angular_position`` equals
     ``target_angular_position``.
 
@@ -231,35 +231,35 @@ class StartProportionalToAngularPosition(RuleBase):
     :py:attr:`encoder` : AbsoluteRotaryEncoder
         Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
         ``target_angular_position``.
-    :py:attr:`transmission` : Transmission
-        Transmission whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
+    :py:attr:`powertrain` : Powertrain
+        Powertrain whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
         ``angular_position``.
     :py:attr:`target_angular_position` : AngularPosition
         Angular position to be reached by the ``encoder``'s target.
     :py:attr:`pwm_min_multiplier` : float or int
         Multiplication factor of motor's minimum ``pwm``.
     :py:attr:`pwm_min` : float or int, optional
-        Minimum ``pwm`` to be used in case the ``transmission``'s motor minimum ``pwm`` is null.
+        Minimum ``pwm`` to be used in case the ``powertrain``'s motor minimum ``pwm`` is null.
 
     Methods
     -------
     :py:meth:`apply`
-        Computes the ``pwm`` to apply to the ``transmission`` motor, proportional to the ``encoder``'s ``target``
+        Computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
         ``angular_position`` until it reaches the ``target_angular_position``.
 
     Raises
     ------
     TypeError
         - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
-        - if ``transmission`` is not an instance of ``Transmission``,
-        - if the first element in ``transmission`` is not an instance of ``MotorBase``,
-        - if an element of ``transmission`` is not an instance of ``RotatingObject``,
+        - if ``powertrain`` is not an instance of ``Powertrain``,
+        - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
+        - if an element of ``powertrain`` is not an instance of ``RotatingObject``,
         - if ``target_angular_position`` is not an instance of ``AngularPosition``,
         - if ``pwm_min_multiplier`` is not a float or an integer,
         - if ``pwm_min`` is defined and it is not a float or an integer.
     ValueError
-        - If ``transmission.chain`` is an empty tuple,
-        - if the ``transmission`` motor cannot compute ``electric_current`` property,
+        - If ``powertrain.elements`` is an empty tuple,
+        - if the ``powertrain`` motor cannot compute ``electric_current`` property,
         - if ``pwm_min_multiplier`` is less than or equal to ``1``,
         - if ``pwm_min`` is defined and it is negative or null.
 
@@ -270,7 +270,7 @@ class StartProportionalToAngularPosition(RuleBase):
 
     def __init__(self,
                  encoder: AbsoluteRotaryEncoder,
-                 transmission: Transmission,
+                 powertrain: Powertrain,
                  target_angular_position: AngularPosition,
                  pwm_min_multiplier: Union[float, int],
                  pwm_min: Optional[float] = None):
@@ -279,20 +279,20 @@ class StartProportionalToAngularPosition(RuleBase):
         if not isinstance(encoder, AbsoluteRotaryEncoder):
             raise TypeError(f"Parameter 'encoder' must be an instance of {AbsoluteRotaryEncoder.__name__!r}.")
 
-        if not isinstance(transmission, Transmission):
-            raise TypeError(f"Parameter 'transmission' must be an instance of {Transmission.__name__!r}.")
+        if not isinstance(powertrain, Powertrain):
+            raise TypeError(f"Parameter 'powertrain' must be an instance of {Powertrain.__name__!r}.")
 
-        if not transmission.chain:
-            raise ValueError("Parameter 'transmission.chain' cannot be an empty tuple.")
+        if not powertrain.elements:
+            raise ValueError("Parameter 'powertrain.elements' cannot be an empty tuple.")
 
-        if not isinstance(transmission.chain[0], MotorBase):
-            raise TypeError(f"First element in 'transmission' must be an instance of {MotorBase.__name__!r}.")
+        if not isinstance(powertrain.elements[0], MotorBase):
+            raise TypeError(f"First element in 'powertrain' must be an instance of {MotorBase.__name__!r}.")
 
-        if not transmission.chain[0].electric_current_is_computable:
-            raise ValueError("The motor in 'transmission' cannot compute 'electric_current' property.")
+        if not powertrain.elements[0].electric_current_is_computable:
+            raise ValueError("The motor in 'powertrain' cannot compute 'electric_current' property.")
 
-        if not all([isinstance(item, RotatingObject) for item in transmission.chain]):
-            raise TypeError(f"All elements of 'transmission' must be instances of {RotatingObject.__name__!r}.")
+        if not all([isinstance(item, RotatingObject) for item in powertrain.elements]):
+            raise TypeError(f"All elements of 'powertrain' must be instances of {RotatingObject.__name__!r}.")
 
         if not isinstance(target_angular_position, AngularPosition):
             raise TypeError(f"Parameter 'target_angular_position' must be an instance of {AngularPosition.__name__!r}.")
@@ -311,7 +311,7 @@ class StartProportionalToAngularPosition(RuleBase):
                 raise ValueError(f"Parameter 'pwm_min' must be positive.")
 
         self.__encoder = encoder
-        self.__transmission = transmission
+        self.__powertrain = powertrain
         self.__target_angular_position = target_angular_position
         self.__pwm_min_multiplier = pwm_min_multiplier
         self.__pwm_min = pwm_min
@@ -339,21 +339,21 @@ class StartProportionalToAngularPosition(RuleBase):
         return self.__encoder
 
     @property
-    def transmission(self) -> Transmission:
-        """Transmission whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
+    def powertrain(self) -> Powertrain:
+        """Powertrain whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
         ``angular_position``.
 
         Returns
         -------
-        Transmission
-            Transmission whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
+        Powertrain
+            Powertrain whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
             ``angular_position``.
 
         See Also
         --------
-        :py:class:`gearpy.transmission.Transmission`
+        :py:class:`gearpy.powertrain.Powertrain`
         """
-        return self.__transmission
+        return self.__powertrain
 
     @property
     def target_angular_position(self) -> AngularPosition:
@@ -374,7 +374,7 @@ class StartProportionalToAngularPosition(RuleBase):
     @property
     def pwm_min_multiplier(self) -> Union[float, int]:
         """Multiplication factor of motor's minimum ``pwm``. \n
-        The ``transmission``'s motor has a minimum ``pwm`` which, as is, cannot be used to control the motor, since at
+        The ``powertrain``'s motor has a minimum ``pwm`` which, as is, cannot be used to control the motor, since at
         this value the motor will remain still. So, in order to properly control the motor motion, it is required to
         apply a ``pwm`` greater than the minimum ``pwm``, therefore the motor minimum ``pwm`` is multiplied by
         ``pwm_min_multiplier`` to get a starting ``pwm`` to be applied to the motor.
@@ -392,14 +392,14 @@ class StartProportionalToAngularPosition(RuleBase):
 
     @property
     def pwm_min(self) -> Union[None, float, int]:
-        """Minimum ``pwm`` to be used in case the ``transmission``'s motor minimum ``pwm`` is null. \n
+        """Minimum ``pwm`` to be used in case the ``powertrain``'s motor minimum ``pwm`` is null. \n
         If the motor's minimum ``pwm`` is null, then it is useless to multiply this value by ``pwm_min_multiplier`` in
         order to get a starting ``pwm``; therefore, only in this case, ``pwm_min`` is directly used as starting ``pwm``.
 
         Returns
         -------
         None or float or int
-            Minimum ``pwm`` to be used in case the ``transmission``'s motor minimum ``pwm`` is null.
+            Minimum ``pwm`` to be used in case the ``powertrain``'s motor minimum ``pwm`` is null.
 
         See Also
         --------
@@ -409,7 +409,7 @@ class StartProportionalToAngularPosition(RuleBase):
         return self.__pwm_min
 
     def apply(self) -> Union[None, float, int]:
-        r"""Computes the ``pwm`` to apply to the ``transmission`` motor, proportional to the ``encoder``'s ``target``
+        r"""Computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
         ``angular_position`` until it reaches the ``target_angular_position``.
 
         Returns
@@ -428,11 +428,11 @@ class StartProportionalToAngularPosition(RuleBase):
         where:
 
         - :math:`D_{min}^c` is the *candidate* minimum applicable ``pwm``,
-        - :math:`T_l` is the load torque on the ``transmission`` DC motor,
-        - :math:`T_{max}` is the maximum torque developed by the ``transmission`` DC motor,
-        - :math:`i_{max}` is the maximum electric current absorbed by the ``transmission`` DC motor,
-        - :math:`i_0` is the no load electric current absorbed by the ``transmission`` DC motor,
-        - :math:`\eta_t` is the ``transmission`` overall efficiency, computed as:
+        - :math:`T_l` is the load torque on the ``powertrain`` DC motor,
+        - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor,
+        - :math:`i_{max}` is the maximum electric current absorbed by the ``powertrain`` DC motor,
+        - :math:`i_0` is the no load electric current absorbed by the ``powertrain`` DC motor,
+        - :math:`\eta_t` is the ``powertrain`` overall efficiency, computed as:
 
         .. math::
             \eta_t = \prod_{i = 1}^N \eta_i
@@ -440,9 +440,9 @@ class StartProportionalToAngularPosition(RuleBase):
         where:
 
         - :math:`\eta_i` is the mechanical mating efficiency of the mating between two gears,
-        - :math:`N` is the total number of gear matings in the ``transmission``.
+        - :math:`N` is the total number of gear matings in the ``powertrain``.
 
-        If both the load torque on the ``transmission`` DC motor :math:`T_l` and the motor no load electric current
+        If both the load torque on the ``powertrain`` DC motor :math:`T_l` and the motor no load electric current
         :math:`i_0` are null, then also the computed *candidate* minimum applicable ``pwm`` :math:`D_{min}^c` is null.
         Only in this case, the compuded *candidate* minimum applicable ``pwm`` is discarded and it is taken into account
         the ``pwm_min`` parameter, which must have been set (don't used otherwise):
@@ -479,7 +479,7 @@ class StartProportionalToAngularPosition(RuleBase):
         """
         angular_position = self.encoder.get_value()
 
-        computed_pwm_min = self.pwm_min_multiplier*_compute_pwm_min(transmission = self.transmission)
+        computed_pwm_min = self.pwm_min_multiplier*_compute_pwm_min(powertrain = self.powertrain)
         if computed_pwm_min != 0:
             pwm_min = computed_pwm_min
         else:
@@ -493,7 +493,7 @@ class StartProportionalToAngularPosition(RuleBase):
 
 class StartLimitCurrent(RuleBase):
     """gearpy.motor_control.rules.StartLimitCurrent object. \n
-    It can be used to make a gradual start of the transmission's motion and limit the ``motor`` absorbed electric
+    It can be used to make a gradual start of the powertrain's motion and limit the ``motor`` absorbed electric
     current to be lower than or equal to a ``limit_electric_current`` value. It computes a ``pwm`` to apply to the
     ``motor`` up until the ``encoder``'s ``target``'s ``angular_position`` equals ``target_angular_position``. \n
     For an optimal ``pwm`` management, it is suggested to set the ``motor`` as the ``tachometer``'s ``target``.
@@ -716,31 +716,31 @@ class StartLimitCurrent(RuleBase):
 
 class ConstantPWM(RuleBase):
     """gearpy.motor_control.rules.ConstantPWM object. \n
-    It can be used to make a gradual start of the ``transmission``'s motion, in order to avoid a peak in the
-    ``transmission``'s DC motor absorbed electric current. \n
-    It checks whether the ``timer`` is active and, if so, it sets the ``pwm`` of ``transmission`` motor to the constant
+    It can be used to make a gradual start of the ``powertrain``'s motion, in order to avoid a peak in the
+    ``powertrain``'s DC motor absorbed electric current. \n
+    It checks whether the ``timer`` is active and, if so, it sets the ``pwm`` of ``powertrain`` motor to the constant
     ``target_pwm_value``.
 
     Attributes
     ----------
     :py:attr:`timer` : Timer
-        Timer which, when active, sets the control of ``transmission`` motor ``pwm``.
-    :py:attr:`transmission` : Transmission
-        Transmission whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
+        Timer which, when active, sets the control of ``powertrain`` motor ``pwm``.
+    :py:attr:`powertrain` : Powertrain
+        Powertrain whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
     :py:attr:`target_pwm_min` : float or int
-        Target value to set ``transmission`` motor ``pwm`` when the ``timer`` is active.
+        Target value to set ``powertrain`` motor ``pwm`` when the ``timer`` is active.
 
     Methods
     -------
     :py:meth:`apply`
-        Checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``transmission`` motor,
+        Checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``powertrain`` motor,
         equal to ``target_pwm_value``.
 
     Raises
     ------
     TypeError
         - If ``timer`` is not an instance of ``Timer``,
-        - if ``transmission`` is not an instance of ``Transmission``,
+        - if ``powertrain`` is not an instance of ``Powertrain``,
         - if ``target_pwm_value`` is not a float or an integer.
     ValueError
         If ``target_pwm_value`` is not within ``-1`` and ``1``.
@@ -752,15 +752,15 @@ class ConstantPWM(RuleBase):
 
     def __init__(self,
                  timer: Timer,
-                 transmission: Transmission,
+                 powertrain: Powertrain,
                  target_pwm_value: Union[float, int]):
         super().__init__()
 
         if not isinstance(timer, Timer):
             raise TypeError(f"Parameter 'timer' must be an instance of {Timer.__name__!r}.")
 
-        if not isinstance(transmission, Transmission):
-            raise TypeError(f"Parameter 'transmission' must be an instance of {Transmission.__name__!r}.")
+        if not isinstance(powertrain, Powertrain):
+            raise TypeError(f"Parameter 'powertrain' must be an instance of {Powertrain.__name__!r}.")
 
         if not isinstance(target_pwm_value, float) and not isinstance(target_pwm_value, int):
             raise TypeError(f"Parameter 'target_pwm_value' must be a float or an integer.")
@@ -769,17 +769,17 @@ class ConstantPWM(RuleBase):
             raise ValueError(f"Parameter 'target_pwm_value' must be within -1 and 1.")
 
         self.__timer = timer
-        self.__transmission = transmission
+        self.__powertrain = powertrain
         self.__target_pwm_value = target_pwm_value
 
     @property
     def timer(self) -> Timer:
-        """Timer which, when active, sets the control of ``transmission`` motor ``pwm``.
+        """Timer which, when active, sets the control of ``powertrain`` motor ``pwm``.
 
         Returns
         -------
         Timer
-            Timer which, when active, sets the control of ``transmission`` motor ``pwm``.
+            Timer which, when active, sets the control of ``powertrain`` motor ``pwm``.
 
         Raises
         ------
@@ -793,33 +793,33 @@ class ConstantPWM(RuleBase):
         return self.__timer
 
     @property
-    def transmission(self) -> Transmission:
-        """Transmission whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
+    def powertrain(self) -> Powertrain:
+        """Powertrain whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
 
         Returns
         -------
-        Transmission
-            Transmission whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
+        Powertrain
+            Powertrain whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
 
         Raises
         ------
         TypeError
-            If ``transmission`` is not an instance of ``Transmission``.
+            If ``powertrain`` is not an instance of ``Powertrain``.
 
         See Also
         --------
-        :py:class:`gearpy.transmission.Transmission`
+        :py:class:`gearpy.powertrain.Powertrain`
         """
-        return self.__transmission
+        return self.__powertrain
 
     @property
     def target_pwm_value(self) -> Union[float, int]:
-        """Target value to set ``transmission`` motor ``pwm`` when the ``timer`` is active.
+        """Target value to set ``powertrain`` motor ``pwm`` when the ``timer`` is active.
 
         Returns
         -------
         float or int
-            Target value to set ``transmission`` motor ``pwm`` when the ``timer`` is active.
+            Target value to set ``powertrain`` motor ``pwm`` when the ``timer`` is active.
 
         Raises
         ------
@@ -835,7 +835,7 @@ class ConstantPWM(RuleBase):
         return self.__target_pwm_value
 
     def apply(self) -> Union[None, float, int]:
-        r"""Checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``transmission`` motor,
+        r"""Checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``powertrain`` motor,
         equal to ``target_pwm_value``.
 
         Returns
@@ -843,41 +843,41 @@ class ConstantPWM(RuleBase):
         float or int or None
             PWM value to apply to the motor, equal to ``target_pwm_value``.
         """
-        if self.timer.is_active(current_time = self.transmission.time[-1]):
+        if self.timer.is_active(current_time = self.powertrain.time[-1]):
             return self.target_pwm_value
 
 
-def _compute_static_error(braking_angle: Angle, transmission: Transmission) -> Union[Angle, AngularPosition]:
-    maximum_torque = transmission.chain[0].maximum_torque
-    load_torque = transmission.chain[0].load_torque
+def _compute_static_error(braking_angle: Angle, powertrain: Powertrain) -> Union[Angle, AngularPosition]:
+    maximum_torque = powertrain.elements[0].maximum_torque
+    load_torque = powertrain.elements[0].load_torque
 
-    transmission_efficiency = 1
-    for element in transmission.chain:
+    powertrain_efficiency = 1
+    for element in powertrain.elements:
         if isinstance(element, SpurGear):
-            transmission_efficiency *= element.master_gear_efficiency
+            powertrain_efficiency *= element.master_gear_efficiency
 
     if load_torque is not None:
-        static_error = ((load_torque/maximum_torque)/transmission_efficiency)*braking_angle
+        static_error = ((load_torque/maximum_torque)/powertrain_efficiency)*braking_angle
     else:
         static_error = AngularPosition(0, 'rad')
 
     return static_error
 
 
-def _compute_pwm_min(transmission: Transmission) -> Union[float, int]:
-    maximum_torque = transmission.chain[0].maximum_torque
-    if transmission.chain[0].time_variables['load torque']:
-        load_torque = transmission.chain[0].time_variables['load torque'][0]
+def _compute_pwm_min(powertrain: Powertrain) -> Union[float, int]:
+    maximum_torque = powertrain.elements[0].maximum_torque
+    if powertrain.elements[0].time_variables['load torque']:
+        load_torque = powertrain.elements[0].time_variables['load torque'][0]
     else:
-        load_torque = transmission.chain[0].load_torque
-    no_load_electric_current = transmission.chain[0].no_load_electric_current
-    maximum_electric_current = transmission.chain[0].maximum_electric_current
+        load_torque = powertrain.elements[0].load_torque
+    no_load_electric_current = powertrain.elements[0].no_load_electric_current
+    maximum_electric_current = powertrain.elements[0].maximum_electric_current
 
-    transmission_efficiency = 1
-    for element in transmission.chain:
+    powertrain_efficiency = 1
+    for element in powertrain.elements:
         if isinstance(element, SpurGear):
-            transmission_efficiency *= element.master_gear_efficiency
+            powertrain_efficiency *= element.master_gear_efficiency
 
-    return 1/transmission_efficiency*(load_torque/maximum_torque)*\
+    return 1/powertrain_efficiency*(load_torque/maximum_torque)*\
            ((maximum_electric_current - no_load_electric_current)/maximum_electric_current) + \
            no_load_electric_current/maximum_electric_current

@@ -1,6 +1,6 @@
 ### System in Analysis
 
-The mechanical transmission to be studied is the one described in the 
+The mechanical powertrain to be studied is the one described in the 
 [2 - Complex External Torque](https://gearpy.readthedocs.io/en/latest/examples/2_complex_external_torque/index.html) 
 example.  
 
@@ -28,14 +28,14 @@ The remaining set up of the model stay the same.
 We can get a snapshot of the system at a particular time of interest:
 
 ```python
-transmission.snapshot(target_time = Time(10, 'sec'),
-                      torque_unit = 'mNm',
-                      driving_torque_unit = 'mNm',
-                      load_torque_unit = 'mNm')
+powertrain.snapshot(target_time = Time(10, 'sec'),
+                    torque_unit = 'mNm',
+                    driving_torque_unit = 'mNm',
+                    load_torque_unit = 'mNm')
 ```
 
 ```text
-Mechanical Transmission Status at Time = 10 sec
+Mechanical Powertrain Status at Time = 10 sec
           angular position (rad)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (mNm)  driving torque (mNm)  load torque (mNm) electric current (A)  pwm
 motor               11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912              0.79574  1.0
 flywheel            11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912                          
@@ -52,12 +52,12 @@ variables and focus the plot only on interesting elements and variables.
 We can also specify a more convenient unit to use when plotting torques:
 
 ```python
-transmission.plot(figsize = (12, 10),
-                  elements = [motor, gear_6],
-                  angular_position_unit = 'rot',
-                  torque_unit = 'mNm',
-                  variables = ['angular position', 'angular speed', 'driving torque', 'load torque', 'torque',
-                               'electric current'])
+powertrain.plot(figsize = (12, 10),
+                elements = [motor, gear_6],
+                angular_position_unit = 'rot',
+                torque_unit = 'mNm',
+                variables = ['angular position', 'angular speed', 'driving torque', 'load torque', 'torque',
+                             'electric current'])
 ```
 
 ![](images/plot_1.png)

@@ -1,5 +1,5 @@
-1 - Simple Transmission Chain
-=============================
+1 - Simple Powertrain
+=====================
 
 
 .. mdinclude:: README.md

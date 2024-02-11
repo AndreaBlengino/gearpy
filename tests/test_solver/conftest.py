@@ -1,41 +1,41 @@
 from gearpy.mechanical_object import RotatingObject, MotorBase, SpurGear, DCMotor
 from gearpy.motor_control import MotorControlBase
-from gearpy.transmission import Transmission
+from gearpy.powertrain import Powertrain
 from gearpy.units import AngularSpeed, InertiaMoment, Length, Torque, TimeInterval
 from gearpy.utils import add_fixed_joint
 from pytest import fixture
-from tests.conftest import types_to_check, basic_spur_gear_1, basic_dc_motor_1, basic_transmission
+from tests.conftest import types_to_check, basic_spur_gear_1, basic_dc_motor_1, basic_powertrain
 
 
-motor_transmission_solver_init_type_error = DCMotor(name = 'name', inertia_moment = InertiaMoment(1, 'kgm^2'),
+motor_powertrain_solver_init_type_error = DCMotor(name = 'name', inertia_moment = InertiaMoment(1, 'kgm^2'),
                                                     no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'))
-gear_transmission_solver_init_type_error = SpurGear(name = 'gear', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
-add_fixed_joint(master = motor_transmission_solver_init_type_error, slave = gear_transmission_solver_init_type_error)
-transmission_solver_init_type_error = Transmission(motor = motor_transmission_solver_init_type_error)
+gear_powertrain_solver_init_type_error = SpurGear(name = 'gear', n_teeth = 10, module = Length(1, 'mm'), inertia_moment = InertiaMoment(1, 'kgm^2'))
+add_fixed_joint(master = motor_powertrain_solver_init_type_error, slave = gear_powertrain_solver_init_type_error)
+powertrain_solver_init_type_error = Powertrain(motor = motor_powertrain_solver_init_type_error)
 
-class TransmissionFake(Transmission):
+class PowertrainFake(Powertrain):
 
-    def __init__(self, chain: list):
-        self.__chain = chain
+    def __init__(self, elements: list):
+        self.__elements = elements
 
     @property
-    def chain(self):
-        return self.__chain
+    def elements(self):
+        return self.__elements
 
-    @chain.setter
-    def chain(self, chain):
-        self.__chain = chain
+    @elements.setter
+    def elements(self, elements):
+        self.__elements = elements
 
-solver_init_type_error_1 = [{'transmission': type_to_check} for type_to_check in types_to_check
-                            if not isinstance(type_to_check, Transmission)]
+solver_init_type_error_1 = [{'powertrain': type_to_check} for type_to_check in types_to_check
+                            if not isinstance(type_to_check, Powertrain)]
 
-solver_init_type_error_2 = [{'transmission': TransmissionFake([type_to_check, basic_spur_gear_1])}
+solver_init_type_error_2 = [{'powertrain': PowertrainFake([type_to_check, basic_spur_gear_1])}
                             for type_to_check in types_to_check if not isinstance(type_to_check, MotorBase)]
 
-solver_init_type_error_3 = [{'transmission': TransmissionFake([basic_dc_motor_1, type_to_check])}
+solver_init_type_error_3 = [{'powertrain': PowertrainFake([basic_dc_motor_1, type_to_check])}
                             for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)]
 
-solver_init_type_error_4 = [{'transmission': basic_transmission, 'motor_control': type_to_check}
+solver_init_type_error_4 = [{'powertrain': basic_powertrain, 'motor_control': type_to_check}
                             for type_to_check in types_to_check if not isinstance(type_to_check, MotorControlBase)
                             and type_to_check is not None]
 

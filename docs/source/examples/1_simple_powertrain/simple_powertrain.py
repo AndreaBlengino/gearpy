@@ -3,7 +3,7 @@
 from gearpy.mechanical_object import DCMotor, Flywheel, SpurGear
 from gearpy.units import AngularSpeed, InertiaMoment, Torque, AngularPosition, TimeInterval, Time
 from gearpy.utils import add_fixed_joint, add_gear_mating
-from gearpy.transmission import Transmission
+from gearpy.powertrain import Powertrain
 from gearpy.solver import Solver
 
 
@@ -50,7 +50,7 @@ def ext_torque(time, angular_position, angular_speed):
 gear_6.external_torque = ext_torque
 
 
-transmission = Transmission(motor = motor)
+powertrain = Powertrain(motor = motor)
 
 
 # Simulation Set Up
@@ -59,25 +59,25 @@ gear_6.angular_position = AngularPosition(0, 'rad')
 gear_6.angular_speed = AngularSpeed(0, 'rad/s')
 
 
-solver = Solver(transmission = transmission)
+solver = Solver(powertrain = powertrain)
 solver.run(time_discretization = TimeInterval(0.5, 'sec'),
            simulation_time = TimeInterval(20, 'sec'))
 
 
 # Result Analysis
 
-transmission.snapshot(target_time = Time(10, 'sec'))
+powertrain.snapshot(target_time = Time(10, 'sec'))
 
-transmission.snapshot(target_time = Time(10, 'sec'),
-                      angular_position_unit = 'rot',
-                      torque_unit = 'mNm',
-                      driving_torque_unit = 'mNm',
-                      load_torque_unit = 'mNm')
+powertrain.snapshot(target_time = Time(10, 'sec'),
+                    angular_position_unit = 'rot',
+                    torque_unit = 'mNm',
+                    driving_torque_unit = 'mNm',
+                    load_torque_unit = 'mNm')
 
 
-transmission.plot(figsize = (12, 9))
+powertrain.plot(figsize = (12, 9))
 
-transmission.plot(elements = ['gear 6', motor],
-                  variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
-                  torque_unit = 'mNm',
-                  figsize = (8, 6))
+powertrain.plot(elements = ['gear 6', motor],
+                variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
+                torque_unit = 'mNm',
+                figsize = (8, 6))

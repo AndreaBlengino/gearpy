@@ -12,27 +12,27 @@ VARIABLES_SORT_ORDER = {'angular position': 0, 'angular speed': 1, 'angular acce
                         'contact stress': 8, 'electric current': 9, 'pwm': 10}
 
 
-class Transmission:
-    r"""``gearpy.transmission.Transmission`` object.
+class Powertrain:
+    r"""``gearpy.powertrain.Powertrain`` object.
 
     Attributes
     ----------
-    :py:attr:`chain` : tuple
-        Elements in the transmission chain.
+    :py:attr:`elements` : tuple
+        Elements in the powertrain elements.
     :py:attr:`time` : list
         Simulated time steps.
 
     Methods
     -------
     :py:meth:`plot`
-        Plots time variables for each element in the mechanical transmission chain.
+        Plots time variables for each element in the mechanical powertrain elements.
     :py:meth:`reset`
         Resets computed time variables.
     :py:meth:`snapshot`
-        Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
+        Computes a snapshot of the time variables of the elements in the mechanical powertrain at the specified
         ``target_time``.
     :py:meth:`update_time`
-        Updates the ``Transmission.time`` list by appending the ``instant`` simulated time step.
+        Updates the ``Powertrain.time`` list by appending the ``instant`` simulated time step.
 
     Raises
     ------
@@ -41,7 +41,7 @@ class Transmission:
     ValueError
         If ``motor`` is not connected to any other element.
     NameError
-        If two or more elements in the transmission chain share the same name.
+        If two or more elements in the powertrain elements share the same name.
     """
 
     def __init__(self, motor: MotorBase):
@@ -52,30 +52,30 @@ class Transmission:
             raise ValueError("Parameter 'motor' is not connected to any other element. Call 'add_fixed_joint' "
                              "to join 'motor' with a GearBase's instance.")
 
-        chain = [motor]
-        while chain[-1].drives is not None:
-            chain.append(chain[-1].drives)
+        elements = [motor]
+        while elements[-1].drives is not None:
+            elements.append(elements[-1].drives)
 
-        counts = Counter([element.name for element in chain])
+        counts = Counter([element.name for element in elements])
         for name, count in counts.items():
             if count > 1:
                 raise NameError(f"Found {count} elements with the same name {name!r}, "
                                 f"each element must have a unique name.")
 
-        self.__chain = tuple(chain)
+        self.__elements = tuple(elements)
         self.__time = []
 
 
     @property
-    def chain(self) -> Tuple[RotatingObject]:
-        """Elements in the transmission chain. \n
+    def elements(self) -> Tuple[RotatingObject]:
+        """Elements in the powertrain elements. \n
         The first element is the driving motor, the next elements are in order, from the closest to the farthest from
         the motor. Each element is driven by the previous one and it drives the following one.
 
         Returns
         -------
         tuple
-            Elements in the transmission chain.
+            Elements in the powertrain elements.
 
         See Also
         --------
@@ -83,7 +83,7 @@ class Transmission:
         :py:class:`gearpy.mechanical_object.mechanical_objects.Flywheel`
         :py:class:`gearpy.mechanical_object.mechanical_objects.SpurGear`
         """
-        return self.__chain
+        return self.__elements
 
 
     @property
@@ -106,12 +106,12 @@ class Transmission:
 
 
     def update_time(self, instant: Time):
-        """Updates the ``Transmission.time`` list by appending the ``instant`` simulated time step.
+        """Updates the ``Powertrain.time`` list by appending the ``instant`` simulated time step.
 
         Parameters
         ----------
         instant : Time
-            Simulated time step to be added to ``Transmission.time`` list.
+            Simulated time step to be added to ``Powertrain.time`` list.
 
         Raises
         ------
@@ -130,7 +130,8 @@ class Transmission:
 
     def reset(self):
         """Resets computed time variables. \n
-        For each element in the mechanical transmission chain, it resets each time variables and also ``time`` property.
+        For each element in the mechanical powertrain elements, it resets each time variables and also ``time``
+        property.
 
         See Also
         --------
@@ -141,7 +142,7 @@ class Transmission:
         """
         self.__time = []
 
-        for element in self.chain:
+        for element in self.elements:
             element.angular_position = element.time_variables['angular position'][0]
             element.angular_speed = element.time_variables['angular speed'][0]
             element.angular_acceleration = element.time_variables['angular acceleration'][0]
@@ -177,9 +178,9 @@ class Transmission:
                  stress_unit: Optional[str] = 'MPa',
                  current_unit: Optional[str] = 'A',
                  print_data: Optional[bool] = True) -> pd.DataFrame:
-        """Computes a snapshot of the time variables of the elements in the mechanical transmission at the specified
+        """Computes a snapshot of the time variables of the elements in the mechanical powertrain at the specified
         ``target_time``. \n
-        It returns a ``pandas.DataFrame`` with the computed time variables. Each element in the transmission chain is a
+        It returns a ``pandas.DataFrame`` with the computed time variables. Each element in the powertrain elements is a
         row of the DataFrame, while the columns are the time variables ``'angular position'``, ``'angular speed'``,
         ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``. The motor can have
         additional variables ``'electric current'`` and ``'pwm'``, while gears can have additional parameters
@@ -192,7 +193,7 @@ class Transmission:
         Parameters
         ----------
         target_time : Time
-            Time to which compute the mechanical transmission time variables snapshot. It must be within minimum and
+            Time to which compute the mechanical powertrain time variables snapshot. It must be within minimum and
             maximum simulated time steps in ``time`` parameter.
         variables : list, optional
             Time variables to be printed. Default is all available time variables.
@@ -230,7 +231,7 @@ class Transmission:
         -------
         pandas.DataFrame
             DataFrame containing time variables values at the specified ``target_time`` for each element in the
-            transmission chain.
+            powertrain elements.
 
         Raises
         ------
@@ -258,7 +259,7 @@ class Transmission:
         See Also
         --------
         :py:attr:`time`
-        :py:attr:`chain`
+        :py:attr:`elements`
         :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
         :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
         :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
@@ -284,7 +285,7 @@ class Transmission:
                 raise ValueError("Parameter 'variables' cannot be an empty list.")
 
             valid_variables = []
-            for element in self.chain:
+            for element in self.elements:
                 valid_variables.extend(element.time_variables.keys())
             valid_variables = list(set(valid_variables))
             valid_variables.sort(key = lambda variable: VARIABLES_SORT_ORDER[variable])
@@ -327,7 +328,7 @@ class Transmission:
 
         if variables is None:
             variables = []
-            for element in self.chain:
+            for element in self.elements:
                 variables.extend(element.time_variables.keys())
         variables = list(set(variables))
         variables.sort(key = lambda variable: VARIABLES_SORT_ORDER[variable])
@@ -341,7 +342,7 @@ class Transmission:
         columns = [f'{variable} ({UNITS[variable]})' if UNITS[variable] != '' else variable for variable in variables]
         data = pd.DataFrame(columns = columns)
 
-        for element in self.chain:
+        for element in self.elements:
             for variable, unit in zip(['angular position', 'angular speed', 'angular acceleration',
                                        'torque', 'driving torque', 'load torque'],
                                       [angular_position_unit, angular_speed_unit, angular_acceleration_unit,
@@ -350,7 +351,8 @@ class Transmission:
                     interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
                                                       y = [value.to(unit).value
                                                            for value in element.time_variables[variable]])
-                    data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
+                    data.loc[element.name, f'{variable} ({unit})'] = \
+                        interpolation_function(target_time.to('sec').value).take(0)
 
             if isinstance(element, MotorBase):
                 interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
@@ -382,12 +384,13 @@ class Transmission:
                     interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
                                                       y = [value.to(unit).value
                                                            for value in element.time_variables[variable]])
-                    data.loc[element.name, f'{variable} ({unit})'] = interpolation_function(target_time.to('sec').value).take(0)
+                    data.loc[element.name, f'{variable} ({unit})'] = \
+                        interpolation_function(target_time.to('sec').value).take(0)
 
         data.fillna(value = '', inplace = True)
 
         if print_data:
-            print(f'Mechanical Transmission Status at Time = {target_time}')
+            print(f'Mechanical Powertrain Status at Time = {target_time}')
             print(data.to_string())
 
         return data
@@ -405,10 +408,10 @@ class Transmission:
              current_unit: Optional[str] = 'A',
              time_unit: Optional[str] = 'sec',
              figsize: Optional[tuple] = None):
-        """Plots time variables for selected elements in the mechanical transmission chain. \n
-        It generates a grid of subplots, one column for each selected element of the transmission chain and one rows for
-        each selected time variable. \n
-        The available elements are those in ``chain`` tuple and the available variables are: ``'angular position'``,
+        """Plots time variables for selected elements in the mechanical powertrain elements. \n
+        It generates a grid of subplots, one column for each selected element of the powertrain elements and one rows
+        for each selected time variable. \n
+        The available elements are those in ``elements`` tuple and the available variables are: ``'angular position'``,
         ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``. The
         motor can have additional variables ``electric current`` and ``pwm`` while gears can have additional variables
         ``tangential force``, ``bending stress`` and ``contact stress``, depending on instantiation parameters. \n
@@ -420,8 +423,8 @@ class Transmission:
         Parameters
         ----------
         elements : list, optional
-            Elements of the transmission chain which time variables have to be plotted. Each single element can be
-            passed as instance or name (string). Default is all elements in the transmission chain.
+            Elements of the powertrain elements which time variables have to be plotted. Each single element can be
+            passed as instance or name (string). Default is all elements in the powertrain elements.
         variables : list, optional
             Time variables to be plotted. Default is all available time variables.
         angular_position_unit : str, optional
@@ -470,7 +473,7 @@ class Transmission:
             - if an element of ``figsize`` is not a float or an integer.
         ValueError
             - If ``elements`` is an empty list,
-            - if an element of ``elements`` is not in ``Transmission.chain``,
+            - if an element of ``elements`` is not in ``Powertrain.elements``,
             - if ``variables`` is an empty list,
             - if an element of ``variables`` is not a valid time variable,
             - if ``figsize`` has not exactly two elements: one for width and the other for height.
@@ -478,7 +481,7 @@ class Transmission:
         See Also
         --------
         :py:attr:`time`
-        :py:attr:`chain`
+        :py:attr:`elements`
         :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
         :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
         :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
@@ -490,19 +493,19 @@ class Transmission:
             if not elements:
                 raise ValueError("Parameter 'elements' cannot be an empty list.")
 
-            valid_element_names = [valid_element.name for valid_element in self.chain]
+            valid_element_names = [valid_element.name for valid_element in self.elements]
             for element in elements:
                 if not isinstance(element, RotatingObject) and not isinstance(element, str):
                     raise TypeError(f"Each element of 'elements' must be an instance of {RotatingObject.__name__!r}"
                                     f"or a string.")
 
                 if isinstance(element, RotatingObject):
-                    if element not in self.chain:
-                        raise ValueError(f"Element {element.name!r} not found in the transmission chain. "
+                    if element not in self.elements:
+                        raise ValueError(f"Element {element.name!r} not found in the powertrain elements. "
                                          f"Available elements are: {valid_element_names}.")
                 else:
                     if element not in valid_element_names:
-                        raise ValueError(f"Element {element!r} not found in the transmission chain. "
+                        raise ValueError(f"Element {element!r} not found in the powertrain elements. "
                                          f"Available elements are: {valid_element_names}.")
 
         if variables is not None:
@@ -513,7 +516,7 @@ class Transmission:
                 raise ValueError("Parameter 'variables' cannot be an empty list.")
 
             valid_variables = []
-            for element in self.chain:
+            for element in self.elements:
                 valid_variables.extend(element.time_variables.keys())
             valid_variables = list(set(valid_variables))
             valid_variables.sort(key = lambda variable: VARIABLES_SORT_ORDER[variable])
@@ -559,9 +562,9 @@ class Transmission:
                 raise TypeError("All elements of 'figsize' must be floats or integers.")
 
         if elements is None:
-            elements = self.chain
+            elements = self.elements
         else:
-            elements = [element for element in self.chain if element in elements or element.name in elements]
+            elements = [element for element in self.elements if element in elements or element.name in elements]
         n_elements = len(elements)
 
         if variables is None:
@@ -641,8 +644,8 @@ class Transmission:
             if isinstance(item, MotorBase):
                 if item.electric_current_is_computable and electric_variables:
                     axes[electric_variables_index].plot(time_values,
-                                                          [variable_value.to(UNITS['electric current']).value
-                                                           for variable_value in item.time_variables['electric current']])
+                                                        [variable_value.to(UNITS['electric current']).value
+                                                         for variable_value in item.time_variables['electric current']])
 
                 if pwm_variables:
                     axes[pwm_variables_index].plot(time_values,

@@ -1,4 +1,4 @@
-from gearpy.transmission import Transmission
+from gearpy.powertrain import Powertrain
 from .motor_control_base import MotorControlBase
 from .rules_base import RuleBase
 
@@ -8,8 +8,8 @@ class PWMControl(MotorControlBase):
 
     Attributes
     ----------
-    :py:attr:`transmission` : Transmission
-        Transmission to be controlled by applying a ``pwm`` to its motor.
+    :py:attr:`powertrain` : Powertrain
+        Powertrain to be controlled by applying a ``pwm`` to its motor.
     :py:attr:`rules` : list
         List of the ``pwm`` rules to be applied.
 
@@ -18,39 +18,39 @@ class PWMControl(MotorControlBase):
     :py:meth:`add_rule`
         Adds a ``rule`` to ``rules`` list.
     :py:meth:`apply_rules`
-        Applies all the ``rules`` in order to get a valid ``pwm`` value to set to the ``transmission``'s motor.
+        Applies all the ``rules`` in order to get a valid ``pwm`` value to set to the ``powertrain``'s motor.
 
     Raises
     ------
     TypeError
-        - If ``transmission`` is not an instance of ``Transmission``,
-        - if the first element in ``transmission`` is not an instance of ``MotorBase``,
-        - if an element of ``transmission`` is not an instance of ``RotatingObject``.
+        - If ``powertrain`` is not an instance of ``Powertrain``,
+        - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
+        - if an element of ``powertrain`` is not an instance of ``RotatingObject``.
     ValueError
-        If ``transmission.chain`` is an empty tuple.
+        If ``powertrain.elements`` is an empty tuple.
 
     See Also
     --------
     :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
     """
 
-    def __init__(self, transmission: Transmission):
-        super().__init__(transmission = transmission)
+    def __init__(self, powertrain: Powertrain):
+        super().__init__(powertrain = powertrain)
 
     @property
-    def transmission(self) -> Transmission:
-        """Transmission to be controlled by applying a ``pwm`` to its motor.
+    def powertrain(self) -> Powertrain:
+        """Powertrain to be controlled by applying a ``pwm`` to its motor.
 
         Returns
         -------
-        Transmission
-            Transmission to be controlled by applying a ``pwm`` to its motor.
+        Powertrain
+            Powertrain to be controlled by applying a ``pwm`` to its motor.
 
         See Also
         --------
-        :py:class:`gearpy.transmission.Transmission`
+        :py:class:`gearpy.powertrain.Powertrain`
         """
-        return super().transmission
+        return super().powertrain
 
     @property
     def rules(self) -> list:
@@ -87,13 +87,13 @@ class PWMControl(MotorControlBase):
         super().add_rule(rule = rule)
 
     def apply_rules(self):
-        """Applies all the ``rules`` in order to get a valid ``pwm`` value to set to the ``transmission``'s motor. \n
+        """Applies all the ``rules`` in order to get a valid ``pwm`` value to set to the ``powertrain``'s motor. \n
         It loops over listed ``rules`` and applies all of them:
 
-        - if a single rule returns a valid ``pwm``, then this value is set as ``transmission``'s motor ``pwm``,
+        - if a single rule returns a valid ``pwm``, then this value is set as ``powertrain``'s motor ``pwm``,
         - if more than a single rule returns a valid ``pwm``, then it raises a ``ValueError``, since multiple rules are
           valid at the same time and it is not possible to identify which ``pwm`` value to use,
-        - if no rule returns a valid ``pwm``, then it sets ``transmission``'s motor ``pwm`` to ``1``.
+        - if no rule returns a valid ``pwm``, then it sets ``powertrain``'s motor ``pwm`` to ``1``.
 
         Before settings the ``pwm``, its value is saturated in order to be within ``-1`` and ``1``.
 
@@ -113,7 +113,7 @@ class PWMControl(MotorControlBase):
         else:
             pwm = 1
 
-        self.transmission.chain[0].pwm = pwm
+        self.powertrain.elements[0].pwm = pwm
 
     @staticmethod
     def _saturate_pwm(pwm):

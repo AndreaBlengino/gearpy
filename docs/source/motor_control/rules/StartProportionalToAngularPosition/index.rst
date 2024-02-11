@@ -14,7 +14,7 @@ StartProportionalToAngularPosition
 
    apply
    encoder
+   powertrain
    pwm_min
    pwm_min_multiplier
    target_angular_position
-   transmission

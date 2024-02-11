@@ -1,7 +1,7 @@
 from gearpy.mechanical_object import SpurGear, DCMotor, Flywheel, MatingMaster, MatingSlave
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
 from gearpy.solver import Solver
-from gearpy.transmission import Transmission
+from gearpy.powertrain import Powertrain
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
     Stress, Surface, Time, TimeInterval, Torque, Angle
 from gearpy.utils import add_fixed_joint, add_gear_mating
@@ -30,24 +30,24 @@ basic_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 10, inertia_moment = Ine
                            module = Length(1, 'mm'), face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
 
 
-transmission_dc_motor = DCMotor(name = 'motor',
-                                inertia_moment = InertiaMoment(1, 'kgm^2'),
-                                no_load_speed = AngularSpeed(1000, 'rpm'),
-                                maximum_torque = Torque(1, 'Nm'),
-                                no_load_electric_current = Current(100, 'mA'),
-                                maximum_electric_current = Current(2000, 'A'))
-transmission_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
-transmission_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
-transmission_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 40, inertia_moment = InertiaMoment(1, 'kgm^2'))
-add_fixed_joint(master = transmission_dc_motor, slave = transmission_flywheel)
-add_fixed_joint(master = transmission_flywheel, slave = transmission_spur_gear_1)
-add_gear_mating(master = transmission_spur_gear_1, slave = transmission_spur_gear_2, efficiency = 0.9)
-basic_transmission = Transmission(motor = transmission_dc_motor)
+powertrain_dc_motor = DCMotor(name = 'motor',
+                              inertia_moment = InertiaMoment(1, 'kgm^2'),
+                              no_load_speed = AngularSpeed(1000, 'rpm'),
+                              maximum_torque = Torque(1, 'Nm'),
+                              no_load_electric_current = Current(100, 'mA'),
+                              maximum_electric_current = Current(2000, 'A'))
+powertrain_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
+powertrain_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+powertrain_spur_gear_2 = SpurGear(name = 'gear 2', n_teeth = 40, inertia_moment = InertiaMoment(1, 'kgm^2'))
+add_fixed_joint(master = powertrain_dc_motor, slave = powertrain_flywheel)
+add_fixed_joint(master = powertrain_flywheel, slave = powertrain_spur_gear_1)
+add_gear_mating(master = powertrain_spur_gear_1, slave = powertrain_spur_gear_2, efficiency = 0.9)
+basic_powertrain = Powertrain(motor = powertrain_dc_motor)
 
-transmission_spur_gear_2.external_torque = lambda time, angular_position, angular_speed: Torque(1, 'mNm')
-transmission_spur_gear_2.angular_position = AngularPosition(0, 'rad')
-transmission_spur_gear_2.angular_speed = AngularSpeed(0, 'rad/s')
-basic_solver = Solver(transmission = basic_transmission)
+powertrain_spur_gear_2.external_torque = lambda time, angular_position, angular_speed: Torque(1, 'mNm')
+powertrain_spur_gear_2.angular_position = AngularPosition(0, 'rad')
+powertrain_spur_gear_2.angular_speed = AngularSpeed(0, 'rad/s')
+basic_solver = Solver(powertrain = basic_powertrain)
 basic_solver.run(time_discretization = TimeInterval(1, 'sec'), simulation_time = TimeInterval(100, 'sec'))
 
 basic_encoder = AbsoluteRotaryEncoder(target = basic_spur_gear_1)
@@ -61,7 +61,7 @@ types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, 
                   Force(1, 'N'), InertiaMoment(1, 'kgm^2'), Length(1, 'm'),
                   Stress(1, 'Pa'), Surface(1, 'm^2'), Time(1, 'sec'),
                   TimeInterval(1, 'sec'), Torque(1, 'Nm'), Angle(1, 'rad'),
-                  basic_dc_motor_1, basic_spur_gear_1, basic_flywheel, basic_solver, basic_transmission, basic_encoder,
+                  basic_dc_motor_1, basic_spur_gear_1, basic_flywheel, basic_solver, basic_powertrain, basic_encoder,
                   basic_tachometer, basic_timer, MatingMaster, MatingSlave, SpurGear]
 
 
@@ -140,7 +140,7 @@ def rotating_objects(draw):
 
 
 @composite
-def transmissions(draw, allow_simple_motors = True, allow_electric_motors = True):
+def powertrains(draw, allow_simple_motors = True, allow_electric_motors = True):
     if allow_simple_motors and allow_electric_motors:
         motor = draw(one_of(simple_dc_motors(), electric_dc_motors()))
     elif allow_simple_motors and not allow_electric_motors:
@@ -162,11 +162,11 @@ def transmissions(draw, allow_simple_motors = True, allow_electric_motors = True
         else:
             add_fixed_joint(master = gears[i], slave = gears[i + 1])
 
-    return Transmission(motor = motor)
+    return Powertrain(motor = motor)
 
 
 @composite
-def solved_transmissions(draw):
+def solved_powertrains(draw):
     motor = draw(one_of(simple_dc_motors(), electric_dc_motors()))
     flywheel = draw(flywheels())
     gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
@@ -205,16 +205,16 @@ def solved_transmissions(draw):
         else:
             add_fixed_joint(master = gears[i], slave = gears[i + 1])
 
-    transmission = Transmission(motor = motor)
+    powertrain = Powertrain(motor = motor)
 
     gears[-1].external_torque = lambda time, angular_position, angular_speed: Torque(1, 'mNm')
     gears[-1].angular_position = AngularPosition(0, 'rad')
     gears[-1].angular_speed = AngularSpeed(0, 'rad/s')
     simulation_time = time_discretization*simulation_steps
-    solver = Solver(transmission = transmission)
+    solver = Solver(powertrain = powertrain)
     solver.run(time_discretization = time_discretization, simulation_time = simulation_time)
 
-    return transmission
+    return powertrain
 
 
 @composite

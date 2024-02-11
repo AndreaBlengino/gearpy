@@ -1,6 +1,6 @@
 ### System in Analysis
 
-The mechanical transmission to be studied is reported in the image below:
+The mechanical powertrain to be studied is reported in the image below:
 
 ![](images/scheme.png)
 
@@ -11,13 +11,13 @@ rotate together. The *gear 3* mates with *gear 4*, to which is connected
 to *gear 5* through another rigid shaft, so *gear 4* and *gear 5* rotate 
 together. Finally, *gear 5* mates with *gear 6*, which is connected to 
 the external load.  
-The analysis is focused on transmission elements kinematics and torques.
+The analysis is focused on powertrain elements kinematics and torques.
 
 
 ### Model Set Up
 
 As a first step, we instantiate the components of the mechanical 
-transmission:
+powertrain:
 
 ```python
 from gearpy.mechanical_object import DCMotor, Flywheel, SpurGear
@@ -50,7 +50,7 @@ gear_6 = SpurGear(name = 'gear 6',
 ```
 
 Then it is necessary to specify the connection types between the 
-components. We choose to study a non-ideal transmission so, in order to 
+components. We choose to study a non-ideal powertrain so, in order to 
 take into account power loss in matings due to friction, we specify a 
 gear mating efficiency below `$100\%$`:
 
@@ -76,20 +76,20 @@ def ext_torque(time, angular_position, angular_speed):
 gear_6.external_torque = ext_torque
  ```
 
-Finally, it is necessary to combine all components in a transmission 
+Finally, it is necessary to combine all components in a powertrain 
 object:
 
 ```python
-from gearpy.transmission import Transmission
+from gearpy.powertrain import Powertrain
 
-transmission = Transmission(motor = motor)
+powertrain = Powertrain(motor = motor)
 ```
 
 ### Simulation Set Up
 
 Before performing the simulation, it is necessary to specify the initial
 condition of the system in terms of angular position and speed of the 
-last gear in the mechanical transmission. In this case we can consider 
+last gear in the mechanical powertrain. In this case we can consider 
 the *gear 6* still in the reference position:
 
 ```python
@@ -107,7 +107,7 @@ are ready to run the simulation::
 from gearpy.units import TimeInterval
 from gearpy.solver import Solver
 
-solver = Solver(transmission = transmission)
+solver = Solver(powertrain = powertrain)
 solver.run(time_discretization = TimeInterval(0.5, 'sec'), 
            simulation_time = TimeInterval(20, 'sec'))
 ```
@@ -119,11 +119,11 @@ We can get a snapshot of the system at a particular time of interest:
 ```python
 from gearpy.units import Time
 
-transmission.snapshot(target_time = Time(10, 'sec'))
+powertrain.snapshot(target_time = Time(10, 'sec'))
 ```
 
 ```text
-Mechanical Transmission Status at Time = 10 sec
+Mechanical Powertrain Status at Time = 10 sec
           angular position (rad)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (Nm)  driving torque (Nm)  load torque (Nm)  pwm
 motor                9714.908984            1119.894923                        1.085094     0.000787             0.002871          0.002083  1.0
 flywheel             9714.908984            1119.894923                        1.085094     0.000787             0.002871          0.002083     
@@ -139,15 +139,15 @@ The default unit used for torques are not so convenient in this case, so
 we prefer to get results in a different unit:
 
 ```python
-transmission.snapshot(target_time = Time(10, 'sec'),
-                      angular_position_unit = 'rot',
-                      torque_unit = 'mNm',
-                      driving_torque_unit = 'mNm',
-                      load_torque_unit = 'mNm')
+powertrain.snapshot(target_time = Time(10, 'sec'),
+                    angular_position_unit = 'rot',
+                    torque_unit = 'mNm',
+                    driving_torque_unit = 'mNm',
+                    load_torque_unit = 'mNm')
 ```
 
 ```text
-Mechanical Transmission Status at Time = 10 sec
+Mechanical Powertrain Status at Time = 10 sec
           angular position (rot)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (mNm)  driving torque (mNm)  load torque (mNm)  pwm
 motor                1546.175787            1119.894923                        1.085094      0.787194              2.870527           2.083333  1.0
 flywheel             1546.175787            1119.894923                        1.085094      0.787194              2.870527           2.083333     
@@ -169,7 +169,7 @@ We can get a more general view of the system by plotting the time
 variables of each element with respect to time:
 
 ```python
-transmission.plot(figsize = (12, 9))
+powertrain.plot(figsize = (12, 9))
 ```
 
 ![](images/plot_1.png)
@@ -180,10 +180,10 @@ variables. We can also specify a more convenient unit to use when
 plotting torques:
 
 ```python
-transmission.plot(elements = ['gear 6', motor],
-                  variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
-                  torque_unit = 'mNm',
-                  figsize = (8, 6))
+powertrain.plot(elements = ['gear 6', motor],
+                variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
+                torque_unit = 'mNm',
+                figsize = (8, 6))
 ```
 
 ![](images/plot_2.png)

@@ -7,8 +7,8 @@ gearpy
 
    mechanical_object/index
    motor_control/index
+   powertrain/index
    sensors/index
    solver/index
-   transmission/index
    units/index
    utils/index

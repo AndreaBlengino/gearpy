@@ -1,13 +1,13 @@
 ### System in Analysis
 
-The mechanical transmission to be studied is the one described in the 
-[1 - Simple Transmission Chain](https://gearpy.readthedocs.io/en/latest/examples/1_simple_transmission_chain/index.html) 
+The mechanical powertrain to be studied is the one described in the 
+[1 - Simple Powertrain](https://gearpy.readthedocs.io/en/latest/examples/1_simple_powertrain/index.html) 
 example.
 
 ### Model Set Up
 
 We want to study the effect of a more complex external torque applied 
-to the last gear in the transmission. This complex torque has 4 main 
+to the last gear in the powertrain. This complex torque has 4 main 
 components:
 
   1. a 200 mNm constant value
@@ -40,15 +40,15 @@ The remaining set up of the model stay the same.
 We can get a snapshot of the system at a particular time of interest:
 
 ```python
-transmission.snapshot(target_time = Time(10, 'sec'),
-                      angular_position_unit = 'rot',
-                      torque_unit = 'mNm',
-                      driving_torque_unit = 'mNm',
-                      load_torque_unit = 'mNm')
+powertrain.snapshot(target_time = Time(10, 'sec'),
+                    angular_position_unit = 'rot',
+                    torque_unit = 'mNm',
+                    driving_torque_unit = 'mNm',
+                    load_torque_unit = 'mNm')
 ```
 
 ```text
-Mechanical Transmission Status at Time = 10 sec
+Mechanical Powertrain Status at Time = 10 sec
           angular position (rot)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (mNm)  driving torque (mNm)  load torque (mNm)  pwm
 motor                1831.919043            1375.840709                        5.011918      0.379214              1.241126           0.861912  1.0
 flywheel             1831.919043            1375.840709                        5.011918      0.379214              1.241126           0.861912     
@@ -65,10 +65,10 @@ variables and focus the plot only on interesting elements and variables.
 We can also specify a more convenient unit to use when plotting torques:
 
 ```python
-transmission.plot(elements = ['gear 6', motor],
-                  variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
-                  torque_unit = 'mNm',
-                  figsize = (8, 6))
+powertrain.plot(elements = ['gear 6', motor],
+                variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
+                torque_unit = 'mNm',
+                figsize = (8, 6))
 ```
 
 ![](images/plot_1.png)

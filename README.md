@@ -1,4 +1,4 @@
-# Mechanical Transmission Analysis
+# Powertrain Analysis
 
 [![PyPi](https://img.shields.io/pypi/v/gearpy)](https://pypi.org/project/gearpy/)
 [![PyPi](https://img.shields.io/pypi/pyversions/gearpy.svg)](https://pypi.org/project/gearpy/)
@@ -8,7 +8,7 @@
 [![Documentation Status](https://readthedocs.org/projects/gearpy/badge/?version=latest)](https://gearpy.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/AndreaBlengino/gearpy/graph/badge.svg?token=4JHzii1LrK)](https://codecov.io/gh/AndreaBlengino/gearpy)
 
-**gearpy** is a python package for mechanical transmission analysis.
+**gearpy** is a python package for powertrain analysis.
 
 ## References
 

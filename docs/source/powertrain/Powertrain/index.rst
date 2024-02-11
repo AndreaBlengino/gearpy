@@ -1,9 +1,9 @@
-Transmission
-============
+Powertrain
+==========
 
 
-.. currentmodule:: gearpy.transmission
-.. autoclass:: gearpy.transmission.Transmission
+.. currentmodule:: gearpy.powertrain
+.. autoclass:: gearpy.powertrain.Powertrain
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,7 +12,7 @@ Transmission
 .. toctree::
    :hidden:
 
-   chain
+   elements
    plot
    reset
    snapshot
