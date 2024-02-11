@@ -2,8 +2,8 @@ SpurGear
 ========
 
 
-.. currentmodule:: gearpy.mechanical_objects
-.. autoclass:: gearpy.mechanical_objects.spur_gear.SpurGear
+.. currentmodule:: gearpy.mechanical_objects.spur_gear
+.. autoclass:: SpurGear
    :members:
    :undoc-members:
    :show-inheritance:

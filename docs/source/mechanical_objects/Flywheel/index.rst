@@ -2,8 +2,8 @@ Flywheel
 ========
 
 
-.. currentmodule:: gearpy.mechanical_objects
-.. autoclass:: gearpy.mechanical_objects.flywheel.Flywheel
+.. currentmodule:: gearpy.mechanical_objects.flywheel
+.. autoclass:: Flywheel
    :members:
    :undoc-members:
    :show-inheritance:

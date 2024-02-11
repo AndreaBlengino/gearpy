@@ -2,8 +2,8 @@ DCMotor
 =======
 
 
-.. currentmodule:: gearpy.mechanical_objects
-.. autoclass:: gearpy.mechanical_objects.dc_motor.DCMotor
+.. currentmodule:: gearpy.mechanical_objects.dc_motor
+.. autoclass:: DCMotor
    :members:
    :undoc-members:
    :show-inheritance:
