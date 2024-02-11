@@ -16,11 +16,11 @@ target position.
 We can start by limiting the start up absorbed current through a rule 
 that maintains the PWM proportional to the angular position of a gear, 
 for example the *gear 6*, to which is attached an encoder that measure
-the gear angular position: 
+the gear angular position:
 
 ```python
 from gearpy.sensors import AbsoluteRotaryEncoder
-from gearpy.motor_control import StartProportionalToAngularPosition
+from gearpy.motor_control.rules import StartProportionalToAngularPosition
 
 encoder = AbsoluteRotaryEncoder(target = gear_6)
 

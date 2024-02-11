@@ -32,7 +32,7 @@ class Solver:
     See Also
     --------
     :py:class:`gearpy.powertrain.Powertrain`
-    :py:class:`gearpy.motor_control.motor_control.PWMControl`
+    :py:class:`gearpy.motor_control.pwm_control.PWMControl`
     """
     def __init__(self, powertrain: Powertrain, motor_control: Optional[MotorControlBase] = None):
         if not isinstance(powertrain, Powertrain):
