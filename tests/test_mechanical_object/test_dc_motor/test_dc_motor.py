@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import DCMotor, SpurGear
+from gearpy.mechanical_objects import DCMotor, SpurGear
 from gearpy.units import Length, Torque, Current
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, booleans

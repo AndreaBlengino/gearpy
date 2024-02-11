@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import DCMotor, SpurGear, MatingMaster, MatingSlave
+from gearpy.mechanical_objects import DCMotor, SpurGear, MatingMaster, MatingSlave
 from gearpy.units import AngularSpeed, Force, InertiaMoment, Length, Stress, Torque
 from gearpy.utils import add_gear_mating
 from hypothesis import given, settings

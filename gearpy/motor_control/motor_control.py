@@ -31,7 +31,7 @@ class PWMControl(MotorControlBase):
 
     See Also
     --------
-    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
     """
 
     def __init__(self, powertrain: Powertrain):

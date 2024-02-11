@@ -1,5 +1,5 @@
 from collections import Counter
-from gearpy.mechanical_object import MotorBase, RotatingObject, GearBase
+from gearpy.mechanical_objects import MotorBase, RotatingObject, GearBase
 from gearpy.units import Time
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -79,9 +79,9 @@ class Powertrain:
 
         See Also
         --------
-        :py:class:`gearpy.mechanical_object.mechanical_objects.DCMotor`
-        :py:class:`gearpy.mechanical_object.mechanical_objects.Flywheel`
-        :py:class:`gearpy.mechanical_object.mechanical_objects.SpurGear`
+        :py:class:`gearpy.mechanical_objects.dc_motor.DCMotor`
+        :py:class:`gearpy.mechanical_objects.flywheel.Flywheel`
+        :py:class:`gearpy.mechanical_objects.spur_gear.SpurGear`
         """
         return self.__elements
 
@@ -136,9 +136,9 @@ class Powertrain:
         See Also
         --------
         :py:attr:`time`
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
+        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.time_variables`
+        :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.time_variables`
+        :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.time_variables`
         """
         self.__time = []
 
@@ -260,9 +260,9 @@ class Powertrain:
         --------
         :py:attr:`time`
         :py:attr:`elements`
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
+        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.time_variables`
+        :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.time_variables`
+        :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.time_variables`
         """
         if not all([isinstance(instant, Time) for instant in self.time]):
             raise TypeError(f"Every element of the 'time' list must be an instance of {Time.__name__!r}.")
@@ -482,9 +482,9 @@ class Powertrain:
         --------
         :py:attr:`time`
         :py:attr:`elements`
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.Flywheel.time_variables`
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.SpurGear.time_variables`
+        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.time_variables`
+        :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.time_variables`
+        :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.time_variables`
         """
         if elements is not None:
             if not isinstance(elements, list):

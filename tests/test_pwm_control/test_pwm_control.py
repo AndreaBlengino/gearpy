@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import DCMotor, SpurGear
+from gearpy.mechanical_objects import DCMotor, SpurGear
 from gearpy.motor_control import PWMControl, StartLimitCurrent, StartProportionalToAngularPosition, ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
 from gearpy.powertrain import Powertrain

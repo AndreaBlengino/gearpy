@@ -1,6 +1,6 @@
 # Import required packages, classes and functions
 
-from gearpy.mechanical_object import DCMotor, Flywheel, SpurGear
+from gearpy.mechanical_objects import DCMotor, Flywheel, SpurGear
 from gearpy.units import AngularSpeed, InertiaMoment, Torque, AngularPosition, TimeInterval, Time
 from gearpy.utils import add_fixed_joint, add_gear_mating
 from gearpy.powertrain import Powertrain

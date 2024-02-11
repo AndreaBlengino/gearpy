@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from gearpy.mechanical_object import MotorBase, RotatingObject
+from gearpy.mechanical_objects import MotorBase, RotatingObject
 from gearpy.powertrain import Powertrain
 from .rules_base import RuleBase
 

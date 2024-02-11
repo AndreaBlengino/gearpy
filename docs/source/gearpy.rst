@@ -5,7 +5,7 @@ gearpy
 .. toctree::
    :hidden:
 
-   mechanical_object/index
+   mechanical_objects/index
    motor_control/index
    powertrain/index
    sensors/index

@@ -1,5 +1,5 @@
 from copy import deepcopy
-from gearpy.mechanical_object import DCMotor, SpurGear, MotorBase, GearBase
+from gearpy.mechanical_objects import DCMotor, SpurGear, MotorBase, GearBase
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
     Stress, Torque, Time

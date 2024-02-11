@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import GearBase, MotorBase, Flywheel, DCMotor, SpurGear
+from gearpy.mechanical_objects import GearBase, MotorBase, Flywheel, DCMotor, SpurGear
 from gearpy.motor_control import PWMControl, ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.solver import Solver

@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import SpurGear, DCMotor, Flywheel, MatingMaster, MatingSlave
+from gearpy.mechanical_objects import SpurGear, DCMotor, Flywheel, MatingMaster, MatingSlave
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain

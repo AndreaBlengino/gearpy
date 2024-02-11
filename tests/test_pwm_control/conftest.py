@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import MotorBase, RotatingObject
+from gearpy.mechanical_objects import MotorBase, RotatingObject
 from gearpy.motor_control import RuleBase
 from gearpy.powertrain import Powertrain
 from pytest import fixture

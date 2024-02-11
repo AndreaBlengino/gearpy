@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import DCMotor
+from gearpy.mechanical_objects import DCMotor
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
 from gearpy.units import AngularPosition, Current
 from pytest import fixture

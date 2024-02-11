@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import MotorBase, RotatingObject
+from gearpy.mechanical_objects import MotorBase, RotatingObject
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularPosition, Angle

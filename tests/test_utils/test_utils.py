@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import SpurGear, MatingMaster, MatingSlave
+from gearpy.mechanical_objects import SpurGear, MatingMaster, MatingSlave
 from gearpy.units import InertiaMoment, Length, AngularSpeed, Torque, Current
 from gearpy.utils import add_gear_mating, add_fixed_joint, dc_motor_characteristics_animation
 import matplotlib.pyplot as plt

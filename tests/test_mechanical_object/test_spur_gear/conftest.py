@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import RotatingObject, Role, SpurGear
+from gearpy.mechanical_objects import RotatingObject, Role, SpurGear
 from gearpy.units import Force, InertiaMoment, Length, Stress, Torque
 from gearpy.utils import add_gear_mating
 from pytest import fixture

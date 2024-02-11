@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import SpurGear, MotorBase, RotatingObject, DCMotor
+from gearpy.mechanical_objects import SpurGear, MotorBase, RotatingObject, DCMotor
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularPosition, Angle, Current
@@ -44,7 +44,7 @@ class ReachAngularPosition(RuleBase):
 
     See Also
     --------
-    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
     """
 
     def __init__(self,
@@ -265,7 +265,7 @@ class StartProportionalToAngularPosition(RuleBase):
 
     See Also
     --------
-    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
     """
 
     def __init__(self,
@@ -386,7 +386,7 @@ class StartProportionalToAngularPosition(RuleBase):
 
         See Also
         --------
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
         """
         return self.__pwm_min_multiplier
 
@@ -404,7 +404,7 @@ class StartProportionalToAngularPosition(RuleBase):
         See Also
         --------
         :py:attr:`pwm_min_multiplier`
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
         """
         return self.__pwm_min
 
@@ -533,7 +533,7 @@ class StartLimitCurrent(RuleBase):
 
     See Also
     --------
-    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
     """
 
     def __init__(self,
@@ -624,7 +624,7 @@ class StartLimitCurrent(RuleBase):
 
         See Also
         --------
-        :py:class:`gearpy.mechanical_object.mechanical_objects.DCMotor`
+        :py:class:`gearpy.mechanical_objects.dc_motor.DCMotor`
         """
         return self.__motor
 
@@ -747,7 +747,7 @@ class ConstantPWM(RuleBase):
 
     See Also
     --------
-    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
     """
 
     def __init__(self,
@@ -830,7 +830,7 @@ class ConstantPWM(RuleBase):
 
         See Also
         --------
-        :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
         """
         return self.__target_pwm_value
 

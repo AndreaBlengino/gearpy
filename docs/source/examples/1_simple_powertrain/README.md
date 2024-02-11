@@ -20,7 +20,7 @@ As a first step, we instantiate the components of the mechanical
 powertrain:
 
 ```python
-from gearpy.mechanical_object import DCMotor, Flywheel, SpurGear
+from gearpy.mechanical_objects import DCMotor, Flywheel, SpurGear
 from gearpy.units import AngularSpeed, InertiaMoment, Torque
 
 motor = DCMotor(name = 'motor',

@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import DCMotor, SpurGear
+from gearpy.mechanical_objects import DCMotor, SpurGear
 from gearpy.motor_control import PWMControl
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain

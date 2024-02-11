@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import DCMotor
+from gearpy.mechanical_objects import DCMotor
 from gearpy.units import Time
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -93,11 +93,11 @@ def dc_motor_characteristics_animation(motor: DCMotor,
 
     See Also
     --------
-    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.angular_speed`
-    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.driving_torque`
-    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.electric_current`
-    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.time_variables`
-    :py:attr:`gearpy.mechanical_object.mechanical_objects.DCMotor.pwm`
+    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.angular_speed`
+    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.driving_torque`
+    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.electric_current`
+    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.time_variables`
+    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
     """
     if not isinstance(motor, DCMotor):
         raise TypeError(f"Parameter 'motor' must be an instance of {DCMotor.__name__!r}.")

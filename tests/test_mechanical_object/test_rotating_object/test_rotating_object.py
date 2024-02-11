@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import GearBase, MotorBase
+from gearpy.mechanical_objects import GearBase, MotorBase
 from hypothesis import given, settings
 from pytest import mark, raises
 from tests.test_mechanical_object.test_rotating_object.conftest import basic_rotating_objects

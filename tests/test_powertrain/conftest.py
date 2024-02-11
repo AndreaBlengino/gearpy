@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import MotorBase, RotatingObject, DCMotor
+from gearpy.mechanical_objects import MotorBase, RotatingObject, DCMotor
 from gearpy.units import Time
 from pytest import fixture
 from tests.conftest import types_to_check, basic_powertrain

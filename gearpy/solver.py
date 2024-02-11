@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import RotatingObject, MotorBase, GearBase
+from gearpy.mechanical_objects import RotatingObject, MotorBase, GearBase
 from gearpy.motor_control import MotorControlBase
 from gearpy.powertrain import Powertrain
 from gearpy.units import Time, TimeInterval, Torque

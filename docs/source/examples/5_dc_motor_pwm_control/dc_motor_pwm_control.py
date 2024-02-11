@@ -1,6 +1,6 @@
 # Import required packages, classes and functions
 
-from gearpy.mechanical_object import DCMotor, SpurGear, Flywheel
+from gearpy.mechanical_objects import DCMotor, SpurGear, Flywheel
 from gearpy.motor_control import PWMControl, StartProportionalToAngularPosition, StartLimitCurrent, ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
 from gearpy.units import AngularSpeed, InertiaMoment, Torque, AngularPosition, TimeInterval, Current, Angle

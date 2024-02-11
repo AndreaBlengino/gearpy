@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import RotatingObject
+from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import AngularSpeed, InertiaMoment, Torque, Current
 from tests.conftest import types_to_check
 from pytest import fixture

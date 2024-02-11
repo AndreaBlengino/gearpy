@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import RotatingObject, MotorBase
+from gearpy.mechanical_objects import RotatingObject, MotorBase
 from gearpy.units import AngularPosition, AngularSpeed, Current, Time, TimeInterval
 from typing import Optional, Union
 
