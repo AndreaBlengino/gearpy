@@ -2,8 +2,8 @@ Timer
 =====
 
 
-.. currentmodule:: gearpy.sensors
-.. autoclass:: gearpy.sensors.Timer
+.. currentmodule:: gearpy.sensors.timer
+.. autoclass:: gearpy.sensors.timer.Timer
    :members:
    :undoc-members:
    :show-inheritance:
