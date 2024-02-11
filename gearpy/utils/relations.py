@@ -27,7 +27,10 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
         - if ``efficiency`` is not a float or an integer.
     ValueError
         - If ``efficiency`` is not within ``0`` and ``1``,
-        - if ``master`` and ``slave`` have different values for ``module``.
+        - if ``master`` and ``slave`` have different values for ``module``,
+        - if ``master`` is an instance of ``HelicalGear`` but ``slave`` is not,
+        - if ``slave`` is an instance of ``HelicalGear`` but ``master`` is not,
+        - if both ``master`` and ``slave`` are instances of ``HelicalGear``, but they have different ``helix_angle``.
 
     See Also
     --------
@@ -37,6 +40,12 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
     :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.mating_role`
     :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.drives`
     :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.driven_by`
+    :py:class:`gearpy.mechanical_objects.helical_gear.HelicalGear`
+    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_ratio`
+    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_efficiency`
+    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.mating_role`
+    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.drives`
+    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.driven_by`
     """
     if not isinstance(master, GearBase):
         raise TypeError(f"Parameter 'master' must be an instance of {GearBase.__name__!r}.")
@@ -53,6 +62,19 @@ def add_gear_mating(master: GearBase, slave: GearBase, efficiency: Union[float, 
     if master.module is not None and slave.module is not None:
         if master.module != slave.module:
             raise ValueError(f"Gears {master.name!r} and {slave.name!r} have different modules, "
+                             f"so they cannot mate together.")
+
+    if hasattr(master, 'helix_angle'):
+        if hasattr(slave, 'helix_angle'):
+            if master.helix_angle != slave.helix_angle:
+                raise ValueError(f"Helical gears {master.name!r} and {slave.name!r} have different helix angles, "
+                                 f"so they cannot mate together.")
+        else:
+            raise ValueError(f"Gear {master.name!r} is an helical gear but {slave.name!r} is not, "
+                             f"so they cannot mate together.")
+    else:
+        if hasattr(slave, 'helix_angle'):
+            raise ValueError(f"Gear {slave.name!r} is an helical gear but {master.name!r} is not, "
                              f"so they cannot mate together.")
 
     master.drives = slave
@@ -91,6 +113,9 @@ def add_fixed_joint(master: Union[MotorBase, GearBase, Flywheel], slave: Union[G
     :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.drives`
     :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.driven_by`
     :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.master_gear_ratio`
+    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.drives`
+    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.driven_by`
+    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_ratio`
     """
     if not isinstance(master, MotorBase) and not isinstance(master, GearBase) and not isinstance(master, Flywheel):
         raise TypeError(f"Parameter 'master' must be an instance of {MotorBase.__name__!r}, {GearBase.__name__!r} or "
