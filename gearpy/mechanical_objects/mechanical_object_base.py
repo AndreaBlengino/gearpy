@@ -179,66 +179,6 @@ class MotorBase(RotatingObject):
 
         self.__drives = drives
 
-    @property
-    @abstractmethod
-    def angular_position(self) -> AngularPosition:
-        return super().angular_position
-
-    @angular_position.setter
-    @abstractmethod
-    def angular_position(self, angular_position: AngularPosition):
-        super(MotorBase, type(self)).angular_position.fset(self, angular_position)
-
-    @property
-    @abstractmethod
-    def angular_speed(self) -> AngularSpeed:
-        return super().angular_speed
-
-    @angular_speed.setter
-    @abstractmethod
-    def angular_speed(self, angular_speed: AngularSpeed):
-        super(MotorBase, type(self)).angular_speed.fset(self, angular_speed)
-
-    @property
-    @abstractmethod
-    def angular_acceleration(self) -> AngularAcceleration:
-        return super().angular_acceleration
-
-    @angular_acceleration.setter
-    @abstractmethod
-    def angular_acceleration(self, angular_acceleration: AngularAcceleration):
-        super(MotorBase, type(self)).angular_acceleration.fset(self, angular_acceleration)
-
-    @property
-    @abstractmethod
-    def torque(self) -> Torque:
-        return super().torque
-
-    @torque.setter
-    @abstractmethod
-    def torque(self, torque: Torque):
-        super(MotorBase, type(self)).torque.fset(self, torque)
-
-    @property
-    @abstractmethod
-    def driving_torque(self) -> Torque:
-        return super().driving_torque
-
-    @driving_torque.setter
-    @abstractmethod
-    def driving_torque(self, driving_torque: Torque):
-        super(MotorBase, type(self)).driving_torque.fset(self, driving_torque)
-
-    @property
-    @abstractmethod
-    def load_torque(self) -> Torque:
-        return super().load_torque
-
-    @load_torque.setter
-    @abstractmethod
-    def load_torque(self, load_torque: Torque):
-        super(MotorBase, type(self)).load_torque.fset(self, load_torque)
-
     @abstractmethod
     def compute_torque(self, **kargs): ...
 
@@ -351,66 +291,6 @@ class GearBase(RotatingObject):
             raise TypeError(f"Parameter 'drives' must be an instance of {RotatingObject.__name__!r}.")
 
         self.__drives = drives
-
-    @property
-    @abstractmethod
-    def angular_position(self) -> AngularPosition:
-        return super().angular_position
-
-    @angular_position.setter
-    @abstractmethod
-    def angular_position(self, angular_position: AngularPosition):
-        super(GearBase, type(self)).angular_position.fset(self, angular_position)
-
-    @property
-    @abstractmethod
-    def angular_speed(self) -> AngularSpeed:
-        return super().angular_speed
-
-    @angular_speed.setter
-    @abstractmethod
-    def angular_speed(self, angular_speed: AngularSpeed):
-        super(GearBase, type(self)).angular_speed.fset(self, angular_speed)
-
-    @property
-    @abstractmethod
-    def angular_acceleration(self) -> AngularAcceleration:
-        return super().angular_acceleration
-
-    @angular_acceleration.setter
-    @abstractmethod
-    def angular_acceleration(self, angular_acceleration: AngularAcceleration):
-        super(GearBase, type(self)).angular_acceleration.fset(self, angular_acceleration)
-
-    @property
-    @abstractmethod
-    def torque(self) -> Torque:
-        return super().torque
-
-    @torque.setter
-    @abstractmethod
-    def torque(self, torque: Torque):
-        super(GearBase, type(self)).torque.fset(self, torque)
-
-    @property
-    @abstractmethod
-    def driving_torque(self) -> Torque:
-        return super().driving_torque
-
-    @driving_torque.setter
-    @abstractmethod
-    def driving_torque(self, driving_torque: Torque):
-        super(GearBase, type(self)).driving_torque.fset(self, driving_torque)
-
-    @property
-    @abstractmethod
-    def load_torque(self) -> Torque:
-        return super().load_torque
-
-    @load_torque.setter
-    @abstractmethod
-    def load_torque(self, load_torque: Torque):
-        super(GearBase, type(self)).load_torque.fset(self, load_torque)
 
     @property
     @abstractmethod
