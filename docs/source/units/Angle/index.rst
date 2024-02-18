@@ -12,6 +12,9 @@ Angle
 .. toctree::
    :hidden:
 
+   cos
+   sin
+   tan
    to
    unit
    value
