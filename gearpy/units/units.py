@@ -1,5 +1,5 @@
-from math import pi
-from typing import Union
+from math import pi, sin, cos, tan
+from typing import Union, Optional
 from .unit_base import UnitBase
 
 
@@ -17,6 +17,12 @@ class AngularPosition(UnitBase):
     -------
     :py:meth:`to`
         Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    :py:meth:`sin`
+        Computes the sine of the angular position at a given frequency.
+    :py:meth:`cos`
+        Computes the cosine of the angular position at a given frequency.
+    :py:meth:`tan`
+        Computes the tangent of the angular position at a given frequency.
     """
 
     __UNITS = {'rad': 1,
@@ -173,6 +179,51 @@ class AngularPosition(UnitBase):
         else:
             return AngularPosition(value = target_value, unit = target_unit)
 
+    def sin(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+        """Computes the sine of the angular position at a given frequency.
+
+        Parameters
+        ----------
+        frequency : float or int, optional
+            Frequency to multiply by before computing the sine.
+
+        Returns
+        -------
+        float
+            Computed sine of the angular position.
+        """
+        return sin(2*pi*frequency*self.to('rad').value)
+
+    def cos(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+        """Computes the cosine of the angular position at a given frequency.
+
+        Parameters
+        ----------
+        frequency : float or int, optional
+            Frequency to multiply by before computing the cosine.
+
+        Returns
+        -------
+        float
+            Computed cosine of the angular position.
+        """
+        return cos(2*pi*frequency*self.to('rad').value)
+
+    def tan(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+        """Computes the tangent of the angular position at a given frequency.
+
+        Parameters
+        ----------
+        frequency : float or int, optional
+            Frequency to multiply by before computing the tangent.
+
+        Returns
+        -------
+        float
+            Computed tangent of the angular position.
+        """
+        return tan(2*pi*frequency*self.to('rad').value)
+
 
 class Angle(AngularPosition):
     r"""``gearpy.units.units.Angle`` object.
@@ -188,6 +239,12 @@ class Angle(AngularPosition):
     -------
     :py:meth:`to`
         Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+    :py:meth:`sin`
+        Computes the sine of the angle at a given frequency.
+    :py:meth:`cos`
+        Computes the cosine of the angle at a given frequency.
+    :py:meth:`tan`
+        Computes the tangent of the angle at a given frequency.
     """
 
     def __init__(self, value: Union[float, int], unit: str):
@@ -339,6 +396,51 @@ class Angle(AngularPosition):
             return self
         else:
             return Angle(value = converted.value, unit = converted.unit)
+
+    def sin(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+        """Computes the sine of the angle at a given frequency.
+
+        Parameters
+        ----------
+        frequency : float or int, optional
+            Frequency to multiply by before computing the sine.
+
+        Returns
+        -------
+        float
+            Computed sine of the angle.
+        """
+        return super().sin(frequency = frequency)
+
+    def cos(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+        """Computes the cosine of the angle at a given frequency.
+
+        Parameters
+        ----------
+        frequency : float or int, optional
+            Frequency to multiply by before computing the cosine.
+
+        Returns
+        -------
+        float
+            Computed cosine of the angle.
+        """
+        return super().cos(frequency = frequency)
+
+    def tan(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+        """Computes the tangent of the angle at a given frequency.
+
+        Parameters
+        ----------
+        frequency : float or int, optional
+            Frequency to multiply by before computing the tangent.
+
+        Returns
+        -------
+        float
+            Computed tangent of the angle.
+        """
+        return super().tan(frequency = frequency)
 
 
 class AngularSpeed(UnitBase):
