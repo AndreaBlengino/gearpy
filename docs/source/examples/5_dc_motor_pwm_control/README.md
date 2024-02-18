@@ -84,6 +84,7 @@ then we can replace the previous rule with another one, which lets us
 better control the electric current:
 
 ```python
+from gearpy.motor_control.rules import StartLimitCurrent
 from gearpy.sensors import Tachometer
 
 tachometer = Tachometer(target = motor)
@@ -102,7 +103,7 @@ Moreover, we want to add a second rule to make the *gear 6* reach a
 specific final position and stay there:
 
 ```python
-from gearpy.motor_control import ReachAngularPosition
+from gearpy.motor_control.rules import ReachAngularPosition
 
 reach_position = ReachAngularPosition(encoder = encoder,
                                       powertrain = powertrain,

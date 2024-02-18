@@ -65,7 +65,7 @@ add_gear_mating(master = gear_5, slave = gear_6, efficiency = 0.9)
 
 def ext_torque(time, angular_position, angular_speed):
     return Torque(value = 200 +
-                          80*np.sin(2*np.pi/60*angular_position.to('rad').value) +
+                          80*angular_position.sin(frequency = 1/60) +
                           2*angular_speed.to('rad/s').value**2 +
                           20*np.sin(2*np.pi/3*time.to('sec').value),
                   unit = 'mNm')
