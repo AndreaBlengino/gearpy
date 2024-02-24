@@ -93,7 +93,7 @@ class Flywheel(RotatingObject):
     @driven_by.setter
     def driven_by(self, driven_by: RotatingObject):
         if not isinstance(driven_by, RotatingObject):
-            raise TypeError(f"Parameter 'driven_by' must be a {RotatingObject.__name__!r}.")
+            raise TypeError(f"Parameter 'driven_by' must be an instance of {RotatingObject.__name__!r}.")
 
         self.__driven_by = driven_by
 
@@ -121,7 +121,7 @@ class Flywheel(RotatingObject):
     @drives.setter
     def drives(self, drives: RotatingObject):
         if not isinstance(drives, RotatingObject):
-            raise TypeError(f"Parameter 'drives' must be a {RotatingObject.__name__!r}.")
+            raise TypeError(f"Parameter 'drives' must be an instance of {RotatingObject.__name__!r}.")
 
         self.__drives = drives
 

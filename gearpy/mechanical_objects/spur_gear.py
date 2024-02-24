@@ -245,7 +245,7 @@ class SpurGear(GearBase):
 
     @property
     def lewis_factor(self) -> Optional[float]:
-        """Factor used to compute stresses on the gear tooth.
+        """Factor used to compute stresses on the gear tooth. \n
         It is a tabular value that in general depends on the number of gear teeth and the pressure angle. In this
         case, the considered pressure angle is always 20 degrees, so the Lewis factor depends only on the number of gear
         teeth.
@@ -310,9 +310,9 @@ class SpurGear(GearBase):
 
     @property
     def master_gear_ratio(self) -> float:
-        """Gear ratio of the mating between the gear and its driving gear. It must be a positive a float.
-        It is defined as the ratio between the gear number of teeth ``n_teeth`` and the same parameter of the master
-        (driving) gear. \n
+        """Gear ratio of the mating between the gear and its driving gear. It must be a positive a float. \n
+        If the gear is fixed to another driving ``RotatingObject``, then the ratio is ``1``, otherwise it is defined as
+        the ratio between the gear number of teeth ``n_teeth`` and the same parameter of the master (driving) gear. \n
         To set this property use :py:func:`gearpy.utils.relations.add_gear_mating` or
         :py:func:`gearpy.utils.relations.add_fixed_joint`.
 
@@ -565,8 +565,8 @@ class SpurGear(GearBase):
         """Computes the tangential force applied on the gear teeth by the mating gear. \n
         Considering a gear mating:
 
-        - if the gear is the master one, then it takes into account the ``load_torque`` for the computation
-        - if the gear is the slave one, then it take into account the ``driving_torque`` for the computation
+        - if the gear is the master one, then it takes into account the ``load_torque`` for the computation,
+        - if the gear is the slave one, then it take into account the ``driving_torque`` for the computation.
 
         The tangential force is computed dividing the just described reference torque by the reference radius (half of
         the reference diameter).
@@ -653,10 +653,10 @@ class SpurGear(GearBase):
 
         where:
 
-        - :math:`F_t` is the tangential force applied on the tooth
-        - :math:`m` is the gear module
-        - :math:`b` is the gear face width
-        - :math:`Y_{LW}` is the gear Lewis factor
+        - :math:`F_t` is the tangential force applied on the tooth,
+        - :math:`m` is the gear module (``module``),
+        - :math:`b` is the gear tooth face width (``face_width``),
+        - :math:`Y_{LW}` is the gear Lewis factor (``lewis_factor``).
 
         See Also
         --------
@@ -743,11 +743,11 @@ class SpurGear(GearBase):
         where:
 
         - :math:`F_t` is the tangential force applied on the tooth,
-        - :math:`b` is the gear face width,
+        - :math:`b` is the gear face width (``face_width``),
         - :math:`\alpha` is the pressure angle of the gear, always equal to 20 degrees,
-        - :math:`D_1` is the gear reference diameter,
+        - :math:`D_1` is the gear reference diameter (``reference_diameter``),
         - :math:`D_2` is the mating gear reference diameter,
-        - :math:`E_1` is the gear elastic modulus,
+        - :math:`E_1` is the gear elastic modulus (``elastic_modulus``),
         - :math:`E_2` is the mating gear elastic modulus.
 
         See Also
