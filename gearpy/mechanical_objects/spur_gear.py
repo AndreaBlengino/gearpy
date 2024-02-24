@@ -790,10 +790,9 @@ class SpurGear(GearBase):
 
         equivalent_elastic_modulus = 2*self.elastic_modulus* \
                                      (mate_elastic_modulus/(self.elastic_modulus + mate_elastic_modulus))
-        inverse_curvature_sum = sin(self.__PRESSURE_ANGLE.to('rad').value)/2*self.reference_diameter* \
+        inverse_curvature_sum = self.__PRESSURE_ANGLE.sin()/2*self.reference_diameter* \
                                 (mate_reference_diameter/(self.reference_diameter + mate_reference_diameter))
-        contact_pressure = self.tangential_force/cos(self.__PRESSURE_ANGLE.to('rad').value)/ \
-                                                    (self.face_width*inverse_curvature_sum)
+        contact_pressure = self.tangential_force/self.__PRESSURE_ANGLE.cos()/(self.face_width*inverse_curvature_sum)
 
         self.contact_stress = Stress(value = 0.262922*sqrt(equivalent_elastic_modulus.to('Pa').value*
                                                            contact_pressure.to('Pa').value),
@@ -856,7 +855,7 @@ class SpurGear(GearBase):
         >>> def custom_external_torque(angular_position: AngularPosition,
         ...                            angular_speed: AngularSpeed,
         ...                            time: Time):
-        ...     return Torque(value = np.sin(angular_position.to('rad').value) +
+        ...     return Torque(value = angular_position.sin() +
         ...                           np.cos(time.to('sec').value),
         ...                   unit = 'Nm')
         >>> gear.external_torque = custom_external_torque
@@ -868,7 +867,7 @@ class SpurGear(GearBase):
         >>> def complex_external_torque(angular_position: AngularPosition,
         ...                             angular_speed: AngularSpeed,
         ...                             time: Time):
-        ...     return Torque(value = np.sin(angular_position.to('rad').value) +
+        ...     return Torque(value = angular_position.sin() +
         ...                           0.001*(angular_speed.to('rad/s').value)**2 +
         ...                           np.cos(time.to('sec').value),
         ...                   unit = 'Nm')

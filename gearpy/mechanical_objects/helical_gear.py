@@ -110,14 +110,11 @@ class HelicalGear(SpurGear):
             if self.bending_stress_is_computable:
                 self.time_variables['bending stress'] = []
                 PRESSURE_ANGLE = Angle(20, 'deg')
-                self.__TRANSVERSE_PRESSURE_ANGLE = Angle(value = atan(tan(PRESSURE_ANGLE.to('rad').value)/
-                                                                      cos(helix_angle.to('rad').value)),
+                self.__TRANSVERSE_PRESSURE_ANGLE = Angle(value = atan(PRESSURE_ANGLE.tan()/helix_angle.cos()),
                                                          unit = 'rad')
-                BASE_HELIX_ANGLE = Angle(value = atan(cos(self.__TRANSVERSE_PRESSURE_ANGLE.to('rad').value)*
-                                                             tan(self.__helix_angle.to('rad').value)),
+                BASE_HELIX_ANGLE = Angle(value = atan(self.__TRANSVERSE_PRESSURE_ANGLE.cos()*self.__helix_angle.tan()),
                                          unit = 'rad')
-                virtual_n_teeth = n_teeth/(cos(BASE_HELIX_ANGLE.to('rad').value))**2/ \
-                                           cos(self.__helix_angle.to('rad').value)
+                virtual_n_teeth = n_teeth/(BASE_HELIX_ANGLE.cos())**2/self.__helix_angle.cos()
 
                 self.__lewis_factor = lewis_factor_function(virtual_n_teeth).take(0)
 
@@ -843,11 +840,10 @@ class HelicalGear(SpurGear):
 
         equivalent_elastic_modulus = 2*self.elastic_modulus* \
                                      (mate_elastic_modulus/(self.elastic_modulus + mate_elastic_modulus))
-        inverse_curvature_sum = sin(self.__TRANSVERSE_PRESSURE_ANGLE.to('rad').value)/2*self.reference_diameter* \
+        inverse_curvature_sum = self.__TRANSVERSE_PRESSURE_ANGLE.sin()/2*self.reference_diameter* \
                                 (mate_reference_diameter/(self.reference_diameter + mate_reference_diameter))
-        contact_pressure = self.tangential_force/cos(self.__TRANSVERSE_PRESSURE_ANGLE.to('rad').value)/ \
-                                                    (self.face_width/cos(self.__helix_angle.to('rad').value)*
-                                                     inverse_curvature_sum)
+        contact_pressure = self.tangential_force/self.__TRANSVERSE_PRESSURE_ANGLE.cos()/ \
+                                                 (self.face_width/self.__helix_angle.cos()*inverse_curvature_sum)
 
         self.contact_stress = Stress(value = 0.262922*sqrt(equivalent_elastic_modulus.to('Pa').value*
                                                            contact_pressure.to('Pa').value),
@@ -910,7 +906,7 @@ class HelicalGear(SpurGear):
         >>> def custom_external_torque(angular_position: AngularPosition,
         ...                            angular_speed: AngularSpeed,
         ...                            time: Time):
-        ...     return Torque(value = np.sin(angular_position.to('rad').value) +
+        ...     return Torque(value = angular_position.sin() +
         ...                           np.cos(time.to('sec').value),
         ...                   unit = 'Nm')
         >>> gear.external_torque = custom_external_torque
@@ -922,7 +918,7 @@ class HelicalGear(SpurGear):
         >>> def complex_external_torque(angular_position: AngularPosition,
         ...                             angular_speed: AngularSpeed,
         ...                             time: Time):
-        ...     return Torque(value = np.sin(angular_position.to('rad').value) +
+        ...     return Torque(value = angular_position.sin() +
         ...                           0.001*(angular_speed.to('rad/s').value)**2 +
         ...                           np.cos(time.to('sec').value),
         ...                   unit = 'Nm')
