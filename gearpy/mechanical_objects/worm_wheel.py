@@ -189,7 +189,8 @@ class WormWheel(HelicalGear):
         elif self.mating_role == MatingSlave:
             self.tangential_force = abs(self.driving_torque)/(self.reference_diameter/2)
         else:
-            raise ValueError("Gear mating not defined.")
+            raise ValueError("Gear mating not defined. "
+                             "Use 'gearpy.utils.add_worm_gear_mating' to set up a mating between two gears.")
 
     @property
     def tangential_force_is_computable(self) -> bool:
@@ -211,7 +212,8 @@ class WormWheel(HelicalGear):
             normal_pitch = pi*self.driven_by.reference_diameter*self.driven_by.helix_angle.sin()/self.n_teeth
             effective_face_width = min(self.face_width, 0.67*self.driven_by.reference_diameter)
         else:
-            raise ValueError("Gear mating not defined.")
+            raise ValueError("Gear mating not defined. "
+                             "Use 'gearpy.utils.add_worm_gear_mating' to set up a mating between two gears.")
         self.bending_stress = self.tangential_force/(normal_pitch*effective_face_width)/self.lewis_factor
 
     @property

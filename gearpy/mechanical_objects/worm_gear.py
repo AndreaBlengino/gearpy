@@ -223,7 +223,8 @@ class WormGear(RotatingObject):
         elif self.mating_role == MatingSlave:
             self.tangential_force = abs(self.driving_torque)/(self.reference_diameter/2)*self.helix_angle.tan()
         else:
-            raise ValueError("Gear mating not defined.")
+            raise ValueError("Gear mating not defined. "
+                             "Use 'gearpy.utils.add_worm_gear_mating' to set up a mating between two gears.")
 
     @property
     def tangential_force_is_computable(self) -> bool:
