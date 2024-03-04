@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from . import gear_data
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, Stress, \
-    Time, Torque, UnitBase
+from gearpy.units import Angle, AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, \
+                         Stress, Time, Torque, UnitBase
 from importlib import resources as imp_resources
 from inspect import signature
 import pandas as pd
@@ -17,6 +17,16 @@ lewis_factor_function = interp1d(x = LEWIS_FACTOR_DATA['number of teeth'],
                                  fill_value = (LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[0], 'Lewis factor'],
                                                LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[-1], 'Lewis factor']),
                                  bounds_error = False)
+
+WORM_GEAR_DATA_FILE = (imp_resources.files(gear_data) / 'worm_gear_data.csv')
+WORM_GEAR_DATA = pd.read_csv(WORM_GEAR_DATA_FILE)
+WORM_GEAR_AVAILABLE_PRESSURE_ANGLES = [Angle(value, 'deg') for value in WORM_GEAR_DATA['pressure angle']]
+
+
+def worm_gear_maximum_helix_angle_function(pressure_angle: Angle) -> Angle:
+    return Angle(value = float(WORM_GEAR_DATA.set_index('pressure angle').
+                               loc[pressure_angle.to('deg').value, 'maximum helix angle']),
+                                unit = 'deg')
 
 
 class MechanicalObject(ABC):

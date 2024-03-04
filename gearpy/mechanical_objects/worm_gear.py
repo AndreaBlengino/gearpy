@@ -1,7 +1,8 @@
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Angle, Force, InertiaMoment, Length, \
-    Time, Torque, UnitBase
+                         Time, Torque, UnitBase
 from .mating_roles import MatingMaster, MatingSlave
-from .mechanical_object_base import RotatingObject, Role
+from .mechanical_object_base import RotatingObject, Role, WORM_GEAR_AVAILABLE_PRESSURE_ANGLES, \
+                                    worm_gear_maximum_helix_angle_function
 from typing import Callable, Dict, List, Union, Optional
 
 
@@ -28,6 +29,15 @@ class WormGear(RotatingObject):
 
         if not isinstance(pressure_angle, Angle):
             raise TypeError(f"Parameter 'pressure_angle' must be an instance of {Angle.__name__!r}.")
+
+        if pressure_angle not in WORM_GEAR_AVAILABLE_PRESSURE_ANGLES:
+            raise ValueError(f"Value {pressure_angle!r} for parameter 'pressure_angle' not available. "
+                             f"Available pressure angles are: {WORM_GEAR_AVAILABLE_PRESSURE_ANGLES}")
+
+        maximum_helix_angle = worm_gear_maximum_helix_angle_function(pressure_angle = pressure_angle)
+        if helix_angle > maximum_helix_angle:
+            raise ValueError(f"Parameter 'helix_angle' too high. For a {pressure_angle} 'pressure_angle', "
+                             f"the maximum 'helix_angle' is {maximum_helix_angle}.")
 
         if reference_diameter is not None:
             if not isinstance(reference_diameter, Length):
