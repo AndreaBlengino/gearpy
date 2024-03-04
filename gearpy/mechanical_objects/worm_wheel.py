@@ -1,6 +1,8 @@
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Angle, Force, InertiaMoment, Length, \
-                         Time, Torque, UnitBase
-from .mechanical_object_base import RotatingObject, Role
+                         Stress, Time, Torque, UnitBase
+from math import pi
+from .mechanical_object_base import RotatingObject, Role, WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES, \
+                                    worm_gear_and_wheel_maximum_helix_angle_function, worm_wheel_lewis_factor_function
 from .mating_roles import MatingMaster, MatingSlave
 from .helical_gear import HelicalGear
 from typing import Callable, Dict, List, Union, Optional
@@ -13,11 +15,13 @@ class WormWheel(HelicalGear):
                  n_teeth: int,
                  inertia_moment: InertiaMoment,
                  helix_angle: Angle,
-                 pressure_angle: Angle):
+                 pressure_angle: Angle,
+                 module: Optional[Length] = None,
+                 face_width: Optional[Length] = None):
         super().__init__(name = name,
                          n_teeth = n_teeth,
-                         module = None,
-                         face_width = None,
+                         module = module,
+                         face_width = face_width,
                          inertia_moment = inertia_moment,
                          helix_angle = helix_angle,
                          elastic_modulus = None)
@@ -28,11 +32,24 @@ class WormWheel(HelicalGear):
         if not isinstance(pressure_angle, Angle):
             raise TypeError(f"Parameter 'pressure_angle' must be an instance of {Angle.__name__!r}.")
 
+        if pressure_angle not in WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES:
+            raise ValueError(f"Value {pressure_angle!r} for parameter 'pressure_angle' not available. "
+                             f"Available pressure angles are: {WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES}")
+
+        maximum_helix_angle = worm_gear_and_wheel_maximum_helix_angle_function(pressure_angle = pressure_angle)
+        if helix_angle > maximum_helix_angle:
+            raise ValueError(f"Parameter 'helix_angle' too high. For a {pressure_angle} 'pressure_angle', "
+                             f"the maximum 'helix_angle' is {maximum_helix_angle}.")
+
         self.__helix_angle = helix_angle
         self.__pressure_angle = pressure_angle
 
         if self.tangential_force_is_computable:
             self.time_variables['tangential force'] = []
+
+            if self.bending_stress_is_computable:
+                self.time_variables['bending stress'] = []
+                self.__lewis_factor = worm_wheel_lewis_factor_function(pressure_angle = pressure_angle)
 
     @property
     def name(self) -> str:
@@ -55,8 +72,20 @@ class WormWheel(HelicalGear):
         return self.__pressure_angle
 
     @property
+    def module(self) -> Optional[Length]:
+        return super().module
+
+    @property
     def reference_diameter(self) -> Optional[Length]:
         return super().reference_diameter
+
+    @property
+    def face_width(self) -> Optional[Length]:
+        return super().face_width
+
+    @property
+    def lewis_factor(self) -> Optional[float]:
+        return self.__lewis_factor
 
     @property
     def driven_by(self) -> RotatingObject:
@@ -165,6 +194,34 @@ class WormWheel(HelicalGear):
     @property
     def tangential_force_is_computable(self) -> bool:
         return super().tangential_force_is_computable
+
+    @property
+    def bending_stress(self) -> Stress:
+        return super().bending_stress
+
+    @bending_stress.setter
+    def bending_stress(self, bending_stress: Stress):
+        super(WormWheel, type(self)).bending_stress.fset(self, bending_stress)
+
+    def compute_bending_stress(self):
+        if self.mating_role == MatingMaster:
+            normal_pitch = pi*self.drives.reference_diameter*self.drives.helix_angle.sin()/self.n_teeth
+            effective_face_width = min(self.face_width, 0.67*self.drives.reference_diameter)
+        elif self.mating_role == MatingSlave:
+            normal_pitch = pi*self.driven_by.reference_diameter*self.driven_by.helix_angle.sin()/self.n_teeth
+            effective_face_width = min(self.face_width, 0.67*self.driven_by.reference_diameter)
+        else:
+            raise ValueError("Gear mating not defined.")
+        self.bending_stress = self.tangential_force/(normal_pitch*effective_face_width)/self.lewis_factor
+
+    @property
+    def bending_stress_is_computable(self) -> bool:
+        if self.mating_role == MatingMaster:
+            return super().bending_stress_is_computable and (self.drives.reference_diameter is not None)
+        if self.mating_role == MatingSlave:
+            return super().bending_stress_is_computable and (self.driven_by.reference_diameter is not None)
+        else:
+            return super().bending_stress_is_computable
 
     @property
     def external_torque(self) -> Callable[[AngularPosition, AngularSpeed, Time], Torque]:
