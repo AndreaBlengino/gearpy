@@ -4,3 +4,4 @@ from .helical_gear import HelicalGear
 from .mating_roles import MatingMaster, MatingSlave
 from .mechanical_object_base import MechanicalObject, RotatingObject, MotorBase, GearBase, Role
 from .spur_gear import SpurGear
+from .worm_gear import WormGear
