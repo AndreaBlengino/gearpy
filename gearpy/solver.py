@@ -1,9 +1,14 @@
 from gearpy.mechanical_objects import RotatingObject, MotorBase, GearBase
 from gearpy.motor_control import MotorControlBase
 from gearpy.powertrain import Powertrain
-from gearpy.units import Time, TimeInterval, Torque
+from gearpy.units import Time, TimeInterval, Torque, AngularSpeed, AngularAcceleration
 import numpy as np
 from typing import Optional
+
+
+NULL_ANGULAR_SPEED = AngularSpeed(0, 'rad/s')
+NULL_ANGULAR_ACCELERATION = AngularAcceleration(0, 'rad/s^2')
+NULL_TORQUE = Torque(0, 'Nm')
 
 
 class Solver:
@@ -53,6 +58,7 @@ class Solver:
 
         self.powertrain = powertrain
         self.motor_control = motor_control
+        self.__powertrain_is_locked = False
 
     def run(self, time_discretization: TimeInterval, simulation_time: TimeInterval):
         """Runs the powertrain simulation. \n
@@ -138,14 +144,18 @@ class Solver:
     def _compute_powertrain_variables(self):
 
         self._compute_angular_position_and_speed()
+        self._check_powertrain_is_locked()
+        if self.__powertrain_is_locked:
+            self._compute_locked_powertrain_angular_speed_and_acceleration()
         self._compute_load_torque()
         self._compute_motor_control()
         self._compute_driving_torque()
         self._compute_torque()
+        if not self.__powertrain_is_locked:
+            self._compute_angular_acceleration()
         self._compute_force()
         self._compute_stress()
         self._compute_electric_current()
-        self._compute_angular_acceleration()
         self._update_time_variables()
 
     def _compute_angular_position_and_speed(self):
@@ -247,3 +257,22 @@ class Solver:
             self.powertrain.elements[-1].angular_acceleration*time_discretization
         self.powertrain.elements[-1].angular_position += \
             self.powertrain.elements[-1].angular_speed*time_discretization
+
+    def _check_powertrain_is_locked(self):
+
+        motor = self.powertrain.elements[0]
+        if self.powertrain.self_locking and (motor.pwm == 0 or
+                                             (motor.pwm > 0 and motor.angular_speed < NULL_ANGULAR_SPEED) or
+                                             (motor.pwm < 0 and motor.angular_speed > NULL_ANGULAR_SPEED)):
+            self.__powertrain_is_locked = True
+            return
+
+        if motor.torque is not None:
+            if (motor.torque > NULL_TORQUE and motor.pwm > 0) or (motor.torque < NULL_TORQUE and motor.pwm < 0):
+                self.__powertrain_is_locked = False
+
+    def _compute_locked_powertrain_angular_speed_and_acceleration(self):
+
+        for element in self.powertrain.elements:
+            element.angular_speed = NULL_ANGULAR_SPEED
+            element.angular_acceleration = NULL_ANGULAR_ACCELERATION
