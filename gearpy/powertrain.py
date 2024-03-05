@@ -116,7 +116,8 @@ class Powertrain:
         the powertrain. This type of gear mating can be self-locking if the amount of friction is high enough with
         respect to the gear pressure and helix angles. \n
         If the powertrain is self-locking, then it can only be moved by the motor and not by the load, even if the load
-        torque is greater than the motor driving torque.
+        torque is greater than the motor driving torque. \n
+        Once the property is defined at the Powertrain instantiation, it cannot be changed afterward.
 
         Returns
         -------
