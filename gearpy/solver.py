@@ -178,9 +178,9 @@ class Solver:
         self.powertrain.elements[0].compute_torque()
 
         for i in range(1, len(self.powertrain.elements)):
-            gear_ratio = self.powertrain.elements[i].master_gear_ratio
-            self.powertrain.elements[i].driving_torque = gear_ratio*self.powertrain.elements[i].master_gear_efficiency*\
-                                                         self.powertrain.elements[i - 1].driving_torque
+            self.powertrain.elements[i].driving_torque = self.powertrain.elements[i - 1].driving_torque* \
+                                                         self.powertrain.elements[i].master_gear_efficiency* \
+                                                         self.powertrain.elements[i].master_gear_ratio
 
     def _compute_load_torque(self):
 
@@ -196,8 +196,10 @@ class Solver:
                         raise TypeError(f"Function 'external_torque' of {self.powertrain.elements[i].name!r} "
                                         f"must return an instance of {Torque.__name__!r}.")
                     self.powertrain.elements[i].load_torque = external_torque
-            gear_ratio = self.powertrain.elements[i].master_gear_ratio
-            self.powertrain.elements[i - 1].load_torque = self.powertrain.elements[i].load_torque/gear_ratio
+
+            self.powertrain.elements[i - 1].load_torque = self.powertrain.elements[i].load_torque/ \
+                                                          self.powertrain.elements[i].master_gear_efficiency/ \
+                                                          self.powertrain.elements[i].master_gear_ratio
 
     def _compute_torque(self):
 
