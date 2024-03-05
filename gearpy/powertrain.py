@@ -1,5 +1,5 @@
 from collections import Counter
-from gearpy.mechanical_objects import MotorBase, RotatingObject, GearBase
+from gearpy.mechanical_objects import MotorBase, RotatingObject, GearBase, WormGear
 from gearpy.units import Time
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -21,6 +21,8 @@ class Powertrain:
         Elements in the powertrain elements.
     :py:attr:`time` : list
         Simulated time steps.
+    :py:attr:`self_locking` : bool
+        Whether the powertrain can only be moved by the motor and not by the effect of the load.
 
     Methods
     -------
@@ -64,7 +66,11 @@ class Powertrain:
 
         self.__elements = tuple(elements)
         self.__time = []
-
+        self.__self_locking = False
+        for element in self.elements:
+            if isinstance(element, WormGear):
+                if element.self_locking:
+                    self.__self_locking = True
 
     @property
     def elements(self) -> Tuple[RotatingObject]:
@@ -85,7 +91,6 @@ class Powertrain:
         """
         return self.__elements
 
-
     @property
     def time(self) -> List[Time]:
         """List of the simulated time steps. \n
@@ -104,6 +109,21 @@ class Powertrain:
         """
         return self.__time
 
+    @property
+    def self_locking(self) -> bool:
+        """Whether the powertrain can only be moved by the motor and not by the effect of the load. \n
+        This property is given by the presence of a self-locking mating between a worm gear and a worm wheel within the
+        powertrain. This type of gear mating can be self-locking if the amount of friction is high enough with respect
+        to the gear pressure and helix angles. \n
+        If the powertrain is self-locking, then it can only be moved by the motor and not by the load, even if the load
+        torque is greater than the motor driving torque.
+
+        Returns
+        -------
+        bool
+            Whether the powertrain can only be moved by the motor and not by the effect of the load.
+        """
+        return self.__self_locking
 
     def update_time(self, instant: Time):
         """Updates the ``Powertrain.time`` list by appending the ``instant`` simulated time step.
@@ -126,7 +146,6 @@ class Powertrain:
             raise TypeError(f"Parameter 'instant' must be instances of {Time.__name__!r}.")
 
         self.__time.append(instant)
-
 
     def reset(self):
         """Resets computed time variables. \n
@@ -163,7 +182,6 @@ class Powertrain:
 
             for variable in element.time_variables.keys():
                 element.time_variables[variable] = []
-
 
     def snapshot(self,
                  target_time: Time,
@@ -394,7 +412,6 @@ class Powertrain:
             print(data.to_string())
 
         return data
-
 
     def plot(self,
              elements: Optional[List[Union[RotatingObject, str]]] = None,
