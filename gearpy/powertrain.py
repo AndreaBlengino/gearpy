@@ -112,9 +112,9 @@ class Powertrain:
     @property
     def self_locking(self) -> bool:
         """Whether the powertrain can only be moved by the motor and not by the effect of the load. \n
-        This property is given by the presence of a self-locking mating between a worm gear and a worm wheel within the
-        powertrain. This type of gear mating can be self-locking if the amount of friction is high enough with respect
-        to the gear pressure and helix angles. \n
+        This property is given by the presence of a self-locking mating between a ``WormGear`` and a ``WormWheel`` in
+        the powertrain. This type of gear mating can be self-locking if the amount of friction is high enough with
+        respect to the gear pressure and helix angles. \n
         If the powertrain is self-locking, then it can only be moved by the motor and not by the load, even if the load
         torque is greater than the motor driving torque.
 
@@ -122,6 +122,12 @@ class Powertrain:
         -------
         bool
             Whether the powertrain can only be moved by the motor and not by the effect of the load.
+
+        See Also
+        --------
+        :py:class:`gearpy.mechanical_objects.worm_gear.WormGear`
+        :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.self_locking`
+        :py:class:`gearpy.mechanical_objects.worm_wheel.WormWheel`
         """
         return self.__self_locking
 
