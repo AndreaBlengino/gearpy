@@ -91,6 +91,86 @@ def add_gear_mating(master: GearBase,
 def add_worm_gear_mating(master: Union[WormGear, WormWheel],
                          slave: Union[WormGear, WormWheel],
                          friction_coefficient: Union[float, int]):
+    r"""Creates a gear mating between a worm gear and a worm wheel. This mating is used to compose the ``Powertrain``.
+    The ``master`` gear is closest to the motor and transfers a fraction of the driving torque to the ``slave`` one,
+    based on the mating efficiency, which depends on the ``friction_coefficient``: the higher the
+    ``friction_coefficient``, the lower the fraction of transferred driving torque.
+
+    Parameters
+    ----------
+    master : WormGear or WormWheel
+        Driving gear.
+    slave : WormGear or WormWheel
+        Driven gear.
+    friction_coefficient : float or int
+        Static friction coefficient of the gear mating.
+
+    Raises
+    ------
+    TypeError
+        - If ``master`` is not an instance of ``WormGear`` or ``WormWheel``,
+        - if ``slave`` is not an instance of ``WormGear`` or ``WormWheel``,
+        - if both ``master`` and ``slave`` are instances of ``WormGear``,
+        - if both ``master`` and ``slave`` are instances of ``WormWheel``,
+        - if ``friction_coefficient`` is not a float or an integer.
+    ValueError
+        - If ``friction_coefficient`` is not within ``0`` and ``1``,
+        - if ``master`` and ``slave`` have different values for ``pressure_angle``.
+
+    Notes
+    -----
+    The gear ratio of the mating can be computed with the following relationship, regardless of ``master`` or ``slave``
+    roles:
+
+    .. math::
+        \tau = \frac{n_z}{n_s}
+
+    where:
+
+    - :math:`\tau` is the gear ratio, the ratio between the worm gear angular speed and the worm wheel angular speed,
+    - :math:`n_z` is the worm wheel number of teeth,
+    - :math:`n_s` is the worm gear number of starts.
+
+    If the ``WormGear`` is the ``master`` and the ``WormWheel`` is the ``slave``, then the gear mating efficiency can be
+    computed with the relationship:
+
+    .. math::
+        \eta = \frac{\cos \alpha - f \, \tan \beta}{\cos \alpha + \frac{f}{\tan \beta}}
+
+    otherwise, if the ``WormGear`` is the ``slave`` and the ``WormWheel`` is the ``master``, then the gear mating
+    efficiency can be computed with the relationship:
+
+    .. math::
+        \eta = \frac{\cos \alpha - \frac{f}{\tan \beta}}{\cos \alpha + f \, \tan \beta}
+
+    where:
+
+    - :math:`\eta` is the gear mating efficiency,
+    - :math:`\alpha` is the gear pressure angle, equal for both worm gear and worm wheel (``pressure_angle``),
+    - :math:`f` is the friction coefficient (``friction_coefficient``),
+    - :math:`\beta` is the gear helix angle (``helix_angle``).
+
+    The mating self-locking condition can be checked as:
+
+    .. math::
+        f > \cos \alpha \, \tan \beta
+
+    See Also
+    --------
+    :py:class:`gearpy.mechanical_objects.worm_gear.WormGear`
+    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.master_gear_ratio`
+    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.master_gear_efficiency`
+    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.mating_role`
+    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.drives`
+    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.driven_by`
+    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.self_locking`
+    :py:class:`gearpy.mechanical_objects.worm_wheel.WormWheel`
+    :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.master_gear_ratio`
+    :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.master_gear_efficiency`
+    :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.mating_role`
+    :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.drives`
+    :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.driven_by`
+    """
     if not isinstance(master, WormGear) and not isinstance(master, WormWheel):
         raise TypeError(f"Parameter 'master' must be an instance of {WormGear.__name__!r} or {WormWheel.__name__!r}.")
 
