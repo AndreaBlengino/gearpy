@@ -15,6 +15,7 @@ Powertrain
    elements
    plot
    reset
+   self_locking
    snapshot
    time
    update_time
