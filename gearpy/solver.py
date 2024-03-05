@@ -34,6 +34,7 @@ class Solver:
     :py:class:`gearpy.powertrain.Powertrain`
     :py:class:`gearpy.motor_control.pwm_control.PWMControl`
     """
+
     def __init__(self, powertrain: Powertrain, motor_control: Optional[MotorControlBase] = None):
         if not isinstance(powertrain, Powertrain):
             raise TypeError(f"Parameter 'powertrain' must be an instance of {Powertrain.__name__!r}.")
@@ -44,7 +45,7 @@ class Solver:
         if not isinstance(powertrain.elements[0], MotorBase):
             raise TypeError(f"First element in 'powertrain' must be an instance of {MotorBase.__name__!r}.")
 
-        if not all([isinstance(item, RotatingObject) for item in powertrain.elements]):
+        if not all([isinstance(element, RotatingObject) for element in powertrain.elements]):
             raise TypeError(f"All elements of 'powertrain' must be instances of {RotatingObject.__name__!r}.")
 
         if not isinstance(motor_control, MotorControlBase) and motor_control is not None:
@@ -130,9 +131,9 @@ class Solver:
     def _compute_powertrain_inertia(self):
 
         self.powertrain_inertia_moment = self.powertrain.elements[0].inertia_moment
-        for item in self.powertrain.elements[1:]:
-            self.powertrain_inertia_moment *= item.master_gear_ratio
-            self.powertrain_inertia_moment += item.inertia_moment
+        for element in self.powertrain.elements[1:]:
+            self.powertrain_inertia_moment *= element.master_gear_ratio
+            self.powertrain_inertia_moment += element.inertia_moment
 
     def _compute_powertrain_variables(self):
 
@@ -200,24 +201,24 @@ class Solver:
 
     def _compute_torque(self):
 
-        for item in self.powertrain.elements:
-            item.torque = item.driving_torque - item.load_torque
+        for element in self.powertrain.elements:
+            element.torque = element.driving_torque - element.load_torque
 
     def _compute_force(self):
 
-        for item in self.powertrain.elements:
-            if isinstance(item, GearBase):
-                if item.tangential_force_is_computable:
-                    item.compute_tangential_force()
+        for element in self.powertrain.elements:
+            if isinstance(element, GearBase):
+                if element.tangential_force_is_computable:
+                    element.compute_tangential_force()
 
     def _compute_stress(self):
 
-        for item in self.powertrain.elements:
-            if isinstance(item, GearBase):
-                if item.bending_stress_is_computable:
-                    item.compute_bending_stress()
-                    if item.contact_stress_is_computable:
-                        item.compute_contact_stress()
+        for element in self.powertrain.elements:
+            if isinstance(element, GearBase):
+                if element.bending_stress_is_computable:
+                    element.compute_bending_stress()
+                    if element.contact_stress_is_computable:
+                        element.compute_contact_stress()
 
     def _compute_electric_current(self):
 
@@ -235,8 +236,8 @@ class Solver:
 
     def _update_time_variables(self):
 
-        for item in self.powertrain.elements:
-            item.update_time_variables()
+        for element in self.powertrain.elements:
+            element.update_time_variables()
 
     def _time_integration(self, time_discretization: TimeInterval):
 
