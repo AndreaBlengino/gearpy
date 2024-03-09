@@ -203,9 +203,9 @@ class TestSpurGearComputeTangentialForce:
 
     @mark.error
     def test_raises_value_error(self):
-        gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
+        gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
         with raises(ValueError):
-            gear_1.compute_tangential_force()
+            gear.compute_tangential_force()
 
 
 @mark.spur_gear
