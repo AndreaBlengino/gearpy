@@ -26,9 +26,6 @@ class WormWheel(HelicalGear):
                          helix_angle = helix_angle,
                          elastic_modulus = None)
 
-        if not isinstance(helix_angle, Angle):
-            raise TypeError(f"Parameter 'helix_angle' must be an instance of {Angle.__name__!r}.")
-
         if not isinstance(pressure_angle, Angle):
             raise TypeError(f"Parameter 'pressure_angle' must be an instance of {Angle.__name__!r}.")
 
