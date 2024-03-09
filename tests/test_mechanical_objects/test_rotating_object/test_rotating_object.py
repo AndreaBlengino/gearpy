@@ -1,4 +1,4 @@
-from gearpy.mechanical_objects import GearBase, MotorBase
+from gearpy.mechanical_objects import GearBase, MotorBase, WormGear
 from hypothesis import given, settings
 from pytest import mark, raises
 from tests.test_mechanical_objects.test_rotating_object.conftest import basic_rotating_objects
@@ -151,13 +151,14 @@ class TestRotatingObjectTimeVariables:
             if isinstance(rotating_object, MotorBase):
                 if rotating_object.electric_current_is_computable:
                     time_variables_list.append('electric current')
-            elif isinstance(rotating_object, GearBase):
+            if isinstance(rotating_object, GearBase) or isinstance(rotating_object, WormGear):
                 if rotating_object.tangential_force_is_computable:
                     time_variables_list.append('tangential force')
-                    if rotating_object.bending_stress_is_computable:
-                        time_variables_list.append('bending stress')
-                        if rotating_object.contact_stress_is_computable:
-                            time_variables_list.append('contact stress')
+            if isinstance(rotating_object, GearBase):
+                if rotating_object.bending_stress_is_computable:
+                    time_variables_list.append('bending stress')
+                    if rotating_object.contact_stress_is_computable:
+                        time_variables_list.append('contact stress')
 
             assert isinstance(time_variables, dict)
             assert time_variables_list == list(time_variables.keys())
@@ -191,13 +192,14 @@ class TestRotatingObjectUpdateTimeVariables:
             if isinstance(rotating_object, MotorBase):
                 if rotating_object.electric_current_is_computable:
                     rotating_object.electric_current = electric_current
-            elif isinstance(rotating_object, GearBase):
+            if isinstance(rotating_object, GearBase) or isinstance(rotating_object, WormGear):
                 if rotating_object.tangential_force_is_computable:
                     rotating_object.tangential_force = tangential_force
-                    if rotating_object.bending_stress_is_computable:
-                        rotating_object.bending_stress = bending_stress
-                        if rotating_object.contact_stress_is_computable:
-                            rotating_object.contact_stress = contact_stress
+            if isinstance(rotating_object, GearBase):
+                if rotating_object.bending_stress_is_computable:
+                    rotating_object.bending_stress = bending_stress
+                    if rotating_object.contact_stress_is_computable:
+                        rotating_object.contact_stress = contact_stress
 
             rotating_object.update_time_variables()
             time_variables = rotating_object.time_variables
@@ -208,13 +210,14 @@ class TestRotatingObjectUpdateTimeVariables:
                 if rotating_object.electric_current_is_computable:
                     time_variables_list.append('electric current')
                 time_variables_list.append('pwm')
-            elif isinstance(rotating_object, GearBase):
+            if isinstance(rotating_object, GearBase) or isinstance(rotating_object, WormGear):
                 if rotating_object.tangential_force_is_computable:
                     time_variables_list.append('tangential force')
-                    if rotating_object.bending_stress_is_computable:
-                        time_variables_list.append('bending stress')
-                        if rotating_object.contact_stress_is_computable:
-                            time_variables_list.append('contact stress')
+            if isinstance(rotating_object, GearBase):
+                if rotating_object.bending_stress_is_computable:
+                    time_variables_list.append('bending stress')
+                    if rotating_object.contact_stress_is_computable:
+                        time_variables_list.append('contact stress')
 
             assert isinstance(time_variables, dict)
             assert time_variables_list == list(time_variables.keys())
@@ -227,10 +230,11 @@ class TestRotatingObjectUpdateTimeVariables:
             if isinstance(rotating_object, MotorBase):
                 if rotating_object.electric_current_is_computable:
                     assert time_variables['electric current'][-1] == electric_current
-            if isinstance(rotating_object, GearBase):
+            if isinstance(rotating_object, GearBase) or isinstance(rotating_object, WormGear):
                 if rotating_object.tangential_force_is_computable:
                     assert time_variables['tangential force'][-1] == tangential_force
-                    if rotating_object.bending_stress_is_computable:
-                        assert time_variables['bending stress'][-1] == bending_stress
-                        if rotating_object.contact_stress_is_computable:
-                            assert time_variables['contact stress'][-1] == contact_stress
+            if isinstance(rotating_object, GearBase):
+                if rotating_object.bending_stress_is_computable:
+                    assert time_variables['bending stress'][-1] == bending_stress
+                    if rotating_object.contact_stress_is_computable:
+                        assert time_variables['contact stress'][-1] == contact_stress

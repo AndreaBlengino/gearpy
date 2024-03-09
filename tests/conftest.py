@@ -1,4 +1,4 @@
-from gearpy.mechanical_objects import SpurGear, HelicalGear, DCMotor, Flywheel, MatingMaster, MatingSlave
+from gearpy.mechanical_objects import SpurGear, HelicalGear, DCMotor, Flywheel, MatingMaster, MatingSlave, WormGear
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain
@@ -23,6 +23,13 @@ basic_dc_motor_2 = DCMotor(name = 'motor',
                            maximum_electric_current = Current(1, 'A'))
 
 basic_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
+
+basic_worm_gear_1 = WormGear(name = 'worm gear', n_starts = 1, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                             helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'))
+
+basic_worm_gear_2 = WormGear(name = 'worm gear', n_starts = 1, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                             helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'),
+                             reference_diameter = Length(10, 'mm'))
 
 basic_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
 
