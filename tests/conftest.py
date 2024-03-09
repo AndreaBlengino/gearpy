@@ -1,4 +1,4 @@
-from gearpy.mechanical_objects import SpurGear, HelicalGear, DCMotor, Flywheel, MatingMaster, MatingSlave, WormGear
+from gearpy.mechanical_objects import SpurGear, HelicalGear, DCMotor, Flywheel, MatingMaster, MatingSlave, WormGear, WormWheel
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain
@@ -30,6 +30,13 @@ basic_worm_gear_1 = WormGear(name = 'worm gear', n_starts = 1, inertia_moment = 
 basic_worm_gear_2 = WormGear(name = 'worm gear', n_starts = 1, inertia_moment = InertiaMoment(1, 'kgm^2'),
                              helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'),
                              reference_diameter = Length(10, 'mm'))
+
+basic_worm_wheel_1 = WormWheel(name = 'worm gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                               helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'))
+
+basic_worm_wheel_2 = WormWheel(name = 'worm gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                               helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'),
+                               module = Length(1, 'mm'), face_width = Length(10, 'mm'))
 
 basic_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
 
@@ -81,8 +88,8 @@ types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, 
                   Stress(1, 'Pa'), Surface(1, 'm^2'), Time(1, 'sec'),
                   TimeInterval(1, 'sec'), Torque(1, 'Nm'), Angle(1, 'rad'),
                   basic_dc_motor_1, basic_spur_gear_1, basic_helical_gear_1, basic_helical_gear_2, basic_flywheel,
-                  basic_solver, basic_powertrain, basic_encoder, basic_tachometer, basic_timer, MatingMaster,
-                  MatingSlave, SpurGear]
+                  basic_solver, basic_powertrain, basic_encoder, basic_tachometer, basic_timer, basic_worm_gear_1,
+                  basic_worm_gear_2, basic_worm_wheel_1, basic_worm_wheel_2, MatingMaster, MatingSlave, SpurGear]
 
 
 @composite
