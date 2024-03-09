@@ -1,5 +1,6 @@
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Angle, Force, InertiaMoment, Length, \
                          Time, Torque, UnitBase
+from inspect import signature
 from .mating_roles import MatingMaster, MatingSlave
 from .mechanical_object_base import RotatingObject, Role, WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES, \
                                     worm_gear_and_wheel_maximum_helix_angle_function
@@ -709,6 +710,14 @@ class WormGear(RotatingObject):
 
     @external_torque.setter
     def external_torque(self, external_torque: Callable[[AngularPosition, AngularSpeed, Time], Torque]):
+        if not isinstance(external_torque, Callable):
+            raise TypeError("Parameter 'external_torque' must be callable.")
+
+        sig = signature(external_torque)
+        for parameter in ['angular_position', 'angular_speed', 'time']:
+            if parameter not in sig.parameters.keys():
+                raise KeyError(f"Function 'external_torque' misses parameter {parameter!r}.")
+
         self.__external_torque = external_torque
 
     @property
