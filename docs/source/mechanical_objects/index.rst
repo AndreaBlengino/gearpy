@@ -34,6 +34,14 @@ mechanical_objects
    :no-index:
 
 
+.. currentmodule:: gearpy.mechanical_objects.worm_gear
+.. autoclass:: WormGear
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-index:
+
+
 .. toctree::
    :hidden:
 
@@ -41,3 +49,4 @@ mechanical_objects
    Flywheel/index
    HelicalGear/index
    SpurGear/index
+   WormGear/index
