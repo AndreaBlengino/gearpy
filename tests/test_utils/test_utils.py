@@ -1,13 +1,13 @@
-from gearpy.mechanical_objects import MatingMaster, MatingSlave
-from gearpy.units import AngularSpeed, Torque, Current
-from gearpy.utils import add_gear_mating, add_fixed_joint, dc_motor_characteristics_animation
+from gearpy.mechanical_objects import MatingMaster, MatingSlave, WormGear
+from gearpy.units import AngularSpeed, Torque, Current, Angle
+from gearpy.utils import add_gear_mating, add_worm_gear_mating, add_fixed_joint, dc_motor_characteristics_animation
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from hypothesis import given, settings
 from hypothesis.strategies import floats, one_of, sampled_from, booleans, none, tuples
 import os
 from pytest import mark, raises
-from tests.conftest import simple_dc_motors, simple_spur_gears, simple_helical_gears, flywheels
+from tests.conftest import simple_dc_motors, simple_spur_gears, simple_helical_gears, flywheels, simple_worm_gears, simple_worm_wheels
 from tests.test_utils.conftest import motor_1, powertrain_1, motor_2, powertrain_2
 import warnings
 
@@ -42,9 +42,53 @@ class TestAddGearMating:
     @mark.error
     def test_raises_value_error(self, add_gear_mating_value_error):
         with raises(ValueError):
-            add_gear_mating(master = add_gear_mating_value_error['gear_1'],
-                            slave = add_gear_mating_value_error['gear_2'],
-                            efficiency = add_gear_mating_value_error['efficiency'])
+            add_gear_mating(**add_gear_mating_value_error)
+
+
+@mark.utils
+class TestAddWormGearMating:
+
+
+    @mark.genuine
+    @given(worm_gear = simple_worm_gears(pressure_angle = Angle(20, 'deg')),
+           worm_wheel = simple_worm_wheels(pressure_angle = Angle(20, 'deg')),
+           friction_coefficient = floats(allow_nan = False, allow_infinity = False, min_value = 0,
+                                         exclude_min = False, max_value = 1, exclude_max = False))
+    @settings(max_examples = 100)
+    def test_function(self, worm_gear, worm_wheel, friction_coefficient):
+        for master, slave in zip([worm_gear, worm_wheel], [worm_wheel, worm_gear]):
+            if isinstance(slave, WormGear):
+                efficiency = (master.pressure_angle.cos() - friction_coefficient/master.helix_angle.tan())/ \
+                             (master.pressure_angle.cos() + friction_coefficient*master.helix_angle.tan())
+                if efficiency < 0:
+                    return
+            add_worm_gear_mating(master = master, slave = slave, friction_coefficient = friction_coefficient)
+
+            assert master.drives == slave
+            assert master.mating_role == MatingMaster
+            assert slave.driven_by == master
+            assert slave.mating_role == MatingSlave
+            if isinstance(master, WormGear):
+                assert slave.master_gear_ratio == worm_wheel.n_teeth/worm_gear.n_starts
+                assert slave.master_gear_efficiency == (master.pressure_angle.cos() - friction_coefficient*master.helix_angle.tan())/ \
+                                                       (master.pressure_angle.cos() + friction_coefficient/master.helix_angle.tan())
+            else:
+                assert slave.master_gear_ratio == worm_gear.n_starts/worm_wheel.n_teeth
+                assert slave.master_gear_efficiency == (master.pressure_angle.cos() - friction_coefficient/master.helix_angle.tan())/ \
+                                                       (master.pressure_angle.cos() + friction_coefficient*master.helix_angle.tan())
+            assert worm_gear.self_locking == (friction_coefficient > worm_gear.pressure_angle.cos()*worm_gear.helix_angle.tan())
+
+
+    @mark.error
+    def test_raises_type_error(self, add_worm_gear_mating_type_error):
+        with raises(TypeError):
+            add_worm_gear_mating(**add_worm_gear_mating_type_error)
+
+
+    @mark.error
+    def test_raises_value_error(self, add_worm_gear_mating_value_error):
+        with raises(ValueError):
+            add_worm_gear_mating(**add_worm_gear_mating_value_error)
 
 
 @mark.utils

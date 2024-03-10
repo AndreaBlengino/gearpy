@@ -1,4 +1,5 @@
 from gearpy.mechanical_objects import SpurGear, HelicalGear, DCMotor, Flywheel, MatingMaster, MatingSlave, WormGear, WormWheel
+from gearpy.mechanical_objects.mechanical_object_base import WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain
@@ -25,17 +26,17 @@ basic_dc_motor_2 = DCMotor(name = 'motor',
 basic_flywheel = Flywheel(name = 'flywheel', inertia_moment = InertiaMoment(1, 'kgm^2'))
 
 basic_worm_gear_1 = WormGear(name = 'worm gear', n_starts = 1, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                             helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'))
+                             pressure_angle = Angle(20, 'deg'), helix_angle = Angle(10, 'deg'))
 
 basic_worm_gear_2 = WormGear(name = 'worm gear', n_starts = 1, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                             helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'),
+                             pressure_angle = Angle(20, 'deg'), helix_angle = Angle(10, 'deg'),
                              reference_diameter = Length(10, 'mm'))
 
 basic_worm_wheel_1 = WormWheel(name = 'worm gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                               helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'))
+                               pressure_angle = Angle(20, 'deg'), helix_angle = Angle(10, 'deg'))
 
 basic_worm_wheel_2 = WormWheel(name = 'worm gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                               helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'),
+                               pressure_angle = Angle(20, 'deg'), helix_angle = Angle(10, 'deg'),
                                module = Length(1, 'mm'), face_width = Length(10, 'mm'))
 
 basic_spur_gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
@@ -148,6 +149,63 @@ def structural_helical_gears(draw):
     return HelicalGear(name = name, n_teeth = n_teeth, helix_angle = helix_angle,
                        inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'), module = module,
                        face_width = face_width, elastic_modulus = elastic_modulus)
+
+
+@composite
+def simple_worm_gears(draw, pressure_angle = None):
+    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
+    n_starts = draw(integers(min_value = 1, max_value = 4))
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    if pressure_angle is None:
+        pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
+    helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 15))
+
+    return WormGear(name = name, n_starts = n_starts, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
+                    pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'))
+
+
+@composite
+def structural_worm_gears(draw, pressure_angle = None):
+    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
+    n_starts = draw(integers(min_value = 1, max_value = 4))
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    if pressure_angle is None:
+        pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
+    helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 15))
+    reference_diameter_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 100))
+
+    return WormGear(name = name, n_starts = n_starts, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
+                    pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'),
+                    reference_diameter = Length(reference_diameter_value, 'mm'))
+
+
+@composite
+def simple_worm_wheels(draw, pressure_angle = None):
+    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
+    n_teeth = draw(integers(min_value = 10, max_value = 200))
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    if pressure_angle is None:
+        pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
+    helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 15))
+
+    return WormWheel(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgm^2'),
+                     pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'))
+
+
+@composite
+def structural_worm_wheels(draw, pressure_angle = None):
+    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
+    n_teeth = draw(integers(min_value = 10, max_value = 200))
+    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    if pressure_angle is None:
+        pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
+    helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 15))
+    module_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 5))
+    face_width_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+
+    return WormWheel(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgm^2'),
+                     pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'),
+                     module = Length(module_value, 'mm'), face_width = Length(face_width_value, 'mm'))
 
 
 @composite

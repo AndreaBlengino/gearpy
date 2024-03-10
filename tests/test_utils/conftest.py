@@ -1,4 +1,5 @@
-from gearpy.mechanical_objects import GearBase, MotorBase, Flywheel, DCMotor, SpurGear, HelicalGear
+from gearpy.mechanical_objects import RotatingObject, GearBase, MotorBase, DCMotor, SpurGear, HelicalGear, WormGear, \
+                                      WormWheel
 from gearpy.motor_control import PWMControl
 from gearpy.motor_control.rules import ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder
@@ -7,7 +8,7 @@ from gearpy.powertrain import Powertrain
 from gearpy.units import Angle, AngularPosition, AngularSpeed, Current, InertiaMoment, Length, Time, TimeInterval, Torque
 from gearpy.utils import add_fixed_joint
 from pytest import fixture
-from tests.conftest import types_to_check, basic_spur_gear_1, basic_powertrain, basic_dc_motor_1
+from tests.conftest import types_to_check, basic_spur_gear_1, basic_powertrain, basic_dc_motor_1, basic_worm_gear_1, basic_worm_wheel_1
 
 
 add_gear_mating_type_error_1 = [{'master': type_to_check, 'slave': basic_spur_gear_1, 'efficiency': 0.5}
@@ -27,43 +28,83 @@ def add_gear_mating_type_error(request):
     return request.param
 
 
-@fixture(params = [{'gear_1': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
-                    'gear_2': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+@fixture(params = [{'master': SpurGear(name = 'master', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'slave': SpurGear(name = 'slave', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
                     'efficiency': -1},
-                   {'gear_1': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
-                    'gear_2': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                   {'master': SpurGear(name = 'master', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'slave': SpurGear(name = 'slave', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
                     'efficiency': 2},
-                   {'gear_1': SpurGear(name = 'gear 1', n_teeth = 10, module = Length(1, 'mm'),
+                   {'master': SpurGear(name = 'master', n_teeth = 10, module = Length(1, 'mm'),
                                        inertia_moment = InertiaMoment(1, 'kgm^2')),
-                    'gear_2': SpurGear(name = 'gear 1', n_teeth = 10, module = Length(2, 'mm'),
+                    'slave': SpurGear(name = 'slave', n_teeth = 10, module = Length(2, 'mm'),
                                        inertia_moment = InertiaMoment(1, 'kgm^2')),
                     'efficiency': 0.9},
-                   {'gear_1': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
-                    'gear_2': HelicalGear(name = 'gear 1', n_teeth = 10, helix_angle = Angle(30, 'deg'),
+                   {'master': SpurGear(name = 'master', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'slave': HelicalGear(name = 'slave', n_teeth = 10, helix_angle = Angle(30, 'deg'),
                                           inertia_moment = InertiaMoment(1, 'kgm^2')),
                     'efficiency': 0.9},
-                   {'gear_1': HelicalGear(name = 'gear 1', n_teeth = 10, helix_angle = Angle(30, 'deg'),
+                   {'master': HelicalGear(name = 'master', n_teeth = 10, helix_angle = Angle(30, 'deg'),
                                           inertia_moment = InertiaMoment(1, 'kgm^2')),
-                    'gear_2': SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
+                    'slave': SpurGear(name = 'slave', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2')),
                     'efficiency': 0.9},
-                   {'gear_1': HelicalGear(name = 'gear 1', n_teeth = 10, helix_angle = Angle(20, 'deg'),
+                   {'master': HelicalGear(name = 'master', n_teeth = 10, helix_angle = Angle(20, 'deg'),
                                           inertia_moment = InertiaMoment(1, 'kgm^2')),
-                    'gear_2': HelicalGear(name = 'gear 1', n_teeth = 10, helix_angle = Angle(30, 'deg'),
+                    'slave': HelicalGear(name = 'slave', n_teeth = 10, helix_angle = Angle(30, 'deg'),
                                           inertia_moment = InertiaMoment(1, 'kgm^2')),
                     'efficiency': 0.9}])
 def add_gear_mating_value_error(request):
     return request.param
 
 
+add_worm_gear_mating_type_error_1 = [{'master': type_to_check, 'slave': basic_worm_wheel_1, 'friction_coefficient': 0}
+                                     for type_to_check in types_to_check if not isinstance(type_to_check, WormGear)
+                                     and not isinstance(type_to_check, WormWheel)]
+
+add_worm_gear_mating_type_error_2 = [{'master': basic_worm_gear_1, 'slave': type_to_check, 'friction_coefficient': 0}
+                                     for type_to_check in types_to_check if not isinstance(type_to_check, WormGear)
+                                     and not isinstance(type_to_check, WormWheel)]
+
+add_worm_gear_mating_type_error_3 = [{'master': basic_worm_gear_1, 'slave': basic_worm_gear_1, 'friction_coefficient': 0}]
+
+add_worm_gear_mating_type_error_4 = [{'master': basic_worm_wheel_1, 'slave': basic_worm_wheel_1, 'friction_coefficient': 0}]
+
+add_worm_gear_mating_type_error_5 = [{'master': basic_worm_gear_1, 'slave': basic_worm_wheel_1,
+                                      'friction_coefficient': type_to_check}
+                                     for type_to_check in types_to_check if not isinstance(type_to_check, float)
+                                     and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)]
+
+@fixture(params = [*add_worm_gear_mating_type_error_1,
+                   *add_worm_gear_mating_type_error_2,
+                   *add_worm_gear_mating_type_error_3,
+                   *add_worm_gear_mating_type_error_4,
+                   *add_worm_gear_mating_type_error_5])
+def add_worm_gear_mating_type_error(request):
+    return request.param
+
+
+@fixture(params = [{'master': basic_worm_gear_1, 'slave': basic_worm_wheel_1, 'friction_coefficient': -1},
+                   {'master': basic_worm_gear_1, 'slave': basic_worm_wheel_1, 'friction_coefficient': 2},
+                   {'master': WormGear(name = 'worm gear', n_starts = 1, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                                       pressure_angle = Angle(20, 'deg'), helix_angle = Angle(10, 'deg')),
+                    'slave': WormWheel(name = 'worm gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                                       pressure_angle = Angle(25, 'deg'), helix_angle = Angle(10, 'deg')),
+                    'friction_coefficient': 0}])
+def add_worm_gear_mating_value_error(request):
+    return request.param
+
+
 add_fixed_joint_type_error_1 = [{'master': type_to_check, 'slave': basic_spur_gear_1} for type_to_check in types_to_check
-                                if not isinstance(type_to_check, GearBase) and not isinstance(type_to_check, MotorBase)
-                                and not isinstance(type_to_check, Flywheel)]
+                                if not isinstance(type_to_check, RotatingObject)]
 
 add_fixed_joint_type_error_2 = [{'master': basic_spur_gear_1, 'slave': type_to_check} for type_to_check in types_to_check
-                                if not isinstance(type_to_check, GearBase) and not isinstance(type_to_check, Flywheel)]
+                                if not isinstance(type_to_check, RotatingObject)]
+
+add_fixed_joint_type_error_3 = [{'master': basic_spur_gear_1, 'slave': type_to_check} for type_to_check in types_to_check
+                                if isinstance(type_to_check, MotorBase)]
 
 @fixture(params = [*add_fixed_joint_type_error_1,
-                   *add_fixed_joint_type_error_2])
+                   *add_fixed_joint_type_error_2,
+                   *add_fixed_joint_type_error_3])
 def add_fixed_joint_type_error(request):
     return request.param
 
