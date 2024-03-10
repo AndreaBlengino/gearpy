@@ -2,15 +2,15 @@ from copy import deepcopy
 from gearpy.mechanical_objects import DCMotor, SpurGear, MotorBase, GearBase
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
-    Stress, Torque, Time
-from gearpy.utils import add_gear_mating, add_fixed_joint
+    Stress, Torque, Time, Angle
+from gearpy.utils import add_gear_mating, add_worm_gear_mating, add_fixed_joint
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import lists, floats, sampled_from, booleans, one_of, none, integers, tuples
 import matplotlib.pyplot as plt
 import pandas as pd
 from pytest import mark, raises
 from tests.conftest import simple_dc_motors, simple_spur_gears, flywheels, powertrains, basic_powertrain, \
-    solved_powertrains
+    solved_powertrains, simple_worm_gears, simple_worm_wheels
 from tests.test_units.test_time.conftest import times
 import warnings
 
@@ -22,11 +22,17 @@ class TestPowertrainInit:
     @mark.genuine
     @given(motor = simple_dc_motors(),
            flywheel = flywheels(),
-           gears = lists(elements = simple_spur_gears(), min_size = 1))
+           worm_gear = simple_worm_gears(pressure_angle = Angle(20, 'deg')),
+           worm_wheel = simple_worm_wheels(pressure_angle = Angle(20, 'deg')),
+           gears = lists(elements = simple_spur_gears(), min_size = 1),
+           worm_friction_coefficient = floats(allow_nan = False, allow_infinity = False, min_value = 0,
+                                              exclude_min = False, max_value = 1, exclude_max = False))
     @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
-    def test_property(self, motor, flywheel, gears):
+    def test_property(self, motor, flywheel, worm_gear, worm_wheel, gears, worm_friction_coefficient):
         add_fixed_joint(master = motor, slave = flywheel)
-        add_fixed_joint(master = flywheel, slave = gears[0])
+        add_fixed_joint(master = flywheel, slave = worm_gear)
+        add_worm_gear_mating(master = worm_gear, slave = worm_wheel, friction_coefficient = worm_friction_coefficient)
+        add_fixed_joint(master = worm_wheel, slave = gears[0])
 
         for i in range(0, len(gears) - 1):
             if i%2 == 0:
@@ -38,11 +44,14 @@ class TestPowertrainInit:
 
         assert isinstance(powertrain.elements, tuple)
         assert powertrain.elements
-        assert len(powertrain.elements) == len(gears) + 2
+        assert len(powertrain.elements) == len(gears) + 4
         assert powertrain.elements[0] == motor
         assert powertrain.elements[1] == flywheel
-        for elements_element, gear in zip(powertrain.elements[2:], gears):
+        assert powertrain.elements[2] == worm_gear
+        assert powertrain.elements[3] == worm_wheel
+        for elements_element, gear in zip(powertrain.elements[4:], gears):
             assert elements_element == gear
+        assert powertrain.self_locking == worm_gear.self_locking
 
 
     @mark.error
