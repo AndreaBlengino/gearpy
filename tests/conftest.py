@@ -1,11 +1,11 @@
 from gearpy.mechanical_objects import SpurGear, HelicalGear, DCMotor, Flywheel, MatingMaster, MatingSlave, WormGear, WormWheel
-from gearpy.mechanical_objects.mechanical_object_base import WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES
+from gearpy.mechanical_objects.mechanical_object_base import WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES, WORM_GEAR_AND_WHEEL_DATA
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
     Stress, Surface, Time, TimeInterval, Torque, Angle
-from gearpy.utils import add_fixed_joint, add_gear_mating
+from gearpy.utils import add_fixed_joint, add_gear_mating, add_worm_gear_mating
 from hypothesis.strategies import composite, text, integers, floats, lists, sampled_from, shared, builds, characters, one_of
 import numpy as np
 from random import shuffle
@@ -184,9 +184,11 @@ def simple_worm_wheels(draw, pressure_angle = None):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
     n_teeth = draw(integers(min_value = 10, max_value = 200))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    maximum_helix_angle = 15
     if pressure_angle is None:
         pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
-    helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 15))
+        maximum_helix_angle = WORM_GEAR_AND_WHEEL_DATA.set_index('pressure angle').loc[pressure_angle.value, 'maximum helix angle']
+    helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = maximum_helix_angle))
 
     return WormWheel(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgm^2'),
                      pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'))
@@ -197,9 +199,11 @@ def structural_worm_wheels(draw, pressure_angle = None):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
     n_teeth = draw(integers(min_value = 10, max_value = 200))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    maximum_helix_angle = 15
     if pressure_angle is None:
         pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
-    helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 15))
+        maximum_helix_angle = WORM_GEAR_AND_WHEEL_DATA.set_index('pressure angle').loc[pressure_angle.value, 'maximum helix angle']
+    helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = maximum_helix_angle))
     module_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 5))
     face_width_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
 
@@ -263,6 +267,11 @@ def powertrains(draw, allow_simple_motors = True, allow_electric_motors = True):
         motor = draw(electric_dc_motors())
     else:
         raise ValueError("At least one of 'allow_simple_motors' and 'allow_electric_motors' must be True.")
+    worm_pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
+    worm_gear = draw(structural_worm_gears(pressure_angle = worm_pressure_angle))
+    worm_wheel = draw(structural_worm_wheels(pressure_angle = worm_pressure_angle))
+    worm_friction_coefficient = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0, max_value = 0.99,
+                                            exclude_min = False, exclude_max = True))
     spur_gears = draw(lists(elements = structural_spur_gears(), min_size = 2))
     helical_gears = draw(lists(elements = structural_helical_gears(), min_size = 2))
 
@@ -274,7 +283,9 @@ def powertrains(draw, allow_simple_motors = True, allow_electric_motors = True):
 
     gears = [*spur_gears, *helical_gears]
 
-    add_fixed_joint(master = motor, slave = gears[0])
+    add_fixed_joint(master = motor, slave = worm_gear)
+    add_worm_gear_mating(master = worm_gear, slave = worm_wheel, friction_coefficient = worm_friction_coefficient)
+    add_fixed_joint(master = worm_wheel, slave = gears[0])
 
     for i in range(0, len(gears) - 1):
         if i%2 == 0:
