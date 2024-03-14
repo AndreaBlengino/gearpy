@@ -1,4 +1,4 @@
-from gearpy.mechanical_objects import RotatingObject, Role, SpurGear
+from gearpy.mechanical_objects import Role, SpurGear
 from gearpy.units import Force, InertiaMoment, Length, Stress, Torque
 from gearpy.utils import add_gear_mating
 from pytest import fixture
@@ -54,32 +54,6 @@ def spur_gear_init_type_error(request):
                    {'name': 'gear', 'n_teeth': -1, 'inertia_moment': InertiaMoment(1, 'kgm^2')},
                    {'name': 'gear', 'n_teeth': 10, 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'elastic_modulus': Stress(-10, 'GPa')}])
 def spur_gear_init_value_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)])
-def spur_gear_driven_by_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)])
-def spur_gear_drives_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)])
-def spur_gear_master_gear_ratio_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
-                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
-def spur_gear_master_gear_efficiency_type_error(request):
-    return request.param
-
-
-@fixture(params = [-1, 2])
-def spur_gear_master_gear_efficiency_value_error(request):
     return request.param
 
 

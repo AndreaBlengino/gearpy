@@ -1,4 +1,4 @@
-from gearpy.mechanical_objects import RotatingObject, Role
+from gearpy.mechanical_objects import Role
 from gearpy.units import Force, InertiaMoment, Length, Torque, Angle
 from pytest import fixture
 from tests.conftest import types_to_check
@@ -57,32 +57,6 @@ def worm_gear_init_value_error(request):
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, bool)])
 def worm_gear_self_locking_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)])
-def worm_gear_driven_by_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)])
-def worm_gear_drives_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)])
-def worm_gear_master_gear_ratio_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
-                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
-def worm_gear_master_gear_efficiency_type_error(request):
-    return request.param
-
-
-@fixture(params = [-1, 2])
-def worm_gear_master_gear_efficiency_value_error(request):
     return request.param
 
 

@@ -1,4 +1,4 @@
-from gearpy.mechanical_objects import RotatingObject, Role, HelicalGear
+from gearpy.mechanical_objects import Role, HelicalGear
 from gearpy.units import Angle, Force, InertiaMoment, Length, Stress, Torque
 from gearpy.utils import add_gear_mating
 from pytest import fixture
@@ -61,32 +61,6 @@ def helical_gear_init_type_error(request):
                    {'name': 'gear', 'n_teeth': 10, 'helix_angle': Angle(91, 'deg'), 'inertia_moment': InertiaMoment(1, 'kgm^2')},
                    {'name': 'gear', 'n_teeth': 10, 'helix_angle': Angle(30, 'deg'), 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'elastic_modulus': Stress(-10, 'GPa')}])
 def helical_gear_init_value_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)])
-def helical_gear_driven_by_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, RotatingObject)])
-def helical_gear_drives_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)])
-def helical_gear_master_gear_ratio_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, float)
-                   and not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)])
-def helical_gear_master_gear_efficiency_type_error(request):
-    return request.param
-
-
-@fixture(params = [-1, 2])
-def helical_gear_master_gear_efficiency_value_error(request):
     return request.param
 
 

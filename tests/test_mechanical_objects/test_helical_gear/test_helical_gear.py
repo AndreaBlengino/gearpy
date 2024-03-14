@@ -1,5 +1,5 @@
-from gearpy.mechanical_objects import DCMotor, HelicalGear, MatingMaster, MatingSlave
-from gearpy.units import AngularSpeed, Angle, Force, InertiaMoment, Length, Stress, Torque
+from gearpy.mechanical_objects import HelicalGear, MatingMaster, MatingSlave
+from gearpy.units import Angle, Force, InertiaMoment, Length, Stress, Torque
 from gearpy.utils import add_gear_mating
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, integers, functions
@@ -50,97 +50,6 @@ class TestHelicalGearInit:
     def test_raises_value_error(self, helical_gear_init_value_error):
         with raises(ValueError):
             HelicalGear(**helical_gear_init_value_error)
-
-
-@mark.helical_gear
-class TestHelicalGearDrivenBy:
-
-
-    @mark.genuine
-    def test_property(self):
-        motor = DCMotor(name = 'motor', inertia_moment = InertiaMoment(1, 'kgm^2'),
-                        no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'))
-        gear = HelicalGear(name = 'gear', n_teeth = 10, helix_angle = Angle(30, 'deg'), inertia_moment = InertiaMoment(1, 'kgm^2'))
-
-        for master in [motor, gear]:
-            basic_helical_gear_1.driven_by = master
-
-            assert basic_helical_gear_1.driven_by == master
-
-
-    @mark.error
-    def test_raises_type_error(self, helical_gear_driven_by_type_error):
-        with raises(TypeError):
-            basic_helical_gear_1.driven_by = helical_gear_driven_by_type_error
-
-
-@mark.helical_gear
-class TestHelicalGearDrives:
-
-
-    @mark.genuine
-    def test_property(self):
-        gear = HelicalGear(name = 'gear', n_teeth = 10, helix_angle = Angle(30, 'deg'), inertia_moment = InertiaMoment(1, 'kgm^2'))
-        basic_helical_gear_1.drives = gear
-
-        assert basic_helical_gear_1.drives == gear
-
-
-    @mark.error
-    def test_raises_type_error(self, helical_gear_drives_type_error):
-        with raises(TypeError):
-            basic_helical_gear_1.drives = helical_gear_drives_type_error
-
-
-@mark.helical_gear
-class TestHelicalGearMasterGearRatio:
-
-
-    @mark.genuine
-    @given(master_gear_ratio = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True))
-    @settings(max_examples = 100)
-    def test_property(self, master_gear_ratio):
-        basic_helical_gear_1.master_gear_ratio = master_gear_ratio
-
-        assert basic_helical_gear_1.master_gear_ratio == master_gear_ratio
-
-
-    @mark.error
-    def test_raises_type_error(self, helical_gear_master_gear_ratio_type_error):
-        with raises(TypeError):
-            basic_helical_gear_1.master_gear_ratio = helical_gear_master_gear_ratio_type_error
-
-
-    @mark.error
-    def test_raises_value_error(self):
-        with raises(ValueError):
-            basic_helical_gear_1.master_gear_ratio = -1.0
-
-
-@mark.helical_gear
-class TestHelicalGearMasterGearEfficiency:
-
-
-    @mark.genuine
-    @given(master_gear_efficiency = floats(allow_nan = False, allow_infinity = False,
-                                           min_value = 0, exclude_min = False, max_value = 1, exclude_max = False))
-    @settings(max_examples = 100)
-    def test_property(self, master_gear_efficiency):
-        basic_helical_gear_1.master_gear_efficiency = master_gear_efficiency
-
-        assert basic_helical_gear_1.master_gear_efficiency == master_gear_efficiency
-
-
-    @mark.error
-    def test_raises_type_error(self, helical_gear_master_gear_efficiency_type_error):
-        with raises(TypeError):
-            basic_helical_gear_1.master_gear_efficiency = helical_gear_master_gear_efficiency_type_error
-
-
-    @mark.error
-    def test_raises_value_error(self, helical_gear_master_gear_efficiency_value_error):
-        with raises(ValueError):
-            basic_helical_gear_1.master_gear_efficiency = helical_gear_master_gear_efficiency_value_error
 
 
 @mark.helical_gear

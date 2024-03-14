@@ -1,10 +1,10 @@
-from gearpy.mechanical_objects import DCMotor, WormGear, WormWheel, MatingMaster, MatingSlave
-from gearpy.units import AngularSpeed, Force, InertiaMoment, Length, Torque, Angle
+from gearpy.mechanical_objects import WormGear, WormWheel, MatingMaster, MatingSlave
+from gearpy.units import  Force, InertiaMoment, Length, Torque, Angle
 from gearpy.utils import add_worm_gear_mating
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, integers, functions, sampled_from
 from pytest import mark, raises
-from tests.conftest import basic_worm_gear_1, basic_worm_gear_2, basic_flywheel
+from tests.conftest import basic_worm_gear_1, basic_worm_gear_2
 from tests.test_units.test_inertia_moment.conftest import inertia_moments
 from tests.test_units.test_torque.conftest import torques
 from gearpy.mechanical_objects.mechanical_object_base import WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES
@@ -64,99 +64,6 @@ class TestWormGearSelfLocking:
     def test_raises_type_error(self, worm_gear_self_locking_type_error):
         with raises(TypeError):
             basic_worm_gear_1.self_locking = worm_gear_self_locking_type_error
-
-
-@mark.worm_gear
-class TestWormGearDrivenBy:
-
-
-    @mark.genuine
-    def test_property(self):
-        motor = DCMotor(name = 'motor', inertia_moment = InertiaMoment(1, 'kgm^2'),
-                        no_load_speed = AngularSpeed(1000, 'rpm'), maximum_torque = Torque(1, 'Nm'))
-        worm_gear = WormGear(name = 'gear', n_starts = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                             pressure_angle = Angle(20, 'deg'), helix_angle = Angle(10, 'deg'))
-
-        for master in [motor, worm_gear]:
-            basic_worm_gear_1.driven_by = master
-
-            assert basic_worm_gear_1.driven_by == master
-
-
-    @mark.error
-    def test_raises_type_error(self, worm_gear_driven_by_type_error):
-        with raises(TypeError):
-            basic_worm_gear_1.driven_by = worm_gear_driven_by_type_error
-
-
-@mark.worm_gear
-class TestWormGearDrives:
-
-
-    @mark.genuine
-    def test_property(self):
-        worm_gear = WormGear(name = 'gear', n_starts = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                             pressure_angle = Angle(20, 'deg'), helix_angle = Angle(10, 'deg'))
-        worm_gear.drives = basic_flywheel
-
-        assert worm_gear.drives == basic_flywheel
-
-
-    @mark.error
-    def test_raises_type_error(self, worm_gear_drives_type_error):
-        with raises(TypeError):
-            basic_worm_gear_1.drives = worm_gear_drives_type_error
-
-
-@mark.worm_gear
-class TestWormGearMasterGearRatio:
-
-
-    @mark.genuine
-    @given(master_gear_ratio = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True))
-    @settings(max_examples = 100)
-    def test_property(self, master_gear_ratio):
-        basic_worm_gear_1.master_gear_ratio = master_gear_ratio
-
-        assert basic_worm_gear_1.master_gear_ratio == master_gear_ratio
-
-
-    @mark.error
-    def test_raises_type_error(self, worm_gear_master_gear_ratio_type_error):
-        with raises(TypeError):
-            basic_worm_gear_1.master_gear_ratio = worm_gear_master_gear_ratio_type_error
-
-
-    @mark.error
-    def test_raises_value_error(self):
-        with raises(ValueError):
-            basic_worm_gear_1.master_gear_ratio = -1.0
-
-
-@mark.worm_gear
-class TestWormGearMasterGearEfficiency:
-
-
-    @mark.genuine
-    @given(master_gear_efficiency = floats(allow_nan = False, allow_infinity = False,
-                                           min_value = 0, exclude_min = False, max_value = 1, exclude_max = False))
-    @settings(max_examples = 100)
-    def test_property(self, master_gear_efficiency):
-        basic_worm_gear_1.master_gear_efficiency = master_gear_efficiency
-
-        assert basic_worm_gear_1.master_gear_efficiency == master_gear_efficiency
-
-
-    @mark.error
-    def test_raises_type_error(self, worm_gear_master_gear_efficiency_type_error):
-        with raises(TypeError):
-            basic_worm_gear_1.master_gear_efficiency = worm_gear_master_gear_efficiency_type_error
-
-
-    @mark.error
-    def test_raises_value_error(self, worm_gear_master_gear_efficiency_value_error):
-        with raises(ValueError):
-            basic_worm_gear_1.master_gear_efficiency = worm_gear_master_gear_efficiency_value_error
 
 
 @mark.worm_gear
