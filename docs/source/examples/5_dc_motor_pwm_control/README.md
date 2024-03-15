@@ -1,5 +1,7 @@
 ### System in Analysis
 
+The complete example code is available
+[here](https://github.com/AndreaBlengino/gearpy/blob/master/docs/source/examples/5_dc_motor_pwm_control/dc_motor_pwm_control.py).  
 The mechanical powertrain to be studied is the one described in the 
 [4 - DC Motor Electric Analysis](https://gearpy.readthedocs.io/en/latest/examples/4_dc_motor_electric_analysis/index.html) 
 example.  

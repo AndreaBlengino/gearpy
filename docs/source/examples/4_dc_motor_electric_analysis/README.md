@@ -1,5 +1,7 @@
 ### System in Analysis
 
+The complete example code is available
+[here](https://github.com/AndreaBlengino/gearpy/blob/master/docs/source/examples/4_dc_motor_electric_analysis/dc_motor_electric_analysis.py).  
 The mechanical powertrain to be studied is the one described in the 
 [2 - Complex External Torque](https://gearpy.readthedocs.io/en/latest/examples/2_complex_external_torque/index.html) 
 example.  

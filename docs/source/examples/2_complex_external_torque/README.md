@@ -1,5 +1,7 @@
 ### System in Analysis
 
+The complete example code is available 
+[here](https://github.com/AndreaBlengino/gearpy/blob/master/docs/source/examples/2_complex_external_torque/complex_external_torque.py).  
 The mechanical powertrain to be studied is the one described in the 
 [1 - Simple Powertrain](https://gearpy.readthedocs.io/en/latest/examples/1_simple_powertrain/index.html) 
 example.
