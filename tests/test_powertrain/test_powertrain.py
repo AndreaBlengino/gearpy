@@ -9,8 +9,8 @@ from hypothesis.strategies import lists, floats, sampled_from, booleans, one_of,
 import matplotlib.pyplot as plt
 import pandas as pd
 from pytest import mark, raises
-from tests.conftest import simple_dc_motors, simple_spur_gears, flywheels, powertrains, basic_powertrain, \
-    solved_powertrains, simple_worm_gears, simple_worm_wheels
+from tests.conftest import dc_motors, spur_gears, flywheels, powertrains, basic_powertrain, solved_powertrains, \
+                           worm_gears, worm_wheels
 from tests.test_units.test_time.conftest import times
 import warnings
 
@@ -20,11 +20,11 @@ class TestPowertrainInit:
 
 
     @mark.genuine
-    @given(motor = simple_dc_motors(),
+    @given(motor = dc_motors(),
            flywheel = flywheels(),
-           worm_gear = simple_worm_gears(pressure_angle = Angle(20, 'deg')),
-           worm_wheel = simple_worm_wheels(pressure_angle = Angle(20, 'deg')),
-           gears = lists(elements = simple_spur_gears(), min_size = 1),
+           worm_gear = worm_gears(pressure_angle = Angle(20, 'deg')),
+           worm_wheel = worm_wheels(pressure_angle = Angle(20, 'deg')),
+           gears = lists(elements = spur_gears(), min_size = 1),
            worm_friction_coefficient = floats(allow_nan = False, allow_infinity = False, min_value = 0,
                                               exclude_min = False, max_value = 1, exclude_max = False))
     @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])

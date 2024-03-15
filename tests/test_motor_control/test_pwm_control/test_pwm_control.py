@@ -48,7 +48,7 @@ class TestPWMControlAddRule:
 
 
     @mark.genuine
-    @given(powertrain = powertrains(allow_simple_motors = False),
+    @given(powertrain = powertrains(allow_motors_without_current = False),
            start_target_angular_position = angular_positions(),
            reach_target_angular_position = angular_positions(),
            pwm_min_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1 + 1e-10, exclude_min = True, max_value = 10),
@@ -95,7 +95,7 @@ class TestPWMControlApplyRules:
 
 
     @mark.genuine
-    @given(powertrain = powertrains(allow_simple_motors = False),
+    @given(powertrain = powertrains(allow_motors_without_current = False),
            start_target_angular_position = angular_positions(min_value = 100, max_value = 200, unit = 'rad'),
            reach_target_angular_position = angular_positions(min_value = 100_000, max_value = 200_000, unit = 'rad'),
            pwm_min_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1 + 1e-10,

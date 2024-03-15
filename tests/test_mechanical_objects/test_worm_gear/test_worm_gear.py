@@ -1,5 +1,5 @@
 from gearpy.mechanical_objects import WormGear
-from gearpy.units import  Length, Angle
+from gearpy.units import Length, Angle
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, integers, sampled_from
 from pytest import mark, raises

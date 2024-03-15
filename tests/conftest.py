@@ -100,87 +100,66 @@ def names(draw, strategy):
 
 
 @composite
-def simple_spur_gears(draw):
+def spur_gears(draw, structural = False):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
     n_teeth = draw(integers(min_value = 10, max_value = 100))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    if structural:
+        module = Length(1, 'mm')
+        face_width_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+        face_width = Length(face_width_value, 'mm')
+        elastic_modulus_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+        elastic_modulus = Stress(elastic_modulus_value, 'GPa')
 
-    return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
-
-
-@composite
-def structural_spur_gears(draw):
-    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
-    n_teeth = draw(integers(min_value = 10, max_value = 100))
-    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
-    module = Length(1, 'mm')
-    face_width_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
-    face_width = Length(face_width_value, 'mm')
-    elastic_modulus_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
-    elastic_modulus = Stress(elastic_modulus_value, 'GPa')
-
-    return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
-                    module = module, face_width = face_width, elastic_modulus = elastic_modulus)
+        return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
+                        module = module, face_width = face_width, elastic_modulus = elastic_modulus)
+    else:
+        return SpurGear(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
 
 
 @composite
-def simple_helical_gears(draw):
+def helical_gears(draw, structural = False):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
     n_teeth = draw(integers(min_value = 10, max_value = 100))
     helix_angle = Angle(30, 'deg')
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+    if structural:
+        module = Length(1, 'mm')
+        face_width_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+        face_width = Length(face_width_value, 'mm')
+        elastic_modulus_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
+        elastic_modulus = Stress(elastic_modulus_value, 'GPa')
 
-    return HelicalGear(name = name, n_teeth = n_teeth, helix_angle = helix_angle,
-                       inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
-
-
-@composite
-def structural_helical_gears(draw):
-    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
-    n_teeth = draw(integers(min_value = 10, max_value = 100))
-    helix_angle = Angle(30, 'deg')
-    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
-    module = Length(1, 'mm')
-    face_width_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
-    face_width = Length(face_width_value, 'mm')
-    elastic_modulus_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
-    elastic_modulus = Stress(elastic_modulus_value, 'GPa')
-
-    return HelicalGear(name = name, n_teeth = n_teeth, helix_angle = helix_angle,
-                       inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'), module = module,
-                       face_width = face_width, elastic_modulus = elastic_modulus)
+        return HelicalGear(name = name, n_teeth = n_teeth, helix_angle = helix_angle,
+                           inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'), module = module,
+                           face_width = face_width, elastic_modulus = elastic_modulus)
+    else:
+        return HelicalGear(name = name, n_teeth = n_teeth, helix_angle = helix_angle,
+                           inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'))
 
 
 @composite
-def simple_worm_gears(draw, pressure_angle = None):
+def worm_gears(draw, structural = False, pressure_angle = None):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
     n_starts = draw(integers(min_value = 1, max_value = 4))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
     if pressure_angle is None:
         pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
     helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 15))
+    if structural:
+        reference_diameter_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 100))
 
-    return WormGear(name = name, n_starts = n_starts, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
-                    pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'))
-
-
-@composite
-def structural_worm_gears(draw, pressure_angle = None):
-    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
-    n_starts = draw(integers(min_value = 1, max_value = 4))
-    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
-    if pressure_angle is None:
-        pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
-    helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 15))
-    reference_diameter_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 100))
-
-    return WormGear(name = name, n_starts = n_starts, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
-                    pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'),
-                    reference_diameter = Length(reference_diameter_value, 'mm'))
+        return WormGear(name = name, n_starts = n_starts, inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
+                        pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'),
+                        reference_diameter = Length(reference_diameter_value, 'mm'))
+    else:
+        return WormGear(name = name, n_starts = n_starts,
+                        inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
+                        pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'))
 
 
 @composite
-def simple_worm_wheels(draw, pressure_angle = None):
+def worm_wheels(draw, structural = False, pressure_angle = None):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
     n_teeth = draw(integers(min_value = 10, max_value = 200))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
@@ -189,58 +168,40 @@ def simple_worm_wheels(draw, pressure_angle = None):
         pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
         maximum_helix_angle = WORM_GEAR_AND_WHEEL_DATA.set_index('pressure angle').loc[pressure_angle.value, 'maximum helix angle']
     helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = maximum_helix_angle))
+    if structural:
+        module_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 5))
+        face_width_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
 
-    return WormWheel(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgm^2'),
-                     pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'))
-
-
-@composite
-def structural_worm_wheels(draw, pressure_angle = None):
-    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
-    n_teeth = draw(integers(min_value = 10, max_value = 200))
-    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
-    maximum_helix_angle = 15
-    if pressure_angle is None:
-        pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
-        maximum_helix_angle = WORM_GEAR_AND_WHEEL_DATA.set_index('pressure angle').loc[pressure_angle.value, 'maximum helix angle']
-    helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = maximum_helix_angle))
-    module_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 5))
-    face_width_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
-
-    return WormWheel(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgm^2'),
-                     pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'),
-                     module = Length(module_value, 'mm'), face_width = Length(face_width_value, 'mm'))
+        return WormWheel(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgm^2'),
+                         pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'),
+                         module = Length(module_value, 'mm'), face_width = Length(face_width_value, 'mm'))
+    else:
+        return WormWheel(name = name, n_teeth = n_teeth, inertia_moment = InertiaMoment(inertia_moment_value, 'kgm^2'),
+                         pressure_angle = pressure_angle, helix_angle = Angle(helix_angle_value, 'deg'))
 
 
 @composite
-def simple_dc_motors(draw):
+def dc_motors(draw, current = False):
     name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
     inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
     no_load_speed_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 5000, max_value = 10000))
     maximum_torque_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1.5, max_value = 5))
+    if current:
+        no_load_electric_current_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.01, max_value = 5))
+        electric_current_multiplier = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1.5, max_value = 10))
+        maximum_electric_current_value = no_load_electric_current_value*electric_current_multiplier
 
-    return DCMotor(name = name,
-                   inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
-                   no_load_speed = AngularSpeed(no_load_speed_value, 'rpm'),
-                   maximum_torque = Torque(maximum_torque_value, 'mNm'))
-
-
-@composite
-def electric_dc_motors(draw):
-    name = draw(names(text(min_size = 1, alphabet = characters(categories = ['L', 'N']))))
-    inertia_moment_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 10, max_value = 1000))
-    no_load_speed_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 5000, max_value = 10000))
-    maximum_torque_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1.5, max_value = 5))
-    no_load_electric_current_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.01, max_value = 5))
-    electric_current_multiplier = draw(floats(allow_nan = False, allow_infinity = False, min_value = 1.5, max_value = 10))
-    maximum_electric_current_value = no_load_electric_current_value*electric_current_multiplier
-
-    return DCMotor(name = name,
-                   inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
-                   no_load_speed = AngularSpeed(no_load_speed_value, 'rpm'),
-                   maximum_torque = Torque(maximum_torque_value, 'mNm'),
-                   no_load_electric_current = Current(no_load_electric_current_value, 'A'),
-                   maximum_electric_current = Current(maximum_electric_current_value, 'A'))
+        return DCMotor(name = name,
+                       inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
+                       no_load_speed = AngularSpeed(no_load_speed_value, 'rpm'),
+                       maximum_torque = Torque(maximum_torque_value, 'mNm'),
+                       no_load_electric_current = Current(no_load_electric_current_value, 'A'),
+                       maximum_electric_current = Current(maximum_electric_current_value, 'A'))
+    else:
+        return DCMotor(name = name,
+                       inertia_moment = InertiaMoment(inertia_moment_value, 'kgmm^2'),
+                       no_load_speed = AngularSpeed(no_load_speed_value, 'rpm'),
+                       maximum_torque = Torque(maximum_torque_value, 'mNm'))
 
 
 @composite
@@ -253,35 +214,35 @@ def flywheels(draw):
 
 @composite
 def rotating_objects(draw):
-    return draw(one_of(simple_spur_gears(), structural_spur_gears(), simple_helical_gears(), structural_helical_gears(),
-                       simple_dc_motors(), electric_dc_motors(), flywheels()))
+    return draw(one_of(spur_gears(), spur_gears(structural = True), helical_gears(), helical_gears(structural = True),
+                       dc_motors(), dc_motors(current = True), flywheels()))
 
 
 @composite
-def powertrains(draw, allow_simple_motors = True, allow_electric_motors = True):
-    if allow_simple_motors and allow_electric_motors:
-        motor = draw(one_of(simple_dc_motors(), electric_dc_motors()))
-    elif allow_simple_motors and not allow_electric_motors:
-        motor = draw(simple_dc_motors())
-    elif not allow_simple_motors and allow_electric_motors:
-        motor = draw(electric_dc_motors())
+def powertrains(draw, allow_motors_without_current = True, allow_motors_with_current = True):
+    if allow_motors_without_current and allow_motors_with_current:
+        motor = draw(one_of(dc_motors(), dc_motors(current = True)))
+    elif allow_motors_without_current and not allow_motors_with_current:
+        motor = draw(dc_motors())
+    elif not allow_motors_without_current and allow_motors_with_current:
+        motor = draw(dc_motors(current = True))
     else:
-        raise ValueError("At least one of 'allow_simple_motors' and 'allow_electric_motors' must be True.")
+        raise ValueError("At least one of 'allow_motors_without_current' and 'allow_motors_with_current' must be True.")
     worm_pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
-    worm_gear = draw(structural_worm_gears(pressure_angle = worm_pressure_angle))
-    worm_wheel = draw(structural_worm_wheels(pressure_angle = worm_pressure_angle))
+    worm_gear = draw(worm_gears(structural = True, pressure_angle = worm_pressure_angle))
+    worm_wheel = draw(worm_wheels(structural = True, pressure_angle = worm_pressure_angle))
     worm_friction_coefficient = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0, max_value = 0.99,
                                             exclude_min = False, exclude_max = True))
-    spur_gears = draw(lists(elements = structural_spur_gears(), min_size = 2))
-    helical_gears = draw(lists(elements = structural_helical_gears(), min_size = 2))
+    spur_gear_set = draw(lists(elements = spur_gears(structural = True), min_size = 2))
+    helical_gear_set = draw(lists(elements = helical_gears(structural = True), min_size = 2))
 
-    if len(spur_gears)%2 == 1:
-        spur_gears = spur_gears[:-1]
+    if len(spur_gear_set)%2 == 1:
+        spur_gear_set = spur_gear_set[:-1]
 
-    if len(helical_gears)%2 == 1:
-        helical_gears = helical_gears[:-1]
+    if len(helical_gear_set)%2 == 1:
+        helical_gear_set = helical_gear_set[:-1]
 
-    gears = [*spur_gears, *helical_gears]
+    gears = [*spur_gear_set, *helical_gear_set]
 
     add_fixed_joint(master = motor, slave = worm_gear)
     add_worm_gear_mating(master = worm_gear, slave = worm_wheel, friction_coefficient = worm_friction_coefficient)
@@ -298,36 +259,36 @@ def powertrains(draw, allow_simple_motors = True, allow_electric_motors = True):
 
 @composite
 def solved_powertrains(draw):
-    motor = draw(one_of(simple_dc_motors(), electric_dc_motors()))
+    motor = draw(one_of(dc_motors(), dc_motors(current = True)))
     flywheel = draw(flywheels())
     gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
     gear_2 = SpurGear(name = 'gear 2', n_teeth = 20, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
-    simple_spur_gear_set = draw(lists(elements = simple_spur_gears(), min_size = 2, max_size = 4))
-    structural_spur_gear_set = draw(lists(elements = structural_spur_gears(), min_size = 2, max_size = 4))
-    simple_helical_gear_set = draw(lists(elements = simple_helical_gears(), min_size = 2, max_size = 4))
-    structural_helical_gear_set = draw(lists(elements = structural_helical_gears(), min_size = 2, max_size = 4))
+    non_structural_spur_gear_set = draw(lists(elements = spur_gears(), min_size = 2, max_size = 4))
+    structural_spur_gear_set = draw(lists(elements = spur_gears(structural = True), min_size = 2, max_size = 4))
+    non_structural_helical_gear_set = draw(lists(elements = helical_gears(), min_size = 2, max_size = 4))
+    structural_helical_gear_set = draw(lists(elements = helical_gears(structural = True), min_size = 2, max_size = 4))
 
-    if len(simple_spur_gear_set)%2 == 1:
-        simple_spur_gear_set = simple_spur_gear_set[:-1]
+    if len(non_structural_spur_gear_set)%2 == 1:
+        non_structural_spur_gear_set = non_structural_spur_gear_set[:-1]
 
     if len(structural_spur_gear_set)%2 == 1:
         structural_spur_gear_set = structural_spur_gear_set[:-1]
 
-    if len(simple_helical_gear_set)%2 == 1:
-        simple_helical_gear_set = simple_helical_gear_set[:-1]
+    if len(non_structural_helical_gear_set)%2 == 1:
+        non_structural_helical_gear_set = non_structural_helical_gear_set[:-1]
 
     if len(structural_helical_gear_set)%2 == 1:
         structural_helical_gear_set = structural_helical_gear_set[:-1]
 
-    simple_spur_gear_set = list(zip(*(iter(simple_spur_gear_set),)*2))
+    non_structural_spur_gear_set = list(zip(*(iter(non_structural_spur_gear_set),)*2))
     structural_spur_gear_set = list(zip(*(iter(structural_spur_gear_set),)*2))
-    simple_helical_gear_set = list(zip(*(iter(simple_helical_gear_set),)*2))
+    non_structural_helical_gear_set = list(zip(*(iter(non_structural_helical_gear_set),)*2))
     structural_helical_gear_set = list(zip(*(iter(structural_helical_gear_set),)*2))
 
     gears = []
-    gears.extend(simple_spur_gear_set)
+    gears.extend(non_structural_spur_gear_set)
     gears.extend(structural_spur_gear_set)
-    gears.extend(simple_helical_gear_set)
+    gears.extend(non_structural_helical_gear_set)
     gears.extend(structural_helical_gear_set)
     shuffle(gears)
 

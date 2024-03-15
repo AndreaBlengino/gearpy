@@ -3,7 +3,7 @@ from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import floats
 from pytest import mark, raises
-from tests.conftest import electric_dc_motors
+from tests.conftest import dc_motors
 from tests.test_units.test_angular_position.conftest import angular_positions
 from tests.test_units.test_angular_speed.conftest import angular_speeds
 from tests.test_units.test_current.conftest import currents
@@ -15,7 +15,7 @@ class TestStartLimitCurrentInit:
 
 
     @mark.genuine
-    @given(motor = electric_dc_motors(),
+    @given(motor = dc_motors(current = True),
            target_angular_position = angular_positions(),
            limit_electric_current = currents(min_value = 1, max_value = 10))
     @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
@@ -49,7 +49,7 @@ class TestStartLimitCurrentInit:
 class TestStartLimitCurrentApply:
 
 
-    @given(motor = electric_dc_motors(),
+    @given(motor = dc_motors(current = True),
            current_angular_position = angular_positions(),
            limit_electric_current = currents(min_value = 1, max_value = 10),
            target_angular_position_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 1000),

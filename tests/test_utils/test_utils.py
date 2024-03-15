@@ -7,7 +7,7 @@ from hypothesis import given, settings
 from hypothesis.strategies import floats, one_of, sampled_from, booleans, none, tuples
 import os
 from pytest import mark, raises
-from tests.conftest import simple_dc_motors, simple_spur_gears, simple_helical_gears, flywheels, simple_worm_gears, simple_worm_wheels
+from tests.conftest import dc_motors, spur_gears, helical_gears, flywheels, worm_gears, worm_wheels
 from tests.test_utils.conftest import motor_1, powertrain_1, motor_2, powertrain_2
 import warnings
 
@@ -17,8 +17,8 @@ class TestAddGearMating:
 
 
     @mark.genuine
-    @given(gear_1 = simple_spur_gears(),
-           gear_2 = simple_spur_gears(),
+    @given(gear_1 = spur_gears(),
+           gear_2 = spur_gears(),
            efficiency = floats(allow_nan = False, allow_infinity = False,
                                min_value = 0, exclude_min = False, max_value = 1, exclude_max = False))
     @settings(max_examples = 100)
@@ -50,8 +50,8 @@ class TestAddWormGearMating:
 
 
     @mark.genuine
-    @given(worm_gear = simple_worm_gears(pressure_angle = Angle(20, 'deg')),
-           worm_wheel = simple_worm_wheels(pressure_angle = Angle(20, 'deg')),
+    @given(worm_gear = worm_gears(pressure_angle = Angle(20, 'deg')),
+           worm_wheel = worm_wheels(pressure_angle = Angle(20, 'deg')),
            friction_coefficient = floats(allow_nan = False, allow_infinity = False, min_value = 0,
                                          exclude_min = False, max_value = 1, exclude_max = False))
     @settings(max_examples = 100)
@@ -96,8 +96,8 @@ class TestAddFixedJoint:
 
 
     @mark.genuine
-    @given(master = one_of(simple_dc_motors(), simple_spur_gears(), simple_helical_gears(), flywheels()),
-           slave = one_of(simple_spur_gears(), simple_helical_gears(), flywheels()))
+    @given(master = one_of(dc_motors(), spur_gears(), helical_gears(), flywheels(), worm_gears(), worm_wheels()),
+           slave = one_of(spur_gears(), helical_gears(), flywheels(), worm_gears(), worm_wheels()))
     @settings(max_examples = 100)
     def test_function(self, master, slave):
         add_fixed_joint(master = master, slave = slave)

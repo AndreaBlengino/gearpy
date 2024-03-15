@@ -17,7 +17,7 @@ class TestStartProportionalToAngularPositionInit:
 
     @mark.genuine
     @given(element_index = integers(min_value = 0),
-           powertrain = powertrains(allow_simple_motors = False),
+           powertrain = powertrains(allow_motors_without_current = False),
            target_angular_position = angular_positions(),
            pwm_min_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1, exclude_min = True, max_value = 1000),
            pwm_min = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1),

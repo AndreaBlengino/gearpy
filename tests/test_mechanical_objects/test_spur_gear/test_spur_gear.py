@@ -1,5 +1,5 @@
 from gearpy.mechanical_objects import SpurGear
-from gearpy.units import  Length, Stress
+from gearpy.units import Length, Stress
 from hypothesis import given, settings
 from hypothesis.strategies import text, floats, integers
 from pytest import mark, raises
