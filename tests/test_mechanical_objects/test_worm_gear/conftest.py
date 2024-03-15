@@ -1,8 +1,6 @@
-from gearpy.mechanical_objects import Role
-from gearpy.units import Force, InertiaMoment, Length, Torque, Angle
+from gearpy.units import InertiaMoment, Length, Angle
 from pytest import fixture
 from tests.conftest import types_to_check
-from typing import Callable
 
 
 worm_gear_init_type_error_1 = [{'name': type_to_check, 'n_starts': 1, 'inertia_moment': InertiaMoment(1, 'kgm^2'),
@@ -57,26 +55,4 @@ def worm_gear_init_value_error(request):
 
 @fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, bool)])
 def worm_gear_self_locking_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not hasattr(type_to_check, '__name__') or not issubclass(type_to_check, Role)])
-def worm_gear_mating_role_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Force)])
-def worm_gear_tangential_force_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Callable)])
-def worm_gear_external_torque_type_error(request):
-    return request.param
-
-
-@fixture(params = [lambda angular_speed, time: Torque(1, 'Nm'),
-                   lambda angular_position, time: Torque(1, 'Nm'),
-                   lambda angular_position, angular_speed: Torque(1, 'Nm')])
-def worm_gear_external_torque_key_error(request):
     return request.param

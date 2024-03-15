@@ -1,9 +1,6 @@
-from gearpy.mechanical_objects import Role, SpurGear
-from gearpy.units import Force, InertiaMoment, Length, Stress, Torque
-from gearpy.utils import add_gear_mating
+from gearpy.units import InertiaMoment, Length, Stress
 from pytest import fixture
 from tests.conftest import types_to_check
-from typing import Callable
 
 
 spur_gear_init_type_error_1 = [{'name': type_to_check, 'n_teeth': 10, 'inertia_moment': InertiaMoment(1, 'kgm^2'),
@@ -54,72 +51,4 @@ def spur_gear_init_type_error(request):
                    {'name': 'gear', 'n_teeth': -1, 'inertia_moment': InertiaMoment(1, 'kgm^2')},
                    {'name': 'gear', 'n_teeth': 10, 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'elastic_modulus': Stress(-10, 'GPa')}])
 def spur_gear_init_value_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not hasattr(type_to_check, '__name__') or not issubclass(type_to_check, Role)])
-def spur_gear_mating_role_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Force)])
-def spur_gear_tangential_force_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Stress)])
-def spur_gear_bending_stress_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Stress)])
-def spur_gear_contact_stress_type_error(request):
-    return request.param
-
-
-spur_gear_compute_contact_stress_value_error_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                                                          module = Length(1, 'mm'), face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
-
-spur_gear_compute_contact_stress_value_error_2 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                                                          module = Length(1, 'mm'), face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
-spur_gear_compute_contact_stress_value_error_2_mate = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                                                               face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
-add_gear_mating(master = spur_gear_compute_contact_stress_value_error_2, slave = spur_gear_compute_contact_stress_value_error_2_mate, efficiency = 1)
-
-spur_gear_compute_contact_stress_value_error_3 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                                                          module = Length(1, 'mm'), face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
-spur_gear_compute_contact_stress_value_error_3_mate = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                                                               module = Length(1, 'mm'), face_width = Length(5, 'mm'))
-add_gear_mating(master = spur_gear_compute_contact_stress_value_error_3, slave = spur_gear_compute_contact_stress_value_error_3_mate, efficiency = 1)
-
-spur_gear_compute_contact_stress_value_error_4 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                                                          module = Length(1, 'mm'), face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
-spur_gear_compute_contact_stress_value_error_4_mate = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                                                               face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
-add_gear_mating(master = spur_gear_compute_contact_stress_value_error_4_mate, slave = spur_gear_compute_contact_stress_value_error_4, efficiency = 1)
-
-spur_gear_compute_contact_stress_value_error_5 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                                                          module = Length(1, 'mm'), face_width = Length(5, 'mm'), elastic_modulus = Stress(100, 'GPa'))
-spur_gear_compute_contact_stress_value_error_5_mate = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
-                                                               module = Length(1, 'mm'), face_width = Length(5, 'mm'))
-add_gear_mating(master = spur_gear_compute_contact_stress_value_error_5_mate, slave = spur_gear_compute_contact_stress_value_error_5, efficiency = 1)
-
-@fixture(params = [spur_gear_compute_contact_stress_value_error_1,
-                   spur_gear_compute_contact_stress_value_error_2,
-                   spur_gear_compute_contact_stress_value_error_3,
-                   spur_gear_compute_contact_stress_value_error_4,
-                   spur_gear_compute_contact_stress_value_error_5])
-def spur_gear_compute_contact_stress_value_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Callable)])
-def spur_gear_external_torque_type_error(request):
-    return request.param
-
-
-@fixture(params = [lambda angular_speed, time: Torque(1, 'Nm'),
-                   lambda angular_position, time: Torque(1, 'Nm'),
-                   lambda angular_position, angular_speed: Torque(1, 'Nm')])
-def spur_gear_external_torque_key_error(request):
     return request.param

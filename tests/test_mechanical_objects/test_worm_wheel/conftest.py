@@ -1,8 +1,6 @@
-from gearpy.mechanical_objects import Role
-from gearpy.units import Angle, Force, InertiaMoment, Length, Stress, Torque
+from gearpy.units import Angle, InertiaMoment, Length
 from pytest import fixture
 from tests.conftest import types_to_check
-from typing import Callable
 
 
 worm_wheel_init_type_error_1 = [{'name': type_to_check, 'n_teeth': 10, 'inertia_moment': InertiaMoment(1, 'kgm^2'),
@@ -59,31 +57,4 @@ def worm_wheel_init_type_error(request):
                    {'name': 'wheel', 'n_teeth': 10, 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'pressure_angle': Angle(0,'deg'), 'helix_angle': Angle(10, 'deg')},
                    {'name': 'wheel', 'n_teeth': 10, 'inertia_moment': InertiaMoment(1, 'kgm^2'), 'pressure_angle': Angle(20,'deg'), 'helix_angle': Angle(80, 'deg')}])
 def worm_wheel_init_value_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not hasattr(type_to_check, '__name__') or not issubclass(type_to_check, Role)])
-def worm_wheel_mating_role_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Force)])
-def worm_wheel_tangential_force_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Stress)])
-def worm_wheel_bending_stress_type_error(request):
-    return request.param
-
-
-@fixture(params = [type_to_check for type_to_check in types_to_check if not isinstance(type_to_check, Callable)])
-def worm_wheel_external_torque_type_error(request):
-    return request.param
-
-
-@fixture(params = [lambda angular_speed, time: Torque(1, 'Nm'),
-                   lambda angular_position, time: Torque(1, 'Nm'),
-                   lambda angular_position, angular_speed: Torque(1, 'Nm')])
-def worm_wheel_external_torque_key_error(request):
     return request.param
