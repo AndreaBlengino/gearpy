@@ -1,5 +1,5 @@
-from gearpy.mechanical_objects import MatingMaster, MatingSlave, WormGear
-from gearpy.units import AngularSpeed, Torque, Current, Angle
+from gearpy.mechanical_objects import MatingMaster, MatingSlave, WormGear, HelicalGear
+from gearpy.units import AngularSpeed, Torque, Current, Angle, InertiaMoment
 from gearpy.utils import add_gear_mating, add_worm_gear_mating, add_fixed_joint, dc_motor_characteristics_animation
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -111,6 +111,14 @@ class TestAddFixedJoint:
     def test_raises_type_error(self, add_fixed_joint_type_error):
         with raises(TypeError):
             add_fixed_joint(**add_fixed_joint_type_error)
+
+
+    @mark.error
+    def test_raises_value_error(self):
+        gear = HelicalGear(name = 'master', n_teeth = 10, helix_angle = Angle(20, 'deg'),
+                           inertia_moment = InertiaMoment(1, 'kgm^2'))
+        with raises(ValueError):
+            add_fixed_joint(master = gear, slave = gear)
 
 
 @mark.utils
