@@ -39,9 +39,10 @@ setup(name = 'gearpy',
                      'Programming Language :: Python :: 3.9',
                      'Programming Language :: Python :: 3.10',
                      'Programming Language :: Python :: 3.11',
+                     'Programming Language :: Python :: 3.12',
                      'Topic :: Scientific/Engineering'],
       install_requires = basic_requirements,
       extras_require = {'dev': extras_dev,
                         'docs': extras_docs,
                         'tests': extras_tests},
-      python_requires = '>=3.9, <3.12')
+      python_requires = '>=3.9, <3.13')
