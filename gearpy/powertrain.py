@@ -646,6 +646,8 @@ class Powertrain:
         fig, ax = plt.subplots(nrows = n_variables, ncols = n_elements, sharex = 'all',
                                layout = 'constrained', figsize = figsize)
 
+        stress_legend_items = {}
+
         for i, item in enumerate(elements, 0):
             if n_variables > 1:
                 axes = ax[:, i] if n_elements > 1 else ax
@@ -695,6 +697,10 @@ class Powertrain:
                                                               [variable_value.to(UNITS[variable]).value
                                                                for variable_value in item.time_variables[variable]],
                                                               label = variable.replace('stress', '').replace(' ', ''))
+                            handles, labels = axes[stress_variables_index].get_legend_handles_labels()
+                            for handle, label in zip(handles, labels):
+                                if label not in stress_legend_items.keys():
+                                    stress_legend_items[label] = handle
 
                         if stress_variables and not item.bending_stress_is_computable \
                                 and not item.contact_stress_is_computable:
@@ -771,7 +777,9 @@ class Powertrain:
                         else:
                             axes = [ax[i]] if n_elements > 1 else [ax]
                         axes[stress_variables_index].set_ylabel(f'stress ({stress_unit})')
-                        axes[stress_variables_index].legend(title = 'stress', frameon = True)
+                        axes[stress_variables_index].legend(title = 'stress', frameon = True,
+                                                            labels = stress_legend_items.keys(),
+                                                            handles = stress_legend_items.values())
                         break
 
         if electric_variables:
