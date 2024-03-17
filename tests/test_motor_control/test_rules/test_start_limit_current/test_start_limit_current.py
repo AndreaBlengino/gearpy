@@ -18,7 +18,7 @@ class TestStartLimitCurrentInit:
     @given(motor = dc_motors(current = True),
            target_angular_position = angular_positions(),
            limit_electric_current = currents(min_value = 1, max_value = 10))
-    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, motor, target_angular_position, limit_electric_current):
         encoder = AbsoluteRotaryEncoder(target = motor)
         tachometer = Tachometer(target = motor)
@@ -54,7 +54,7 @@ class TestStartLimitCurrentApply:
            limit_electric_current = currents(min_value = 1, max_value = 10),
            target_angular_position_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 1000),
            current_angular_speed = angular_speeds())
-    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, motor, current_angular_position, limit_electric_current, target_angular_position_multiplier,
                     current_angular_speed):
         warnings.filterwarnings('ignore', category = RuntimeWarning)

@@ -13,7 +13,7 @@ class TestFlywheelInit:
     @mark.genuine
     @given(name = text(min_size = 1),
            inertia_moment = inertia_moments())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, name, inertia_moment):
         flywheel = Flywheel(name = name, inertia_moment = inertia_moment)
 

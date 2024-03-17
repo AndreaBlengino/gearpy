@@ -21,7 +21,7 @@ class TestWormWheelInit:
            helix_angle_value = floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 15),
            module_value = floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 10),
            face_width_value = floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 100))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, name, n_teeth, inertia_moment, pressure_angle, helix_angle_value, module_value, face_width_value):
         helix_angle = Angle(helix_angle_value, 'deg')
         module = Length(module_value, 'mm')

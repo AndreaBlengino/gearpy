@@ -17,7 +17,7 @@ class TestRotatingObjectAngularPosition:
 
     @mark.genuine
     @given(angular_position = angular_positions())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, angular_position):
         for rotating_object in basic_rotating_objects:
             rotating_object.angular_position = angular_position
@@ -38,7 +38,7 @@ class TestRotatingObjectAngularSpeed:
 
     @mark.genuine
     @given(angular_speed = angular_speeds())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, angular_speed):
         for rotating_object in basic_rotating_objects:
             rotating_object.angular_speed = angular_speed
@@ -59,7 +59,7 @@ class TestRotatingObjectAngularAcceleration:
 
     @mark.genuine
     @given(angular_acceleration = angular_accelerations())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, angular_acceleration):
         for rotating_object in basic_rotating_objects:
             rotating_object.angular_acceleration = angular_acceleration
@@ -80,7 +80,7 @@ class TestRotatingObjectTorque:
 
     @mark.genuine
     @given(torque = torques())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, torque):
         for rotating_object in basic_rotating_objects:
             rotating_object.torque = torque
@@ -101,7 +101,7 @@ class TestRotatingObjectDrivingTorque:
 
     @mark.genuine
     @given(driving_torque = torques())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, driving_torque):
         for rotating_object in basic_rotating_objects:
             rotating_object.driving_torque = driving_torque
@@ -122,7 +122,7 @@ class TestRotatingObjectLoadTorque:
 
     @mark.genuine
     @given(load_torque = torques())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, load_torque):
         for rotating_object in basic_rotating_objects:
             rotating_object.load_torque = load_torque

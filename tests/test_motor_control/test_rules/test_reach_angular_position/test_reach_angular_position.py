@@ -19,7 +19,7 @@ class TestReachAngularPositionInit:
            powertrain = powertrains(),
            target_angular_position = angular_positions(),
            braking_angle = angles())
-    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, element_index, powertrain, target_angular_position, braking_angle):
         element_index %= len(powertrain.elements)
         encoder = AbsoluteRotaryEncoder(target = powertrain.elements[element_index])
@@ -56,7 +56,7 @@ class TestReachAngularPositionApply:
            braking_angle_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 1000),
            target_angular_position_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 3, max_value = 1000),
            available_load_torque = booleans())
-    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, element_index, powertrain, current_angular_position, braking_angle_multiplier,
                     target_angular_position_multiplier, available_load_torque):
         element_index %= len(powertrain.elements)

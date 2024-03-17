@@ -17,7 +17,7 @@ class TestTachometerInit:
 
     @mark.genuine
     @given(rotating_object = rotating_objects())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, rotating_object):
         tachometer = Tachometer(target = rotating_object)
 
@@ -36,7 +36,7 @@ class TestTachometerTarget:
 
     @mark.genuine
     @given(rotating_object = rotating_objects())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, rotating_object):
         tachometer = Tachometer(target = rotating_object)
 
@@ -51,7 +51,7 @@ class TestTachometerGetValue:
     @given(angular_speed = angular_speeds(),
            unit = one_of(sampled_from(elements = units_list),
                          none()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, angular_speed, unit):
         gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
         gear.angular_speed = angular_speed

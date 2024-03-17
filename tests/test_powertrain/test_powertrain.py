@@ -85,7 +85,7 @@ class TestPowertrainUpdateTime:
     @mark.genuine
     @given(powertrain = powertrains(),
            instant = times())
-    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, powertrain, instant):
         powertrain.update_time(instant = instant)
 

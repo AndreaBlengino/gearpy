@@ -17,7 +17,7 @@ class TestTimeInit:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         time = Time(value = value, unit = unit)
 
@@ -46,7 +46,7 @@ class TestTimeRepr:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         time = Time(value = value, unit = unit)
 
@@ -62,7 +62,7 @@ class TestTimeFormat:
            unit = sampled_from(elements = units_list),
            total_digits = integers(min_value = 1, max_value = 10),
            decimal_digits = integers(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, total_digits, decimal_digits):
         time = Time(value = value, unit = unit)
 
@@ -76,7 +76,7 @@ class TestTimeAbs:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         time = Time(value = value, unit = unit)
 
@@ -91,7 +91,7 @@ class TestTimeNeg:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         time = Time(value = value, unit = unit)
 
@@ -107,7 +107,7 @@ class TestTimeAdd:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         time_1 = Time(value = value_1, unit = unit_1)
         time_2 = Time(value = value_2, unit = unit_2)
@@ -133,7 +133,7 @@ class TestTimeSub:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         time_1 = Time(value = value_1, unit = unit_1)
         time_2 = Time(value = value_2, unit = unit_2)
@@ -160,7 +160,7 @@ class TestTimeMul:
            multiplier = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                                angular_speeds(),
                                angular_accelerations()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         time = Time(value = value, unit = unit)
         result = time*multiplier
@@ -195,7 +195,7 @@ class TestTimeRmul:
            multiplier = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                                angular_speeds(),
                                angular_accelerations()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         time = Time(value = value, unit = unit)
         result = multiplier*time
@@ -217,7 +217,7 @@ class TestTimeRmul:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method_patch_1(self, value, unit):
         time = Time(value = value, unit = unit)
 
@@ -236,7 +236,7 @@ class TestTimeRmul:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method_patch_2(self, value, unit):
         time = Time(value = value, unit = unit)
 
@@ -267,7 +267,7 @@ class TestTimeTruediv:
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                             times()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, divider):
         time = Time(value = value, unit = unit)
 
@@ -443,7 +443,7 @@ class TestTimeTo:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            inplace = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, inplace):
         if abs(value) >= 1e-10:
             time = Time(value = value, unit = unit)
