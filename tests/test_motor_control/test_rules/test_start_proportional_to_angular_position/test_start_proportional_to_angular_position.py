@@ -22,7 +22,7 @@ class TestStartProportionalToAngularPositionInit:
            pwm_min_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1, exclude_min = True, max_value = 1000),
            pwm_min = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1),
                             none()))
-    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, element_index, powertrain, target_angular_position, pwm_min_multiplier, pwm_min):
         element_index %= len(powertrain.elements)
         encoder = AbsoluteRotaryEncoder(target = powertrain.elements[element_index])
@@ -62,7 +62,7 @@ class TestStartProportionalToAngularPositionApply:
                             none()),
            target_angular_position_multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 2, max_value = 1000),
            load_torque_time_variable = booleans())
-    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, element_index, powertrain, current_angular_position, pwm_min_multiplier, pwm_min,
                     target_angular_position_multiplier, load_torque_time_variable):
         if powertrain.elements[0].electric_current_is_computable:

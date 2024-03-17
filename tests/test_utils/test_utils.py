@@ -21,7 +21,7 @@ class TestAddGearMating:
            gear_2 = spur_gears(),
            efficiency = floats(allow_nan = False, allow_infinity = False,
                                min_value = 0, exclude_min = False, max_value = 1, exclude_max = False))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_function(self, gear_1, gear_2, efficiency):
         add_gear_mating(master = gear_1, slave = gear_2, efficiency = efficiency)
 
@@ -54,7 +54,7 @@ class TestAddWormGearMating:
            worm_wheel = worm_wheels(pressure_angle = Angle(20, 'deg')),
            friction_coefficient = floats(allow_nan = False, allow_infinity = False, min_value = 0,
                                          exclude_min = False, max_value = 1, exclude_max = False))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_function(self, worm_gear, worm_wheel, friction_coefficient):
         for master, slave in zip([worm_gear, worm_wheel], [worm_wheel, worm_gear]):
             if isinstance(slave, WormGear):
@@ -98,7 +98,7 @@ class TestAddFixedJoint:
     @mark.genuine
     @given(master = one_of(dc_motors(), spur_gears(), helical_gears(), flywheels(), worm_gears(), worm_wheels()),
            slave = one_of(spur_gears(), helical_gears(), flywheels(), worm_gears(), worm_wheels()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_function(self, master, slave):
         add_fixed_joint(master = master, slave = slave)
 

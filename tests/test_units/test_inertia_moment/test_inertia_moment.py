@@ -15,7 +15,7 @@ class TestInertiaMomentInit:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         inertia_moment = InertiaMoment(value = value, unit = unit)
 
@@ -50,7 +50,7 @@ class TestInertiaMomentRepr:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         inertia_moment = InertiaMoment(value = value, unit = unit)
 
@@ -66,7 +66,7 @@ class TestInertiaMomentFormat:
            unit = sampled_from(elements = units_list),
            total_digits = integers(min_value = 1, max_value = 10),
            decimal_digits = integers(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, total_digits, decimal_digits):
         inertia_moment = InertiaMoment(value = value, unit = unit)
 
@@ -80,7 +80,7 @@ class TestInertiaMomentAbs:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         inertia_moment = InertiaMoment(value = value, unit = unit)
 
@@ -109,7 +109,7 @@ class TestInertiaMomentAdd:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         inertia_moment_1 = InertiaMoment(value = value_1, unit = unit_1)
         inertia_moment_2 = InertiaMoment(value = value_2, unit = unit_2)
@@ -135,7 +135,7 @@ class TestInertiaMomentSub:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         inertia_moment_1 = InertiaMoment(value = value_1, unit = unit_1)
         inertia_moment_2 = InertiaMoment(value = value_2, unit = unit_2)
@@ -167,7 +167,7 @@ class TestInertiaMomentMul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         inertia_moment = InertiaMoment(value = value, unit = unit)
         result = inertia_moment*multiplier
@@ -197,7 +197,7 @@ class TestInertiaMomentRmul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         inertia_moment = InertiaMoment(value = value, unit = unit)
         result = multiplier*inertia_moment
@@ -228,7 +228,7 @@ class TestInertiaMomentTruediv:
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
                             inertia_moments()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, divider):
         inertia_moment = InertiaMoment(value = value, unit = unit)
 
@@ -404,7 +404,7 @@ class TestInertiaMomentTo:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            inplace = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, inplace):
         if abs(value) >= 1e-10:
             inertia_moment = InertiaMoment(value = value, unit = unit)

@@ -12,7 +12,7 @@ class TestSlaveDrivenBy:
 
     @mark.genuine
     @given(master_rotating_object = rotating_objects())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, master_rotating_object):
         for slave in basic_slaves:
             slave.driven_by = master_rotating_object
@@ -33,7 +33,7 @@ class TestSlaveDrives:
 
     @mark.genuine
     @given(slave_rotating_object = rotating_objects())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, slave_rotating_object):
         for slave in basic_slaves:
             slave.drives = slave_rotating_object
@@ -54,7 +54,7 @@ class TestSlaveMasterGearRatio:
 
     @mark.genuine
     @given(master_gear_ratio = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, master_gear_ratio):
         for slave in basic_slaves:
             slave.master_gear_ratio = master_gear_ratio
@@ -83,7 +83,7 @@ class TestSlaveMasterGearEfficiency:
     @mark.genuine
     @given(master_gear_efficiency = floats(allow_nan = False, allow_infinity = False,
                                            min_value = 0, exclude_min = False, max_value = 1, exclude_max = False))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, master_gear_efficiency):
         for slave in basic_slaves:
             if not isinstance(slave, Flywheel):

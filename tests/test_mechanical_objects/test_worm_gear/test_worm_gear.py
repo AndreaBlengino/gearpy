@@ -19,7 +19,7 @@ class TestWormGearInit:
            pressure_angle = sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES),
            helix_angle_value = floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 15),
            reference_diameter_value = floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, name, n_starts, inertia_moment, pressure_angle, helix_angle_value, reference_diameter_value):
         helix_angle = Angle(helix_angle_value, 'deg')
         reference_diameter = Length(reference_diameter_value, 'mm')

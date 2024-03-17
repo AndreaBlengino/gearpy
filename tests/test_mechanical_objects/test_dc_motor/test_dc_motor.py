@@ -19,7 +19,7 @@ class TestDCMotorInit:
            inertia_moment = inertia_moments(),
            no_load_speed = angular_speeds(min_value = 1, max_value = 1000),
            maximum_torque = torques(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, name, inertia_moment, no_load_speed, maximum_torque):
         motor = DCMotor(name = name, inertia_moment = inertia_moment, no_load_speed = no_load_speed, maximum_torque = maximum_torque)
 
@@ -72,7 +72,7 @@ class TestDCMotorComputeTorque:
            maximum_electric_current = currents(min_value = 5, max_value = 10, unit = 'A'),
            speed = angular_speeds(),
            electric_motor = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, name, inertia_moment, no_load_speed, maximum_torque, no_load_electric_current,
                     maximum_electric_current, speed, electric_motor):
         if electric_motor:
@@ -102,7 +102,7 @@ class TestDCMotorComputeElectricCurrent:
            no_load_electric_current = currents(min_value = 0, max_value = 0.1, unit = 'A'),
            maximum_electric_current = currents(min_value = 0.2, max_value = 10, unit = 'A'),
            driving_torque = torques())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, name, inertia_moment, no_load_speed, maximum_torque, no_load_electric_current,
                     maximum_electric_current, driving_torque):
         motor = DCMotor(name = name, inertia_moment = inertia_moment, no_load_speed = no_load_speed,
@@ -153,7 +153,7 @@ class TestDCMotorPWM:
 
     @mark.genuine
     @given(pwm = floats(allow_nan = False, allow_infinity = False, min_value = -1, max_value = 1))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, pwm):
         basic_dc_motor_1.pwm = pwm
 

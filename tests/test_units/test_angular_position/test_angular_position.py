@@ -15,7 +15,7 @@ class TestAngularPositionInit:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         angular_position = AngularPosition(value = value, unit = unit)
 
@@ -44,7 +44,7 @@ class TestAngularPositionRepr:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         angular_position = AngularPosition(value = value, unit = unit)
 
@@ -60,7 +60,7 @@ class TestAngularPositionFormat:
            unit = sampled_from(elements = units_list),
            total_digits = integers(min_value = 1, max_value = 10),
            decimal_digits = integers(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, total_digits, decimal_digits):
         angular_position = AngularPosition(value = value, unit = unit)
 
@@ -74,7 +74,7 @@ class TestAngularPositionAbs:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         angular_position = AngularPosition(value = value, unit = unit)
 
@@ -89,7 +89,7 @@ class TestAngularPositionNeg:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         angular_position = AngularPosition(value = value, unit = unit)
 
@@ -105,7 +105,7 @@ class TestAngularPositionAdd:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         angular_position_1 = AngularPosition(value = value_1, unit = unit_1)
         angular_position_2 = AngularPosition(value = value_2, unit = unit_2)
@@ -131,7 +131,7 @@ class TestAngularPositionSub:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         angular_position_1 = AngularPosition(value = value_1, unit = unit_1)
         angular_position_2 = AngularPosition(value = value_2, unit = unit_2)
@@ -156,7 +156,7 @@ class TestAngularPositionMul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         angular_position = AngularPosition(value = value, unit = unit)
         result = angular_position*multiplier
@@ -180,7 +180,7 @@ class TestAngularPositionRmul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         angular_position = AngularPosition(value = value, unit = unit)
         result = multiplier*angular_position
@@ -205,7 +205,7 @@ class TestAngularPositionTruediv:
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                             angular_positions()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, divider):
         angular_position = AngularPosition(value = value, unit = unit)
 
@@ -381,7 +381,7 @@ class TestAngularPositionTo:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            inplace = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, inplace):
         if abs(value) >= 1e-10:
             angular_position = AngularPosition(value = value, unit = unit)

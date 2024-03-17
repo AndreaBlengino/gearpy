@@ -17,7 +17,7 @@ class TestTorqueInit:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         torque = Torque(value = value, unit = unit)
 
@@ -46,7 +46,7 @@ class TestTorqueRepr:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         torque = Torque(value = value, unit = unit)
 
@@ -62,7 +62,7 @@ class TestTorqueFormat:
            unit = sampled_from(elements = units_list),
            total_digits = integers(min_value = 1, max_value = 10),
            decimal_digits = integers(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, total_digits, decimal_digits):
         torque = Torque(value = value, unit = unit)
 
@@ -76,7 +76,7 @@ class TestTorqueAbs:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         torque = Torque(value = value, unit = unit)
 
@@ -91,7 +91,7 @@ class TestTorqueNeg:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         torque = Torque(value = value, unit = unit)
 
@@ -107,7 +107,7 @@ class TestTorqueAdd:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         torque_1 = Torque(value = value_1, unit = unit_1)
         torque_2 = Torque(value = value_2, unit = unit_2)
@@ -133,7 +133,7 @@ class TestTorqueSub:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         torque_1 = Torque(value = value_1, unit = unit_1)
         torque_2 = Torque(value = value_2, unit = unit_2)
@@ -158,7 +158,7 @@ class TestTorqueMul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         torque = Torque(value = value, unit = unit)
         result = torque*multiplier
@@ -182,7 +182,7 @@ class TestTorqueRmul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         torque = Torque(value = value, unit = unit)
         result = multiplier*torque
@@ -209,7 +209,7 @@ class TestTorqueTruediv:
                             torques(),
                             lengths(),
                             inertia_moments()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, divider):
         torque = Torque(value = value, unit = unit)
 
@@ -397,7 +397,7 @@ class TestTorqueTo:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            inplace = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, inplace):
         if abs(value) >= 1e-10:
             torque = Torque(value = value, unit = unit)

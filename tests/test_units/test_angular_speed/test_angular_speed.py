@@ -15,7 +15,7 @@ class TestAngularSpeedInit:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         angular_speed = AngularSpeed(value = value, unit = unit)
 
@@ -44,7 +44,7 @@ class TestAngularSpeedRepr:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         angular_speed = AngularSpeed(value = value, unit = unit)
 
@@ -60,7 +60,7 @@ class TestAngularSpeedFormat:
            unit = sampled_from(elements = units_list),
            total_digits = integers(min_value = 1, max_value = 10),
            decimal_digits = integers(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, total_digits, decimal_digits):
         angular_speed = AngularSpeed(value = value, unit = unit)
 
@@ -74,7 +74,7 @@ class TestAngularSpeedAbs:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         angular_speed = AngularSpeed(value = value, unit = unit)
 
@@ -89,7 +89,7 @@ class TestAngularSpeedNeg:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         angular_speed = AngularSpeed(value = value, unit = unit)
 
@@ -105,7 +105,7 @@ class TestAngularSpeedAdd:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         angular_speed_1 = AngularSpeed(value = value_1, unit = unit_1)
         angular_speed_2 = AngularSpeed(value = value_2, unit = unit_2)
@@ -131,7 +131,7 @@ class TestAngularSpeedSub:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         angular_speed_1 = AngularSpeed(value = value_1, unit = unit_1)
         angular_speed_2 = AngularSpeed(value = value_2, unit = unit_2)
@@ -157,7 +157,7 @@ class TestAngularSpeedMul:
            unit = sampled_from(elements = units_list),
            multiplier = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                                times()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         angular_speed = AngularSpeed(value = value, unit = unit)
         result = angular_speed*multiplier
@@ -187,7 +187,7 @@ class TestAngularSpeedRmul:
            unit = sampled_from(elements = units_list),
            multiplier = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                                times()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         angular_speed = AngularSpeed(value = value, unit = unit)
         result = multiplier*angular_speed
@@ -205,7 +205,7 @@ class TestAngularSpeedRmul:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method_patch(self, value, unit):
         angular_speed = AngularSpeed(value = value, unit = unit)
 
@@ -236,7 +236,7 @@ class TestAngularSpeedTruediv:
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                             angular_speeds()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, divider):
         angular_speed = AngularSpeed(value = value, unit = unit)
 
@@ -412,7 +412,7 @@ class TestAngularSpeedTo:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            inplace = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, inplace):
         if abs(value) >= 1e-10:
             angular_speed = AngularSpeed(value = value, unit = unit)

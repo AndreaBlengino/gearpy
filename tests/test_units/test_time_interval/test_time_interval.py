@@ -16,7 +16,7 @@ class TestTimeIntervalInit:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         time_interval = TimeInterval(value = value, unit = unit)
 
@@ -51,7 +51,7 @@ class TestTimeIntervalRepr:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         time_interval = TimeInterval(value = value, unit = unit)
 
@@ -67,7 +67,7 @@ class TestTimeIntervalFormat:
            unit = sampled_from(elements = units_list),
            total_digits = integers(min_value = 1, max_value = 10),
            decimal_digits = integers(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, total_digits, decimal_digits):
         time_interval = TimeInterval(value = value, unit = unit)
 
@@ -81,7 +81,7 @@ class TestTimeIntervalAbs:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         time_interval = TimeInterval(value = value, unit = unit)
 
@@ -110,7 +110,7 @@ class TestTimeIntervalAdd:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         time_interval_1 = TimeInterval(value = value_1, unit = unit_1)
         time_interval_2 = TimeInterval(value = value_2, unit = unit_2)
@@ -141,7 +141,7 @@ class TestTimeIntervalSub:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         time_interval_1 = TimeInterval(value = value_1, unit = unit_1)
         time_interval_2 = TimeInterval(value = value_2, unit = unit_2)
@@ -182,7 +182,7 @@ class TestTimeIntervalMul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         time_interval = TimeInterval(value = value, unit = unit)
         result = time_interval*multiplier
@@ -212,7 +212,7 @@ class TestTimeIntervalRmul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         time_interval = TimeInterval(value = value, unit = unit)
         result = multiplier*time_interval
@@ -243,7 +243,7 @@ class TestTimeIntervalTruediv:
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
                             time_intervals()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, divider):
         time_interval = TimeInterval(value = value, unit = unit)
 
@@ -419,7 +419,7 @@ class TestTimeIntervalTo:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            inplace = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, inplace):
         if abs(value) >= 1e-10:
             time_interval = TimeInterval(value = value, unit = unit)

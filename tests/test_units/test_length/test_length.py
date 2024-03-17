@@ -15,7 +15,7 @@ class TestLengthInit:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         length = Length(value = value, unit = unit)
 
@@ -50,7 +50,7 @@ class TestLengthRepr:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         length = Length(value = value, unit = unit)
 
@@ -66,7 +66,7 @@ class TestLengthFormat:
            unit = sampled_from(elements = units_list),
            total_digits = integers(min_value = 1, max_value = 10),
            decimal_digits = integers(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, total_digits, decimal_digits):
         length = Length(value = value, unit = unit)
 
@@ -80,7 +80,7 @@ class TestLengthAbs:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         length = Length(value = value, unit = unit)
 
@@ -109,7 +109,7 @@ class TestLengthAdd:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         length_1 = Length(value = value_1, unit = unit_1)
         length_2 = Length(value = value_2, unit = unit_2)
@@ -135,7 +135,7 @@ class TestLengthSub:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         length_1 = Length(value = value_1, unit = unit_1)
         length_2 = Length(value = value_2, unit = unit_2)
@@ -168,7 +168,7 @@ class TestLengthMul:
            unit = sampled_from(elements = units_list),
            multiplier = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
                                lengths()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         length = Length(value = value, unit = unit)
         result = length*multiplier
@@ -203,7 +203,7 @@ class TestLengthRmul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         length = Length(value = value, unit = unit)
         result = multiplier*length
@@ -234,7 +234,7 @@ class TestLengthTruediv:
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
                             lengths()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, divider):
         length = Length(value = value, unit = unit)
 
@@ -410,7 +410,7 @@ class TestLengthTo:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            inplace = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, inplace):
         if abs(value) >= 1e-10:
             length = Length(value = value, unit = unit)

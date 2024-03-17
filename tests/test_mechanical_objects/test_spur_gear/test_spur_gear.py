@@ -17,7 +17,7 @@ class TestSpurGearInit:
            module_value = floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 10),
            face_width_value = floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 100),
            elastic_modulus_value = floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, name, n_teeth, inertia_moment, module_value, face_width_value, elastic_modulus_value):
         module = Length(module_value, 'mm')
         face_width = Length(face_width_value, 'mm')

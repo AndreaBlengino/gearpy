@@ -14,7 +14,7 @@ class TestTimerInit:
     @mark.genuine
     @given(starting_time = times(),
            duration = time_intervals())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, starting_time, duration):
         timer = Timer(start_time = starting_time, duration = duration)
 
@@ -33,7 +33,7 @@ class TestTimerStartTime:
 
     @mark.genuine
     @given(start_time = times())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, start_time):
         timer = Timer(start_time = start_time, duration = TimeInterval(5, 'sec'))
 
@@ -46,7 +46,7 @@ class TestTimerDuration:
 
     @mark.genuine
     @given(duration = time_intervals())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, duration):
         timer = Timer(start_time = Time(0, 'sec'), duration = duration)
 
@@ -61,7 +61,7 @@ class TestTimerIsActive:
     @given(starting_time = times(),
            duration = time_intervals(),
            current_time = times())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, starting_time, duration, current_time):
         timer = Timer(start_time = starting_time, duration = duration)
         is_active = timer.is_active(current_time = current_time)

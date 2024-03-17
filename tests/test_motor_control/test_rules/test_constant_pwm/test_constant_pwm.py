@@ -16,7 +16,7 @@ class TestConstantPWMInit:
     @given(timer = timers(),
            powertrain = powertrains(),
            target_pwm_value = floats(allow_nan = False, allow_infinity = False, min_value = -1, max_value = 1))
-    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, timer, powertrain, target_pwm_value):
         rule = ConstantPWM(timer = timer, powertrain = powertrain, target_pwm_value = target_pwm_value)
 
@@ -45,7 +45,7 @@ class TestConstantPWMApply:
            powertrain = powertrains(),
            target_pwm_value = floats(allow_nan = False, allow_infinity = False, min_value = -1, max_value = 1),
            current_time = times())
-    @settings(max_examples = 100, suppress_health_check = [HealthCheck.too_slow])
+    @settings(max_examples = 100, deadline = None, suppress_health_check = [HealthCheck.too_slow])
     def test_method(self, timer, powertrain, target_pwm_value, current_time):
         warnings.filterwarnings('ignore', category = RuntimeWarning)
         rule = ConstantPWM(timer = timer, powertrain = powertrain, target_pwm_value = target_pwm_value)

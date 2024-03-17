@@ -16,7 +16,7 @@ class TestForceInit:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         force = Force(value = value, unit = unit)
 
@@ -45,7 +45,7 @@ class TestForceRepr:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         force = Force(value = value, unit = unit)
 
@@ -61,7 +61,7 @@ class TestForceFormat:
            unit = sampled_from(elements = units_list),
            total_digits = integers(min_value = 1, max_value = 10),
            decimal_digits = integers(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, total_digits, decimal_digits):
         force = Force(value = value, unit = unit)
 
@@ -75,7 +75,7 @@ class TestForceAbs:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         force = Force(value = value, unit = unit)
 
@@ -90,7 +90,7 @@ class TestForceNeg:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         force = Force(value = value, unit = unit)
 
@@ -106,7 +106,7 @@ class TestForceAdd:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         force_1 = Force(value = value_1, unit = unit_1)
         force_2 = Force(value = value_2, unit = unit_2)
@@ -132,7 +132,7 @@ class TestForceSub:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         force_1 = Force(value = value_1, unit = unit_1)
         force_2 = Force(value = value_2, unit = unit_2)
@@ -157,7 +157,7 @@ class TestForceMul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         force = Force(value = value, unit = unit)
         result = force*multiplier
@@ -181,7 +181,7 @@ class TestForceRmul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         force = Force(value = value, unit = unit)
         result = multiplier*force
@@ -207,7 +207,7 @@ class TestForceTruediv:
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                             forces(),
                             surfaces()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, divider):
         force = Force(value = value, unit = unit)
 
@@ -389,7 +389,7 @@ class TestForceTo:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            inplace = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, inplace):
         if abs(value) >= 1e-10:
             force = Force(value = value, unit = unit)

@@ -15,7 +15,7 @@ class TestCurrentInit:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         current = Current(value = value, unit = unit)
 
@@ -44,7 +44,7 @@ class TestCurrentRepr:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         current = Current(value = value, unit = unit)
 
@@ -60,7 +60,7 @@ class TestCurrentFormat:
            unit = sampled_from(elements = units_list),
            total_digits = integers(min_value = 1, max_value = 10),
            decimal_digits = integers(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, total_digits, decimal_digits):
         current = Current(value = value, unit = unit)
 
@@ -74,7 +74,7 @@ class TestCurrentAbs:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         current = Current(value = value, unit = unit)
 
@@ -89,7 +89,7 @@ class TestCurrentNeg:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         current = Current(value = value, unit = unit)
 
@@ -105,7 +105,7 @@ class TestCurrentAdd:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         current_1 = Current(value = value_1, unit = unit_1)
         current_2 = Current(value = value_2, unit = unit_2)
@@ -131,7 +131,7 @@ class TestCurrentSub:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         current_1 = Current(value = value_1, unit = unit_1)
         current_2 = Current(value = value_2, unit = unit_2)
@@ -156,7 +156,7 @@ class TestCurrentMul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         current = Current(value = value, unit = unit)
         result = current*multiplier
@@ -180,7 +180,7 @@ class TestCurrentRmul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         current = Current(value = value, unit = unit)
         result = multiplier*current
@@ -205,7 +205,7 @@ class TestCurrentTruediv:
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = -1000, max_value = 1000),
                             currents()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, divider):
         current = Current(value = value, unit = unit)
 
@@ -381,7 +381,7 @@ class TestCurrentTo:
     @given(value = floats(allow_nan = False, allow_infinity = False, max_value = 1000, min_value = -1000),
            unit = sampled_from(elements = units_list),
            inplace = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, inplace):
         if abs(value) >= 1e-10:
             current = Current(value = value, unit = unit)

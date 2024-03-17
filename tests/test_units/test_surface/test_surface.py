@@ -15,7 +15,7 @@ class TestSurfaceInit:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         surface = Surface(value = value, unit = unit)
 
@@ -50,7 +50,7 @@ class TestSurfaceRepr:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         surface = Surface(value = value, unit = unit)
 
@@ -66,7 +66,7 @@ class TestSurfaceFormat:
            unit = sampled_from(elements = units_list),
            total_digits = integers(min_value = 1, max_value = 10),
            decimal_digits = integers(min_value = 1, max_value = 10))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, total_digits, decimal_digits):
         surface = Surface(value = value, unit = unit)
 
@@ -80,7 +80,7 @@ class TestSurfaceAbs:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         surface = Surface(value = value, unit = unit)
 
@@ -109,7 +109,7 @@ class TestSurfaceAdd:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         surface_1 = Surface(value = value_1, unit = unit_1)
         surface_2 = Surface(value = value_2, unit = unit_2)
@@ -135,7 +135,7 @@ class TestSurfaceSub:
            unit_1 = sampled_from(elements = units_list),
            value_2 = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit_2 = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value_1, unit_1, value_2, unit_2):
         surface_1 = Surface(value = value_1, unit = unit_1)
         surface_2 = Surface(value = value_2, unit = unit_2)
@@ -167,7 +167,7 @@ class TestSurfaceMul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         surface = Surface(value = value, unit = unit)
         result = surface*multiplier
@@ -197,7 +197,7 @@ class TestSurfaceRmul:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            multiplier = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, multiplier):
         surface = Surface(value = value, unit = unit)
         result = multiplier*surface
@@ -228,7 +228,7 @@ class TestSurfaceTruediv:
            unit = sampled_from(elements = units_list),
            divider = one_of(floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
                             surfaces()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, divider):
         surface = Surface(value = value, unit = unit)
 
@@ -404,7 +404,7 @@ class TestSurfaceTo:
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list),
            inplace = booleans())
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit, inplace):
         if abs(value) >= 1e-10:
             surface = Surface(value = value, unit = unit)

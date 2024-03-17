@@ -246,7 +246,7 @@ class TestSpurExternalTorque:
     @mark.genuine
     @given(external_torque = functions(like = lambda angular_position, angular_speed, time: Torque(1, 'Nm'),
                                        returns = torques()))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_property(self, external_torque):
         for gear in basic_gears:
             gear.external_torque = external_torque
