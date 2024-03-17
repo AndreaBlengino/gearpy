@@ -2,7 +2,7 @@ sensors
 =======
 
 
-.. currentmodule:: gearpy.sensors
+.. currentmodule:: gearpy.sensors.absolute_rotary_encoder
 .. autoclass:: gearpy.sensors.AbsoluteRotaryEncoder
    :members:
    :undoc-members:
@@ -10,8 +10,16 @@ sensors
    :no-index:
 
 
-.. currentmodule:: gearpy.sensors
+.. currentmodule:: gearpy.sensors.tachometer
 .. autoclass:: gearpy.sensors.Tachometer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-index:
+
+
+.. currentmodule:: gearpy.sensors.timer
+.. autoclass:: gearpy.sensors.Timer
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,3 +31,4 @@ sensors
 
    AbsoluteRotaryEncoder/index
    Tachometer/index
+   Timer/index

@@ -1,8 +1,0 @@
-time_variables
-==============
-
-
-.. currentmodule:: gearpy.mechanical_object.mechanical_objects
-
-.. autoproperty:: DCMotor.time_variables
-   :no-index:

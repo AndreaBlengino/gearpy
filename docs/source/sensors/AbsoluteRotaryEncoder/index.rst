@@ -2,8 +2,8 @@ AbsoluteRotaryEncoder
 =====================
 
 
-.. currentmodule:: gearpy.sensors
-.. autoclass:: gearpy.sensors.AbsoluteRotaryEncoder
+.. currentmodule:: gearpy.sensors.absolute_rotary_encoder
+.. autoclass:: gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder
    :members:
    :undoc-members:
    :show-inheritance:

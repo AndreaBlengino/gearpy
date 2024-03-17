@@ -1,4 +1,4 @@
-from gearpy.mechanical_object import SpurGear
+from gearpy.mechanical_objects import SpurGear
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.units import AngularPosition, InertiaMoment
 from hypothesis import given, settings

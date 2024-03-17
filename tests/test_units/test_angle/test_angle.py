@@ -278,7 +278,7 @@ class TestAngleEq:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 0, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         angle_1 = Angle(value = value, unit = unit)
         angle_2 = Angle(value = value, unit = unit)

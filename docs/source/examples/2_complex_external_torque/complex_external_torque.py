@@ -1,9 +1,9 @@
 # Import required packages, classes and functions
 
-from gearpy.mechanical_object import DCMotor, Flywheel, SpurGear
+from gearpy.mechanical_objects import DCMotor, Flywheel, SpurGear
 from gearpy.units import AngularSpeed, InertiaMoment, Torque, AngularPosition, TimeInterval, Time
 from gearpy.utils import add_fixed_joint, add_gear_mating
-from gearpy.transmission import Transmission
+from gearpy.powertrain import Powertrain
 from gearpy.solver import Solver
 import numpy as np
 
@@ -47,7 +47,7 @@ add_gear_mating(master = gear_5, slave = gear_6, efficiency = 0.9)
 
 def ext_torque(time, angular_position, angular_speed):
     return Torque(value = 200 +
-                          80*np.sin(2*np.pi/60*angular_position.to('rad').value) +
+                          80*angular_position.sin(frequency = 1/60) +
                           2*angular_speed.to('rad/s').value**2 +
                           20*np.sin(2*np.pi/3*time.to('sec').value),
                   unit = 'mNm')
@@ -55,7 +55,7 @@ def ext_torque(time, angular_position, angular_speed):
 gear_6.external_torque = ext_torque
 
 
-transmission = Transmission(motor = motor)
+powertrain = Powertrain(motor = motor)
 
 
 # Simulation Set Up
@@ -64,21 +64,20 @@ gear_6.angular_position = AngularPosition(0, 'rad')
 gear_6.angular_speed = AngularSpeed(0, 'rad/s')
 
 
-solver = Solver(transmission = transmission)
+solver = Solver(powertrain = powertrain)
 solver.run(time_discretization = TimeInterval(0.5, 'sec'),
            simulation_time = TimeInterval(60, 'sec'))
 
 
 # Result Analysis
 
-transmission.snapshot(target_time = Time(10, 'sec'),
-                      angular_position_unit = 'rot',
-                      torque_unit = 'mNm',
-                      driving_torque_unit = 'mNm',
-                      load_torque_unit = 'mNm')
+powertrain.snapshot(target_time = Time(10, 'sec'),
+                    angular_position_unit = 'rot',
+                    torque_unit = 'mNm',
+                    driving_torque_unit = 'mNm',
+                    load_torque_unit = 'mNm')
 
-
-transmission.plot(elements = ['gear 6', motor],
-                  variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
-                  torque_unit = 'mNm',
-                  figsize = (8, 6))
+powertrain.plot(elements = ['gear 6', motor],
+                variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
+                torque_unit = 'mNm',
+                figsize = (8, 6))

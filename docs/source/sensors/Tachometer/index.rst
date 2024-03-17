@@ -2,8 +2,8 @@ Tachometer
 ==========
 
 
-.. currentmodule:: gearpy.sensors
-.. autoclass:: gearpy.sensors.Tachometer
+.. currentmodule:: gearpy.sensors.tachometer
+.. autoclass:: gearpy.sensors.tachometer.Tachometer
    :members:
    :undoc-members:
    :show-inheritance:

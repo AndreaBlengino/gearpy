@@ -1,7 +1,10 @@
 ### System in Analysis
 
-The mechanical transmission to be studied is the one described in the 
-**2 - Complex External Torque** example.  
+The complete example code is available
+[here](https://github.com/AndreaBlengino/gearpy/blob/master/docs/source/examples/4_dc_motor_electric_analysis/dc_motor_electric_analysis.py).  
+The mechanical powertrain to be studied is the one described in the 
+[2 - Complex External Torque](https://gearpy.readthedocs.io/en/latest/examples/2_complex_external_torque/index.html) 
+example.  
 
 ### Model Set Up
 
@@ -27,23 +30,23 @@ The remaining set up of the model stay the same.
 We can get a snapshot of the system at a particular time of interest:
 
 ```python
-transmission.snapshot(target_time = Time(10, 'sec'),
-                      torque_unit = 'mNm',
-                      driving_torque_unit = 'mNm',
-                      load_torque_unit = 'mNm')
+powertrain.snapshot(target_time = Time(10, 'sec'),
+                    torque_unit = 'mNm',
+                    driving_torque_unit = 'mNm',
+                    load_torque_unit = 'mNm')
 ```
 
 ```text
-Mechanical Transmission Status at Time = 10 sec
+Mechanical Powertrain Status at Time = 10 sec
           angular position (rad)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (mNm)  driving torque (mNm)  load torque (mNm) electric current (A)  pwm
-motor               11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912              0.79574  1.0
-flywheel            11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912                          
-gear 1              11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912                          
-gear 2               1438.785852             171.980089                        0.626490      2.040811              8.936107           6.895297                          
-gear 3               1438.785852             171.980089                        0.626490      2.040811              8.936107           6.895297                          
-gear 4                239.797642              28.663348                        0.104415      6.883200             48.254979          41.371780                          
-gear 5                239.797642              28.663348                        0.104415      6.883200             48.254979          41.371780                          
-gear 6                 47.959528               5.732670                        0.020883     10.288508            217.147407         206.858899                               
+motor               11510.286813            1375.840709                        5.011918      0.058805              1.241126           1.182321              0.79574  1.0
+flywheel            11510.286813            1375.840709                        5.011918      0.058805              1.241126           1.182321                          
+gear 1              11510.286813            1375.840709                        5.011918      0.058805              1.241126           1.182321                          
+gear 2               1438.785852             171.980089                        0.626490      0.423395              8.936107           8.512712                          
+gear 3               1438.785852             171.980089                        0.626490      0.423395              8.936107           8.512712                          
+gear 4                239.797642              28.663348                        0.104415      2.286335             48.254979          45.968644                          
+gear 5                239.797642              28.663348                        0.104415      2.286335             48.254979          45.968644                          
+gear 6                 47.959528               5.732670                        0.020883     10.288508            217.147407         206.858899                                                         
 ```
 
 We can get a more general view of the system by plotting the time 
@@ -51,15 +54,15 @@ variables and focus the plot only on interesting elements and variables.
 We can also specify a more convenient unit to use when plotting torques:
 
 ```python
-transmission.plot(figsize = (12, 10),
-                  elements = [motor, gear_6],
-                  angular_position_unit = 'rot',
-                  torque_unit = 'mNm',
-                  variables = ['angular position', 'angular speed', 'driving torque', 'load torque', 'torque',
-                               'electric current'])
+powertrain.plot(figsize = (12, 10),
+                elements = [motor, gear_6],
+                angular_position_unit = 'rot',
+                torque_unit = 'mNm',
+                variables = ['angular position', 'angular speed', 'driving torque', 'load torque', 'torque',
+                             'electric current'])
 ```
 
-![](images/plot_1.png)
+![](images/plot.png)
 
 We can appreciate how the electric current absorbed by the DC motor 
 varies over time, and in particular there is a peak in absorption at the 

@@ -1,12 +1,15 @@
 ### System in Analysis
 
-The mechanical transmission to be studied is the one described in the 
-**1 - Simple Transmission Chain** example.
+The complete example code is available 
+[here](https://github.com/AndreaBlengino/gearpy/blob/master/docs/source/examples/2_complex_external_torque/complex_external_torque.py).  
+The mechanical powertrain to be studied is the one described in the 
+[1 - Simple Powertrain](https://gearpy.readthedocs.io/en/latest/examples/1_simple_powertrain/index.html) 
+example.
 
 ### Model Set Up
 
 We want to study the effect of a more complex external torque applied 
-to the last gear in the transmission. This complex torque has 4 main 
+to the last gear in the powertrain. This complex torque has 4 main 
 components:
 
   1. a 200 mNm constant value
@@ -24,7 +27,7 @@ import numpy as np
 
 def ext_torque(time, angular_position, angular_speed):
     return Torque(value = 200 +
-                          80*np.sin(2*np.pi/60*angular_position.to('rad').value) +
+                          80*angular_position.sin(frequency = 1/60) +
                           2*angular_speed.to('rad/s').value**2 +
                           20*np.sin(2*np.pi/3*time.to('sec').value),
                   unit = 'mNm')
@@ -39,24 +42,24 @@ The remaining set up of the model stay the same.
 We can get a snapshot of the system at a particular time of interest:
 
 ```python
-transmission.snapshot(target_time = Time(10, 'sec'),
-                      angular_position_unit = 'rot',
-                      torque_unit = 'mNm',
-                      driving_torque_unit = 'mNm',
-                      load_torque_unit = 'mNm')
+powertrain.snapshot(target_time = Time(10, 'sec'),
+                    angular_position_unit = 'rot',
+                    torque_unit = 'mNm',
+                    driving_torque_unit = 'mNm',
+                    load_torque_unit = 'mNm')
 ```
 
 ```text
-Mechanical Transmission Status at Time = 10 sec
+Mechanical Powertrain Status at Time = 10 sec
           angular position (rot)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (mNm)  driving torque (mNm)  load torque (mNm)  pwm
-motor                1831.919043            1375.840709                        5.011918      0.379214              1.241126           0.861912  1.0
-flywheel             1831.919043            1375.840709                        5.011918      0.379214              1.241126           0.861912     
-gear 1               1831.919043            1375.840709                        5.011918      0.379214              1.241126           0.861912     
-gear 2                228.989880             171.980089                        0.626490      2.040811              8.936107           6.895297     
-gear 3                228.989880             171.980089                        0.626490      2.040811              8.936107           6.895297     
-gear 4                 38.164980              28.663348                        0.104415      6.883200             48.254979          41.371780     
-gear 5                 38.164980              28.663348                        0.104415      6.883200             48.254979          41.371780     
-gear 6                  7.632996               5.732670                        0.020883     10.288508            217.147407         206.858899          
+motor                1831.919043            1375.840709                        5.011918      0.058805              1.241126           1.182321  1.0
+flywheel             1831.919043            1375.840709                        5.011918      0.058805              1.241126           1.182321     
+gear 1               1831.919043            1375.840709                        5.011918      0.058805              1.241126           1.182321     
+gear 2                228.989880             171.980089                        0.626490      0.423395              8.936107           8.512712     
+gear 3                228.989880             171.980089                        0.626490      0.423395              8.936107           8.512712     
+gear 4                 38.164980              28.663348                        0.104415      2.286335             48.254979          45.968644     
+gear 5                 38.164980              28.663348                        0.104415      2.286335             48.254979          45.968644     
+gear 6                  7.632996               5.732670                        0.020883     10.288508            217.147407         206.858899               
 ```
 
 We can get a more general view of the system by plotting the time 
@@ -64,13 +67,13 @@ variables and focus the plot only on interesting elements and variables.
 We can also specify a more convenient unit to use when plotting torques:
 
 ```python
-transmission.plot(elements = ['gear 6', motor],
-                  variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
-                  torque_unit = 'mNm',
-                  figsize = (8, 6))
+powertrain.plot(elements = ['gear 6', motor],
+                variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
+                torque_unit = 'mNm',
+                figsize = (8, 6))
 ```
 
-![](images/plot_1.png)
+![](images/plot.png)
 
 We can appreciate the complex shape of the load torque and its effect on
 the system. There is a start up transient up until 10 seconds from the 

@@ -1,7 +1,10 @@
 ### System in Analysis
 
-The mechanical transmission to be studied is the one described in the 
-**2 - Complex External Torque** example.  
+The complete example code is available
+[here](https://github.com/AndreaBlengino/gearpy/blob/master/docs/source/examples/3_gear_structural_analysis/gear_structural_analysis.py).  
+The mechanical powertrain to be studied is the one described in the 
+[2 - Complex External Torque](https://gearpy.readthedocs.io/en/latest/examples/2_complex_external_torque/index.html) 
+example.  
 The teeth of all gears must be verified for static bending and contact 
 stress with a safety factor **1.5**.  
 
@@ -60,22 +63,22 @@ The remaining set up of the model stay the same.
 We can get a snapshot of the system at a particular time of interest:
 
 ```python
-transmission.snapshot(target_time = Time(10, 'sec'),
-                      torque_unit = 'mNm',
-                      driving_torque_unit = 'mNm',
-                      load_torque_unit = 'mNm')
+powertrain.snapshot(target_time = Time(10, 'sec'),
+                    torque_unit = 'mNm',
+                    driving_torque_unit = 'mNm',
+                    load_torque_unit = 'mNm')
 ```
 
 ```text
-Mechanical Transmission Status at Time = 10 sec
+Mechanical Powertrain Status at Time = 10 sec
           angular position (rad)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (mNm)  driving torque (mNm)  load torque (mNm) tangential force (N) bending stress (MPa) contact stress (MPa)  pwm
-motor               11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912                                                                 1.0
-flywheel            11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912                                                                    
-gear 1              11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912             0.172382             0.085762            12.916978     
-gear 2               1438.785852             171.980089                        0.626490      2.040811              8.936107           6.895297             0.223403             0.051239            14.704783     
-gear 3               1438.785852             171.980089                        0.626490      2.040811              8.936107           6.895297             0.919373             0.304933            24.803432     
-gear 4                239.797642              28.663348                        0.104415      6.883200             48.254979          41.371780             1.072333             0.169807            26.787411     
-gear 5                239.797642              28.663348                        0.104415      6.883200             48.254979          41.371780             4.137178             1.029149            46.213185     
+motor               11510.286813            1375.840709                        5.011918      0.058805              1.241126           1.182321                                                                 1.0
+flywheel            11510.286813            1375.840709                        5.011918      0.058805              1.241126           1.182321                                                                    
+gear 1              11510.286813            1375.840709                        5.011918      0.058805              1.241126           1.182321             0.236464             0.117644            15.128545     
+gear 2               1438.785852             171.980089                        0.626490      0.423395              8.936107           8.512712             0.223403             0.051239            14.704783     
+gear 3               1438.785852             171.980089                        0.626490      0.423395              8.936107           8.512712             1.135028              0.37646            27.559369     
+gear 4                239.797642              28.663348                        0.104415      2.286335             48.254979          45.968644             1.072333             0.169807            26.787411     
+gear 5                239.797642              28.663348                        0.104415      2.286335             48.254979          45.968644             4.596864             1.143499            48.712974     
 gear 6                 47.959528               5.732670                        0.020883     10.288508            217.147407         206.858899             4.342948             0.532224            47.348488     
 ```
 
@@ -84,12 +87,12 @@ variables and focus the plot only on interesting elements and variables.
 We can also specify a more convenient unit to use when plotting torques:
 
 ```python
-transmission.plot(figsize = (12, 8),
-                  elements = [gear_1, gear_2, gear_3, gear_4, gear_5, gear_6],
-                  angular_position_unit = 'rot',
-                  torque_unit = 'mNm',
-                  variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
-                               'contact stress'])
+powertrain.plot(figsize = (12, 8),
+                elements = [gear_1, gear_2, gear_3, gear_4, gear_5, gear_6],
+                angular_position_unit = 'rot',
+                torque_unit = 'mNm',
+                variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
+                             'contact stress'])
 ```
 
 ![](images/plot_1.png)
@@ -102,12 +105,12 @@ gears, and increase in the last gears, so we can draw a more clean plot
 and focus on the last two gears only:
 
 ```python
-transmission.plot(figsize = (12, 8),
-                  elements = [gear_5, gear_6],
-                  angular_position_unit = 'rot',
-                  torque_unit = 'mNm',
-                  variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
-                               'contact stress'])
+powertrain.plot(figsize = (12, 8),
+                elements = [gear_5, gear_6],
+                angular_position_unit = 'rot',
+                torque_unit = 'mNm',
+                variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
+                             'contact stress'])
 ```
 
 ![](images/plot_2.png)

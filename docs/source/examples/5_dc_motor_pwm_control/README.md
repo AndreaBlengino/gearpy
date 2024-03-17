@@ -1,13 +1,16 @@
 ### System in Analysis
 
-The mechanical transmission to be studied is the one described in the 
-**4 - DC Motor Electric Analysis** example.  
+The complete example code is available
+[here](https://github.com/AndreaBlengino/gearpy/blob/master/docs/source/examples/5_dc_motor_pwm_control/dc_motor_pwm_control.py).  
+The mechanical powertrain to be studied is the one described in the 
+[4 - DC Motor Electric Analysis](https://gearpy.readthedocs.io/en/latest/examples/4_dc_motor_electric_analysis/index.html) 
+example.  
 In that example, the motor absorbs its *maximum electric current* at the
 start up, 5 A, which may be too much for the system. Such a high current
 may demagnetize the magnet inside the motor itself, so we want to keep 
 the absorbed current lower to prevent this issue. In order to do that,
 we can control the motor supply voltage through the PWM.  
-This control can be also used to make the transmission reach a specific
+This control can be also used to make the powertrain reach a specific
 target position.
 
 ### Model Set Up
@@ -15,16 +18,16 @@ target position.
 We can start by limiting the start up absorbed current through a rule 
 that maintains the PWM proportional to the angular position of a gear, 
 for example the *gear 6*, to which is attached an encoder that measure
-the gear angular position: 
+the gear angular position:
 
 ```python
 from gearpy.sensors import AbsoluteRotaryEncoder
-from gearpy.motor_control import StartProportionalToAngularPosition
+from gearpy.motor_control.rules import StartProportionalToAngularPosition
 
 encoder = AbsoluteRotaryEncoder(target = gear_6)
 
 start_1 = StartProportionalToAngularPosition(encoder = encoder,
-                                             transmission = transmission,
+                                             powertrain = powertrain,
                                              target_angular_position = AngularPosition(10, 'rot'),
                                              pwm_min_multiplier = 5)
 ```
@@ -37,7 +40,7 @@ This rule has to be passed to the PWM control:
 ```python
 from gearpy.motor_control import PWMControl
 
-motor_control_1 = PWMControl(transmission = transmission)
+motor_control_1 = PWMControl(powertrain = powertrain)
 motor_control_1.add_rule(rule = start_1)
 ``` 
 
@@ -48,7 +51,7 @@ motor control object the the solver at instantiation, the remaining set
 up stay the same:
 
 ```python
-solver = Solver(transmission = transmission, motor_control = motor_control_1)
+solver = Solver(powertrain = powertrain, motor_control = motor_control_1)
 ```
 
 ### Results Analysis
@@ -58,12 +61,12 @@ and focus the plot only on interesting elements and variables. We can
 also specify a more convenient unit to use when plotting torques:
 
 ```python
-transmission.plot(figsize = (12, 8),
-                  elements = ['motor', 'gear 6'],
-                  angular_position_unit = 'rot',
-                  torque_unit = 'mNm',
-                  variables = ['angular position', 'angular speed', 'angular acceleration',
-                               'driving torque', 'load torque', 'torque', 'electric current', 'pwm'])
+powertrain.plot(figsize = (12, 8),
+                elements = ['motor', 'gear 6'],
+                angular_position_unit = 'rot',
+                torque_unit = 'mNm',
+                variables = ['angular position', 'angular speed', 'angular acceleration',
+                             'driving torque', 'load torque', 'torque', 'electric current', 'pwm'])
 ```
 
 ![](images/plot_1.png)
@@ -83,6 +86,7 @@ then we can replace the previous rule with another one, which lets us
 better control the electric current:
 
 ```python
+from gearpy.motor_control.rules import StartLimitCurrent
 from gearpy.sensors import Tachometer
 
 tachometer = Tachometer(target = motor)
@@ -101,10 +105,10 @@ Moreover, we want to add a second rule to make the *gear 6* reach a
 specific final position and stay there:
 
 ```python
-from gearpy.motor_control import ReachAngularPosition
+from gearpy.motor_control.rules import ReachAngularPosition
 
 reach_position = ReachAngularPosition(encoder = encoder,
-                                      transmission = transmission,
+                                      powertrain = powertrain,
                                       target_angular_position = AngularPosition(40, 'rot'),
                                       braking_angle = Angle(10, 'rot'))
 ```
@@ -115,7 +119,7 @@ system will begin to brake 10 rotation before the target.
 Finally, we have to add this two rules to a new motor control:
 
 ```python
-motor_control_2 = PWMControl(transmission = transmission)
+motor_control_2 = PWMControl(powertrain = powertrain)
 motor_control_2.add_rule(rule = start_2)
 motor_control_2.add_rule(rule = reach_position)
 ``` 
@@ -126,9 +130,9 @@ We have to reset the previous simulation result and update the solver
 instantiation with the new motor control:
 
 ```python
-transmission.reset()
+powertrain.reset()
 
-solver = Solver(transmission = transmission, motor_control = motor_control_2)
+solver = Solver(powertrain = powertrain, motor_control = motor_control_2)
 ```
 
 The remaining set up of the model stay the same.
@@ -138,12 +142,12 @@ The remaining set up of the model stay the same.
 We can get the updated plot with the same code:
 
 ```python
-transmission.plot(figsize = (12, 8),
-                  elements = ['motor', 'gear 6'],
-                  angular_position_unit = 'rot',
-                  torque_unit = 'mNm',
-                  variables = ['angular position', 'angular speed', 'angular acceleration',
-                               'driving torque', 'load torque', 'torque', 'electric current', 'pwm'])
+powertrain.plot(figsize = (12, 8),
+                elements = ['motor', 'gear 6'],
+                angular_position_unit = 'rot',
+                torque_unit = 'mNm',
+                variables = ['angular position', 'angular speed', 'angular acceleration',
+                             'driving torque', 'load torque', 'torque', 'electric current', 'pwm'])
 ```
 
 ![](images/plot_2.png)

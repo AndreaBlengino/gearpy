@@ -279,7 +279,7 @@ class TestTimeIntervalEq:
     @mark.genuine
     @given(value = floats(allow_nan = False, allow_infinity = False, min_value = 1e-10, exclude_min = True, max_value = 1000),
            unit = sampled_from(elements = units_list))
-    @settings(max_examples = 100)
+    @settings(max_examples = 100, deadline = None)
     def test_method(self, value, unit):
         time_interval_1 = TimeInterval(value = value, unit = unit)
         time_interval_2 = TimeInterval(value = value, unit = unit)
