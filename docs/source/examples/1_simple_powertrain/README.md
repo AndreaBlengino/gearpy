@@ -54,7 +54,7 @@ gear_6 = SpurGear(name = 'gear 6',
 Then it is necessary to specify the connection types between the 
 components. We choose to study a non-ideal powertrain so, in order to 
 take into account power loss in matings due to friction, we specify a 
-gear mating efficiency below `$100\%$`:
+`$90\%$` gear mating efficiency:
 
 ```python
 from gearpy.utils import add_fixed_joint, add_gear_mating
@@ -127,14 +127,14 @@ powertrain.snapshot(target_time = Time(10, 'sec'))
 ```text
 Mechanical Powertrain Status at Time = 10 sec
           angular position (rad)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (Nm)  driving torque (Nm)  load torque (Nm)  pwm
-motor                9714.908984            1119.894923                        1.085094     0.000787             0.002871          0.002083  1.0
-flywheel             9714.908984            1119.894923                        1.085094     0.000787             0.002871          0.002083     
-gear 1               9714.908984            1119.894923                        1.085094     0.000787             0.002871          0.002083     
-gear 2               1214.363623             139.986865                        0.135637     0.004001             0.020668          0.016667     
-gear 3               1214.363623             139.986865                        0.135637     0.004001             0.020668          0.016667     
-gear 4                202.393937              23.331144                        0.022606     0.011606             0.111606          0.100000     
-gear 5                202.393937              23.331144                        0.022606     0.011606             0.111606          0.100000     
-gear 6                 40.478787               4.666229                        0.004521     0.002227             0.502227          0.500000          
+motor                9714.908984            1119.894923                        1.085094     0.000013             0.002871          0.002858  1.0
+flywheel             9714.908984            1119.894923                        1.085094     0.000013             0.002871          0.002858     
+gear 1               9714.908984            1119.894923                        1.085094     0.000013             0.002871          0.002858     
+gear 2               1214.363623             139.986865                        0.135637     0.000092             0.020668          0.020576     
+gear 3               1214.363623             139.986865                        0.135637     0.000092             0.020668          0.020576     
+gear 4                202.393937              23.331144                        0.022606     0.000495             0.111606          0.111111     
+gear 5                202.393937              23.331144                        0.022606     0.000495             0.111606          0.111111     
+gear 6                 40.478787               4.666229                        0.004521     0.002227             0.502227          0.500000               
 ```
 
 The default unit used for torques are not so convenient in this case, so 
@@ -151,14 +151,14 @@ powertrain.snapshot(target_time = Time(10, 'sec'),
 ```text
 Mechanical Powertrain Status at Time = 10 sec
           angular position (rot)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (mNm)  driving torque (mNm)  load torque (mNm)  pwm
-motor                1546.175787            1119.894923                        1.085094      0.787194              2.870527           2.083333  1.0
-flywheel             1546.175787            1119.894923                        1.085094      0.787194              2.870527           2.083333     
-gear 1               1546.175787            1119.894923                        1.085094      0.787194              2.870527           2.083333     
-gear 2                193.271973             139.986865                        0.135637      4.001131             20.667798          16.666667     
-gear 3                193.271973             139.986865                        0.135637      4.001131             20.667798          16.666667     
-gear 4                 32.211996              23.331144                        0.022606     11.606109            111.606109         100.000000     
-gear 5                 32.211996              23.331144                        0.022606     11.606109            111.606109         100.000000     
-gear 6                  6.442399               4.666229                        0.004521      2.227489            502.227489         500.000000          
+motor                1546.175787            1119.894923                        1.085094      0.012731              2.870527           2.857796  1.0
+flywheel             1546.175787            1119.894923                        1.085094      0.012731              2.870527           2.857796     
+gear 1               1546.175787            1119.894923                        1.085094      0.012731              2.870527           2.857796     
+gear 2                193.271973             139.986865                        0.135637      0.091666             20.667798          20.576132     
+gear 3                193.271973             139.986865                        0.135637      0.091666             20.667798          20.576132     
+gear 4                 32.211996              23.331144                        0.022606      0.494998            111.606109         111.111111     
+gear 5                 32.211996              23.331144                        0.022606      0.494998            111.606109         111.111111     
+gear 6                  6.442399               4.666229                        0.004521      2.227489            502.227489         500.000000                    
 ```
 
 Notice that the load torque applied on the *gear 6* is exactly the 
@@ -205,11 +205,4 @@ analysing the time snapshot: at 10 seconds the system is almost in a
 stationary state.  
 We can see that, as the time passes, the driving torque on *gear 6* 
 equals the constant load torque and, as a results, the net torque on the
-gear becomes close to zero.  
-Notice that the driving torque developed by the motor does not equals 
-the load torque: a difference between the two torque is established. 
-This is due to the fact we used a non-optimal gear matings 
-*gear 1*-*gear 2*, *gear 3*-*gear 4* and *gear 5*-*gear 6*, specifying 
-a `$90\%$` efficiency in all cases. As a result, the motor must develop 
-a torque slightly higher than what the load requires, in order to 
-overcome the power loss for friction in the gear matings.
+gear becomes close to zero.

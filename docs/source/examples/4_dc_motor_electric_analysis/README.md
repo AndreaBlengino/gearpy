@@ -39,14 +39,14 @@ powertrain.snapshot(target_time = Time(10, 'sec'),
 ```text
 Mechanical Powertrain Status at Time = 10 sec
           angular position (rad)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (mNm)  driving torque (mNm)  load torque (mNm) electric current (A)  pwm
-motor               11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912              0.79574  1.0
-flywheel            11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912                          
-gear 1              11510.286813            1375.840709                        5.011918      0.379214              1.241126           0.861912                          
-gear 2               1438.785852             171.980089                        0.626490      2.040811              8.936107           6.895297                          
-gear 3               1438.785852             171.980089                        0.626490      2.040811              8.936107           6.895297                          
-gear 4                239.797642              28.663348                        0.104415      6.883200             48.254979          41.371780                          
-gear 5                239.797642              28.663348                        0.104415      6.883200             48.254979          41.371780                          
-gear 6                 47.959528               5.732670                        0.020883     10.288508            217.147407         206.858899                               
+motor               11510.286813            1375.840709                        5.011918      0.058805              1.241126           1.182321              0.79574  1.0
+flywheel            11510.286813            1375.840709                        5.011918      0.058805              1.241126           1.182321                          
+gear 1              11510.286813            1375.840709                        5.011918      0.058805              1.241126           1.182321                          
+gear 2               1438.785852             171.980089                        0.626490      0.423395              8.936107           8.512712                          
+gear 3               1438.785852             171.980089                        0.626490      0.423395              8.936107           8.512712                          
+gear 4                239.797642              28.663348                        0.104415      2.286335             48.254979          45.968644                          
+gear 5                239.797642              28.663348                        0.104415      2.286335             48.254979          45.968644                          
+gear 6                 47.959528               5.732670                        0.020883     10.288508            217.147407         206.858899                                                         
 ```
 
 We can get a more general view of the system by plotting the time 
@@ -62,7 +62,7 @@ powertrain.plot(figsize = (12, 10),
                              'electric current'])
 ```
 
-![](images/plot_1.png)
+![](images/plot.png)
 
 We can appreciate how the electric current absorbed by the DC motor 
 varies over time, and in particular there is a peak in absorption at the 
