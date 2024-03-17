@@ -1,3 +1,5 @@
+![](https://github.com/AndreaBlengino/gearpy/blob/master/docs/source/_static/logo.png?raw=true)
+
 # Powertrain Analysis
 
 [![PyPi](https://img.shields.io/pypi/v/gearpy)](https://pypi.org/project/gearpy/)
