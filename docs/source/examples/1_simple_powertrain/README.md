@@ -1,7 +1,7 @@
 ### System in Analysis
 
 The complete example code is available 
-[here](https://github.com/AndreaBlengino/gearpy/blob/master/docs/source/examples/1_simple_transmission_chain/simple_transmission_chain.py).  
+[here](https://github.com/AndreaBlengino/gearpy/blob/master/docs/source/examples/1_simple_powertrain/simple_powertrain.py).  
 The mechanical powertrain to be studied is reported in the image below:
 
 ![](images/scheme.png)
