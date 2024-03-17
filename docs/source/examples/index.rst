@@ -11,3 +11,4 @@ Usage Examples
    5_dc_motor_pwm_control/index
    6_dc_motor_animation/index
    7_worm_and_helical_gears/index
+   8_multiple_simulation_concatenation/index
