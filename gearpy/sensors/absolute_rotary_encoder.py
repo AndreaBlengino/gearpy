@@ -1,9 +1,10 @@
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import AngularPosition
+from .sensor_base import SensorBase
 from typing import Optional, Union
 
 
-class AbsoluteRotaryEncoder:
+class AbsoluteRotaryEncoder(SensorBase):
     r"""``gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder`` object.
 
     Attributes

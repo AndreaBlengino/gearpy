@@ -1,9 +1,10 @@
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import AngularSpeed
+from .sensor_base import SensorBase
 from typing import Optional, Union
 
 
-class Tachometer:
+class Tachometer(SensorBase):
     r"""``gearpy.sensors.tachometer.Tachometer`` object.
 
     Attributes
