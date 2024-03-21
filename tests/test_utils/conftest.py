@@ -131,8 +131,8 @@ motor_control.add_rule(rule = rule)
 gear.external_torque = lambda angular_position, angular_speed, time: Torque(0, 'Nm')
 gear.angular_position = AngularPosition(0, 'rad')
 gear.angular_speed = AngularSpeed(0, 'rad/s')
-solver = Solver(powertrain = powertrain_1, motor_control = motor_control)
-solver.run(time_discretization = TimeInterval(2, 'sec'), simulation_time = TimeInterval(60, 'sec'))
+solver = Solver(powertrain = powertrain_1)
+solver.run(time_discretization = TimeInterval(2, 'sec'), simulation_time = TimeInterval(60, 'sec'), motor_control = motor_control)
 
 
 motor_2 = DCMotor(name = 'motor', no_load_speed = AngularSpeed(1000, 'rad/s'), maximum_torque = Torque(1, 'Nm'),

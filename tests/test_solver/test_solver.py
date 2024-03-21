@@ -1,9 +1,10 @@
 from gearpy.mechanical_objects import DCMotor, SpurGear
 from gearpy.motor_control import PWMControl
+from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain
 from gearpy.units import Torque, InertiaMoment, AngularSpeed, AngularPosition, TimeInterval
-from gearpy.utils import add_fixed_joint
+from gearpy.utils import add_fixed_joint, StopCondition
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import integers
 import numpy as np
@@ -61,24 +62,44 @@ class TestSolverRun:
         powertrain.elements[-1].angular_speed = initial_angular_speed
         powertrain.elements[-1].external_torque = lambda time, angular_position, angular_speed: Torque(0.001, 'Nm')
         motor_control = PWMControl(powertrain = powertrain)
-        solver = Solver(powertrain = powertrain, motor_control = motor_control)
+        encoder = AbsoluteRotaryEncoder(target = powertrain.elements[-1])
+        threshold = AngularPosition(1, 'deg')
+        stop_condition = StopCondition(sensor = encoder, threshold = threshold, operator = StopCondition.greater_than_or_equal_to)
+        solver = Solver(powertrain = powertrain)
         simulation_time_1 = time_discretization_1*simulation_steps_1
-        solver.run(time_discretization = time_discretization_1, simulation_time = simulation_time_1)
+        solver.run(time_discretization = time_discretization_1, simulation_time = simulation_time_1,
+                   motor_control = motor_control, stop_condition = stop_condition)
 
-        assert len(powertrain.time) == len(np.arange(time_discretization_1.value,
-                                                     simulation_time_1.value + time_discretization_1.value,
-                                                     time_discretization_1.value)) + 1
+        stopped = False
+        if encoder.get_value() >= threshold:
+            stopped = True
+            assert len(powertrain.time) <= len(np.arange(time_discretization_1.value,
+                                                         simulation_time_1.value + time_discretization_1.value,
+                                                         time_discretization_1.value)) + 1
+        else:
+            assert len(powertrain.time) == len(np.arange(time_discretization_1.value,
+                                                         simulation_time_1.value + time_discretization_1.value,
+                                                         time_discretization_1.value)) + 1
 
         time_discretization_2 = time_discretization_1*time_discretization_multiplier
         simulation_time_2 = time_discretization_2*simulation_steps_2
-        solver.run(time_discretization = time_discretization_2, simulation_time = simulation_time_2)
+        solver.run(time_discretization = time_discretization_2, simulation_time = simulation_time_2,
+                   motor_control = motor_control)
 
-        assert len(powertrain.time) == len(np.arange(time_discretization_1.value,
-                                                     simulation_time_1.value + time_discretization_1.value,
-                                                     time_discretization_1.value)) + \
-                                       len(np.arange(time_discretization_2.value,
-                                                     simulation_time_2.value + time_discretization_2.value,
-                                                     time_discretization_2.value)) + 1
+        if stopped:
+            assert len(powertrain.time) <= len(np.arange(time_discretization_1.value,
+                                                         simulation_time_1.value + time_discretization_1.value,
+                                                         time_discretization_1.value)) + \
+                                           len(np.arange(time_discretization_2.value,
+                                                         simulation_time_2.value + time_discretization_2.value,
+                                                         time_discretization_2.value)) + 1
+        else:
+            assert len(powertrain.time) == len(np.arange(time_discretization_1.value,
+                                                         simulation_time_1.value + time_discretization_1.value,
+                                                         time_discretization_1.value)) + \
+                                           len(np.arange(time_discretization_2.value,
+                                                         simulation_time_2.value + time_discretization_2.value,
+                                                          time_discretization_2.value)) + 1
 
 
     @mark.error
