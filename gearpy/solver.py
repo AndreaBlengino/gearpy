@@ -30,21 +30,16 @@ class Solver:
     TypeError
         - If ``powertrain`` is not an instance of ``Powertrain``,
         - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
-        - if an element of ``powertrain`` is not an instance of ``RotatingObject``,
-        - if ``motor_control`` is not an instance of ``MotorControlBase``.
+        - if an element of ``powertrain`` is not an instance of ``RotatingObject``.
     ValueError
         If ``powertrain.elements`` is an empty tuple.
 
     See Also
     --------
     :py:class:`gearpy.powertrain.Powertrain`
-    :py:class:`gearpy.motor_control.pwm_control.PWMControl`
     """
 
-    def __init__(self,
-                 powertrain: Powertrain,
-                 motor_control: Optional[MotorControlBase] = None,
-                 stop_condition: Optional[StopCondition] = None):
+    def __init__(self, powertrain: Powertrain):
         if not isinstance(powertrain, Powertrain):
             raise TypeError(f"Parameter 'powertrain' must be an instance of {Powertrain.__name__!r}.")
 
@@ -57,27 +52,27 @@ class Solver:
         if not all([isinstance(element, RotatingObject) for element in powertrain.elements]):
             raise TypeError(f"All elements of 'powertrain' must be instances of {RotatingObject.__name__!r}.")
 
-        if not isinstance(motor_control, MotorControlBase) and motor_control is not None:
-            raise TypeError(f"Parameter 'motor_control' must be an instance of {MotorControlBase.__name__!r}.")
-
         self.powertrain = powertrain
-        self.motor_control = motor_control
-        self.stop_condition = stop_condition
         self.__powertrain_is_locked = False
 
-    def run(self, time_discretization: TimeInterval, simulation_time: TimeInterval):
+    def run(self,
+            time_discretization: TimeInterval,
+            simulation_time: TimeInterval,
+            motor_control: Optional[MotorControlBase] = None,
+            stop_condition: Optional[StopCondition] = None):
         """Runs the powertrain simulation. \n
         The simulation is performed in several steps:
 
         - it computes the whole powertrain equivalent moment of inertia with respect to the last
           gear, by multiplying each element's moment of inertia, starting from the motor, by it gear ratio with respect
-          to the following element in the powertrain elements and sum them up
+          to the following element in the powertrain elements and sum them up,
         - for each time step and for each powertrain element, it computes:
 
-          - the angular position and angular speed, from the last element in the powertrain elements to the first one
+          - the angular position and angular speed, from the last element in the powertrain elements to the first one,
           - the driving torque, load torque, net torque, electrical current for motors (if computable), tangential
-            force, bending stress and contact stress for gears (if computable)
-          - the angular acceleration of each powertrain element.
+            force, bending stress and contact stress for gears (if computable), motor control rules (if available),
+            simulation stopping condition (if available),
+          - the angular acceleration of each powertrain element,
 
         - for each time step it performs a time integration to compute angular position and speed of the last element in
           the powertrain elements.
@@ -88,14 +83,20 @@ class Solver:
             Time discretization to be used for the simulation.
         simulation_time : TimeInterval
             Duration of the simulation.
+        motor_control : MotorControlBase, optional
+            Rules to control the powertrain motor.
+        stop_condition : StopCondition, optional
+            Solver simulation stopping condition.
 
         Raises
         ------
         TypeError
             - If ``time_discretization`` is not an instance of ``TimeInterval``,
             - if ``simulation_time`` is not an instance of ``TimeInterval``,
+            - if ``motor_control`` is not an instance of ``MotorControlBase``,
+            - if ``stop_condition`` is not an instance of ``StopCondition``,
             - if function ``external_torque`` of one gear in the powertrain elements does not return an instance of
-              ``Torque``.
+              ``Torque``,
         ValueError
             - If ``time_discretization`` is greater or equal to ``simulation_time``,
             - if function ``external_torque`` has not been defined for any gear of the powertrain.
@@ -108,6 +109,8 @@ class Solver:
         See Also
         --------
         :py:class:`gearpy.units.units.TimeInterval`
+        :py:class:`gearpy.motor_control.pwm_control.PWMControl`
+        :py:class:`gearpy.utils.StopCondition`
         """
         if not isinstance(time_discretization, TimeInterval):
             raise TypeError(f"Parameter 'time_discretization' must be an instance of {TimeInterval.__name__!r}.")
@@ -123,6 +126,12 @@ class Solver:
             raise ValueError("The function 'external_torque' has not been defined for any gear of the powertrain. "
                              "Add this function to a powertrain gear.")
 
+        if not isinstance(motor_control, MotorControlBase) and motor_control is not None:
+            raise TypeError(f"Parameter 'motor_control' must be an instance of {MotorControlBase.__name__!r}.")
+
+        if not isinstance(stop_condition, StopCondition) and stop_condition is not None:
+            raise TypeError(f"Parameter 'stop_condition' must be an instance of {StopCondition.__name__!r}.")
+
         self._compute_powertrain_inertia()
         if self.powertrain.time:
             initial_time = self.powertrain.time[-1]
@@ -131,15 +140,15 @@ class Solver:
             initial_time = Time(value = 0, unit = time_discretization.unit)
             final_time = initial_time + simulation_time + time_discretization
             self.powertrain.update_time(initial_time)
-            self._compute_powertrain_variables()
+            self._compute_powertrain_variables(motor_control = motor_control)
 
         for k in np.arange(initial_time.value + time_discretization.value, final_time.value, time_discretization.value):
 
             self.powertrain.update_time(Time(value = float(k), unit = time_discretization.unit))
             self._time_integration(time_discretization = time_discretization)
-            self._compute_powertrain_variables()
-            if self.stop_condition is not None:
-                if self.stop_condition.check_condition():
+            self._compute_powertrain_variables(motor_control = motor_control)
+            if stop_condition is not None:
+                if stop_condition.check_condition():
                     break
 
     def _compute_powertrain_inertia(self):
@@ -149,14 +158,14 @@ class Solver:
             self.powertrain_inertia_moment *= element.master_gear_ratio
             self.powertrain_inertia_moment += element.inertia_moment
 
-    def _compute_powertrain_variables(self):
+    def _compute_powertrain_variables(self, motor_control: Optional[MotorControlBase]):
 
         self._compute_angular_position_and_speed()
         self._check_powertrain_is_locked()
         if self.__powertrain_is_locked:
             self._compute_locked_powertrain_angular_speed_and_acceleration()
         self._compute_load_torque()
-        self._compute_motor_control()
+        self._compute_motor_control(motor_control = motor_control)
         self._compute_driving_torque()
         self._compute_torque()
         if not self.__powertrain_is_locked:
@@ -186,10 +195,10 @@ class Solver:
         self.powertrain.elements[i].angular_acceleration = \
                 gear_ratio*self.powertrain.elements[i + 1].angular_acceleration
 
-    def _compute_motor_control(self):
+    def _compute_motor_control(self, motor_control: Optional[MotorControlBase]):
 
-        if self.motor_control is not None:
-            self.motor_control.apply_rules()
+        if motor_control is not None:
+            motor_control.apply_rules()
 
     def _compute_driving_torque(self):
 
