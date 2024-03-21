@@ -1,13 +1,13 @@
 from .operator_base import OperatorBase
-from .operator import HigherThan, HigherThanOrEqualTo, EqualTo, LessThan, LessThanOrEqualTo
+from .operator import GreaterThan, GreaterThanOrEqualTo, EqualTo, LessThan, LessThanOrEqualTo
 from gearpy.sensors import SensorBase
 from gearpy.units import UnitBase
 
 
 class StopCondition:
 
-    higher_than = HigherThan()
-    higher_than_or_equal_to = HigherThanOrEqualTo()
+    greater_than = GreaterThan()
+    greater_than_or_equal_to = GreaterThanOrEqualTo()
     equal_to = EqualTo()
     less_than = LessThan()
     less_than_or_equal_to = LessThanOrEqualTo()

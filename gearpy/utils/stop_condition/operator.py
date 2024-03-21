@@ -2,14 +2,14 @@ from .operator_base import OperatorBase
 from gearpy.units import UnitBase
 
 
-class HigherThan(OperatorBase):
+class GreaterThan(OperatorBase):
 
     def __call__(self, sensor_value: UnitBase, threshold: UnitBase) -> bool:
         super().__call__(sensor_value = sensor_value, threshold = threshold)
         return sensor_value > threshold
 
 
-class HigherThanOrEqualTo(OperatorBase):
+class GreaterThanOrEqualTo(OperatorBase):
 
     def __call__(self, sensor_value: UnitBase, threshold: UnitBase) -> bool:
         super().__call__(sensor_value = sensor_value, threshold = threshold)
