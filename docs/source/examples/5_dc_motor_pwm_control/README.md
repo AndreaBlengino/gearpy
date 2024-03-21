@@ -6,7 +6,7 @@ The mechanical powertrain to be studied is the one described in the
 [4 - DC Motor Electric Analysis](https://gearpy.readthedocs.io/en/latest/examples/4_dc_motor_electric_analysis/index.html) 
 example.  
 In that example, the motor absorbs its *maximum electric current* at the
-start up, 5 A, which may be too much for the system. Such a high current
+start-up, 5 A, which may be too much for the system. Such a high current
 may demagnetize the magnet inside the motor itself, so we want to keep 
 the absorbed current lower to prevent this issue. In order to do that,
 we can control the motor supply voltage through the PWM.  
@@ -15,7 +15,7 @@ target position.
 
 ### Model Set Up
 
-We can start by limiting the start up absorbed current through a rule 
+We can start by limiting the start-up absorbed current through a rule 
 that maintains the PWM proportional to the angular position of a gear, 
 for example the *gear 6*, to which is attached an encoder that measure
 the gear angular position:
@@ -140,7 +140,7 @@ solver.run(time_discretization = TimeInterval(0.5, 'sec'),
            motor_control = motor_control_2)
 ```
 
-The remaining set up of the model stay the same.
+The remaining set-ups of the model stay the same.
 
 ### Results Analysis
 

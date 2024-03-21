@@ -14,7 +14,7 @@ components:
 
   1. a 200 mNm constant value
   2. a periodic component dependent on the last gear's angular position, 
-     with a 60 rad period and a 80 mNm amplitude, due to the presence of 
+     with a 60 rad period and an 80 mNm amplitude, due to the presence of 
      cams in the mechanism
   3. a component proportional to the square of the last gear's angular 
      speed, with a 2 mNm s²/rad², due to the effect of air friction
@@ -35,7 +35,7 @@ def ext_torque(time, angular_position, angular_speed):
 gear_6.external_torque = ext_torque
 ```
 
-The remaining set up of the model stay the same.
+The remaining set-ups of the model stay the same.
 
 ### Results Analysis
 
@@ -76,7 +76,7 @@ powertrain.plot(elements = ['gear 6', motor],
 ![](images/plot.png)
 
 We can appreciate the complex shape of the load torque and its effect on
-the system. There is a start up transient up until 10 seconds from the 
+the system. There is a start-up transient up until 10 seconds from the 
 simulation start, then the system reaches a dynamic equilibrium 
 condition, where there are fluctuations in the external torque, but the
 angular speed mean is constant.  

@@ -51,7 +51,7 @@ solver.run(time_discretization = TimeInterval(0.5, 'sec'),
            motor_control = motor_control_2)
 ```
 
-The remaining set up of the model stay the same.
+The remaining set-ups of the model stay the same.
 
 ### Results Analysis
 
