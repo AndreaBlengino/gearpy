@@ -13,6 +13,15 @@ class StopCondition:
     less_than_or_equal_to = LessThanOrEqualTo()
 
     def __init__(self, sensor: SensorBase, threshold: UnitBase, operator: OperatorBase):
+        if not isinstance(sensor, SensorBase):
+            raise TypeError(f"Parameter 'sensor' must be an instance of {SensorBase.__name__!r}.")
+
+        if not isinstance(threshold, UnitBase):
+            raise TypeError(f"Parameter 'threshold' must be an instance of {UnitBase.__name__!r}.")
+
+        if not isinstance(operator, OperatorBase):
+            raise TypeError(f"Parameter 'operator' must be an instance of {OperatorBase.__name__!r}.")
+
         self.__sensor = sensor
         self.__threshold = threshold
         self.__operator = operator
