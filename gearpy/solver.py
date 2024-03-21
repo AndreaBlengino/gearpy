@@ -2,6 +2,7 @@ from gearpy.mechanical_objects import RotatingObject, MotorBase, GearBase
 from gearpy.motor_control import MotorControlBase
 from gearpy.powertrain import Powertrain
 from gearpy.units import Time, TimeInterval, Torque, AngularSpeed, AngularAcceleration
+from gearpy.utils import StopCondition
 import numpy as np
 from typing import Optional
 
@@ -40,7 +41,10 @@ class Solver:
     :py:class:`gearpy.motor_control.pwm_control.PWMControl`
     """
 
-    def __init__(self, powertrain: Powertrain, motor_control: Optional[MotorControlBase] = None):
+    def __init__(self,
+                 powertrain: Powertrain,
+                 motor_control: Optional[MotorControlBase] = None,
+                 stop_condition: Optional[StopCondition] = None):
         if not isinstance(powertrain, Powertrain):
             raise TypeError(f"Parameter 'powertrain' must be an instance of {Powertrain.__name__!r}.")
 
@@ -58,6 +62,7 @@ class Solver:
 
         self.powertrain = powertrain
         self.motor_control = motor_control
+        self.stop_condition = stop_condition
         self.__powertrain_is_locked = False
 
     def run(self, time_discretization: TimeInterval, simulation_time: TimeInterval):
@@ -133,6 +138,9 @@ class Solver:
             self.powertrain.update_time(Time(value = float(k), unit = time_discretization.unit))
             self._time_integration(time_discretization = time_discretization)
             self._compute_powertrain_variables()
+            if self.stop_condition is not None:
+                if self.stop_condition.check_condition():
+                    break
 
     def _compute_powertrain_inertia(self):
 
