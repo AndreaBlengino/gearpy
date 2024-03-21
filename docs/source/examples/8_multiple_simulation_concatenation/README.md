@@ -43,10 +43,12 @@ motor_control_2.add_rule(rule = reach_position_2)
 
 It is important to not reset the previous results, since we want to 
 concatenate the new simulation results to these; so we only need to 
-update the solver instantiation with the new motor control:
+update the solver simulation parameters with the new motor control:
 
 ```python
-solver = Solver(powertrain = powertrain, motor_control = motor_control_2)
+solver.run(time_discretization = TimeInterval(0.5, 'sec'),
+           simulation_time = TimeInterval(100, 'sec'),
+           motor_control = motor_control_2)
 ```
 
 The remaining set up of the model stay the same.

@@ -87,9 +87,10 @@ motor_control.add_rule(rule = reach_position)
 gear_6.angular_position = AngularPosition(0, 'rad')
 gear_6.angular_speed = AngularSpeed(0, 'rad/s')
 
-solver = Solver(powertrain = powertrain, motor_control = motor_control)
+solver = Solver(powertrain = powertrain)
 solver.run(time_discretization = TimeInterval(0.5, 'sec'),
-           simulation_time = TimeInterval(100, 'sec'))
+           simulation_time = TimeInterval(100, 'sec'),
+           motor_control = motor_control)
 
 
 # Second Step Model Set Up
@@ -112,9 +113,9 @@ motor_control_2.add_rule(rule = reach_position_2)
 
 # Second Step Simulation Set Up
 
-solver = Solver(powertrain = powertrain, motor_control = motor_control_2)
 solver.run(time_discretization = TimeInterval(0.5, 'sec'),
-           simulation_time = TimeInterval(100, 'sec'))
+           simulation_time = TimeInterval(100, 'sec'),
+           motor_control = motor_control_2)
 
 
 # Result Analysis

@@ -47,11 +47,14 @@ motor_control_1.add_rule(rule = start_1)
 ### Simulation Set Up
 
 The only modification to the simulation set up consist of passing the 
-motor control object the the solver at instantiation, the remaining set 
-up stay the same:
+motor control object to the solver at simulation launch, the remaining 
+set-ups stay the same:
 
 ```python
-solver = Solver(powertrain = powertrain, motor_control = motor_control_1)
+solver = Solver(powertrain = powertrain)
+solver.run(time_discretization = TimeInterval(0.5, 'sec'),
+           simulation_time = TimeInterval(100, 'sec'),
+           motor_control = motor_control_1)
 ```
 
 ### Results Analysis
@@ -127,12 +130,14 @@ motor_control_2.add_rule(rule = reach_position)
 ### Simulation Set Up
 
 We have to reset the previous simulation result and update the solver
-instantiation with the new motor control:
+simulation parameters with the new motor control:
 
 ```python
 powertrain.reset()
 
-solver = Solver(powertrain = powertrain, motor_control = motor_control_2)
+solver.run(time_discretization = TimeInterval(0.5, 'sec'),
+           simulation_time = TimeInterval(100, 'sec'),
+           motor_control = motor_control_2)
 ```
 
 The remaining set up of the model stay the same.
