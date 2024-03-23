@@ -10,6 +10,14 @@ sensors
    :no-index:
 
 
+.. currentmodule:: gearpy.sensors.amperometer
+.. autoclass:: gearpy.sensors.Amperometer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-index:
+
+
 .. currentmodule:: gearpy.sensors.tachometer
 .. autoclass:: gearpy.sensors.Tachometer
    :members:
@@ -30,5 +38,6 @@ sensors
    :hidden:
 
    AbsoluteRotaryEncoder/index
+   Amperometer/index
    Tachometer/index
    Timer/index
