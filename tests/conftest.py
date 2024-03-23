@@ -1,6 +1,6 @@
 from gearpy.mechanical_objects import SpurGear, HelicalGear, DCMotor, Flywheel, MatingMaster, MatingSlave, WormGear, WormWheel
 from gearpy.mechanical_objects.mechanical_object_base import WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES, WORM_GEAR_AND_WHEEL_DATA
-from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
+from gearpy.sensors import AbsoluteRotaryEncoder, Amperometer, Tachometer, Timer
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
@@ -79,6 +79,7 @@ basic_solver.run(time_discretization = TimeInterval(1, 'sec'), simulation_time =
 
 basic_encoder = AbsoluteRotaryEncoder(target = basic_spur_gear_1)
 basic_tachometer = Tachometer(target = basic_spur_gear_1)
+basic_amperometer = Amperometer(target = basic_dc_motor_2)
 basic_timer = Timer(start_time = Time(0, 'sec'), duration = TimeInterval(5, 'sec'))
 
 
@@ -89,8 +90,9 @@ types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, 
                   Stress(1, 'Pa'), Surface(1, 'm^2'), Time(1, 'sec'),
                   TimeInterval(1, 'sec'), Torque(1, 'Nm'), Angle(1, 'rad'),
                   basic_dc_motor_1, basic_spur_gear_1, basic_helical_gear_1, basic_helical_gear_2, basic_flywheel,
-                  basic_solver, basic_powertrain, basic_encoder, basic_tachometer, basic_timer, basic_worm_gear_1,
-                  basic_worm_gear_2, basic_worm_wheel_1, basic_worm_wheel_2, MatingMaster, MatingSlave, SpurGear]
+                  basic_solver, basic_powertrain, basic_encoder, basic_amperometer, basic_tachometer, basic_timer,
+                  basic_worm_gear_1, basic_worm_gear_2, basic_worm_wheel_1, basic_worm_wheel_2, MatingMaster,
+                  MatingSlave, SpurGear]
 
 
 @composite
