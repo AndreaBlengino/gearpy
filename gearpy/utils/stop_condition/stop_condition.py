@@ -60,6 +60,7 @@ class StopCondition:
         See Also
         --------
         :py:class:`gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder`
+        :py:class:`gearpy.sensors.amperometer.Amperometer`
         :py:class:`gearpy.sensors.tachometer.Tachometer`
         """
         return self.__sensor
