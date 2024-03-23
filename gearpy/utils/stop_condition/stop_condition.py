@@ -119,4 +119,4 @@ class StopCondition:
         bool
             Whether stop condition is valid.
         """
-        return self.operator(self.sensor.get_value(), self.threshold)
+        return self.operator(sensor_value = self.sensor.get_value(), threshold = self.threshold)
