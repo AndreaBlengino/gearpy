@@ -7,10 +7,12 @@ from gearpy.utils import add_gear_mating, add_worm_gear_mating, add_fixed_joint
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import lists, floats, sampled_from, booleans, one_of, none, integers, tuples
 import matplotlib.pyplot as plt
+import os
 import pandas as pd
 from pytest import mark, raises
+import shutil
 from tests.conftest import dc_motors, spur_gears, flywheels, powertrains, basic_powertrain, solved_powertrains, \
-                           worm_gears, worm_wheels
+                           worm_gears, worm_wheels, paths
 from tests.test_units.test_time.conftest import times
 import warnings
 
@@ -278,3 +280,58 @@ class TestPowertrainPlot:
     def test_raises_value_error(self, powertrain_plot_value_error):
         with raises(ValueError):
             basic_powertrain.plot(**powertrain_plot_value_error)
+
+
+@mark.powertrain
+class TestPowertrainExportTimeVariables:
+
+
+    @mark.genuine
+    @given(solved_powertrain = solved_powertrains(),
+           folder_path = paths(),
+           time_unit = sampled_from(elements = list(Time._Time__UNITS.keys())),
+           angular_position_unit = sampled_from(elements = list(AngularPosition._AngularPosition__UNITS.keys())),
+           angular_speed_unit = sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())),
+           angular_acceleration_unit = sampled_from(elements = list(AngularAcceleration._AngularAcceleration__UNITS.keys())),
+           torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
+           driving_torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
+           load_torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
+           force_unit = sampled_from(elements = list(Force._Force__UNITS.keys())),
+           stress_unit = sampled_from(elements = list(Stress._Stress__UNITS.keys())),
+           current_unit = sampled_from(elements = list(Current._Current__UNITS.keys())))
+    @settings(max_examples = 10, deadline = None)
+    def test_function(self, solved_powertrain, folder_path, time_unit, angular_position_unit, angular_speed_unit,
+                      angular_acceleration_unit, torque_unit, driving_torque_unit, load_torque_unit, force_unit,
+                      stress_unit, current_unit):
+
+        try:
+
+            solved_powertrain.export_time_variables(folder_path = folder_path, time_unit = time_unit,
+                                                    angular_position_unit = angular_position_unit,
+                                                    angular_speed_unit = angular_speed_unit,
+                                                    angular_acceleration_unit = angular_acceleration_unit,
+                                                    torque_unit = torque_unit, driving_torque_unit = driving_torque_unit,
+                                                    load_torque_unit = load_torque_unit, force_unit = force_unit,
+                                                    stress_unit = stress_unit, current_unit = current_unit)
+            names = [element.name for element in solved_powertrain.elements]
+
+            assert os.path.exists(folder_path)
+            for file_name in os.listdir(folder_path):
+                assert os.path.isfile(os.path.join(folder_path, file_name))
+                assert file_name.endswith('.csv')
+                assert file_name.split('.')[0] in names
+
+        finally:
+            shutil.rmtree(os.path.join(*folder_path.split(os.sep)[:2]))
+
+
+    @mark.error
+    def test_raises_type_error(self, powertrain_export_time_variables_type_error):
+        with raises(TypeError):
+            basic_powertrain.export_time_variables(**powertrain_export_time_variables_type_error)
+
+
+    @mark.error
+    def test_raises_value_error(self):
+        with raises(ValueError):
+            basic_powertrain.export_time_variables(folder_path = '')

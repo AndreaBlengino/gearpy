@@ -264,7 +264,14 @@ def powertrains(draw, allow_motors_without_current = True, allow_motors_with_cur
 def solved_powertrains(draw):
     motor = draw(one_of(dc_motors(), dc_motors(current = True)))
     flywheel = draw(flywheels())
-    gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
+    worm_gear = WormGear(name = 'worm gear', n_starts = 1, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                         helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'),
+                         reference_diameter = Length(10, 'mm'))
+    worm_wheel = WormWheel(name = 'worm wheel', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                           helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'),
+                           module = Length(1, 'mm'), face_width = Length(10, 'mm'))
+    gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                      module = Length(1, 'mm'), face_width = Length(10, 'mm'))
     gear_2 = SpurGear(name = 'gear 2', n_teeth = 20, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
     non_structural_spur_gear_set = draw(lists(elements = spur_gears(), min_size = 2, max_size = 4))
     structural_spur_gear_set = draw(lists(elements = spur_gears(structural = True), min_size = 2, max_size = 4))
@@ -304,7 +311,9 @@ def solved_powertrains(draw):
     simulation_steps = draw(floats(min_value = 5, max_value = 50, allow_nan = False, allow_infinity = False))
 
     add_fixed_joint(master = motor, slave = flywheel)
-    add_fixed_joint(master = flywheel, slave = gears[0])
+    add_fixed_joint(master = flywheel, slave = worm_gear)
+    add_worm_gear_mating(master = worm_gear, slave = worm_wheel, friction_coefficient = 0.4)
+    add_fixed_joint(master = worm_wheel, slave = gears[0])
 
     for i in range(0, len(gears) - 1):
         if i%2 == 0:

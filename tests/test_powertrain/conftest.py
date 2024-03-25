@@ -175,3 +175,51 @@ motor_not_in_basic_powertrain = DCMotor(name = basic_powertrain.elements[0].name
                    {'figsize': (1, 1, 1)}])
 def powertrain_plot_value_error(request):
     return request.param
+
+
+powertrain_export_time_variables_type_error_1 = [{'folder_path': type_to_check} for type_to_check in types_to_check
+                                                 if not isinstance(type_to_check, str)]
+
+powertrain_export_time_variables_type_error_2 = [{'folder_path': './test_data', 'time_unit': type_to_check}
+                                                 for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+powertrain_export_time_variables_type_error_3 = [{'folder_path': './test_data', 'angular_position_unit': type_to_check}
+                                                 for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+powertrain_export_time_variables_type_error_4 = [{'folder_path': './test_data', 'angular_speed_unit': type_to_check}
+                                                 for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+powertrain_export_time_variables_type_error_5 = [{'folder_path': './test_data', 'angular_acceleration_unit': type_to_check}
+                                                 for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+powertrain_export_time_variables_type_error_6 = [{'folder_path': './test_data', 'torque_unit': type_to_check}
+                                                 for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+powertrain_export_time_variables_type_error_7 = [{'folder_path': './test_data', 'driving_torque_unit': type_to_check}
+                                                 for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+powertrain_export_time_variables_type_error_8 = [{'folder_path': './test_data', 'load_torque_unit': type_to_check}
+                                                 for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+powertrain_export_time_variables_type_error_9 = [{'folder_path': './test_data', 'force_unit': type_to_check}
+                                                 for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+powertrain_export_time_variables_type_error_10 = [{'folder_path': './test_data', 'stress_unit': type_to_check}
+                                                  for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+powertrain_export_time_variables_type_error_11 = [{'folder_path': './test_data', 'current_unit': type_to_check}
+                                                  for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+@fixture(params = [*powertrain_export_time_variables_type_error_1,
+                   *powertrain_export_time_variables_type_error_2,
+                   *powertrain_export_time_variables_type_error_3,
+                   *powertrain_export_time_variables_type_error_4,
+                   *powertrain_export_time_variables_type_error_5,
+                   *powertrain_export_time_variables_type_error_6,
+                   *powertrain_export_time_variables_type_error_7,
+                   *powertrain_export_time_variables_type_error_8,
+                   *powertrain_export_time_variables_type_error_9,
+                   *powertrain_export_time_variables_type_error_10,
+                   *powertrain_export_time_variables_type_error_11])
+def powertrain_export_time_variables_type_error(request):
+    return request.param
