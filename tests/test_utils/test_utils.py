@@ -1,14 +1,19 @@
-from gearpy.mechanical_objects import MatingMaster, MatingSlave, WormGear, HelicalGear
-from gearpy.units import AngularSpeed, Torque, Current, Angle, InertiaMoment
-from gearpy.utils import add_gear_mating, add_worm_gear_mating, add_fixed_joint, dc_motor_characteristics_animation
+from gearpy.mechanical_objects import MatingMaster, MatingSlave, WormGear, HelicalGear, DCMotor
+from gearpy.units import Angle, AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, \
+                         Stress, Time, Torque
+from gearpy.utils import add_gear_mating, add_worm_gear_mating, add_fixed_joint, dc_motor_characteristics_animation, \
+                         export_time_variables
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from hypothesis import given, settings
-from hypothesis.strategies import floats, one_of, sampled_from, booleans, none, tuples
+from hypothesis.strategies import floats, one_of, sampled_from, booleans, none, tuples, lists, text, characters
 import os
+import pandas as pd
 from pytest import mark, raises
-from tests.conftest import dc_motors, spur_gears, helical_gears, flywheels, worm_gears, worm_wheels
+import shutil
+from tests.conftest import dc_motors, spur_gears, helical_gears, flywheels, worm_gears, worm_wheels, rotating_objects, paths
 from tests.test_utils.conftest import motor_1, powertrain_1, motor_2, powertrain_2
+from tests.test_units.test_time.conftest import times
 import warnings
 
 
@@ -174,3 +179,103 @@ class TestDCMotorCharacteristicsAnimation:
     def test_raises_value_error(self, dc_motor_characteristics_animation_value_error):
         with raises(ValueError):
             dc_motor_characteristics_animation(**dc_motor_characteristics_animation_value_error)
+
+
+@mark.utils
+class TestExportTimeVariables:
+
+
+    @mark.genuine
+    @given(rotating_object = rotating_objects(),
+           file_path = paths(),
+           file_name = text(min_size = 5, max_size = 10, alphabet = characters(min_codepoint = 97, max_codepoint = 122)),
+           time_array = lists(elements = times(), min_size = 10, max_size = 20),
+           time_unit = sampled_from(elements = list(Time._Time__UNITS.keys())),
+           angular_position_unit = sampled_from(elements = list(AngularPosition._AngularPosition__UNITS.keys())),
+           angular_speed_unit = sampled_from(elements = list(AngularSpeed._AngularSpeed__UNITS.keys())),
+           angular_acceleration_unit = sampled_from(elements = list(AngularAcceleration._AngularAcceleration__UNITS.keys())),
+           torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
+           driving_torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
+           load_torque_unit = sampled_from(elements = list(Torque._Torque__UNITS.keys())),
+           force_unit = sampled_from(elements = list(Force._Force__UNITS.keys())),
+           stress_unit = sampled_from(elements = list(Stress._Stress__UNITS.keys())),
+           current_unit = sampled_from(elements = list(Current._Current__UNITS.keys())))
+    @settings(max_examples = 100, deadline = None)
+    def test_function(self, rotating_object, file_path, file_name, time_array, time_unit, angular_position_unit,
+                      angular_speed_unit, angular_acceleration_unit, torque_unit, driving_torque_unit, load_torque_unit,
+                      force_unit, stress_unit, current_unit):
+        n_columns = 7
+
+        rotating_object.angular_position = AngularPosition(1, 'rad')
+        rotating_object.angular_speed = AngularSpeed(1, 'rad/s')
+        rotating_object.angular_acceleration = AngularAcceleration(1, 'rad/s^2')
+        rotating_object.torque = Torque(1, 'Nm')
+        rotating_object.driving_torque = Torque(1, 'Nm')
+        rotating_object.load_torque = Torque(1, 'Nm')
+        if 'tangential force' in rotating_object.time_variables.keys():
+            rotating_object.tangential_force = Force(1, 'N')
+            n_columns += 1
+        if 'bending stress' in rotating_object.time_variables.keys():
+            rotating_object.bending_stress = Stress(1, 'MPa')
+            n_columns += 1
+        if 'contact stress' in rotating_object.time_variables.keys():
+            rotating_object.contact_stress = Stress(1, 'MPa')
+            n_columns += 1
+        if 'electric current' in rotating_object.time_variables.keys():
+            rotating_object.electric_current = Current(1, 'A')
+            n_columns += 1
+        if isinstance(rotating_object, DCMotor):
+            rotating_object.pwm = 1
+            n_columns += 1
+
+        for _ in time_array:
+            rotating_object.update_time_variables()
+
+        complete_file_path = os.path.join(file_path, file_name)
+
+        try:
+            export_time_variables(rotating_object = rotating_object, file_path = complete_file_path,
+                                  time_array = time_array, time_unit = time_unit,
+                                  angular_position_unit = angular_position_unit, angular_speed_unit = angular_speed_unit,
+                                  angular_acceleration_unit = angular_acceleration_unit, torque_unit = torque_unit,
+                                  driving_torque_unit = driving_torque_unit, load_torque_unit = load_torque_unit,
+                                  force_unit = force_unit, stress_unit = stress_unit, current_unit = current_unit)
+
+            if not complete_file_path.endswith('.csv'):
+                complete_file_path += '.csv'
+
+            assert os.path.exists(complete_file_path)
+            assert os.path.isfile(complete_file_path)
+
+            data = pd.read_csv(complete_file_path)
+
+            assert len(data) == len(time_array)
+            assert len(data.columns) == n_columns
+
+            for variable, unit in zip(['time', 'angular position', 'angular speed', 'angular acceleration', 'torque',
+                                       'driving torque', 'load torque', 'tangential force', 'bending stress',
+                                       'contact stress', 'electric current', 'pwm'],
+                                      [time_unit, angular_position_unit, angular_speed_unit, angular_acceleration_unit,
+                                       torque_unit, driving_torque_unit, load_torque_unit, force_unit, stress_unit,
+                                       stress_unit, current_unit, '']):
+                if variable in rotating_object.time_variables.keys():
+                    if unit:
+                        assert f"{variable} ({unit})" in data.columns
+                    else:
+                        assert variable in data.columns
+
+        finally:
+            os.remove(complete_file_path)
+            shutil.rmtree(os.path.join(*complete_file_path.split(os.sep)[:2]))
+
+
+    @mark.error
+    def test_raises_type_error(self, export_time_variables_type_error):
+        with raises(TypeError):
+            export_time_variables(**export_time_variables_type_error)
+
+
+    @mark.error
+    def test_raises_value_error(self, export_time_variables_value_error):
+        with raises(ValueError):
+            export_time_variables(**export_time_variables_value_error)

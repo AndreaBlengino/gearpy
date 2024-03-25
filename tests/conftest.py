@@ -8,6 +8,7 @@ from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Cur
 from gearpy.utils import add_fixed_joint, add_gear_mating, add_worm_gear_mating
 from hypothesis.strategies import composite, text, integers, floats, lists, sampled_from, shared, builds, characters, one_of
 import numpy as np
+import os
 from random import shuffle
 
 
@@ -329,3 +330,14 @@ def time_intervals(draw):
     unit = draw(sampled_from(elements = list(TimeInterval._Time__UNITS.keys())))
 
     return TimeInterval(value = value, unit = unit)
+
+
+@composite
+def paths(draw):
+    folder_list = draw(lists(elements = text(min_size = 5, max_size = 10, alphabet = characters(min_codepoint = 97,
+                                                                                                max_codepoint = 122)),
+                             min_size = 2,
+                             max_size = 5))
+    folder_list.insert(0, os.path.join('.', 'test_data'))
+
+    return os.path.join(*folder_list)
