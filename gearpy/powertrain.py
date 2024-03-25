@@ -1,8 +1,10 @@
 from collections import Counter
 from gearpy.mechanical_objects import MotorBase, RotatingObject, GearBase, WormGear
 from gearpy.units import Time
+from gearpy.utils import export_time_variables
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 from scipy.interpolate import interp1d
 from typing import List, Tuple, Union, Optional
 
@@ -813,3 +815,67 @@ class Powertrain:
             ax.tick_params(bottom = False, top = False, left = False, right = False)
 
         plt.show()
+
+    def export_time_variables(self,
+                              folder_path: str,
+                              time_unit: Optional[str] = 'sec',
+                              angular_position_unit: Optional[str] = 'rad',
+                              angular_speed_unit: Optional[str] = 'rad/s',
+                              angular_acceleration_unit: Optional[str] = 'rad/s^2',
+                              torque_unit: Optional[str] = 'Nm',
+                              driving_torque_unit: Optional[str] = 'Nm',
+                              load_torque_unit: Optional[str] = 'Nm',
+                              force_unit: Optional[str] = 'N',
+                              stress_unit: Optional[str] = 'MPa',
+                              current_unit: Optional[str] = 'A') -> None:
+
+        if not isinstance(folder_path, str):
+            raise TypeError("Parameter 'folder_path' must be a string.")
+
+        if not folder_path:
+            raise ValueError("Parameter 'folder_path' cannot be an empty string.")
+
+        if not isinstance(time_unit, str):
+            raise TypeError("Parameter 'time_unit' must be a string.")
+
+        if not isinstance(angular_position_unit, str):
+            raise TypeError("Parameter 'angular_position_unit' must be a string.")
+
+        if not isinstance(angular_speed_unit, str):
+            raise TypeError("Parameter 'angular_speed_unit' must be a string.")
+
+        if not isinstance(angular_acceleration_unit, str):
+            raise TypeError("Parameter 'angular_acceleration_unit' must be a string.")
+
+        if not isinstance(torque_unit, str):
+            raise TypeError("Parameter 'torque_unit' must be a string.")
+
+        if not isinstance(driving_torque_unit, str):
+            raise TypeError("Parameter 'driving_torque_unit' must be a string.")
+
+        if not isinstance(load_torque_unit, str):
+            raise TypeError("Parameter 'load_torque_unit' must be a string.")
+
+        if not isinstance(force_unit, str):
+            raise TypeError("Parameter 'force_unit' must be a string.")
+
+        if not isinstance(stress_unit, str):
+            raise TypeError("Parameter 'stress_unit' must be a string.")
+
+        if not isinstance(current_unit, str):
+            raise TypeError("Parameter 'current_unit' must be a string.")
+
+        for element in self.elements:
+            export_time_variables(rotating_object = element,
+                                  file_path = os.path.join(folder_path, element.name),
+                                  time_array = self.time,
+                                  time_unit = time_unit,
+                                  angular_position_unit = angular_position_unit,
+                                  angular_speed_unit = angular_speed_unit,
+                                  angular_acceleration_unit = angular_acceleration_unit,
+                                  torque_unit = torque_unit,
+                                  driving_torque_unit = driving_torque_unit,
+                                  load_torque_unit = load_torque_unit,
+                                  force_unit = force_unit,
+                                  stress_unit = stress_unit,
+                                  current_unit = current_unit)
