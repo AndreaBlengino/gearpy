@@ -392,18 +392,19 @@ class Powertrain:
                         data.loc[element.name, f'electric current ({current_unit})'] = \
                             interpolation_function(target_time.to('sec').value).take(0)
 
-            if isinstance(element, GearBase):
+            if isinstance(element, GearBase) or isinstance(element, WormGear):
                 variable_list = []
                 unit_list = []
                 if element.tangential_force_is_computable and 'tangential force' in variables:
                     variable_list.append('tangential force')
                     unit_list.append(force_unit)
-                    if element.bending_stress_is_computable and 'bending stress' in variables:
-                        variable_list.append('bending stress')
-                        unit_list.append(stress_unit)
-                        if element.contact_stress_is_computable and 'contact stress' in variables:
-                            variable_list.append('contact stress')
+                    if isinstance(element, GearBase):
+                        if element.bending_stress_is_computable and 'bending stress' in variables:
+                            variable_list.append('bending stress')
                             unit_list.append(stress_unit)
+                            if element.contact_stress_is_computable and 'contact stress' in variables:
+                                variable_list.append('contact stress')
+                                unit_list.append(stress_unit)
 
                 for variable, unit in zip(variable_list, unit_list):
                     interpolation_function = interp1d(x = [instant.to('sec').value for instant in self.time],
@@ -648,34 +649,34 @@ class Powertrain:
 
         stress_legend_items = {}
 
-        for i, item in enumerate(elements, 0):
+        for i, element in enumerate(elements, 0):
             if n_variables > 1:
                 axes = ax[:, i] if n_elements > 1 else ax
             else:
                 axes = [ax[i]] if n_elements > 1 else [ax]
-            axes[0].set_title(item.name)
+            axes[0].set_title(element.name)
 
             for j, variable in enumerate(kinematic_variables, 0):
                 axes[j].plot(time_values, [variable_value.to(UNITS[variable]).value
-                                           for variable_value in item.time_variables[variable]])
+                                           for variable_value in element.time_variables[variable]])
 
             for variable in torques_variables:
                 label = variable.replace('torque', '').replace(' ', '')
                 label = 'net' if label == '' else label
                 axes[torques_variables_index].plot(time_values,
                                                    [variable_value.to(UNITS[variable]).value
-                                                    for variable_value in item.time_variables[variable]],
+                                                    for variable_value in element.time_variables[variable]],
                                                    label = label)
 
-            if isinstance(item, MotorBase):
-                if item.electric_current_is_computable and electric_variables:
+            if isinstance(element, MotorBase):
+                if element.electric_current_is_computable and electric_variables:
                     axes[electric_variables_index].plot(time_values,
                                                         [variable_value.to(UNITS['electric current']).value
-                                                         for variable_value in item.time_variables['electric current']])
+                                                         for variable_value in element.time_variables['electric current']])
 
                 if pwm_variables:
                     axes[pwm_variables_index].plot(time_values,
-                                                   item.time_variables['pwm'])
+                                                   element.time_variables['pwm'])
 
             else:
                 if electric_variables:
@@ -683,27 +684,32 @@ class Powertrain:
                 if pwm_variables:
                     axes[pwm_variables_index].axis('off')
 
-            if isinstance(item, GearBase):
-                if item.tangential_force_is_computable:
+            if isinstance(element, GearBase) or isinstance(element, WormGear):
+                if element.tangential_force_is_computable:
                     for variable in forces_variables:
                         axes[forces_variables_index].plot(time_values,
                                                           [variable_value.to(UNITS[variable]).value
-                                                           for variable_value in item.time_variables[variable]])
+                                                           for variable_value in element.time_variables[variable]])
 
-                    for variable in stress_variables:
-                        if (variable == 'bending stress' and item.bending_stress_is_computable) or \
-                                (variable == 'contact stress' and item.contact_stress_is_computable):
-                            axes[stress_variables_index].plot(time_values,
-                                                              [variable_value.to(UNITS[variable]).value
-                                                               for variable_value in item.time_variables[variable]],
-                                                              label = variable.replace('stress', '').replace(' ', ''))
-                            handles, labels = axes[stress_variables_index].get_legend_handles_labels()
-                            for handle, label in zip(handles, labels):
-                                if label not in stress_legend_items.keys():
-                                    stress_legend_items[label] = handle
+                    if isinstance(element, GearBase):
+                        for variable in stress_variables:
+                            if (variable == 'bending stress' and element.bending_stress_is_computable) or \
+                                    (variable == 'contact stress' and element.contact_stress_is_computable):
+                                axes[stress_variables_index].plot(time_values,
+                                                                  [variable_value.to(UNITS[variable]).value
+                                                                   for variable_value in element.time_variables[variable]],
+                                                                  label = variable.replace('stress', '').replace(' ', ''))
+                                handles, labels = axes[stress_variables_index].get_legend_handles_labels()
+                                for handle, label in zip(handles, labels):
+                                    if label not in stress_legend_items.keys():
+                                        stress_legend_items[label] = handle
 
-                        if stress_variables and not item.bending_stress_is_computable \
-                                and not item.contact_stress_is_computable:
+                            if stress_variables and not element.bending_stress_is_computable \
+                                    and not element.contact_stress_is_computable:
+                                axes[stress_variables_index].axis('off')
+
+                    else:
+                        if stress_variables:
                             axes[stress_variables_index].axis('off')
 
                 else:
@@ -719,15 +725,16 @@ class Powertrain:
                     axes[stress_variables_index].axis('off')
 
             last_row_index = n_variables - 1
-            if isinstance(item, MotorBase):
+            if isinstance(element, MotorBase):
                 pass
-            elif isinstance(item, GearBase):
-                if forces_variables and not item.tangential_force_is_computable:
+            elif isinstance(element, GearBase) or isinstance(element, WormGear):
+                if forces_variables and not element.tangential_force_is_computable:
                     last_row_index -= 1
-                if stress_variables and \
-                        (not item.bending_stress_is_computable or 'bending stress' not in stress_variables) and \
-                        (not item.contact_stress_is_computable or 'contact stress' not in stress_variables):
-                    last_row_index -= 1
+                if isinstance(element, GearBase):
+                    if stress_variables and \
+                            (not element.bending_stress_is_computable or 'bending stress' not in stress_variables) and \
+                            (not element.contact_stress_is_computable or 'contact stress' not in stress_variables):
+                        last_row_index -= 1
                 if electric_variables:
                     last_row_index -= 1
                 if pwm_variables:
@@ -758,9 +765,9 @@ class Powertrain:
             first_column_axes[torques_variables_index].legend(title = 'torque', frameon = True)
 
         if forces_variables:
-            for i, item in enumerate(elements, 0):
-                if isinstance(item, GearBase):
-                    if item.tangential_force_is_computable:
+            for i, element in enumerate(elements, 0):
+                if isinstance(element, GearBase) or isinstance(element, WormGear):
+                    if element.tangential_force_is_computable:
                         if n_variables > 1:
                             axes = ax[:, i] if n_elements > 1 else ax
                         else:
@@ -769,9 +776,9 @@ class Powertrain:
                         break
 
         if stress_variables:
-            for i, item in enumerate(elements, 0):
-                if isinstance(item, GearBase):
-                    if item.bending_stress_is_computable:
+            for i, element in enumerate(elements, 0):
+                if isinstance(element, GearBase):
+                    if element.bending_stress_is_computable:
                         if n_variables > 1:
                             axes = ax[:, i] if n_elements > 1 else ax
                         else:

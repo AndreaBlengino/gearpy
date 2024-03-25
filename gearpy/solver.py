@@ -1,4 +1,4 @@
-from gearpy.mechanical_objects import RotatingObject, MotorBase, GearBase
+from gearpy.mechanical_objects import RotatingObject, MotorBase, GearBase, WormGear
 from gearpy.motor_control import MotorControlBase
 from gearpy.powertrain import Powertrain
 from gearpy.units import Time, TimeInterval, Torque, AngularSpeed, AngularAcceleration
@@ -236,7 +236,7 @@ class Solver:
     def _compute_force(self):
 
         for element in self.powertrain.elements:
-            if isinstance(element, GearBase):
+            if isinstance(element, GearBase) or isinstance(element, WormGear):
                 if element.tangential_force_is_computable:
                     element.compute_tangential_force()
 
