@@ -18,7 +18,71 @@ def export_time_variables(rotating_object: RotatingObject,
                           force_unit: Optional[str] = 'N',
                           stress_unit: Optional[str] = 'MPa',
                           current_unit: Optional[str] = 'A') -> None:
+    """Exports the computed time variables of a rotating object to a file. \n
+    The exported file is a .csv file. The time variables are exported in a tabular form, in which each column is a time
+    variable and each row is a simulated time step. The columns are separated by a comma. The first column reports the
+    simulated time steps and the first row reports the column names.
 
+    Parameters
+    ----------
+    rotating_object : RotatingObject
+        The rotating object whose time variables are to be exported.
+    file_path : str
+        Path to the file in which to save the time variables. It must be a non-empty string.
+    time_array : list
+        Simulated time steps. It must be a non-empty list.
+    time_unit : str, optional
+        Symbol of the unit of measurement to which convert the time values in the exported file. It must be a string.
+        Default is ``'sec'``.
+    angular_position_unit : str, optional
+        Symbol of the unit of measurement to which convert the angular position values in the exported file. It must be
+        a string. Default is ``'rad'``.
+    angular_speed_unit : str, optional
+        Symbol of the unit of measurement to which convert the angular speed values in the exported file. It must be a
+        string. Default is ``'rad/s'``.
+    angular_acceleration_unit : str, optional
+        Symbol of the unit of measurement to which convert the angular acceleration values in the exported file. It must
+        be a string. Default is ``'rad/s^2'``.
+    torque_unit : str, optional
+        Symbol of the unit of measurement to which convert the torque values in the exported file. It must be a string.
+        Default is ``'Nm'``.
+    driving_torque_unit : str, optional
+        Symbol of the unit of measurement to which convert the torque values in the exported file. It must be a string.
+        Default is ``'Nm'``.
+    load_torque_unit : str, optional
+        Symbol of the unit of measurement to which convert the torque values in the exported file. It must be a string.
+        Default is ``'Nm'``.
+    force_unit : str, optional
+        Symbol of the unit of measurement to which convert the force values in the exported file. It must be a string.
+        Default is ``'N'``.
+    stress_unit : str, optional
+        Symbol of the unit of measurement to which convert the stress values in the exported file. It must be a string.
+        Default is ``'MPa'``.
+    current_unit : str, optional
+        Symbol of the unit of measurement to which convert the electric current values in the exported file. It must be
+        a string. Default is ``'A'``.
+
+    Raises
+    ------
+    TypeError
+        - If ``rotating_object`` is not an instance of ``RotatingObject``,
+        - if ``file_path`` is not a string,
+        - if ``time_array`` is not a list,
+        - if an element of ``time_array`` is not an instance of ``Time`` or a string,
+        - if ``time_unit`` is not a string,
+        - if ``angular_position_unit`` is not a string,
+        - if ``angular_speed_unit`` is not a string,
+        - if ``angular_acceleration_unit`` is not a string,
+        - if ``torque_unit`` is not a string,
+        - if ``driving_torque_unit`` is not a string,
+        - if ``load_torque_unit`` is not a string,
+        - if ``force_unit`` is not a string,
+        - if ``stress_unit`` is not a string,
+        - if ``current_unit`` is not a string.
+    ValueError
+        - If ``file_path`` is an empty string,
+        - if ``time_array`` is an empty list.
+    """
     if not isinstance(rotating_object, RotatingObject):
         raise TypeError(f"Parameter 'rotating_object' must be an instance of {RotatingObject.__name__!r}.")
 
