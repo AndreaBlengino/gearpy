@@ -96,10 +96,10 @@ solver.run(time_discretization = TimeInterval(0.5, 'sec'),
 # Second Step Model Set Up
 
 start_2 = StartLimitCurrent(encoder = encoder,
-                          tachometer = tachometer,
-                          motor = motor,
-                          limit_electric_current = Current(2, 'A'),
-                          target_angular_position = AngularPosition(50, 'rot'))
+                            tachometer = tachometer,
+                            motor = motor,
+                            limit_electric_current = Current(2, 'A'),
+                            target_angular_position = AngularPosition(50, 'rot'))
 
 reach_position_2 = ReachAngularPosition(encoder = encoder,
                                         powertrain = powertrain,

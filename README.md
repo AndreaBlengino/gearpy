@@ -10,7 +10,7 @@
 [![Documentation Status](https://readthedocs.org/projects/gearpy/badge/?version=latest)](https://gearpy.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/AndreaBlengino/gearpy/graph/badge.svg?token=4JHzii1LrK)](https://codecov.io/gh/AndreaBlengino/gearpy)
 
-**gearpy** is a python package for powertrain analysis.
+**gearpy** is a python library for powertrain analysis.
 
 ## References
 

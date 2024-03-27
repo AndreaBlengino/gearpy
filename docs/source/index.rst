@@ -10,7 +10,7 @@ gearpy documentation
 
 .. toctree::
    :hidden:
-   :caption: Module
+   :caption: Library
 
    gearpy
    examples/index
