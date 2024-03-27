@@ -37,6 +37,8 @@ class Powertrain:
         ``target_time``.
     :py:meth:`update_time`
         Updates the ``Powertrain.time`` list by appending the ``instant`` simulated time step.
+    :py:meth:`export_time_variables`
+        Exports the powertrain's rotating objects' computed time variables to some files.
 
     Raises
     ------
@@ -828,7 +830,65 @@ class Powertrain:
                               force_unit: Optional[str] = 'N',
                               stress_unit: Optional[str] = 'MPa',
                               current_unit: Optional[str] = 'A') -> None:
+        """Exports the powertrain's rotating objects' computed time variables to some files. \n
+        It creates a file for each rotating object in the powertrain. The file name is the taken from the rotating
+        object's ``name``. \n
+        The exported files are a .csv files. The time variables are exported in a tabular form, in which each column is
+        a time variable and each row is a simulated time step. The columns are separated by a comma. The first column
+        reports the simulated time steps and the first row reports the column names.
 
+        Parameters
+        ----------
+        folder_path : str
+            Path to the folder in which to save the time variables' files. It must be a non-empty string.
+        time_unit : str, optional
+            Symbol of the unit of measurement to which convert the time values in the exported files. It must be a
+            string. Default is ``'sec'``.
+        angular_position_unit : str, optional
+            Symbol of the unit of measurement to which convert the angular position values in the exported files. It
+            must be a string. Default is ``'rad'``.
+        angular_speed_unit : str, optional
+            Symbol of the unit of measurement to which convert the angular speed values in the exported files. It must
+            be a string. Default is ``'rad/s'``.
+        angular_acceleration_unit : str, optional
+            Symbol of the unit of measurement to which convert the angular acceleration values in the exported files. It
+            must be a string. Default is ``'rad/s^2'``.
+        torque_unit : str, optional
+            Symbol of the unit of measurement to which convert the torque values in the exported files. It must be a
+            string. Default is ``'Nm'``.
+        driving_torque_unit : str, optional
+            Symbol of the unit of measurement to which convert the torque values in the exported files. It must be a
+            string. Default is ``'Nm'``.
+        load_torque_unit : str, optional
+            Symbol of the unit of measurement to which convert the torque values in the exported files. It must be a
+            string. Default is ``'Nm'``.
+        force_unit : str, optional
+            Symbol of the unit of measurement to which convert the force values in the exported files. It must be a
+            string. Default is ``'N'``.
+        stress_unit : str, optional
+            Symbol of the unit of measurement to which convert the stress values in the exported files. It must be a
+            string. Default is ``'MPa'``.
+        current_unit : str, optional
+            Symbol of the unit of measurement to which convert the electric current values in the exported files. It
+            must be a string. Default is ``'A'``.
+
+        Raises
+        ------
+        TypeError
+            - If ``folder_path`` is not a string,
+            - if ``time_unit`` is not a string,
+            - if ``angular_position_unit`` is not a string,
+            - if ``angular_speed_unit`` is not a string,
+            - if ``angular_acceleration_unit`` is not a string,
+            - if ``torque_unit`` is not a string,
+            - if ``driving_torque_unit`` is not a string,
+            - if ``load_torque_unit`` is not a string,
+            - if ``force_unit`` is not a string,
+            - if ``stress_unit`` is not a string,
+            - if ``current_unit`` is not a string.
+        ValueError
+            If ``folder_path`` is an empty string.
+        """
         if not isinstance(folder_path, str):
             raise TypeError("Parameter 'folder_path' must be a string.")
 
