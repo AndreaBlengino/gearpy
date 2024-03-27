@@ -21,3 +21,16 @@
 - [Usage examples](https://gearpy.readthedocs.io/en/latest/examples/index.html)  
 - [PyPI](https://pypi.org/project/gearpy/)  
 - [GNU General Public License v3.0](https://github.com/AndreaBlengino/gearpy/blob/master/LICENSE)
+
+## Contributing
+
+The gearpy project welcomes your expertise and enthusiasm!  
+All contributions, bug reports, bug fixes, documentation improvements, 
+enhancements and ideas are welcome.  
+Writing code isn't the only way to contribute to gearpy. You can also:
+
+- develop tutorials, presentations and other educational materials
+- maintain and improve the documentation
+- help with outreach and onboard new contributors
+
+Have a look at the [contributing guide](https://github.com/AndreaBlengino/gearpy/blob/master/.github/CONTRIBUTING.md)
