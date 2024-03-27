@@ -12,3 +12,4 @@ Usage Examples
    6_dc_motor_animation/index
    7_worm_and_helical_gears/index
    8_multiple_simulation_concatenation/index
+   9_stop_simulation/index
