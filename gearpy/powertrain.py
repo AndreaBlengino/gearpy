@@ -730,10 +730,17 @@ class Powertrain:
 
             last_row_index = n_variables - 1
             if isinstance(element, MotorBase):
-                pass
+                if not electric_variables and not pwm_variables:
+                    if forces_variables:
+                        last_row_index -= 1
+                    if stress_variables:
+                        last_row_index -= 1
             elif isinstance(element, GearBase) or isinstance(element, WormGear):
                 if forces_variables and not element.tangential_force_is_computable:
                     last_row_index -= 1
+                if isinstance(element, WormGear):
+                    if stress_variables:
+                        last_row_index -= 1
                 if isinstance(element, GearBase):
                     if stress_variables and \
                             (not element.bending_stress_is_computable or 'bending stress' not in stress_variables) and \
