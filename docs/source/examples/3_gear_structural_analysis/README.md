@@ -87,7 +87,7 @@ variables and focus the plot only on interesting elements and variables.
 We can also specify a more convenient unit to use when plotting torques:
 
 ```python
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (10, 10),
                 elements = [gear_1, gear_2, gear_3, gear_4, gear_5, gear_6],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',
@@ -105,7 +105,7 @@ gears, and increase in the last gears, so we can draw a more clean plot
 and focus on the last two gears only:
 
 ```python
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (8, 8),
                 elements = [gear_5, gear_6],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',

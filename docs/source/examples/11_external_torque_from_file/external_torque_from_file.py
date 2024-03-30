@@ -104,7 +104,7 @@ powertrain.snapshot(target_time = Time(8, 'sec'),
                     driving_torque_unit = 'mNm',
                     load_torque_unit = 'mNm')
 
-powertrain.plot(figsize = (10, 8),
+powertrain.plot(figsize = (8, 8),
                 elements = ['motor', 'gear 3', 'gear 4'],
                 angular_position_unit = 'deg',
                 torque_unit = 'mNm',

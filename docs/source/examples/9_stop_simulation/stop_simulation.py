@@ -92,7 +92,7 @@ solver.run(time_discretization = TimeInterval(0.1, 'sec'),
 
 # Result Analysis
 
-powertrain.plot(figsize = (10, 8),
+powertrain.plot(figsize = (8, 8),
                 elements = ['motor', 'gear 6'],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',

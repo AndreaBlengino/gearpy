@@ -131,7 +131,7 @@ variables and focus the plot only on interesting elements and variables.
 We can also specify a more convenient unit to use when plotting torques:
 
 ```python
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (8, 8),
                 elements = ['motor', 'gear 3', 'gear 4'],
                 angular_position_unit = 'deg',
                 torque_unit = 'mNm',

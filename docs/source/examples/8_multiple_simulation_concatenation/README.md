@@ -58,7 +58,7 @@ The remaining set-ups of the model stay the same.
 We can get the updated plot with the same code:
 
 ```python
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (8, 10),
                 elements = ['motor', 'gear 6'],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',

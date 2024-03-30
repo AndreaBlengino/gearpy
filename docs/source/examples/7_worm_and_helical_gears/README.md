@@ -177,11 +177,11 @@ We can get a more general view of the system by plotting the time
 variables of each element with respect to time:
 
 ```python
-powertrain.plot(elements = [motor, worm_gear, worm_wheel, gear_4],
+powertrain.plot(figsize = (8, 8),
+                elements = [motor, worm_gear, worm_wheel, gear_4],
                 variables = ['angular position', 'angular speed', 'torque', 'driving torque', 'load torque',
                              'bending stress', 'contact stress'],
-                torque_unit = 'mNm',
-                figsize = (10, 8))
+                torque_unit = 'mNm')
 ```
 
 ![](images/plot.png)
