@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'gearpy'
-copyright = '2023, Andrea Blengino'
+copyright = '2024, Andrea Blengino'
 author = 'Andrea Blengino'
 version = subprocess.run(['git', 'describe', '--tags'], stdout = subprocess.PIPE).stdout.decode('utf-8').split('-')[0]
 
