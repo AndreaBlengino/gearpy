@@ -24,3 +24,4 @@ units
    Time/index
    TimeInterval/index
    Torque/index
+   UnitBase/index

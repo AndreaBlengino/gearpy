@@ -7,6 +7,26 @@ COMPARISON_TOLERANCE = 1e-12
 
 
 class UnitBase(ABC):
+    """:py:class:`UnitBase <gearpy.units.unit_base.UnitBase>` object. \n
+    Abstract base class for creating unit objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>` \n
+       :py:class:`Angle <gearpy.units.units.Angle>` \n
+       :py:class:`AngularPosition <gearpy.units.units.AngularPosition>` \n
+       :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>` \n
+       :py:class:`Current <gearpy.units.units.Current>` \n
+       :py:class:`Force <gearpy.units.units.Force>` \n
+       :py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>` \n
+       :py:class:`Length <gearpy.units.units.Length>` \n
+       :py:class:`Stress <gearpy.units.units.Stress>` \n
+       :py:class:`Surface <gearpy.units.units.Surface>` \n
+       :py:class:`Time <gearpy.units.units.Time>` \n
+       :py:class:`TimeInterval <gearpy.units.units.TimeInterval>` \n
+       :py:class:`Torque <gearpy.units.units.Torque>`
+    """
 
     __UNITS = {}
 

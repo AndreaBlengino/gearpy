@@ -18,10 +18,45 @@ mechanical_objects
    :no-index:
 
 
+.. currentmodule:: gearpy.mechanical_objects.mechanical_object_base
+.. autoclass:: GearBase
+   :members:
+   :show-inheritance:
+   :no-index:
+
+
 .. currentmodule:: gearpy.mechanical_objects.helical_gear
 .. autoclass:: HelicalGear
    :members:
    :undoc-members:
+   :show-inheritance:
+   :no-index:
+
+
+.. currentmodule:: gearpy.mechanical_objects.mechanical_object_base
+.. autoclass:: MechanicalObject
+   :members:
+   :show-inheritance:
+   :no-index:
+
+
+.. currentmodule:: gearpy.mechanical_objects.mechanical_object_base
+.. autoclass:: MotorBase
+   :members:
+   :show-inheritance:
+   :no-index:
+
+
+.. currentmodule:: gearpy.mechanical_objects.mechanical_object_base
+.. autoclass:: Role
+   :members:
+   :show-inheritance:
+   :no-index:
+
+
+.. currentmodule:: gearpy.mechanical_objects.mechanical_object_base
+.. autoclass:: RotatingObject
+   :members:
    :show-inheritance:
    :no-index:
 
@@ -55,7 +90,12 @@ mechanical_objects
 
    DCMotor/index
    Flywheel/index
+   GearBase/index
    HelicalGear/index
+   MechanicalObject/index
+   MotorBase/index
+   Role/index
+   RotatingObject/index
    SpurGear/index
    WormGear/index
    WormWheel/index

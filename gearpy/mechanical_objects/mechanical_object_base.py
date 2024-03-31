@@ -35,6 +35,19 @@ def worm_wheel_lewis_factor_function(pressure_angle: Angle) -> Angle:
 
 
 class MechanicalObject(ABC):
+    """:py:class:`MechanicalObject <gearpy.mechanical_objects.mechanical_object_base.MechanicalObject>` object. \n
+    Abstract base class for creating mechanical objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` \n
+       :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` \n
+       :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` \n
+       :py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` \n
+       :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` \n
+       :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
+    """
 
     @abstractmethod
     def __init__(self, name: str):
@@ -53,6 +66,19 @@ class MechanicalObject(ABC):
 
 
 class RotatingObject(MechanicalObject):
+    """:py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>` object. \n
+    Abstract base class for creating rotating objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` \n
+       :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` \n
+       :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` \n
+       :py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` \n
+       :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` \n
+       :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
+    """
 
     @abstractmethod
     def __init__(self, name: str, inertia_moment: InertiaMoment):
@@ -175,6 +201,14 @@ class RotatingObject(MechanicalObject):
 
 
 class MotorBase(RotatingObject):
+    """:py:class:`MotorBase <gearpy.mechanical_objects.mechanical_object_base.MotorBase>` object. \n
+    Abstract base class for creating motor objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`
+    """
 
     @abstractmethod
     def __init__(self, name: str, inertia_moment: InertiaMoment):
@@ -199,6 +233,16 @@ class MotorBase(RotatingObject):
 
 
 class GearBase(RotatingObject):
+    """:py:class:`GearBase <gearpy.mechanical_objects.mechanical_object_base.GearBase>` object. \n
+    Abstract base class for creating gear objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` \n
+       :py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` \n
+       :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
+    """
 
     @abstractmethod
     def __init__(self,
@@ -437,4 +481,7 @@ class GearBase(RotatingObject):
         self.__external_torque = external_torque
 
 
-class Role(ABC): ...
+class Role(ABC):
+    """:py:class:`Role <gearpy.mechanical_objects.mechanical_object_base.Role>` object. \n
+    Abstract base class for creating role objects.
+    """
