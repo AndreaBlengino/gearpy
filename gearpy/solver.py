@@ -25,18 +25,20 @@ class Solver:
     :py:meth:`run`
         Runs the powertrain simulation.
 
-    Raises
-    ------
-    TypeError
-        - If ``powertrain`` is not an instance of ``Powertrain``,
-        - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
-        - if an element of ``powertrain`` is not an instance of ``RotatingObject``.
-    ValueError
-        If ``powertrain.elements`` is an empty tuple.
+    .. admonition:: Raises
+       :class: warning
 
-    See Also
-    --------
-    :py:class:`gearpy.powertrain.Powertrain`
+       TypeError
+           - If ``powertrain`` is not an instance of ``Powertrain``,
+           - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
+           - if an element of ``powertrain`` is not an instance of ``RotatingObject``.
+       ValueError
+           If ``powertrain.elements`` is an empty tuple.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`gearpy.powertrain.Powertrain`
     """
 
     def __init__(self, powertrain: Powertrain):
@@ -88,29 +90,32 @@ class Solver:
         stop_condition : StopCondition, optional
             Solver simulation stopping condition.
 
-        Raises
-        ------
-        TypeError
-            - If ``time_discretization`` is not an instance of ``TimeInterval``,
-            - if ``simulation_time`` is not an instance of ``TimeInterval``,
-            - if ``motor_control`` is not an instance of ``MotorControlBase``,
-            - if ``stop_condition`` is not an instance of ``StopCondition``,
-            - if function ``external_torque`` of one gear in the powertrain elements does not return an instance of
-              ``Torque``,
-        ValueError
-            - If ``time_discretization`` is greater or equal to ``simulation_time``,
-            - if function ``external_torque`` has not been defined for any gear of the powertrain.
+        .. admonition:: Raises
+           :class: warning
 
-        Notes
-        -----
-        If ``powertrain.elements.time`` is an empty list, it performs the simulation starting the time from ``0 sec``;
-        otherwise it concatenates another simulation to existing values of time and time variables.
+           TypeError
+               - If ``time_discretization`` is not an instance of ``TimeInterval``,
+               - if ``simulation_time`` is not an instance of ``TimeInterval``,
+               - if ``motor_control`` is not an instance of ``MotorControlBase``,
+               - if ``stop_condition`` is not an instance of ``StopCondition``,
+               - if function ``external_torque`` of one gear in the powertrain elements does not return an instance of
+                 ``Torque``,
+           ValueError
+               - If ``time_discretization`` is greater or equal to ``simulation_time``,
+               - if function ``external_torque`` has not been defined for any gear of the powertrain.
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.TimeInterval`
-        :py:class:`gearpy.motor_control.pwm_control.PWMControl`
-        :py:class:`gearpy.utils.StopCondition`
+        .. admonition:: Notes
+           :class: tip
+
+           If ``powertrain.elements.time`` is an empty list, it performs the simulation starting the time from ``0 sec``;
+           otherwise it concatenates another simulation to existing values of time and time variables.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.TimeInterval`
+           :py:class:`gearpy.motor_control.pwm_control.PWMControl`
+           :py:class:`gearpy.utils.StopCondition`
         """
         if not isinstance(time_discretization, TimeInterval):
             raise TypeError(f"Parameter 'time_discretization' must be an instance of {TimeInterval.__name__!r}.")
