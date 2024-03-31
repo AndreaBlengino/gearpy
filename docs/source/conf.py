@@ -22,10 +22,13 @@ version = subprocess.run(['git', 'describe', '--tags'], stdout = subprocess.PIPE
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.autodoc', 'm2r2']
+extensions = ['sphinx.ext.autodoc', 'm2r2', 'sphinx.ext.intersphinx']
 
 templates_path = ['_templates']
 exclude_patterns = []
+
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
+                       'pandas': ('https://pandas.pydata.org/docs/', None)}
 
 
 # -- Options for HTML output -------------------------------------------------
