@@ -5,6 +5,14 @@ from gearpy.motor_control.rules.rules_base import RuleBase
 
 
 class MotorControlBase(ABC):
+    """:py:class:`MotorControlBase <gearpy.motor_control.motor_control_base.MotorControlBase>` object. \n
+    Abstract base class for creating motor control objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`PWMControl <gearpy.motor_control.pwm_control.PWMControl>`
+    """
 
     @abstractmethod
     def __init__(self, powertrain: Powertrain):
