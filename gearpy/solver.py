@@ -13,32 +13,34 @@ NULL_TORQUE = Torque(0, 'Nm')
 
 
 class Solver:
-    r"""``gearpy.solver.Solver`` object.
+    r""":py:class:`Solver <gearpy.solver.Solver>` object.
 
     Attributes
     ----------
-    :py:attr:`powertrain` : Powertrain
+    :py:attr:`powertrain` : :py:class:`Powertrain <gearpy.powertrain.Powertrain>`
         Mechanical powertrain to be simulated.
 
     Methods
     -------
     :py:meth:`run`
-        Runs the powertrain simulation.
+        It runs the powertrain simulation.
 
     .. admonition:: Raises
        :class: warning
 
-       TypeError
-           - If ``powertrain`` is not an instance of ``Powertrain``,
-           - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
-           - if an element of ``powertrain`` is not an instance of ``RotatingObject``.
-       ValueError
-           If ``powertrain.elements`` is an empty tuple.
+       ``TypeError``
+           - If ``powertrain`` is not an instance of :py:class:`Powertrain <gearpy.powertrain.Powertrain>`,
+           - if the first element in ``powertrain`` is not an instance of
+             :py:class:`MotorBase <gearpy.mechanical_objects.mechanical_object_base.MotorBase>`,
+           - if an element of ``powertrain`` is not an instance of
+             :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`.
+       ``ValueError``
+           If :py:attr:`Powertrain.elements <gearpy.powertrain.Powertrain.elements>` is an empty :py:class:`tuple`.
 
     .. admonition:: See Also
        :class: seealso
 
-       :py:class:`gearpy.powertrain.Powertrain`
+       :py:class:`Powertrain <gearpy.powertrain.Powertrain>`
     """
 
     def __init__(self, powertrain: Powertrain):
@@ -61,8 +63,8 @@ class Solver:
             time_discretization: TimeInterval,
             simulation_time: TimeInterval,
             motor_control: Optional[MotorControlBase] = None,
-            stop_condition: Optional[StopCondition] = None):
-        """Runs the powertrain simulation. \n
+            stop_condition: Optional[StopCondition] = None) -> None:
+        """It runs the powertrain simulation. \n
         The simulation is performed in several steps:
 
         - it computes the whole powertrain equivalent moment of inertia with respect to the last
@@ -81,41 +83,46 @@ class Solver:
 
         Parameters
         ----------
-        time_discretization : TimeInterval
+        ``time_discretization`` : :py:class:`TimeInterval <gearpy.units.units.TimeInterval>`
             Time discretization to be used for the simulation.
-        simulation_time : TimeInterval
+        ``simulation_time`` : :py:class:`TimeInterval <gearpy.units.units.TimeInterval>`
             Duration of the simulation.
-        motor_control : MotorControlBase, optional
+        ``motor_control`` : :py:class:`MotorControlBase <gearpy.motor_control.motor_control_base.MotorControlBase>`, optional
             Rules to control the powertrain motor.
-        stop_condition : StopCondition, optional
-            Solver simulation stopping condition.
+        ``stop_condition`` : :py:class:`StopCondition <gearpy.utils.stop_condition.stop_condition.StopCondition>`, optional
+            Simulation stopping condition.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               - If ``time_discretization`` is not an instance of ``TimeInterval``,
-               - if ``simulation_time`` is not an instance of ``TimeInterval``,
-               - if ``motor_control`` is not an instance of ``MotorControlBase``,
-               - if ``stop_condition`` is not an instance of ``StopCondition``,
+           ``TypeError``
+               - If ``time_discretization`` is not an instance of
+                 :py:class:`TimeInterval <gearpy.units.units.TimeInterval>`,
+               - if ``simulation_time`` is not an instance of
+                 :py:class:`TimeInterval <gearpy.units.units.TimeInterval>`,
+               - if ``motor_control`` is not an instance of
+                 :py:class:`MotorControlBase <gearpy.motor_control.motor_control_base.MotorControlBase>`,
+               - if ``stop_condition`` is not an instance of
+                 :py:class:`StopCondition <gearpy.utils.stop_condition.stop_condition.StopCondition>`,
                - if function ``external_torque`` of one gear in the powertrain elements does not return an instance of
-                 ``Torque``,
-           ValueError
+                 :py:class:`Torque <gearpy.units.units.Torque>`,
+           ``ValueError``
                - If ``time_discretization`` is greater or equal to ``simulation_time``,
                - if function ``external_torque`` has not been defined for any gear of the powertrain.
 
         .. admonition:: Notes
            :class: tip
 
-           If ``powertrain.elements.time`` is an empty list, it performs the simulation starting the time from ``0 sec``;
-           otherwise it concatenates another simulation to existing values of time and time variables.
+           If :py:attr:`Powertrain.time <gearpy.powertrain.Powertrain.time>` is an empty :py:class:`list`, it performs
+           the simulation starting the time from ``0 sec``; otherwise it concatenates another simulation to existing
+           values of time and time variables.
 
         .. admonition:: See Also
            :class: seealso
 
-           :py:class:`gearpy.units.units.TimeInterval`
-           :py:class:`gearpy.motor_control.pwm_control.PWMControl`
-           :py:class:`gearpy.utils.StopCondition`
+           :py:class:`TimeInterval <gearpy.units.units.TimeInterval>` \n
+           :py:class:`MotorControlBase <gearpy.motor_control.motor_control_base.MotorControlBase>` \n
+           :py:class:`StopCondition <gearpy.utils.stop_condition.stop_condition.StopCondition>`
         """
         if not isinstance(time_discretization, TimeInterval):
             raise TypeError(f"Parameter 'time_discretization' must be an instance of {TimeInterval.__name__!r}.")
