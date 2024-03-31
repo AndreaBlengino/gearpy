@@ -40,14 +40,15 @@ class Powertrain:
     :py:meth:`export_time_variables`
         Exports the powertrain's rotating objects' computed time variables to some files.
 
-    Raises
-    ------
-    TypeError
-        If ``motor`` parameter is not an instance of ``MotorBase``.
-    ValueError
-        If ``motor`` is not connected to any other element.
-    NameError
-        If two or more elements in the powertrain elements share the same name.
+    .. admonition:: Raises
+       :class: warning
+
+       TypeError
+           If ``motor`` parameter is not an instance of ``MotorBase``.
+       ValueError
+           If ``motor`` is not connected to any other element.
+       NameError
+           If two or more elements in the powertrain elements share the same name.
     """
 
     def __init__(self, motor: MotorBase):
@@ -87,11 +88,15 @@ class Powertrain:
         tuple
             Elements in the powertrain elements.
 
-        See Also
-        --------
-        :py:class:`gearpy.mechanical_objects.dc_motor.DCMotor`
-        :py:class:`gearpy.mechanical_objects.flywheel.Flywheel`
-        :py:class:`gearpy.mechanical_objects.spur_gear.SpurGear`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` \n
+           :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` \n
+           :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` \n
+           :py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` \n
+           :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` \n
+           :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
         """
         return self.__elements
 
@@ -106,10 +111,11 @@ class Powertrain:
         list
             The list of the simulated time steps.
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Time`
-        :py:class:`gearpy.solver.Solver`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`Time <gearpy.units.units.Time>` \n
+           :py:class:`Solver <gearpy.solver.Solver>`
         """
         return self.__time
 
@@ -128,11 +134,12 @@ class Powertrain:
         bool
             Whether the powertrain can only be moved by the motor and not by the effect of the load.
 
-        See Also
-        --------
-        :py:class:`gearpy.mechanical_objects.worm_gear.WormGear`
-        :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.self_locking`
-        :py:class:`gearpy.mechanical_objects.worm_wheel.WormWheel`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` \n
+           :py:attr:`WormGear.self_locking <gearpy.mechanical_objects.worm_gear.WormGear.self_locking>` \n
+           :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
         """
         return self.__self_locking
 
@@ -144,14 +151,16 @@ class Powertrain:
         instant : Time
             Simulated time step to be added to ``Powertrain.time`` list.
 
-        Raises
-        ------
-        TypeError
-            If ``instant`` is not an instance of ``gearpy.units.Time``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:attr:`time`
+           TypeError
+               If ``instant`` is not an instance of :py:class:`Time <gearpy.units.units.Time>`.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`time`
         """
         if not isinstance(instant, Time):
             raise TypeError(f"Parameter 'instant' must be instances of {Time.__name__!r}.")
@@ -163,12 +172,16 @@ class Powertrain:
         For each element in the powertrain elements, it resets each time variables and also ``time``
         property.
 
-        See Also
-        --------
-        :py:attr:`time`
-        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.time_variables`
-        :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.time_variables`
-        :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.time_variables`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`time` \n
+           :py:attr:`DCMotor.time_variables <gearpy.mechanical_objects.dc_motor.DCMotor.time_variables>` \n
+           :py:attr:`Flywheel.time_variables <gearpy.mechanical_objects.flywheel.Flywheel.time_variables>` \n
+           :py:attr:`HelicalGear.time_variables <gearpy.mechanical_objects.helical_gear.HelicalGear.time_variables>` \n
+           :py:attr:`SpurGear.time_variables <gearpy.mechanical_objects.spur_gear.SpurGear.time_variables>` \n
+           :py:attr:`WormGear.time_variables <gearpy.mechanical_objects.worm_gear.WormGear.time_variables>` \n
+           :py:attr:`WormWheel.time_variables <gearpy.mechanical_objects.worm_wheel.WormWheel.time_variables>`
         """
         self.__time = []
 
@@ -262,36 +275,41 @@ class Powertrain:
             The DataFrame containing time variables values at the specified ``target_time`` for each element in the
             powertrain elements.
 
-        Raises
-        ------
-        TypeError
-            - If an element of ``time`` is not an instance of ``Time``,
-            - if ``target_time`` is not an instance of ``Time``,
-            - if ``variables`` is not a list,
-            - if an element of ``variables`` is not a string,
-            - if ``angular_position_unit`` is not a string,
-            - if ``angular_speed_unit`` is not a string,
-            - if ``angular_acceleration_unit`` is not a string,
-            - if ``torque_unit`` is not a string,
-            - if ``driving_torque_unit`` is not a string,
-            - if ``load_torque_unit`` is not a string,
-            - if ``force_unit`` is not a string,
-            - if ``stress_unit`` is not a string,
-            - if ``current_unit`` is not a string,
-            - if ``print_data`` is not a bool.
-        ValueError
-            - If ``time`` is an empty list,
-            - if ``target_time`` is outside simulation interval,
-            - if ``variables`` is an empty list,
-            - if an element of ``variables`` is not a valid time variable.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:attr:`time`
-        :py:attr:`elements`
-        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.time_variables`
-        :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.time_variables`
-        :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.time_variables`
+           TypeError
+               - If an element of ``time`` is not an instance of ``Time``,
+               - if ``target_time`` is not an instance of ``Time``,
+               - if ``variables`` is not a list,
+               - if an element of ``variables`` is not a string,
+               - if ``angular_position_unit`` is not a string,
+               - if ``angular_speed_unit`` is not a string,
+               - if ``angular_acceleration_unit`` is not a string,
+               - if ``torque_unit`` is not a string,
+               - if ``driving_torque_unit`` is not a string,
+               - if ``load_torque_unit`` is not a string,
+               - if ``force_unit`` is not a string,
+               - if ``stress_unit`` is not a string,
+               - if ``current_unit`` is not a string,
+               - if ``print_data`` is not a bool.
+           ValueError
+               - If ``time`` is an empty list,
+               - if ``target_time`` is outside simulation interval,
+               - if ``variables`` is an empty list,
+               - if an element of ``variables`` is not a valid time variable.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`time` \n
+           :py:attr:`elements` \n
+           :py:attr:`DCMotor.time_variables <gearpy.mechanical_objects.dc_motor.DCMotor.time_variables>` \n
+           :py:attr:`Flywheel.time_variables <gearpy.mechanical_objects.flywheel.Flywheel.time_variables>` \n
+           :py:attr:`HelicalGear.time_variables <gearpy.mechanical_objects.helical_gear.HelicalGear.time_variables>` \n
+           :py:attr:`SpurGear.time_variables <gearpy.mechanical_objects.spur_gear.SpurGear.time_variables>` \n
+           :py:attr:`WormGear.time_variables <gearpy.mechanical_objects.worm_gear.WormGear.time_variables>` \n
+           :py:attr:`WormWheel.time_variables <gearpy.mechanical_objects.worm_wheel.WormWheel.time_variables>`
         """
         if not all([isinstance(instant, Time) for instant in self.time]):
             raise TypeError(f"Every element of the 'time' list must be an instance of {Time.__name__!r}.")
@@ -483,37 +501,42 @@ class Powertrain:
         figsize : tuple, optional
             Width and height of the window size, in inches. If not provided defaults to ``[6.4, 4.8]``.
 
-        Raises
-        ------
-        TypeError
-            - If ``elements`` is not a list,
-            - if an element of ``elements`` is not an instance of ``RotatingObject`` or a string,
-            - if ``variables`` is not a list,
-            - if an element of ``variables`` is not a string,
-            - if ``angular_position_unit`` is not a string,
-            - if ``angular_speed_unit`` is not a string,
-            - if ``angular_acceleration_unit`` is not a string,
-            - if ``torque_unit`` is not a string,
-            - if ``force_unit`` is not a string,
-            - if ``stress_unit`` is not a string,
-            - if ``current_unit`` is not a string,
-            - if ``time_unit`` is not a string,
-            - if ``figsize`` is not a tuple,
-            - if an element of ``figsize`` is not a float or an integer.
-        ValueError
-            - If ``elements`` is an empty list,
-            - if an element of ``elements`` is not in ``Powertrain.elements``,
-            - if ``variables`` is an empty list,
-            - if an element of ``variables`` is not a valid time variable,
-            - if ``figsize`` has not exactly two elements: one for width and the other for height.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:attr:`time`
-        :py:attr:`elements`
-        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.time_variables`
-        :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.time_variables`
-        :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.time_variables`
+           TypeError
+               - If ``elements`` is not a list,
+               - if an element of ``elements`` is not an instance of ``RotatingObject`` or a string,
+               - if ``variables`` is not a list,
+               - if an element of ``variables`` is not a string,
+               - if ``angular_position_unit`` is not a string,
+               - if ``angular_speed_unit`` is not a string,
+               - if ``angular_acceleration_unit`` is not a string,
+               - if ``torque_unit`` is not a string,
+               - if ``force_unit`` is not a string,
+               - if ``stress_unit`` is not a string,
+               - if ``current_unit`` is not a string,
+               - if ``time_unit`` is not a string,
+               - if ``figsize`` is not a tuple,
+               - if an element of ``figsize`` is not a float or an integer.
+           ValueError
+               - If ``elements`` is an empty list,
+               - if an element of ``elements`` is not in ``Powertrain.elements``,
+               - if ``variables`` is an empty list,
+               - if an element of ``variables`` is not a valid time variable,
+               - if ``figsize`` has not exactly two elements: one for width and the other for height.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`time` \n
+           :py:attr:`elements` \n
+           :py:attr:`DCMotor.time_variables <gearpy.mechanical_objects.dc_motor.DCMotor.time_variables>` \n
+           :py:attr:`Flywheel.time_variables <gearpy.mechanical_objects.flywheel.Flywheel.time_variables>` \n
+           :py:attr:`HelicalGear.time_variables <gearpy.mechanical_objects.helical_gear.HelicalGear.time_variables>` \n
+           :py:attr:`SpurGear.time_variables <gearpy.mechanical_objects.spur_gear.SpurGear.time_variables>` \n
+           :py:attr:`WormGear.time_variables <gearpy.mechanical_objects.worm_gear.WormGear.time_variables>` \n
+           :py:attr:`WormWheel.time_variables <gearpy.mechanical_objects.worm_wheel.WormWheel.time_variables>`
         """
         if elements is not None:
             if not isinstance(elements, list):
@@ -879,22 +902,23 @@ class Powertrain:
             Symbol of the unit of measurement to which convert the electric current values in the exported files. It
             must be a string. Default is ``'A'``.
 
-        Raises
-        ------
-        TypeError
-            - If ``folder_path`` is not a string,
-            - if ``time_unit`` is not a string,
-            - if ``angular_position_unit`` is not a string,
-            - if ``angular_speed_unit`` is not a string,
-            - if ``angular_acceleration_unit`` is not a string,
-            - if ``torque_unit`` is not a string,
-            - if ``driving_torque_unit`` is not a string,
-            - if ``load_torque_unit`` is not a string,
-            - if ``force_unit`` is not a string,
-            - if ``stress_unit`` is not a string,
-            - if ``current_unit`` is not a string.
-        ValueError
-            If ``folder_path`` is an empty string.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               - If ``folder_path`` is not a string,
+               - if ``time_unit`` is not a string,
+               - if ``angular_position_unit`` is not a string,
+               - if ``angular_speed_unit`` is not a string,
+               - if ``angular_acceleration_unit`` is not a string,
+               - if ``torque_unit`` is not a string,
+               - if ``driving_torque_unit`` is not a string,
+               - if ``load_torque_unit`` is not a string,
+               - if ``force_unit`` is not a string,
+               - if ``stress_unit`` is not a string,
+               - if ``current_unit`` is not a string.
+           ValueError
+               If ``folder_path`` is an empty string.
         """
         if not isinstance(folder_path, str):
             raise TypeError("Parameter 'folder_path' must be a string.")
