@@ -80,10 +80,11 @@ class AngularPosition(UnitBase):
         float or int
             Angular position numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
         """
         return self.__value
 
@@ -103,12 +104,13 @@ class AngularPosition(UnitBase):
         str
             Symbol of the unit of measurement for angular position.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -130,36 +132,39 @@ class AngularPosition(UnitBase):
         AngularPosition
             Converted angular position.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``AngularPosition`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import AngularPosition
-        >>> p = AngularPosition(180, 'deg')
-        >>> p
-        ... 180 deg
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current value.
+           ``AngularPosition`` instantiation.
 
-        >>> p.to('rad')
-        ... 3.141592653589793 rad
-        >>> p
-        ... 180 deg
+           >>> from gearpy.units import AngularPosition
+           >>> p = AngularPosition(180, 'deg')
+           >>> p
+           ... 180 deg
 
-        Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+           Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current
+           value.
 
-        >>> p.to('arcmin', inplace = True)
-        ... 10800.0 arcmin
-        >>> p
-        ... 10800.0 arcmin
+           >>> p.to('rad')
+           ... 3.141592653589793 rad
+           >>> p
+           ... 180 deg
+
+           Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+
+           >>> p.to('arcmin', inplace = True)
+           ... 10800.0 arcmin
+           >>> p
+           ... 10800.0 arcmin
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -305,12 +310,13 @@ class Angle(AngularPosition):
         float or int
             Angle numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
-        ValueError
-            If ``value`` is negative.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
+           ValueError
+               If ``value`` is negative.
         """
         return super().value
 
@@ -330,12 +336,13 @@ class Angle(AngularPosition):
         str
             Symbol of the unit of measurement for angle.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return super().unit
 
@@ -357,36 +364,39 @@ class Angle(AngularPosition):
         Angle
             Converted angle.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Angle`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Angle
-        >>> a = Angle(180, 'deg')
-        >>> a
-        ... 180 deg
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current value.
+           ``Angle`` instantiation.
 
-        >>> a.to('rad')
-        ... 3.141592653589793 rad
-        >>> a
-        ... 180 deg
+           >>> from gearpy.units import Angle
+           >>> a = Angle(180, 'deg')
+           >>> a
+           ... 180 deg
 
-        Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+           Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current
+           value.
 
-        >>> a.to('arcmin', inplace = True)
-        ... 10800.0 arcmin
-        >>> a
-        ... 10800.0 arcmin
+           >>> a.to('rad')
+           ... 3.141592653589793 rad
+           >>> a
+           ... 180 deg
+
+           Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+
+           >>> a.to('arcmin', inplace = True)
+           ... 10800.0 arcmin
+           >>> a
+           ... 10800.0 arcmin
         """
         converted = super().to(target_unit = target_unit, inplace = inplace)
 
@@ -523,10 +533,11 @@ class AngularSpeed(UnitBase):
         float or int
             Angular speed numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
         """
         return self.__value
 
@@ -550,12 +561,13 @@ class AngularSpeed(UnitBase):
         str
             Symbol of the unit of measurement for angular speed.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -577,38 +589,40 @@ class AngularSpeed(UnitBase):
         AngularSpeed
             Converted angular speed.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``AngularSpeed`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import AngularSpeed
-        >>> s = AngularSpeed(1000, 'rpm')
-        >>> s
-        ... 1000 rpm
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from revolutions per minute to radian per second with ``inplace = False`` by default, so it does not
-        override the current value.
+           ``AngularSpeed`` instantiation.
 
-        >>> s.to('rad/s')
-        ... 104.71975511965977 rad/s
-        >>> s
-        ... 1000 rpm
+           >>> from gearpy.units import AngularSpeed
+           >>> s = AngularSpeed(1000, 'rpm')
+           >>> s
+           ... 1000 rpm
 
-        Conversion from revolutions per minute to revolutions per second with ``inplace = True``, in order to override
-        the current value.
+           Conversion from revolutions per minute to radian per second with ``inplace = False`` by default, so it does
+           not override the current value.
 
-        >>> s.to('rps', inplace = True)
-        ... 16.666666666666664 rps
-        >>> s
-        ... 16.666666666666664 rps
+           >>> s.to('rad/s')
+           ... 104.71975511965977 rad/s
+           >>> s
+           ... 1000 rpm
+
+           Conversion from revolutions per minute to revolutions per second with ``inplace = True``, in order to
+           override the current value.
+
+           >>> s.to('rps', inplace = True)
+           ... 16.666666666666664 rps
+           >>> s
+           ... 16.666666666666664 rps
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -704,10 +718,11 @@ class AngularAcceleration(UnitBase):
         float or int
             Angular acceleration numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
         """
         return self.__value
 
@@ -725,12 +740,13 @@ class AngularAcceleration(UnitBase):
         str
             Symbol of the unit of measurement for angular acceleration.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -752,38 +768,40 @@ class AngularAcceleration(UnitBase):
         AngularAcceleration
             Converted angular acceleration.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``AngularAcceleration`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import AngularAcceleration
-        >>> a = AngularAcceleration(180, 'deg/s^2')
-        >>> a
-        ... 180 deg/s^2
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from degree per second squared to radian per second squared with ``inplace = False`` by default, so
-        it does not override the current value.
+           ``AngularAcceleration`` instantiation.
 
-        >>> a.to('rad/s^2')
-        ... 3.141592653589793 rad/s^2
-        >>> a
-        ... 180 deg/s^2
+           >>> from gearpy.units import AngularAcceleration
+           >>> a = AngularAcceleration(180, 'deg/s^2')
+           >>> a
+           ... 180 deg/s^2
 
-        Conversion from degree per second squared to radian per second squared with ``inplace = True``, in order to
-        override the current value.
+           Conversion from degree per second squared to radian per second squared with ``inplace = False`` by default,
+           so it does not override the current value.
 
-        >>> a.to('rad/s^2', inplace = True)
-        ... 3.141592653589793 rad/s^2
-        >>> a
-        ... 3.141592653589793 rad/s^2
+           >>> a.to('rad/s^2')
+           ... 3.141592653589793 rad/s^2
+           >>> a
+           ... 180 deg/s^2
+
+           Conversion from degree per second squared to radian per second squared with ``inplace = True``, in order to
+           override the current value.
+
+           >>> a.to('rad/s^2', inplace = True)
+           ... 3.141592653589793 rad/s^2
+           >>> a
+           ... 3.141592653589793 rad/s^2
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -888,12 +906,13 @@ class InertiaMoment(UnitBase):
         float or int
             Moment of inertia numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
-        ValueError
-            If ``value`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
+           ValueError
+               If ``value`` is negative or null.
         """
         return self.__value
 
@@ -916,12 +935,13 @@ class InertiaMoment(UnitBase):
         str
             Symbol of the unit of measurement for moment of inertia.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -943,38 +963,40 @@ class InertiaMoment(UnitBase):
         InertiaMoment
             Converted moment of inertia.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``InertiaMoment`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import InertiaMoment
-        >>> i = InertiaMoment(1, 'kgm^2')
-        >>> i
-        ... 1 kgm^2
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from kilogram-square meter to gram-square meter with ``inplace = False`` by default, so it does not
-        override the current value.
+           ``InertiaMoment`` instantiation.
 
-        >>> i.to('gm^2')
-        ... 1000.0 gm^2
-        >>> i
-        ... 1 kgm^2
+           >>> from gearpy.units import InertiaMoment
+           >>> i = InertiaMoment(1, 'kgm^2')
+           >>> i
+           ... 1 kgm^2
 
-        Conversion from kilograms-square meter to gram-square meter with ``inplace = True``, in order to override the
-        current value.
+           Conversion from kilogram-square meter to gram-square meter with ``inplace = False`` by default, so it does
+           not override the current value.
 
-        >>> i.to('gm^2', inplace = True)
-        ... 1000.0 gm^2
-        >>> i
-        ... 1000.0 gm^2
+           >>> i.to('gm^2')
+           ... 1000.0 gm^2
+           >>> i
+           ... 1 kgm^2
+
+           Conversion from kilograms-square meter to gram-square meter with ``inplace = True``, in order to override the
+           current value.
+
+           >>> i.to('gm^2', inplace = True)
+           ... 1000.0 gm^2
+           >>> i
+           ... 1000.0 gm^2
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1083,10 +1105,11 @@ class Torque(UnitBase):
         float or int
             Torque numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
         """
         return self.__value
 
@@ -1118,12 +1141,13 @@ class Torque(UnitBase):
         str
             Symbol of the unit of measurement for torque.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -1145,38 +1169,40 @@ class Torque(UnitBase):
         Torque
             Converted torque.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Torque`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Torque
-        >>> T = Torque(1, 'Nm')
-        >>> T
-        ... 1 Nm
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from newton-meter to kilogram force-meter with ``inplace = False`` by default, so it does not
-        override the current value.
+           ``Torque`` instantiation.
 
-        >>> T.to('kgfm')
-        ... 0.10197162129779283 kgfm
-        >>> T
-        ... 1 Nm
+           >>> from gearpy.units import Torque
+           >>> T = Torque(1, 'Nm')
+           >>> T
+           ... 1 Nm
 
-        Conversion from newton-meter to kilogram force-meter with ``inplace = True``, in order to override the current
-        value.
+           Conversion from newton-meter to kilogram force-meter with ``inplace = False`` by default, so it does not
+           override the current value.
 
-        >>> T.to('kgfm', inplace = True)
-        ... 0.10197162129779283 kgfm
-        >>> T
-        ... 0.10197162129779283 kgfm
+           >>> T.to('kgfm')
+           ... 0.10197162129779283 kgfm
+           >>> T
+           ... 1 Nm
+
+           Conversion from newton-meter to kilogram force-meter with ``inplace = True``, in order to override the
+           current value.
+
+           >>> T.to('kgfm', inplace = True)
+           ... 0.10197162129779283 kgfm
+           >>> T
+           ... 0.10197162129779283 kgfm
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1280,10 +1306,11 @@ class Time(UnitBase):
         float or int
             Time numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
         """
         return self.__value
 
@@ -1302,12 +1329,13 @@ class Time(UnitBase):
         str
             Symbol of the unit of measurement for time.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -1329,36 +1357,39 @@ class Time(UnitBase):
         Time
             Converted time.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Time`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Time
-        >>> t = Time(1, 'hour')
-        >>> t
-        ... 1 hour
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from hour to second with ``inplace = False`` by default, so it does not override the current value.
+           ``Time`` instantiation.
 
-        >>> t.to('sec')
-        ... 3600.0 sec
-        >>> t
-        ... 1 hour
+           >>> from gearpy.units import Time
+           >>> t = Time(1, 'hour')
+           >>> t
+           ... 1 hour
 
-        Conversion from hour to second with ``inplace = True``, in order to override the current value.
+           Conversion from hour to second with ``inplace = False`` by default, so it does not override the current
+           value.
 
-        >>> t.to('sec', inplace = True)
-        ... 3600.0 sec
-        >>> t
-        ... 3600.0 sec
+           >>> t.to('sec')
+           ... 3600.0 sec
+           >>> t
+           ... 1 hour
+
+           Conversion from hour to second with ``inplace = True``, in order to override the current value.
+
+           >>> t.to('sec', inplace = True)
+           ... 3600.0 sec
+           >>> t
+           ... 3600.0 sec
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1453,12 +1484,13 @@ class TimeInterval(Time):
         float or int
             Time interval numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
-        ValueError
-            If ``value`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
+           ValueError
+               If ``value`` is negative or null.
         """
         return super().value
 
@@ -1477,12 +1509,13 @@ class TimeInterval(Time):
         str
             Symbol of the unit of measurement for time interval.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return super().unit
 
@@ -1504,36 +1537,39 @@ class TimeInterval(Time):
         TimeInterval
             Converted time interval.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``TimeInterval`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import TimeInterval
-        >>> dt = TimeInterval(1, 'hour')
-        >>> dt
-        ... 1 hour
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from hour to second with ``inplace = False`` by default, so it does not override the current value.
+           ``TimeInterval`` instantiation.
 
-        >>> dt.to('sec')
-        ... 3600.0 sec
-        >>> dt
-        ... 1 hour
+           >>> from gearpy.units import TimeInterval
+           >>> dt = TimeInterval(1, 'hour')
+           >>> dt
+           ... 1 hour
 
-        Conversion from hour to second with ``inplace = True``, in order to override the current value.
+           Conversion from hour to second with ``inplace = False`` by default, so it does not override the current
+           value.
 
-        >>> dt.to('sec', inplace = True)
-        ... 3600.0 sec
-        >>> dt
-        ... 3600.0 sec
+           >>> dt.to('sec')
+           ... 3600.0 sec
+           >>> dt
+           ... 1 hour
+
+           Conversion from hour to second with ``inplace = True``, in order to override the current value.
+
+           >>> dt.to('sec', inplace = True)
+           ... 3600.0 sec
+           >>> dt
+           ... 3600.0 sec
         """
         converted = super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1621,12 +1657,13 @@ class Length(UnitBase):
         float or int
             Length numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
-        ValueError
-            If ``value`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
+           ValueError
+               If ``value`` is negative or null.
         """
         return self.__value
 
@@ -1645,12 +1682,13 @@ class Length(UnitBase):
         str
             Symbol of the unit of measurement for length.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -1672,37 +1710,39 @@ class Length(UnitBase):
         Length
             Converted length.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Length`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Length
-        >>> l = Length(1, 'm')
-        >>> l
-        ... 1 m
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from meter to centimeter with ``inplace = False`` by default, so it does not override the current
-        value.
+           ``Length`` instantiation.
 
-        >>> l.to('cm')
-        ... 100.0 cm
-        >>> l
-        ... 1 m
+           >>> from gearpy.units import Length
+           >>> l = Length(1, 'm')
+           >>> l
+           ... 1 m
 
-        Conversion from meter to centimeter with ``inplace = True``, in order to override the current value.
+           Conversion from meter to centimeter with ``inplace = False`` by default, so it does not override the current
+           value.
 
-        >>> l.to('cm', inplace = True)
-        ... 100.0 cm
-        >>> l
-        ... 100.0 cm
+           >>> l.to('cm')
+           ... 100.0 cm
+           >>> l
+           ... 1 m
+
+           Conversion from meter to centimeter with ``inplace = True``, in order to override the current value.
+
+           >>> l.to('cm', inplace = True)
+           ... 100.0 cm
+           >>> l
+           ... 100.0 cm
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1796,12 +1836,13 @@ class Surface(UnitBase):
         float or int
             Surface numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
-        ValueError
-            If ``value`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
+           ValueError
+               If ``value`` is negative or null.
         """
         return self.__value
 
@@ -1820,12 +1861,13 @@ class Surface(UnitBase):
         str
             Symbol of the unit of measurement for surface.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -1847,38 +1889,40 @@ class Surface(UnitBase):
         Surface
             Converted surface.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Surface`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Surface
-        >>> s = Surface(1, 'm^2')
-        >>> s
-        ... 1 m^2
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from square meter to square millimeter with ``inplace = False`` by default, so it does not override
-        the current value.
+           ``Surface`` instantiation.
 
-        >>> s.to('mm^2')
-        ... 1000000.0 mm^2
-        >>> s
-        ... 1 m^2
+           >>> from gearpy.units import Surface
+           >>> s = Surface(1, 'm^2')
+           >>> s
+           ... 1 m^2
 
-        Conversion from square meter to square millimeter with ``inplace = True``, in order to override the current
-        value.
+           Conversion from square meter to square millimeter with ``inplace = False`` by default, so it does not
+           override the current value.
 
-        >>> s.to('mm^2', inplace = True)
-        ... 1000000.0 mm^2
-        >>> s
-        ... 1000000.0 mm^2
+           >>> s.to('mm^2')
+           ... 1000000.0 mm^2
+           >>> s
+           ... 1 m^2
+
+           Conversion from square meter to square millimeter with ``inplace = True``, in order to override the current
+           value.
+
+           >>> s.to('mm^2', inplace = True)
+           ... 1000000.0 mm^2
+           >>> s
+           ... 1000000.0 mm^2
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1973,10 +2017,11 @@ class Force(UnitBase):
         float or int
             Force numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
         """
         return self.__value
 
@@ -1996,12 +2041,13 @@ class Force(UnitBase):
         str
             Symbol of the unit of measurement for force.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -2023,37 +2069,39 @@ class Force(UnitBase):
         Force
             Converted force.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Force`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Force
-        >>> f = Force(1, 'N')
-        >>> f
-        ... 1 N
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from newton to kilogram force with ``inplace = False`` by default, so it does not override the
-        current value.
+           ``Force`` instantiation.
 
-        >>> f.to('kgf')
-        ... 0.10197162129779283 kgf
-        >>> f
-        ... 1 N
+           >>> from gearpy.units import Force
+           >>> f = Force(1, 'N')
+           >>> f
+           ... 1 N
 
-        Conversion from newton to kilogram force with ``inplace = True``, in order to override the current value.
+           Conversion from newton to kilogram force with ``inplace = False`` by default, so it does not override the
+           current value.
 
-        >>> f.to('kgf', inplace = True)
-        ... 0.10197162129779283 kgf
-        >>> f
-        ... 0.10197162129779283 kgf
+           >>> f.to('kgf')
+           ... 0.10197162129779283 kgf
+           >>> f
+           ... 1 N
+
+           Conversion from newton to kilogram force with ``inplace = True``, in order to override the current value.
+
+           >>> f.to('kgf', inplace = True)
+           ... 0.10197162129779283 kgf
+           >>> f
+           ... 0.10197162129779283 kgf
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -2144,10 +2192,11 @@ class Stress(UnitBase):
         float or int
             Stress numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
         """
         return self.__value
 
@@ -2166,12 +2215,13 @@ class Stress(UnitBase):
         str
             Symbol of the unit of measurement for stress.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -2193,37 +2243,39 @@ class Stress(UnitBase):
         Stress
             Converted stress.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Stress`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Stress
-        >>> s = Stress(1, 'GPa')
-        >>> s
-        ... 1 GPa
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from giga-pascal to mega-pascal with ``inplace = False`` by default, so it does not override the
-        current value.
+           ``Stress`` instantiation.
 
-        >>> s.to('MPa')
-        ... 1000.0 MPa
-        >>> s
-        ... 1 GPa
+           >>> from gearpy.units import Stress
+           >>> s = Stress(1, 'GPa')
+           >>> s
+           ... 1 GPa
 
-        Conversion from giga-pascal to mega-pascal with ``inplace = True``, in order to override the current value.
+           Conversion from giga-pascal to mega-pascal with ``inplace = False`` by default, so it does not override the
+           current value.
 
-        >>> s.to('MPa', inplace = True)
-        ... 1000.0 MPa
-        >>> s
-        ... 1000.0 MPa
+           >>> s.to('MPa')
+           ... 1000.0 MPa
+           >>> s
+           ... 1 GPa
+
+           Conversion from giga-pascal to mega-pascal with ``inplace = True``, in order to override the current value.
+
+           >>> s.to('MPa', inplace = True)
+           ... 1000.0 MPa
+           >>> s
+           ... 1000.0 MPa
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -2313,10 +2365,11 @@ class Current(UnitBase):
         float or int
             Electrical current numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``value`` is not a float or an integer.
         """
         return self.__value
 
@@ -2334,12 +2387,13 @@ class Current(UnitBase):
         str
             Symbol of the unit of measurement for electrical current.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``unit`` is not a string.
+           KeyError
+               If the ``unit`` is not among available ones.
         """
         return self.__unit
 
@@ -2361,37 +2415,39 @@ class Current(UnitBase):
         Current
             Converted electrical current.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Current`` instantiation.
+           TypeError
+               - If ``target_unit`` is not a string,
+               - if ``inplace`` is not a bool.
+           KeyError
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Current
-        >>> i = Current(1, 'A')
-        >>> i
-        ... 1 A
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from ampere to milli-ampere with ``inplace = False`` by default, so it does not override the current
-        value.
+           ``Current`` instantiation.
 
-        >>> i.to('mA')
-        ... 1000.0 mA
-        >>> i
-        ... 1 A
+           >>> from gearpy.units import Current
+           >>> i = Current(1, 'A')
+           >>> i
+           ... 1 A
 
-        Conversion from ampere to milli-ampere with ``inplace = True``, in order to override the current value.
+           Conversion from ampere to milli-ampere with ``inplace = False`` by default, so it does not override the
+           current value.
 
-        >>> i.to('mA', inplace = True)
-        ... 1000.0 mA
-        >>> i
-        ... 1000.0 mA
+           >>> i.to('mA')
+           ... 1000.0 mA
+           >>> i
+           ... 1 A
+
+           Conversion from ampere to milli-ampere with ``inplace = True``, in order to override the current value.
+
+           >>> i.to('mA', inplace = True)
+           ... 1000.0 mA
+           >>> i
+           ... 1000.0 mA
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
