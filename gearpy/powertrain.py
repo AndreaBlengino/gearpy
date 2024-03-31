@@ -15,40 +15,40 @@ VARIABLES_SORT_ORDER = {'angular position': 0, 'angular speed': 1, 'angular acce
 
 
 class Powertrain:
-    r"""``gearpy.powertrain.Powertrain`` object.
+    r""":py:class:`Powertrain <gearpy.powertrain.Powertrain>` object.
 
     Attributes
     ----------
-    :py:attr:`elements` : tuple
-        Elements in the powertrain elements.
-    :py:attr:`time` : list
+    :py:attr:`elements` : :py:class:`tuple`
+        Elements in the powertrain.
+    :py:attr:`time` : :py:class:`list`
         Simulated time steps.
-    :py:attr:`self_locking` : bool
+    :py:attr:`self_locking` : :py:class:`bool`
         Whether the powertrain can only be moved by the motor and not by the effect of the load.
 
     Methods
     -------
     :py:meth:`plot`
-        Plots time variables for each element in the powertrain elements.
+        It plots time variables for each element in the powertrain's :py:attr:`elements`.
     :py:meth:`reset`
-        Resets computed time variables.
+        It resets the computed time variables.
     :py:meth:`snapshot`
         Computes a snapshot of the time variables of the elements in the powertrain at the specified
         ``target_time``.
     :py:meth:`update_time`
-        Updates the ``Powertrain.time`` list by appending the ``instant`` simulated time step.
+        It updates the :py:attr:`time` by appending the ``instant`` simulated time step.
     :py:meth:`export_time_variables`
-        Exports the powertrain's rotating objects' computed time variables to some files.
+        It exports the powertrain's rotating objects' computed time variables to some files.
 
     .. admonition:: Raises
        :class: warning
 
-       TypeError
+       ``TypeError``
            If ``motor`` parameter is not an instance of ``MotorBase``.
-       ValueError
+       ``ValueError``
            If ``motor`` is not connected to any other element.
-       NameError
-           If two or more elements in the powertrain elements share the same name.
+       ``NameError``
+           If two or more elements in the powertrain elements share the same ``name``.
     """
 
     def __init__(self, motor: MotorBase):
@@ -79,14 +79,14 @@ class Powertrain:
 
     @property
     def elements(self) -> Tuple[RotatingObject]:
-        """Elements in the powertrain elements. \n
+        """Rotating objects in the powertrain. \n
         The first element is the driving motor, the next elements are in order, from the closest to the farthest from
         the motor. Each element is driven by the previous one and it drives the following one.
 
         Returns
         -------
-        tuple
-            Elements in the powertrain elements.
+        :py:class:`tuple`
+            Rotating objects in the powertrain.
 
         .. admonition:: See Also
            :class: seealso
@@ -103,35 +103,38 @@ class Powertrain:
     @property
     def time(self) -> List[Time]:
         """List of the simulated time steps. \n
-        During simulation, the solver appends a simulated time step to this list. \n
-        Every element of this list must be an instance of ``gearpy.units.Time``.
+        During computation, the solver appends a simulated time step to this list at each iteration. \n
+        Every element of this list must be an instance of :py:class:`Time <gearpy.units.units.Time>`.
 
         Returns
         -------
-        list
-            The list of the simulated time steps.
+        :py:class:`list`
+            The :py:class:`list` of the simulated time steps.
 
         .. admonition:: See Also
            :class: seealso
 
            :py:class:`Time <gearpy.units.units.Time>` \n
-           :py:class:`Solver <gearpy.solver.Solver>`
+           :py:meth:`Solver.run() <gearpy.solver.Solver.run>`
         """
         return self.__time
 
     @property
     def self_locking(self) -> bool:
         """Whether the powertrain can only be moved by the motor and not by the effect of the load. \n
-        This property is given by the presence of a self-locking mating between a ``WormGear`` and a ``WormWheel`` in
-        the powertrain. This type of gear mating can be self-locking if the amount of friction is high enough with
-        respect to the gear pressure and helix angles. \n
+        This property is given by the presence of a self-locking mating between a
+        :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` and a
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>` in the powertrain. This type of gear
+        mating can be self-locking if the amount of friction is high enough with respect to the gear pressure and helix
+        angles. \n
         If the powertrain is self-locking, then it can only be moved by the motor and not by the load, even if the load
         torque is greater than the motor driving torque. \n
-        Once the property is defined at the Powertrain instantiation, it cannot be changed afterward.
+        Once the property is defined at the :py:class:`Powertrain <gearpy.powertrain.Powertrain>` instantiation, it
+        cannot be changed afterward.
 
         Returns
         -------
-        bool
+        :py:class:`bool`
             Whether the powertrain can only be moved by the motor and not by the effect of the load.
 
         .. admonition:: See Also
@@ -143,18 +146,18 @@ class Powertrain:
         """
         return self.__self_locking
 
-    def update_time(self, instant: Time):
-        """Updates the ``Powertrain.time`` list by appending the ``instant`` simulated time step.
+    def update_time(self, instant: Time) -> None:
+        """It updates the :py:attr:`time` by appending the ``instant`` simulated time step.
 
         Parameters
         ----------
-        instant : Time
-            Simulated time step to be added to ``Powertrain.time`` list.
+        ``instant`` : :py:class:`Time <gearpy.units.units.Time>`
+            Simulated time step to be added to :py:attr:`time`.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
+           ``TypeError``
                If ``instant`` is not an instance of :py:class:`Time <gearpy.units.units.Time>`.
 
         .. admonition:: See Also
@@ -167,15 +170,16 @@ class Powertrain:
 
         self.__time.append(instant)
 
-    def reset(self):
-        """Resets computed time variables. \n
-        For each element in the powertrain elements, it resets each time variables and also ``time``
+    def reset(self) -> None:
+        """It resets the computed time variables. \n
+        For each element in the powertrain's :py:attr:`elements`, it resets each time variables and also :py:attr:`time`
         property.
 
         .. admonition:: See Also
            :class: seealso
 
            :py:attr:`time` \n
+           :py:attr:`elements` \n
            :py:attr:`DCMotor.time_variables <gearpy.mechanical_objects.dc_motor.DCMotor.time_variables>` \n
            :py:attr:`Flywheel.time_variables <gearpy.mechanical_objects.flywheel.Flywheel.time_variables>` \n
            :py:attr:`HelicalGear.time_variables <gearpy.mechanical_objects.helical_gear.HelicalGear.time_variables>` \n
@@ -220,83 +224,94 @@ class Powertrain:
                  stress_unit: Optional[str] = 'MPa',
                  current_unit: Optional[str] = 'A',
                  print_data: Optional[bool] = True) -> pd.DataFrame:
-        """Computes a snapshot of the time variables of the elements in the powertrain at the specified
+        """It computes a snapshot of the time variables of the elements in the powertrain at the specified
         ``target_time``. \n
-        It returns a ``pandas.DataFrame`` with the computed time variables. Each element in the powertrain elements is a
-        row of the DataFrame, while the columns are the time variables ``'angular position'``, ``'angular speed'``,
-        ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``. The motor can have
-        additional variables ``'electric current'`` and ``'pwm'``, while gears can have additional parameters
-        ``'tangential force'``, ``'bending stress'`` and ``'contact stress'``, depending on instantiation parameters. \n
-        It is possible to select the variables to be printed with the ``variables`` list. \n
+        It returns a :py:class:`pandas.DataFrame` with the computed time variables. Each element in the powertrain's
+        :py:attr:`elements` is a row of the DataFrame, while the columns are the time variables ``'angular position'``,
+        ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``.
+        The motor can have additional variables ``'electric current'`` and ``'pwm'``, while gears can have additional
+        parameters ``'tangential force'``, ``'bending stress'`` and ``'contact stress'``, depending on instantiation
+        parameters. \n
+        It is possible to select the variables to be printed with the ``variables`` parameter. \n
         Each time variable is converted to the relative unit passed as optional parameter. \n
-        If the ``target_time`` is not among simulated time steps in the ``time`` list, it computes a linear
+        If the ``target_time`` is not among simulated time steps in the :py:attr:`time` property, it computes a linear
         interpolation from the two closest simulated time steps.
 
         Parameters
         ----------
-        target_time : Time
-            The time to which compute the powertrain time variables' snapshot. It must be within minimum and maximum
-            simulated time steps in ``time`` parameter.
-        variables : list, optional
-            Time variables to be printed. Default is all available time variables.
-        angular_position_unit : str, optional
-            Symbol of the unit of measurement to which convert the angular position in the DataFrame. It must be a
-            string. Default is ``'rad'``.
-        angular_speed_unit : str, optional
-            Symbol of the unit of measurement to which convert the angular speed in the DataFrame. It must be a string.
-            Default is ``'rad/s'``.
-        angular_acceleration_unit : str, optional
-            Symbol of the unit of measurement to which convert the angular acceleration in the DataFrame. It must be a
-            string. Default is ``'rad/s^2'``.
-        torque_unit : str, optional
-            Symbol of the unit of measurement to which convert the torque in the DataFrame. It must be a string. Default
-            is ``'Nm'``.
-        driving_torque_unit : str, optional
-            Symbol of the unit of measurement to which convert the driving torque in the DataFrame. It must be a string.
-            Default is ``'Nm'``.
-        load_torque_unit : str, optional
-            Symbol of the unit of measurement to which convert the load torque in the DataFrame. It must be a string.
-            Default is ``'Nm'``.
-        force_unit : str, optional
-            Symbol of the unit of measurement to which convert the force values in the DataFrame. It must be a string.
-            Default is ``'N'``.
-        stress_unit : str, optional
-            Symbol of the unit of measurement to which convert the stress values in the DataFrame. It must be a string.
-            Default is ``'MPa'``.
-        current_unit : str, optional
+        ``target_time`` : :py:class:`Time <gearpy.units.units.Time>`
+            The time to which compute the powertrain time variables' snapshot. It must be an instance of
+            :py:class:`Time <gearpy.units.units.Time>`, whose value must be within minimum and maximum simulated time
+            steps in :py:attr:`time` property.
+        ``variables`` : :py:class:`list`, optional
+            Time variables to be printed. It must be a :py:class:`list`. Default is all available time variables.
+        ``angular_position_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the angular position values in the DataFrame. It must be
+            a :py:class:`str`. Default is ``'rad'``. See
+            :py:attr:`AngularPosition.unit <gearpy.units.units.AngularPosition.unit>` for more details.
+        ``angular_speed_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the angular speed values in the DataFrame. It must be a
+            :py:class:`str`. Default is ``'rad/s'``.
+            See :py:attr:`AngularSpeed.unit <gearpy.units.units.AngularSpeed.unit>` for more details.
+        ``angular_acceleration_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the angular acceleration values in the DataFrame. It must
+            be a :py:class:`str`. Default is ``'rad/s^2'``. See
+            :py:attr:`AngularAcceleration.unit <gearpy.units.units.AngularAcceleration.unit>` for more details.
+        ``torque_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the torque values in the DataFrame. It must be a
+            :py:class:`str`. Default is ``'Nm'``. See :py:attr:`Torque.unit <gearpy.units.units.Torque.unit>` for more
+            details.
+        ``driving_torque_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the driving torque values in the DataFrame. It must be a
+            :py:class:`str`. Default is ``'Nm'``. See :py:attr:`Torque.unit <gearpy.units.units.Torque.unit>` for more
+            details.
+        ``load_torque_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the load torque values in the DataFrame. It must be a
+            :py:class:`str`. Default is ``'Nm'``. See :py:attr:`Torque.unit <gearpy.units.units.Torque.unit>` for more
+            details.
+        ``force_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the force values in the DataFrame. It must be a
+            :py:class:`str`. Default is ``'N'``. See :py:attr:`Force.unit <gearpy.units.units.Force.unit>` for more
+            details.
+        ``stress_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the stress values in the DataFrame. It must be a
+            :py:class:`str`. Default is ``'MPa'``. See :py:attr:`Stress.unit <gearpy.units.units.Stress.unit>` for more
+            details.
+        ``current_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the electric current values in the DataFrame. It must be
-            a string. Default is ``'A'``.
-        print_data : bool, optional
+            a :py:class:`str`. Default is ``'A'``. See :py:attr:`Current.unit <gearpy.units.units.Current.unit>` for
+            more details.
+        ``print_data`` : :py:class:`bool`, optional
             Whether to print the computed time variables DataFrame. Default is ``True``.
 
         Returns
         -------
-        pandas.DataFrame
+        :py:class:`pandas.DataFrame`
             The DataFrame containing time variables values at the specified ``target_time`` for each element in the
-            powertrain elements.
+            powertrain's :py:attr:`elements`.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               - If an element of ``time`` is not an instance of ``Time``,
-               - if ``target_time`` is not an instance of ``Time``,
-               - if ``variables`` is not a list,
-               - if an element of ``variables`` is not a string,
-               - if ``angular_position_unit`` is not a string,
-               - if ``angular_speed_unit`` is not a string,
-               - if ``angular_acceleration_unit`` is not a string,
-               - if ``torque_unit`` is not a string,
-               - if ``driving_torque_unit`` is not a string,
-               - if ``load_torque_unit`` is not a string,
-               - if ``force_unit`` is not a string,
-               - if ``stress_unit`` is not a string,
-               - if ``current_unit`` is not a string,
-               - if ``print_data`` is not a bool.
-           ValueError
-               - If ``time`` is an empty list,
+           ``TypeError``
+               - If an element of ``time`` is not an instance of :py:class:`Time <gearpy.units.units.Time>`,
+               - if ``target_time`` is not an instance of :py:class:`Time <gearpy.units.units.Time>`,
+               - if ``variables`` is not a :py:class:`list`,
+               - if an element of ``variables`` is not a :py:class:`str`,
+               - if ``angular_position_unit`` is not a :py:class:`str`,
+               - if ``angular_speed_unit`` is not a :py:class:`str`,
+               - if ``angular_acceleration_unit`` is not a :py:class:`str`,
+               - if ``torque_unit`` is not a :py:class:`str`,
+               - if ``driving_torque_unit`` is not a :py:class:`str`,
+               - if ``load_torque_unit`` is not a :py:class:`str`,
+               - if ``force_unit`` is not a :py:class:`str`,
+               - if ``stress_unit`` is not a :py:class:`str`,
+               - if ``current_unit`` is not a :py:class:`str`,
+               - if ``print_data`` is not a :py:class:`bool`.
+           ``ValueError``
+               - If ``time`` is an empty :py:class:`list`,
                - if ``target_time`` is outside simulation interval,
-               - if ``variables`` is an empty list,
+               - if ``variables`` is an empty :py:class:`list`,
                - if an element of ``variables`` is not a valid time variable.
 
         .. admonition:: See Also
@@ -454,75 +469,87 @@ class Powertrain:
              stress_unit: Optional[str] = 'MPa',
              current_unit: Optional[str] = 'A',
              time_unit: Optional[str] = 'sec',
-             figsize: Optional[tuple] = None):
-        """Plots time variables for selected elements in the powertrain elements. \n
-        It generates a grid of subplots, one column for each selected element of the powertrain elements and one rows
-        for each selected time variable. \n
-        The available elements are those in ``elements`` tuple and the available variables are: ``'angular position'``,
-        ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and ``'load torque'``. The
-        motor can have additional variables ``electric current`` and ``pwm`` while gears can have additional variables
-        ``tangential force``, ``bending stress`` and ``contact stress``, depending on instantiation parameters. \n
+             figsize: Optional[tuple] = None) -> None:
+        """It plots time variables for selected ``elements`` in the powertrain's :py:attr:`elements`. \n
+        It generates a grid of subplots, one column for each selected element of the powertrain's :py:attr:`elements`
+        and one row for each selected time variable. \n
+        The available elements are listed in :py:attr:`elements` and the available variables are:
+        ``'angular position'``, ``'angular speed'``, ``'angular acceleration'``, ``'torque'``, ``'driving torque'`` and
+        ``'load torque'``. The motor can have additional variables ``electric current`` and ``pwm`` while gears can have
+        additional variables ``tangential force``, ``bending stress`` and ``contact stress``, depending on instantiation
+        parameters. \n
         The time variables are plotted in the described order, from the top row to the bottom one; torques are grouped
         together in a single row as well as stresses are grouped together.
         Plotted values' units are managed with optional parameters. \n
-        Elements to be plotted can be passed as instances or names (strings) in a list.
+        Elements to be plotted can be passed as instances or names (:py:class:`str`) in a :py:class:`list`.
 
         Parameters
         ----------
-        elements : list, optional
-            Elements of the powertrain elements which time variables have to be plotted. Each single element can be
-            passed as instance or name (string). Default is all elements in the powertrain elements.
-        variables : list, optional
+        ``elements`` : :py:class:`list`, optional
+            Elements of the powertrain's :py:attr:`elements` which time variables have to be plotted. Each single
+            element can be passed as instance or name (:py:class:`str`). Default is all elements in the powertrain's
+            :py:attr:`elements`.
+        ``variables`` : :py:class:`list`, optional
             Time variables to be plotted. Default is all available time variables.
-        angular_position_unit : str, optional
+        ``angular_position_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the angular position values in the plot. It must be a
-            string. Default is ``'rad'``.
-        angular_speed_unit : str, optional
+            :py:class:`str`. Default is ``'rad'``. See
+            :py:attr:`AngularPosition.unit <gearpy.units.units.AngularPosition.unit>` for more details.
+        ``angular_speed_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the angular speed values in the plot. It must be a
-            string. Default is ``'rad/s'``.
-        angular_acceleration_unit : str, optional
+            :py:class:`str`. Default is ``'rad/s'``. See
+            :py:attr:`AngularSpeed.unit <gearpy.units.units.AngularSpeed.unit>` for more details.
+        ``angular_acceleration_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the angular acceleration values in the plot. It must be a
-            string. Default is ``'rad/s^2'``.
-        torque_unit : str, optional
-            Symbol of the unit of measurement to which convert the torque values in the plot. It must be a string.
-            Default is ``'Nm'``.
-        force_unit : str, optional
-            Symbol of the unit of measurement to which convert the force values in the plot. It must be a string.
-            Default is ``'N'``.
-        stress_unit : str, optional
-            Symbol of the unit of measurement to which convert the stress values in the plot. It must be a string.
-            Default is ``'MPa'``.
-        current_unit : str, optional
+            :py:class:`str`. Default is ``'rad/s^2'``. See
+            :py:attr:`AngularAcceleration.unit <gearpy.units.units.AngularAcceleration.unit>` for more details.
+        ``torque_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the torque values in the plot. It must be a
+            :py:class:`str`. Default is ``'Nm'``. See :py:attr:`Torque.unit <gearpy.units.units.Torque.unit>` for more
+            details.
+        ``force_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the force values in the plot. It must be a
+            :py:class:`str`. Default is ``'N'``. See :py:attr:`Force.unit <gearpy.units.units.Force.unit>` for more
+            details.
+        ``stress_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the stress values in the plot. It must be a
+            :py:class:`str`. Default is ``'MPa'``. See :py:attr:`Stress.unit <gearpy.units.units.Stress.unit>` for more
+            details.
+        ``current_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the electric current values in the plot. It must be a
-            string. Default is ``'A'``.
-        time_unit : str, optional
-            Symbol of the unit of measurement to which convert the time values in the plot. It must be a string. Default
-            is ``'sec'``.
-        figsize : tuple, optional
+            :py:class:`str`. Default is ``'A'``. See :py:attr:`Current.unit <gearpy.units.units.Current.unit>` for more
+            details.
+        ``time_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the time values in the plot. It must be a
+            :py:class:`str`. Default is ``'sec'``. See :py:attr:`Time.unit <gearpy.units.units.Time.unit>` for more
+            details.
+        ``figsize`` : :py:class:`tuple`, optional
             Width and height of the window size, in inches. If not provided defaults to ``[6.4, 4.8]``.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               - If ``elements`` is not a list,
-               - if an element of ``elements`` is not an instance of ``RotatingObject`` or a string,
-               - if ``variables`` is not a list,
-               - if an element of ``variables`` is not a string,
-               - if ``angular_position_unit`` is not a string,
-               - if ``angular_speed_unit`` is not a string,
-               - if ``angular_acceleration_unit`` is not a string,
-               - if ``torque_unit`` is not a string,
-               - if ``force_unit`` is not a string,
-               - if ``stress_unit`` is not a string,
-               - if ``current_unit`` is not a string,
-               - if ``time_unit`` is not a string,
-               - if ``figsize`` is not a tuple,
-               - if an element of ``figsize`` is not a float or an integer.
-           ValueError
-               - If ``elements`` is an empty list,
-               - if an element of ``elements`` is not in ``Powertrain.elements``,
-               - if ``variables`` is an empty list,
+           ``TypeError``
+               - If ``elements`` is not a :py:class:`list`,
+               - if an element of ``elements`` is not an instance of
+                 :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>` or a
+                 :py:class:`str`,
+               - if ``variables`` is not a :py:class:`list`,
+               - if an element of ``variables`` is not a :py:class:`str`,
+               - if ``angular_position_unit`` is not a :py:class:`str`,
+               - if ``angular_speed_unit`` is not a :py:class:`str`,
+               - if ``angular_acceleration_unit`` is not a :py:class:`str`,
+               - if ``torque_unit`` is not a :py:class:`str`,
+               - if ``force_unit`` is not a :py:class:`str`,
+               - if ``stress_unit`` is not a :py:class:`str`,
+               - if ``current_unit`` is not a :py:class:`str`,
+               - if ``time_unit`` is not a :py:class:`str`,
+               - if ``figsize`` is not a :py:class:`tuple`,
+               - if an element of ``figsize`` is not a :py:class:`float` or an :py:class:`int`.
+           ``ValueError``
+               - If ``elements`` is an empty :py:class:`list`,
+               - if an element of ``elements`` is not in :py:attr:`elements`,
+               - if ``variables`` is an empty :py:class:`list`,
                - if an element of ``variables`` is not a valid time variable,
                - if ``figsize`` has not exactly two elements: one for width and the other for height.
 
@@ -699,7 +726,8 @@ class Powertrain:
                 if element.electric_current_is_computable and electric_variables:
                     axes[electric_variables_index].plot(time_values,
                                                         [variable_value.to(UNITS['electric current']).value
-                                                         for variable_value in element.time_variables['electric current']])
+                                                         for variable_value in
+                                                         element.time_variables['electric current']])
 
                 if pwm_variables:
                     axes[pwm_variables_index].plot(time_values,
@@ -725,7 +753,9 @@ class Powertrain:
                                 axes[stress_variables_index].plot(time_values,
                                                                   [variable_value.to(UNITS[variable]).value
                                                                    for variable_value in element.time_variables[variable]],
-                                                                  label = variable.replace('stress', '').replace(' ', ''))
+                                                                  label = variable.
+                                                                  replace('stress', '').
+                                                                  replace(' ', ''))
                                 handles, labels = axes[stress_variables_index].get_legend_handles_labels()
                                 for handle, label in zip(handles, labels):
                                     if label not in stress_legend_items.keys():
@@ -860,65 +890,75 @@ class Powertrain:
                               force_unit: Optional[str] = 'N',
                               stress_unit: Optional[str] = 'MPa',
                               current_unit: Optional[str] = 'A') -> None:
-        """Exports the powertrain's rotating objects' computed time variables to some files. \n
-        It creates a file for each rotating object in the powertrain. The file name is the taken from the rotating
-        object's ``name``. \n
-        The exported files are a .csv files. The time variables are exported in a tabular form, in which each column is
-        a time variable and each row is a simulated time step. The columns are separated by a comma. The first column
+        """It exports the powertrain's :py:attr:`elements`' computed time variables to some files. \n
+        It creates a file for each rotating object in the powertrain's :py:attr:`elements`. The file name is taken from
+        the rotating object's ``name``. \n
+        The exported files are a ``.csv`` files. The time variables are exported in a tabular form, in which each column
+        is a time variable and each row is a simulated time step. The columns are separated by a comma. The first column
         reports the simulated time steps and the first row reports the column names.
 
         Parameters
         ----------
-        folder_path : str
-            Path to the folder in which to save the time variables' files. It must be a non-empty string.
-        time_unit : str, optional
+        ``folder_path`` : :py:class:`str`
+            Path to the folder in which to save the time variables' files. It must be a non-empty :py:class:`str`.
+        ``time_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the time values in the exported files. It must be a
-            string. Default is ``'sec'``.
-        angular_position_unit : str, optional
+            :py:class:`str`. Default is ``'sec'``. See :py:attr:`Time.unit <gearpy.units.units.Time.unit>` for more
+            details.
+        ``angular_position_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the angular position values in the exported files. It
-            must be a string. Default is ``'rad'``.
-        angular_speed_unit : str, optional
+            must be a :py:class:`str`. Default is ``'rad'``. See
+            :py:attr:`AngularPosition.unit <gearpy.units.units.AngularPosition.unit>` for more details.
+        ``angular_speed_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the angular speed values in the exported files. It must
-            be a string. Default is ``'rad/s'``.
-        angular_acceleration_unit : str, optional
+            be a :py:class:`str`. Default is ``'rad/s'``. See
+            :py:attr:`AngularSpeed.unit <gearpy.units.units.AngularSpeed.unit>` for more details.
+        ``angular_acceleration_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the angular acceleration values in the exported files. It
-            must be a string. Default is ``'rad/s^2'``.
-        torque_unit : str, optional
+            must be a :py:class:`str`. Default is ``'rad/s^2'``. See
+            :py:attr:`AngularAcceleration.unit <gearpy.units.units.AngularAcceleration.unit>` for more details.
+        ``torque_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the torque values in the exported files. It must be a
-            string. Default is ``'Nm'``.
-        driving_torque_unit : str, optional
-            Symbol of the unit of measurement to which convert the torque values in the exported files. It must be a
-            string. Default is ``'Nm'``.
-        load_torque_unit : str, optional
-            Symbol of the unit of measurement to which convert the torque values in the exported files. It must be a
-            string. Default is ``'Nm'``.
-        force_unit : str, optional
+            :py:class:`str`. Default is ``'Nm'``. See :py:attr:`Torque.unit <gearpy.units.units.Torque.unit>` for more
+            details.
+        ``driving_torque_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the driving torque values in the exported files. It must
+            be a :py:class:`str`. Default is ``'Nm'``. See :py:attr:`Torque.unit <gearpy.units.units.Torque.unit>` for
+            more details.
+        ``load_torque_unit`` : :py:class:`str`, optional
+            Symbol of the unit of measurement to which convert the load torque values in the exported files. It must be
+            a :py:class:`str`. Default is ``'Nm'``. See :py:attr:`Torque.unit <gearpy.units.units.Torque.unit>` for more
+            details.
+        ``force_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the force values in the exported files. It must be a
-            string. Default is ``'N'``.
-        stress_unit : str, optional
+            :py:class:`str`. Default is ``'N'``. See :py:attr:`Force.unit <gearpy.units.units.Force.unit>` for more
+            details.
+        ``stress_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the stress values in the exported files. It must be a
-            string. Default is ``'MPa'``.
-        current_unit : str, optional
+            :py:class:`str`. Default is ``'MPa'``. See :py:attr:`Stress.unit <gearpy.units.units.Stress.unit>` for more
+            details.
+        ``current_unit`` : :py:class:`str`, optional
             Symbol of the unit of measurement to which convert the electric current values in the exported files. It
-            must be a string. Default is ``'A'``.
+            must be a :py:class:`str`. Default is ``'A'``. See :py:attr:`Current.unit <gearpy.units.units.Current.unit>`
+            for more details.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               - If ``folder_path`` is not a string,
-               - if ``time_unit`` is not a string,
-               - if ``angular_position_unit`` is not a string,
-               - if ``angular_speed_unit`` is not a string,
-               - if ``angular_acceleration_unit`` is not a string,
-               - if ``torque_unit`` is not a string,
-               - if ``driving_torque_unit`` is not a string,
-               - if ``load_torque_unit`` is not a string,
-               - if ``force_unit`` is not a string,
-               - if ``stress_unit`` is not a string,
-               - if ``current_unit`` is not a string.
-           ValueError
-               If ``folder_path`` is an empty string.
+           ``TypeError``
+               - If ``folder_path`` is not a :py:class:`str`,
+               - if ``time_unit`` is not a :py:class:`str`,
+               - if ``angular_position_unit`` is not a :py:class:`str`,
+               - if ``angular_speed_unit`` is not a :py:class:`str`,
+               - if ``angular_acceleration_unit`` is not a :py:class:`str`,
+               - if ``torque_unit`` is not a :py:class:`str`,
+               - if ``driving_torque_unit`` is not a :py:class:`str`,
+               - if ``load_torque_unit`` is not a :py:class:`str`,
+               - if ``force_unit`` is not a :py:class:`str`,
+               - if ``stress_unit`` is not a :py:class:`str`,
+               - if ``current_unit`` is not a :py:class:`str`.
+           ``ValueError``
+               If ``folder_path`` is an empty :py:class:`str`.
         """
         if not isinstance(folder_path, str):
             raise TypeError("Parameter 'folder_path' must be a string.")
