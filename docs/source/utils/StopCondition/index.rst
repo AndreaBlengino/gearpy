@@ -11,6 +11,7 @@ StopCondition
 .. toctree::
    :hidden:
 
+   operators/index
    check_condition
    operator
    sensor
