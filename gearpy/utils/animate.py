@@ -19,12 +19,13 @@ def dc_motor_characteristics_animation(motor: DCMotor,
                                        marker_size: Optional[Union[float, int]] = None,
                                        padding: Optional[Union[float, int]] = 0.1,
                                        show: Optional[bool] = True) -> FuncAnimation:
-    """Generates an animation of a DC motor torque-speed and torque-current characteristic curves and relative working
-    points during the simulation. \n
+    """It generates an animation of a :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` torque-speed and
+    torque-current characteristic curves and relative working points during the simulation. \n
     Each simulated time step is a frame on the animation. \n
     It generates two subplots, one for each characteristic curve. It is possible to isolate a single characteristic to
     be plotted with optional parameters ``torque_speed_curve`` and ``torque_current_curve``. \n
-    The characteristic curves can be modified by the motor pulse width modulation ``pwm``. \n
+    The characteristic curves can be modified by the motor pulse width modulation
+    :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>`. \n
     Plotted values' units are managed with optional parameters ``angular_speed_unit``, ``torque_unit`` and
     ``current_unit``. \n
     Aesthetic parameters are managed with optional parameters ``figsize``, ``line_color``, ``marker_color``,
@@ -32,74 +33,76 @@ def dc_motor_characteristics_animation(motor: DCMotor,
 
     Parameters
     ----------
-    motor : DCMotor
+    ``motor`` : :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`
         DC motor whose characteristic curves and working point have to be animated.
-    time : list
+    ``time`` : :py:class:`list`
         The list of ``Time`` computed by the solver.
-    interval : float or int, optional
+    ``interval`` : :py:class:`float` or :py:class:`int`, optional
         Delay between animation frames in milliseconds. If not provided defaults to ``200``.
-    torque_speed_curve : bool, optional
+    ``torque_speed_curve`` : :py:class:`bool`, optional
         Whether to plot the torque-speed characteristic curve. Default is ``True``.
-    torque_current_curve : bool, optional
+    ``torque_current_curve`` : :py:class:`bool`, optional
         Whether to plot the torque-current characteristic curve. Default is ``True``.
-    angular_speed_unit : str, optional
+    ``angular_speed_unit`` : :py:class:`str`, optional
         Symbol of the unit of measurement to which convert the angular speed values in the plot. It must be a string.
-        Default is ``'rad/s'``.
-    torque_unit : str, optional
+        Default is ``'rad/s'``. See :py:attr:`AngularSpeed.unit <gearpy.units.units.AngularSpeed.unit>` for more
+        details.
+    ``torque_unit`` : :py:class:`str`, optional
         Symbol of the unit of measurement to which convert the torque values in the plot. It must be a string. Default
-        is ``'Nm'``.
-    current_unit : str, optional
+        is ``'Nm'``. See :py:attr:`Torque.unit <gearpy.units.units.Torque.unit>` for more details.
+    ``current_unit`` : :py:class:`str`, optional
         Symbol of the unit of measurement to which convert the electric current values in the plot. It must be a string.
-        Default is ``'A'``.
-    figsize : tuple, optional
+        Default is ``'A'``. See :py:attr:`Current.unit <gearpy.units.units.Current.unit>` for more details.
+    ``figsize`` : :py:class:`tuple`, optional
         Width and height of the window size, in inches. If not provided defaults to ``[6.4, 4.8]``.
-    line_color : str, optional
+    ``line_color`` : :py:class:`str`, optional
         Color of the characteristic curve lines. If not provided defaults to ``'#1f77b4'``.
-    marker_color : str, optional
+    ``marker_color`` : :py:class:`str`, optional
         Color of the motor working point marker. If not provided defaults to ``'#ff7f0e'``.
-    marker_size : float or int, optional
+    ``marker_size`` : :py:class:`float` or :py:class:`int`, optional
         Size, in points, of the motor working point marker. If not provided defaults to ``6``.
-    padding : float or int, optional
+    ``padding`` : :py:class:`float` or :py:class:`int`, optional
         Extra-space to be taken around each motor characteristics extreme points. It is expressed in percent points of
         the extreme point value. Default is ``0.1``, so it is taken 10% space around each characteristic extreme points.
-    show : bool, optional
+    ``show`` : :py:class:`bool`, optional
         Whether to show the animation. Default is ``True``.
 
     .. admonition:: Raises
        :class: warning
 
-       TypeError
-           - If ``motor`` is not an instance of ``DCMotor``,
-           - if ``time`` is not a list,
-           - if an element of ``time`` is not an instance of ``Time``,
-           - if ``interval`` is not a float or an integer,
-           - if ``torque_speed_curve`` is not a bool,
-           - if ``torque_current_curve`` is not a bool,
-           - if ``angular_speed_unit`` is not a string,
-           - if ``torque_unit`` is not a string,
-           - if ``current_unit`` is not a string,
-           - if ``figsize`` is not a tuple,
-           - if an element of ``figsize`` is not a float or an integer,
-           - if ``line_color`` is not a string,
-           - if ``marker_color`` is not a string,
-           - if ``marker_size`` is not a float or an integer,
-           - if ``padding`` is not a float or an integer,
-           - if ``show`` is not a bool.
-       ValueError
-           - If ``time`` is an empty list,
+       ``TypeError``
+           - If ``motor`` is not an instance of :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`,
+           - if ``time`` is not a :py:class:`list`,
+           - if an element of ``time`` is not an instance of :py:class:`Time <gearpy.units.units.Time>`,
+           - if ``interval`` is not a :py:class:`float` or an :py:class:`int`,
+           - if ``torque_speed_curve`` is not a :py:class:`bool`,
+           - if ``torque_current_curve`` is not a :py:class:`bool`,
+           - if ``angular_speed_unit`` is not a :py:class:`str`,
+           - if ``torque_unit`` is not a :py:class:`str`,
+           - if ``current_unit`` is not a :py:class:`str`,
+           - if ``figsize`` is not a :py:class:`tuple`,
+           - if an element of ``figsize`` is not a :py:class:`float` or an :py:class:`int`,
+           - if ``line_color`` is not a :py:class:`str`,
+           - if ``marker_color`` is not a :py:class:`str`,
+           - if ``marker_size`` is not a :py:class:`float` or an :py:class:`int`,
+           - if ``padding`` is not a :py:class:`float` or an :py:class:`int`,
+           - if ``show`` is not a :py:class:`bool`.
+       ``ValueError``
+           - If ``time`` is an empty :py:class:`list`,
            - if both ``torque_speed_curve`` and ``torque_current_curve`` are set to ``False``,
-           - if ``torque_current_curve`` is set to ``True`` but ``motor`` cannot compute ``electric_current`` property,
+           - if ``torque_current_curve`` is set to ``True`` but ``motor`` cannot compute
+             :py:attr:`DCMotor.electric_current <gearpy.mechanical_objects.dc_motor.DCMotor.electric_current>` property,
            - if ``figsize`` has not exactly two elements: one for width and the other for height,
            - if ``padding`` is negative.
 
     .. admonition:: See Also
        :class: seealso
 
-       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.angular_speed`
-       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.driving_torque`
-       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.electric_current`
-       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.time_variables`
-       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
+       :py:attr:`DCMotor.angular_speed <gearpy.mechanical_objects.dc_motor.DCMotor.angular_speed>` \n
+       :py:attr:`DCMotor.driving_torque <gearpy.mechanical_objects.dc_motor.DCMotor.driving_torque>` \n
+       :py:attr:`DCMotor.electric_current <gearpy.mechanical_objects.dc_motor.DCMotor.electric_current>` \n
+       :py:attr:`DCMotor.time_variables <gearpy.mechanical_objects.dc_motor.DCMotor.time_variables>` \n
+       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>`
     """
     if not isinstance(motor, DCMotor):
         raise TypeError(f"Parameter 'motor' must be an instance of {DCMotor.__name__!r}.")
