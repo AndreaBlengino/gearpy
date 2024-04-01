@@ -65,39 +65,41 @@ def dc_motor_characteristics_animation(motor: DCMotor,
     show : bool, optional
         Whether to show the animation. Default is ``True``.
 
-    Raises
-    ------
-    TypeError
-        - If ``motor`` is not an instance of ``DCMotor``,
-        - if ``time`` is not a list,
-        - if an element of ``time`` is not an instance of ``Time``,
-        - if ``interval`` is not a float or an integer,
-        - if ``torque_speed_curve`` is not a bool,
-        - if ``torque_current_curve`` is not a bool,
-        - if ``angular_speed_unit`` is not a string,
-        - if ``torque_unit`` is not a string,
-        - if ``current_unit`` is not a string,
-        - if ``figsize`` is not a tuple,
-        - if an element of ``figsize`` is not a float or an integer,
-        - if ``line_color`` is not a string,
-        - if ``marker_color`` is not a string,
-        - if ``marker_size`` is not a float or an integer,
-        - if ``padding`` is not a float or an integer,
-        - if ``show`` is not a bool.
-    ValueError
-        - If ``time`` is an empty list,
-        - if both ``torque_speed_curve`` and ``torque_current_curve`` are set to ``False``,
-        - if ``torque_current_curve`` is set to ``True`` but ``motor`` cannot compute ``electric_current`` property,
-        - if ``figsize`` has not exactly two elements: one for width and the other for height,
-        - if ``padding`` is negative.
+    .. admonition:: Raises
+       :class: warning
 
-    See Also
-    --------
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.angular_speed`
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.driving_torque`
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.electric_current`
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.time_variables`
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
+       TypeError
+           - If ``motor`` is not an instance of ``DCMotor``,
+           - if ``time`` is not a list,
+           - if an element of ``time`` is not an instance of ``Time``,
+           - if ``interval`` is not a float or an integer,
+           - if ``torque_speed_curve`` is not a bool,
+           - if ``torque_current_curve`` is not a bool,
+           - if ``angular_speed_unit`` is not a string,
+           - if ``torque_unit`` is not a string,
+           - if ``current_unit`` is not a string,
+           - if ``figsize`` is not a tuple,
+           - if an element of ``figsize`` is not a float or an integer,
+           - if ``line_color`` is not a string,
+           - if ``marker_color`` is not a string,
+           - if ``marker_size`` is not a float or an integer,
+           - if ``padding`` is not a float or an integer,
+           - if ``show`` is not a bool.
+       ValueError
+           - If ``time`` is an empty list,
+           - if both ``torque_speed_curve`` and ``torque_current_curve`` are set to ``False``,
+           - if ``torque_current_curve`` is set to ``True`` but ``motor`` cannot compute ``electric_current`` property,
+           - if ``figsize`` has not exactly two elements: one for width and the other for height,
+           - if ``padding`` is negative.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.angular_speed`
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.driving_torque`
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.electric_current`
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.time_variables`
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
     """
     if not isinstance(motor, DCMotor):
         raise TypeError(f"Parameter 'motor' must be an instance of {DCMotor.__name__!r}.")

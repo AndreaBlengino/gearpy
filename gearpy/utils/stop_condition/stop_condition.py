@@ -52,16 +52,18 @@ class StopCondition:
         SensorBase
             The sensor to be monitored to check if the stop condition is valid.
 
-        Raises
-        ------
-        TypeError
-            If ``sensor`` is not an instance of ``SensorBase``'s concrete class.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder`
-        :py:class:`gearpy.sensors.amperometer.Amperometer`
-        :py:class:`gearpy.sensors.tachometer.Tachometer`
+           TypeError
+               If ``sensor`` is not an instance of ``SensorBase``'s concrete class.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder`
+           :py:class:`gearpy.sensors.amperometer.Amperometer`
+           :py:class:`gearpy.sensors.tachometer.Tachometer`
         """
         return self.__sensor
 
@@ -69,15 +71,16 @@ class StopCondition:
     def threshold(self) -> UnitBase:
         """The threshold value that triggers the stop condition.
 
-        Raises
-        ------
-        TypeError
-            If ``threshold`` is not an instance of ``UnitBase``'s concrete class.
-
         Returns
         -------
         UnitBase
             The threshold value that triggers the stop condition.
+
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``threshold`` is not an instance of ``UnitBase``'s concrete class.
         """
         return self.__threshold
 
@@ -96,15 +99,16 @@ class StopCondition:
         - ``StopCondition.less_than_or_equal_to`` to check if the :py:attr:`sensor` value is less than or equal to the
           :py:attr:`threshold` value.
 
-        Raises
-        ------
-        TypeError
-            If ``operator`` is not an instance of ``OperatorBase``'s concrete class.
-
         Returns
         -------
         OperatorBase
             The comparison operator to use to check if the stop condition is valid.
+
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``operator`` is not an instance of ``OperatorBase``'s concrete class.
         """
         return self.__operator
 

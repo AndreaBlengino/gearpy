@@ -22,34 +22,36 @@ def add_gear_mating(master: GearBase,
     efficiency : float or int
         Mechanical efficiency of the gear mating.
 
-    Raises
-    ------
-    TypeError
-        - If ``master`` is not an instance of ``GearBase``,
-        - if ``slave`` is not an instance of ``GearBase``,
-        - if ``efficiency`` is not a float or an integer.
-    ValueError
-        - If ``master`` and ``slave`` are the same gear,
-        - if ``efficiency`` is not within ``0`` and ``1``,
-        - if ``master`` and ``slave`` have different values for ``module``,
-        - if ``master`` is an instance of ``HelicalGear`` but ``slave`` is not,
-        - if ``slave`` is an instance of ``HelicalGear`` but ``master`` is not,
-        - if both ``master`` and ``slave`` are instances of ``HelicalGear``, but they have different ``helix_angle``.
+    .. admonition:: Raises
+       :class: warning
 
-    See Also
-    --------
-    :py:class:`gearpy.mechanical_objects.spur_gear.SpurGear`
-    :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.master_gear_ratio`
-    :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.master_gear_efficiency`
-    :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.mating_role`
-    :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.drives`
-    :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.driven_by`
-    :py:class:`gearpy.mechanical_objects.helical_gear.HelicalGear`
-    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_ratio`
-    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_efficiency`
-    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.mating_role`
-    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.drives`
-    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.driven_by`
+       TypeError
+           - If ``master`` is not an instance of ``GearBase``,
+           - if ``slave`` is not an instance of ``GearBase``,
+           - if ``efficiency`` is not a float or an integer.
+       ValueError
+           - If ``master`` and ``slave`` are the same gear,
+           - if ``efficiency`` is not within ``0`` and ``1``,
+           - if ``master`` and ``slave`` have different values for ``module``,
+           - if ``master`` is an instance of ``HelicalGear`` but ``slave`` is not,
+           - if ``slave`` is an instance of ``HelicalGear`` but ``master`` is not,
+           - if both ``master`` and ``slave`` are instances of ``HelicalGear``, but they have different ``helix_angle``.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`gearpy.mechanical_objects.spur_gear.SpurGear`
+       :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.master_gear_ratio`
+       :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.master_gear_efficiency`
+       :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.mating_role`
+       :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.drives`
+       :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.driven_by`
+       :py:class:`gearpy.mechanical_objects.helical_gear.HelicalGear`
+       :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_ratio`
+       :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_efficiency`
+       :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.mating_role`
+       :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.drives`
+       :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.driven_by`
     """
     if not isinstance(master, GearBase):
         raise TypeError(f"Parameter 'master' must be an instance of {GearBase.__name__!r}.")
@@ -109,71 +111,74 @@ def add_worm_gear_mating(master: Union[WormGear, WormWheel],
     friction_coefficient : float or int
         Static friction coefficient of the gear mating.
 
-    Raises
-    ------
-    TypeError
-        - If ``master`` is not an instance of ``WormGear`` or ``WormWheel``,
-        - if ``slave`` is not an instance of ``WormGear`` or ``WormWheel``,
-        - if both ``master`` and ``slave`` are instances of ``WormGear``,
-        - if both ``master`` and ``slave`` are instances of ``WormWheel``,
-        - if ``friction_coefficient`` is not a float or an integer.
-    ValueError
-        - If ``friction_coefficient`` is not within ``0`` and ``1``,
-        - if ``master`` and ``slave`` have different values for ``pressure_angle``.
+    .. admonition:: Raises
+       :class: warning
 
-    Notes
-    -----
-    The gear ratio of the mating can be computed with the following relationship, regardless of ``master`` or ``slave``
-    roles:
+       TypeError
+           - If ``master`` is not an instance of ``WormGear`` or ``WormWheel``,
+           - if ``slave`` is not an instance of ``WormGear`` or ``WormWheel``,
+           - if both ``master`` and ``slave`` are instances of ``WormGear``,
+           - if both ``master`` and ``slave`` are instances of ``WormWheel``,
+           - if ``friction_coefficient`` is not a float or an integer.
+       ValueError
+           - If ``friction_coefficient`` is not within ``0`` and ``1``,
+           - if ``master`` and ``slave`` have different values for ``pressure_angle``.
 
-    .. math::
-        \tau = \frac{n_z}{n_s}
+    .. admonition:: Notes
+       :class: tip
 
-    where:
+       The gear ratio of the mating can be computed with the following relationship, regardless of ``master`` or
+       ``slave`` roles:
 
-    - :math:`\tau` is the gear ratio, the ratio between the worm gear angular speed and the worm wheel angular speed,
-    - :math:`n_z` is the worm wheel number of teeth,
-    - :math:`n_s` is the worm gear number of starts.
+       .. math::
+           \tau = \frac{n_z}{n_s}
 
-    If the ``WormGear`` is the ``master`` and the ``WormWheel`` is the ``slave``, then the gear mating efficiency can be
-    computed with the relationship:
+       where:
 
-    .. math::
-        \eta = \frac{\cos \alpha - f \, \tan \beta}{\cos \alpha + \frac{f}{\tan \beta}}
+       - :math:`\tau` is the gear ratio, the ratio between the worm gear angular speed and the worm wheel angular speed,
+       - :math:`n_z` is the worm wheel number of teeth,
+       - :math:`n_s` is the worm gear number of starts.
 
-    otherwise, if the ``WormGear`` is the ``slave`` and the ``WormWheel`` is the ``master``, then the gear mating
-    efficiency can be computed with the relationship:
+       If the ``WormGear`` is the ``master`` and the ``WormWheel`` is the ``slave``, then the gear mating efficiency can
+       be computed with the relationship:
 
-    .. math::
-        \eta = \frac{\cos \alpha - \frac{f}{\tan \beta}}{\cos \alpha + f \, \tan \beta}
+       .. math::
+           \eta = \frac{\cos \alpha - f \, \tan \beta}{\cos \alpha + \frac{f}{\tan \beta}}
 
-    where:
+       otherwise, if the ``WormGear`` is the ``slave`` and the ``WormWheel`` is the ``master``, then the gear mating
+       efficiency can be computed with the relationship:
 
-    - :math:`\eta` is the gear mating efficiency,
-    - :math:`\alpha` is the gear pressure angle, equal for both worm gear and worm wheel (``pressure_angle``),
-    - :math:`f` is the friction coefficient (``friction_coefficient``),
-    - :math:`\beta` is the gear helix angle (``helix_angle``).
+       .. math::
+           \eta = \frac{\cos \alpha - \frac{f}{\tan \beta}}{\cos \alpha + f \, \tan \beta}
 
-    The mating self-locking condition can be checked as:
+       where:
 
-    .. math::
-        f > \cos \alpha \, \tan \beta
+       - :math:`\eta` is the gear mating efficiency,
+       - :math:`\alpha` is the gear pressure angle, equal for both worm gear and worm wheel (``pressure_angle``),
+       - :math:`f` is the friction coefficient (``friction_coefficient``),
+       - :math:`\beta` is the gear helix angle (``helix_angle``).
 
-    See Also
-    --------
-    :py:class:`gearpy.mechanical_objects.worm_gear.WormGear`
-    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.master_gear_ratio`
-    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.master_gear_efficiency`
-    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.mating_role`
-    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.drives`
-    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.driven_by`
-    :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.self_locking`
-    :py:class:`gearpy.mechanical_objects.worm_wheel.WormWheel`
-    :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.master_gear_ratio`
-    :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.master_gear_efficiency`
-    :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.mating_role`
-    :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.drives`
-    :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.driven_by`
+       The mating self-locking condition can be checked as:
+
+       .. math::
+           f > \cos \alpha \, \tan \beta
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`gearpy.mechanical_objects.worm_gear.WormGear`
+       :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.master_gear_ratio`
+       :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.master_gear_efficiency`
+       :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.mating_role`
+       :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.drives`
+       :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.driven_by`
+       :py:attr:`gearpy.mechanical_objects.worm_gear.WormGear.self_locking`
+       :py:class:`gearpy.mechanical_objects.worm_wheel.WormWheel`
+       :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.master_gear_ratio`
+       :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.master_gear_efficiency`
+       :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.mating_role`
+       :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.drives`
+       :py:attr:`gearpy.mechanical_objects.worm_wheel.WormWheel.driven_by`
     """
     if not isinstance(master, WormGear) and not isinstance(master, WormWheel):
         raise TypeError(f"Parameter 'master' must be an instance of {WormGear.__name__!r} or {WormWheel.__name__!r}.")
@@ -232,27 +237,29 @@ def add_fixed_joint(master: RotatingObject,
     slave : RotatingObject
         Driven rotating object, it must be an instance of GearBase or Flywheel.
 
-    Raises
-    ------
-    TypeError
-        - If ``master`` is not an instance of ``RotatingObject``,
-        - if ``slave`` is not an instance of ``RotatingObject``,
-        - if ``slave`` is an instance of ``MotorBase``.
-    ValueError
-        If ``master`` and ``slave`` are the same rotating object.
+    .. admonition:: Raises
+       :class: warning
 
-    See Also
-    --------
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.drives`
-    :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.drives`
-    :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.driven_by`
-    :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.master_gear_ratio`
-    :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.drives`
-    :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.driven_by`
-    :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.master_gear_ratio`
-    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.drives`
-    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.driven_by`
-    :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_ratio`
+       TypeError
+           - If ``master`` is not an instance of ``RotatingObject``,
+           - if ``slave`` is not an instance of ``RotatingObject``,
+           - if ``slave`` is an instance of ``MotorBase``.
+       ValueError
+           If ``master`` and ``slave`` are the same rotating object.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.drives`
+       :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.drives`
+       :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.driven_by`
+       :py:attr:`gearpy.mechanical_objects.flywheel.Flywheel.master_gear_ratio`
+       :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.drives`
+       :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.driven_by`
+       :py:attr:`gearpy.mechanical_objects.spur_gear.SpurGear.master_gear_ratio`
+       :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.drives`
+       :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.driven_by`
+       :py:attr:`gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_ratio`
     """
     if not isinstance(master, RotatingObject):
         raise TypeError(f"Parameter 'master' must be an instance of {RotatingObject.__name__!r}.")
