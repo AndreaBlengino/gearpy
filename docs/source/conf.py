@@ -28,7 +28,8 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
-                       'pandas': ('https://pandas.pydata.org/docs/', None)}
+                       'pandas': ('https://pandas.pydata.org/docs/', None),
+                       'matplotlib': ('https://matplotlib.org/stable/', None)}
 
 
 # -- Options for HTML output -------------------------------------------------
