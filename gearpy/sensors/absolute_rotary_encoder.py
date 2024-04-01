@@ -33,10 +33,11 @@ class AbsoluteRotaryEncoder(SensorBase):
         RotatingObject
             Target rotating object whose angular position is probed by the sensor.
 
-        Raises
-        ------
-        TypeError
-            If ``target`` is not an instance of ``RotatingObject``.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``target`` is not an instance of ``RotatingObject``.
         """
         return self.__target
 
@@ -57,14 +58,16 @@ class AbsoluteRotaryEncoder(SensorBase):
         AngularPosition or float or int
             Angular position of the ``target`` rotating object.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.units.units.AngularPosition`
+           TypeError
+               If ``unit`` is not a string.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:func:`gearpy.units.units.AngularPosition`
         """
         if not isinstance(unit, str) and unit is not None:
             raise TypeError("Parameter 'unit' must be a string.")

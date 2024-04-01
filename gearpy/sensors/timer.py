@@ -37,10 +37,11 @@ class Timer:
         Time
             Start time after which the timer is active.
 
-        Raises
-        ------
-        TypeError
-            If ``start_time`` is not an instance of ``Time``.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``start_time`` is not an instance of ``Time``.
         """
         return self.__start_time
 
@@ -53,10 +54,11 @@ class Timer:
         TimeInterval
             Time duration of the timer, starting from ``start_time``
 
-        Raises
-        ------
-        TypeError
-            If ``duration`` is not an instance of ``TimeInterval``.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``duration`` is not an instance of ``TimeInterval``.
         """
         return self.__duration
 
@@ -75,10 +77,11 @@ class Timer:
             Whether ``current_time`` is greater than or equal to ``start_time`` but lower than or equal to
             ``start_time`` + ``duration``.
 
-        Raises
-        ------
-        TypeError
-            If ``current_time`` is not an instance of ``Time``.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``current_time`` is not an instance of ``Time``.
         """
         if not isinstance(current_time, Time):
             raise TypeError(f"Parameter 'current_time' must be an instance of {Time.__name__!r}.")
