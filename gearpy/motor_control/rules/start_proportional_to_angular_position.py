@@ -8,7 +8,7 @@ from .utils import _compute_pwm_min
 
 
 class StartProportionalToAngularPosition(RuleBase):
-    """gearpy.motor_control.rules.start_proportional_to_angular_position.StartProportionalToAngularPosition object. \n
+    """:py:class:`StartProportionalToAngularPosition <gearpy.motor_control.rules.start_proportional_to_angular_position.StartProportionalToAngularPosition>` object. \n
     It can be used to make a gradual start of the ``powertrain``'s motion, in order to avoid a peak in the
     ``powertrain``'s DC motor absorbed electric current. \n
     It computes a ``pwm`` to apply to the ``powertrain``'s DC motor which increases linearly with the ``encoder``'s
@@ -20,31 +20,36 @@ class StartProportionalToAngularPosition(RuleBase):
     Methods
     -------
     :py:meth:`apply`
-        Computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
+        It computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
         ``angular_position`` until it reaches the ``target_angular_position``.
 
     .. admonition:: Raises
        :class: warning
 
-       TypeError
-           - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
-           - if ``powertrain`` is not an instance of ``Powertrain``,
-           - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
-           - if an element of ``powertrain`` is not an instance of ``RotatingObject``,
-           - if ``target_angular_position`` is not an instance of ``AngularPosition``,
-           - if ``pwm_min_multiplier`` is not a float or an integer,
-           - if ``pwm_min`` is defined and it is not a float or an integer.
+       ``TypeError``
+           - If ``encoder`` is not an instance of
+             :py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>`,
+           - if ``powertrain`` is not an instance of :py:class:`Powertrain <gearpy.powertrain.Powertrain>`,
+           - if the first element in ``powertrain`` is not an instance of
+             :py:class:`MotorBase <gearpy.mechanical_objects.mechanical_object_base.MotorBase>`,
+           - if an element of ``powertrain`` is not an instance of
+             :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`,
+           - if ``target_angular_position`` is not an instance of
+             :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`,
+           - if ``pwm_min_multiplier`` is not a :py:class:`float` or an :py:class:`int`,
+           - if ``pwm_min`` is defined and it is not a :py:class:`float` or an :py:class:`int`.
        ValueError
-           - If ``powertrain.elements`` is an empty tuple,
-           - if the ``powertrain`` motor cannot compute ``electric_current`` property,
+           - If ``powertrain.elements`` is an empty :py:class:`tuple`,
+           - if the ``powertrain`` motor cannot compute ``electric_current`` property
+             (:py:attr:`DCMotor.electric_current <gearpy.mechanical_objects.dc_motor.DCMotor.electric_current>`),
            - if ``pwm_min_multiplier`` is less than or equal to ``1``,
            - if ``pwm_min`` is defined and it is negative or null.
 
     .. admonition:: See Also
        :class: seealso
 
-       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm` \n
-       :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
+       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>` \n
+       :py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>`
     """
 
     def __init__(self,
@@ -96,12 +101,12 @@ class StartProportionalToAngularPosition(RuleBase):
         self.__pwm_min = pwm_min
 
     def apply(self) -> Union[None, float, int]:
-        """Computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
+        """It computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
         ``angular_position`` until it reaches the ``target_angular_position``.
 
         Returns
         -------
-        float or int or None
+        :py:class:`float` or :py:class:`int` or :py:obj:`None`
             PWM value to apply to the motor, proportional to the ``encoder``'s ``target`` ``angular_position``.
 
         .. admonition:: Notes
@@ -124,10 +129,14 @@ class StartProportionalToAngularPosition(RuleBase):
            where:
 
            - :math:`D_{min}^c` is the *candidate* minimum applicable ``pwm``,
-           - :math:`T_l` is the load torque on the ``powertrain`` DC motor,
-           - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor,
-           - :math:`i_{max}` is the maximum electric current absorbed by the ``powertrain`` DC motor,
-           - :math:`i_0` is the no load electric current absorbed by the ``powertrain`` DC motor,
+           - :math:`T_l` is the load torque on the ``powertrain`` DC motor 
+             (:py:attr:`DCMotor.load_torque <gearpy.mechanical_objects.dc_motor.DCMotor.load_torque>`),
+           - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor 
+             (:py:attr:`DCMotor.maximum_torque <gearpy.mechanical_objects.dc_motor.DCMotor.maximum_torque>`),
+           - :math:`i_{max}` is the maximum electric current absorbed by the ``powertrain`` DC motor 
+             (:py:attr:`DCMotor.maximum_electric_current <gearpy.mechanical_objects.dc_motor.DCMotor.maximum_electric_current>`),
+           - :math:`i_0` is the no load electric current absorbed by the ``powertrain`` DC motor 
+             (:py:attr:`DCMotor.no_load_electric_current <gearpy.mechanical_objects.dc_motor.DCMotor.no_load_electric_current>`),
            - :math:`\eta_t` is the ``powertrain`` overall efficiency, computed as:
 
            .. math::
@@ -135,7 +144,11 @@ class StartProportionalToAngularPosition(RuleBase):
 
            where:
 
-           - :math:`\eta_i` is the mechanical mating efficiency of the mating between two gears,
+           - :math:`\eta_i` is the mechanical mating efficiency of the mating between two gears 
+             (:py:attr:`SpurGear.master_gear_efficiency <gearpy.mechanical_objects.spur_gear.SpurGear.master_gear_efficiency>` or
+             :py:attr:`HelicalGear.master_gear_efficiency <gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_efficiency>` or
+             :py:attr:`WormGear.master_gear_efficiency <gearpy.mechanical_objects.worm_gear.WormGear.master_gear_efficiency>` or 
+             :py:attr:`WormWheel.master_gear_efficiency <gearpy.mechanical_objects.worm_wheel.WormWheel.master_gear_efficiency>`),
            - :math:`N` is the total number of gear matings in the ``powertrain``.
 
            If both the load torque on the ``powertrain`` DC motor :math:`T_l` and the motor no load electric current
@@ -168,7 +181,8 @@ class StartProportionalToAngularPosition(RuleBase):
            - :math:`\theta` is the ``encoder``'s ``target`` ``angular_position``,
            - :math:`\theta_t` is the ``target_angular_position``.
 
-           If the applicability condition is not met, then it returns ``None``, otherwise it computes the ``pwm`` as:
+           If the applicability condition is not met, then it returns :py:obj:`None`, otherwise it computes the ``pwm`` 
+           as:
 
            .. math::
                D \left( \theta \right) = \left( 1 - D_{min} \right) \frac{\theta}{\theta_t} + D_{min}

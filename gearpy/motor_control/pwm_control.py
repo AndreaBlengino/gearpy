@@ -1,37 +1,40 @@
 from gearpy.powertrain import Powertrain
 from .motor_control_base import MotorControlBase
 from gearpy.motor_control.rules.rules_base import RuleBase
+from typing import Union
 
 
 class PWMControl(MotorControlBase):
-    r"""``gearpy.motor_control.PWMControl`` object.
+    r""":py:class:`PWMControl <gearpy.motor_control.pwm_control.PWMControl>` object.
 
     Attributes
     ----------
-    :py:attr:`rules` : list
+    :py:attr:`rules` : :py:class:`list`
         The list of the ``pwm`` rules to be applied.
 
     Methods
     -------
     :py:meth:`add_rule`
-        Adds a ``rule`` to ``rules`` list.
+        It adds a ``rule`` to :py:attr:`rules`.
     :py:meth:`apply_rules`
-        Applies all the ``rules`` in order to get a valid ``pwm`` value to set to the ``powertrain``'s motor.
+        It applies all the :py:attr:`rules` in order to get a valid ``pwm`` value to set to the ``powertrain``'s motor.
 
     .. admonition:: Raises
        :class: warning
 
-       TypeError
-           - If ``powertrain`` is not an instance of ``Powertrain``,
-           - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
-           - if an element of ``powertrain`` is not an instance of ``RotatingObject``.
-       ValueError
+       ``TypeError``
+           - If ``powertrain`` is not an instance of :py:class:`Powertrain <gearpy.powertrain.Powertrain>`,
+           - if the first element in ``powertrain`` is not an instance of
+             :py:class:`MotorBase <gearpy.mechanical_objects.mechanical_object_base.MotorBase>`,
+           - if an element of ``powertrain`` is not an instance of
+             :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`.
+       ``ValueError``
            If ``powertrain.elements`` is an empty tuple.
 
     .. admonition:: See Also
        :class: seealso
 
-       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
+       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>`
     """
 
     def __init__(self, powertrain: Powertrain):
@@ -46,7 +49,7 @@ class PWMControl(MotorControlBase):
 
         Returns
         -------
-        list
+        :py:class:`list`
             The list of the ``pwm`` rules to be applied.
 
         .. admonition:: See Also
@@ -56,19 +59,19 @@ class PWMControl(MotorControlBase):
         """
         return self.__rules
 
-    def add_rule(self, rule: RuleBase):
-        """Adds a ``rule`` to ``rules`` list.
+    def add_rule(self, rule: RuleBase) -> None:
+        """It adds a ``rule`` to :py:attr:`rules`.
 
         Parameters
         ----------
-        rule : RuleBase
-            Rule to be added to ``rules`` list.
+        ``rule`` : :py:class:`RuleBase <gearpy.motor_control.rules.rules_base.RuleBase>`
+            Rule to be added to :py:attr:`rules` list.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``rule`` is not an instance of ``RuleBase``.
+           ``TypeError``
+               If ``rule`` is not an instance of :py:class:`RuleBase <gearpy.motor_control.rules.rules_base.RuleBase>`.
 
         .. admonition:: See Also
            :class: seealso
@@ -79,9 +82,10 @@ class PWMControl(MotorControlBase):
 
         self.__rules.append(rule)
 
-    def apply_rules(self):
-        """Applies all the ``rules`` in order to get a valid ``pwm`` value to set to the ``powertrain``'s motor. \n
-        It loops over listed ``rules`` and applies all of them:
+    def apply_rules(self) -> None:
+        """It applies all the :py:attr:`rules` in order to get a valid ``pwm`` value to set to the ``powertrain``'s
+        motor. \n
+        It loops over listed :py:attr:`rules` and applies all of them:
 
         - if a single rule returns a valid ``pwm``, then this value is set as ``powertrain``'s motor ``pwm``,
         - if more than a single rule returns a valid ``pwm``, then it raises a ``ValueError``, since multiple rules are
@@ -93,11 +97,10 @@ class PWMControl(MotorControlBase):
         .. admonition:: Raises
            :class: warning
 
-           ValueError
+           ``ValueError``
                If two different rules are applicable at the same time. Only a single applicable rule is allowed to a
                specific simulation time.
         """
-
         pwm_values = [rule.apply() for rule in self.__rules]
         applied_rules = sum([pwm_value is not None for pwm_value in pwm_values])
         if applied_rules >= 2:
@@ -110,5 +113,5 @@ class PWMControl(MotorControlBase):
         self.__powertrain.elements[0].pwm = pwm
 
     @staticmethod
-    def _saturate_pwm(pwm):
+    def _saturate_pwm(pwm) -> Union[float, int]:
         return min(max(pwm, -1), 1)

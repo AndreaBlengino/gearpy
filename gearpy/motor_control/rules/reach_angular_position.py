@@ -8,33 +8,37 @@ from .utils import _compute_static_error
 
 
 class ReachAngularPosition(RuleBase):
-    """gearpy.motor_control.rules.reach_angular_position.ReachAngularPosition object. \n
+    """:py:class:`ReachAngularPosition <gearpy.motor_control.rules.reach_angular_position.ReachAngularPosition>` object. \n
     It can be used to make the ``encoder``'s ``target`` reach a ``target_angular_position`` within a ``braking_angle``.
 
     Methods
     -------
     :py:meth:`apply`
-        Computes the ``pwm`` to apply to the ``powertrain``'s motor in order to reach a ``target_angular_position`` by
-        the ``target`` rotating object of the ``encoder``, within a specific ``braking_angle``.
+        It computes the ``pwm`` to apply to the ``powertrain``'s motor in order to reach a ``target_angular_position``
+        by the ``target`` rotating object of the ``encoder``, within a specific ``braking_angle``.
 
     .. admonition:: Raises
        :class: warning
 
-       TypeError
-           - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
-           - if ``powertrain`` is not an instance of ``Powertrain``,
-           - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
-           - if an element of ``powertrain`` is not an instance of ``RotatingObject``,
-           - if ``target_angular_position`` is not an instance of ``AngularPosition``,
-           - if ``braking_angle`` is not an instance of ``Angle``.
-       ValueError
-           If ``powertrain.elements`` is an empty tuple.
+       ``TypeError``
+           - If ``encoder`` is not an instance of
+             :py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>`,
+           - if ``powertrain`` is not an instance of :py:class:`Powertrain <gearpy.powertrain.Powertrain>`,
+           - if the first element in ``powertrain`` is not an instance of
+             :py:class:`MotorBase <gearpy.mechanical_objects.mechanical_object_base.MotorBase>`,
+           - if an element of ``powertrain`` is not an instance of
+             :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`,
+           - if ``target_angular_position`` is not an instance of
+             :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`,
+           - if ``braking_angle`` is not an instance of :py:class:`Angle <gearpy.units.units.Angle>`.
+       ``ValueError``
+           If ``powertrain.elements`` is an empty :py:class:`tuple`.
 
     .. admonition:: See Also
        :class: seealso
 
-       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm` \n
-       :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
+       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>` \n
+       :py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>`
     """
 
     def __init__(self,
@@ -71,13 +75,13 @@ class ReachAngularPosition(RuleBase):
         self.__braking_angle = braking_angle
 
     def apply(self) -> Union[None, float, int]:
-        """Computes the ``pwm`` to apply to the ``powertrain``'s DC motor in order to reach a 
+        """It computes the ``pwm`` to apply to the ``powertrain``'s DC motor in order to reach a 
         ``target_angular_position`` by the ``target`` rotating object of the ``encoder``, within a specific
         ``braking_angle``.
 
         Returns
         -------
-        float or int or None
+        :py:class:`float` or :py:class:`int` or :py:obj:`None`
             PWM value to apply to the motor in order to reach the target angular position.
 
         .. admonition:: Notes
@@ -98,8 +102,10 @@ class ReachAngularPosition(RuleBase):
            where:
 
            - :math:`\theta_{err}` is the ``powertrain`` static error,
-           - :math:`T_l` is the load torque on the ``powertrain`` DC motor,
-           - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor,
+           - :math:`T_l` is the load torque on the ``powertrain`` DC motor 
+             (:py:attr:`DCMotor.load_torque <gearpy.mechanical_objects.dc_motor.DCMotor.load_torque>`),
+           - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor
+             (:py:attr:`DCMotor.maximum_torque <gearpy.mechanical_objects.dc_motor.DCMotor.maximum_torque>`),
            - :math:`\theta_b` is the ``braking_angle`` parameter,
            - :math:`\eta_t` is the ``powertrain`` overall efficiency, computed as:
 
@@ -108,7 +114,11 @@ class ReachAngularPosition(RuleBase):
 
            where:
 
-           - :math:`\eta_i` is the mechanical mating efficiency of the mating between two gears,
+           - :math:`\eta_i` is the mechanical mating efficiency of the mating between two gears 
+             (:py:attr:`SpurGear.master_gear_efficiency <gearpy.mechanical_objects.spur_gear.SpurGear.master_gear_efficiency>` or
+             :py:attr:`HelicalGear.master_gear_efficiency <gearpy.mechanical_objects.helical_gear.HelicalGear.master_gear_efficiency>` or
+             :py:attr:`WormGear.master_gear_efficiency <gearpy.mechanical_objects.worm_gear.WormGear.master_gear_efficiency>` or 
+             :py:attr:`WormWheel.master_gear_efficiency <gearpy.mechanical_objects.worm_wheel.WormWheel.master_gear_efficiency>`),
            - :math:`N` is the total number of gear matings in the ``powertrain``.
 
            Then it checks the applicability condition, defined as:
@@ -122,12 +132,13 @@ class ReachAngularPosition(RuleBase):
            - :math:`\theta_s` is the braking starting angle,
            - :math:`\theta_t` is the ``target_angular_position`` parameter.
 
-           If the applicability condition is not met, then it returns ``None``, otherwise it computes the ``pwm`` as:
+           If the applicability condition is not met, then it returns :py:obj:`None`, otherwise it computes the ``pwm`` 
+           as:
 
            .. math::
                D \left( \theta \right) = 1 - \frac{\theta - \theta_s}{\theta_b}
 
-           where :math:`D` is the supply voltage PWM duty cycle (``pwm``) to apply to the DC motor in order to reach the
+           where :math:`D` is the supply voltage PWM duty cycle ``pwm`` to apply to the DC motor in order to reach the
            ``target_angular_position`` by the ``encoder``'s ``target`` rotating object.
         """
         angular_position = self.__encoder.get_value()

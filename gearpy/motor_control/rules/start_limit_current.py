@@ -7,7 +7,7 @@ from typing import Union
 
 
 class StartLimitCurrent(RuleBase):
-    """gearpy.motor_control.rules.start_limit_current.StartLimitCurrent object. \n
+    """:py:class:`StartLimitCurrent <gearpy.motor_control.rules.start_limit_current.StartLimitCurrent>` object. \n
     It can be used to make a gradual start of the powertrain's motion and limit the ``motor`` absorbed electric
     current to be lower than or equal to a ``limit_electric_current`` value. It computes a ``pwm`` to apply to the
     ``motor`` up until the ``encoder``'s ``target``'s ``angular_position`` equals ``target_angular_position``. \n
@@ -16,29 +16,32 @@ class StartLimitCurrent(RuleBase):
     Methods
     -------
     :py:meth:`apply`
-        Computes the ``pwm`` to apply to the ``motor`` in order to limit its absorbed electric current to be lower
+        It computes the ``pwm`` to apply to the ``motor`` in order to limit its absorbed electric current to be lower
         or equal to ``limit_electric_current``, until the ``encoder``'s ``target`` rotating object's
         ``angular_position`` equals the ``target_angular_position``.
 
     .. admonition:: Raises
        :class: warning
 
-       TypeError
-           - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
-           - If ``tachometer`` is not an instance of ``Tachometer``,
-           - If ``motor`` is not an instance of ``DCMotor``,
-           - if ``target_angular_position`` is not an instance of ``AngularPosition``,
-           - if ``limit_electric_current`` is not an instance of ``Current``.
-       ValueError
-           - If the ``motor`` cannot compute ``electric_current`` property,
+       ``TypeError``
+           - If ``encoder`` is not an instance of
+             :py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>`,
+           - If ``tachometer`` is not an instance of :py:class:`Tachometer <gearpy.sensors.tachometer.Tachometer>`,
+           - If ``motor`` is not an instance of :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`,
+           - if ``target_angular_position`` is not an instance of
+             :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`,
+           - if ``limit_electric_current`` is not an instance of :py:class:`Current <gearpy.units.units.Current>`.
+       ``ValueError``
+           - If the ``motor`` cannot compute ``electric_current`` property
+             (:py:attr:`DCMotor.electric_current <gearpy.mechanical_objects.dc_motor.DCMotor.electric_current>`),
            - if ``limit_electric_current`` is negative or null.
 
     .. admonition:: See Also
        :class: seealso
 
-       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm` \n
-       :py:class:`gearpy.sensors.AbsoluteRotaryEncoder` \n
-       :py:class:`gearpy.sensors.Tachometer`
+       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>` \n
+       :py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>` \n
+       :py:class:`Tachometer <gearpy.sensors.tachometer.Tachometer>`
     """
 
     def __init__(self,
@@ -77,13 +80,13 @@ class StartLimitCurrent(RuleBase):
         self.__target_angular_position = target_angular_position
 
     def apply(self) -> Union[None, float, int]:
-        r"""Computes the ``pwm`` to apply to the ``motor`` in order to limit its absorbed electric current to be lower
-        or equal to ``limit_electric_current``, until the ``encoder``'s ``target`` rotating object's
+        r"""It computes the ``pwm`` to apply to the ``motor`` in order to limit its absorbed electric current to be
+        lower or equal to ``limit_electric_current``, until the ``encoder``'s ``target`` rotating object's
         ``angular_position`` equals the ``target_angular_position``.
 
         Returns
         -------
-        float or int or None
+        :py:class:`float` or :py:class:`int` or :py:obj:`None`
             PWM value to apply to the ``motor`` in order to limit its absorbed electric current to be lower or equal to
             ``limit_electric_current``
 
@@ -100,7 +103,8 @@ class StartLimitCurrent(RuleBase):
            - :math:`\theta` is the ``encoder``'s ``target`` ``angular_position``,
            - :math:`\theta_t` is the ``target_angular_position``.
 
-           If the applicability condition is not met, then it returns ``None``, otherwise it computes the ``pwm`` as:
+           If the applicability condition is not met, then it returns :py:obj:`None`, otherwise it computes the ``pwm``
+           as:
 
            .. math::
                D \left( \dot{\theta} \right) = \frac{1}{2} \, \left( \frac{\dot{\theta}}{\dot{\theta}_0} +
@@ -111,10 +115,13 @@ class StartLimitCurrent(RuleBase):
            where:
 
            - :math:`\dot{\theta}` is the ``tachometer``'s ``target``'s angular speed,
-           - :math:`\dot{\theta}_0` is the ``motor`` no load angular speed (``no_load_speed``),
+           - :math:`\dot{\theta}_0` is the ``motor`` no load angular speed
+             (:py:attr:`DCMotor.no_load_speed <gearpy.mechanical_objects.dc_motor.DCMotor.no_load_speed>`),
            - :math:`i_{lim}` is the ``limit_electric_current`` parameter,
-           - :math:`i_{max}` is the ``motor`` maximum electric current (``maximum_electric_current``),
-           - :math:`i_0` is the ``motor`` no load electric current (``no_load_electric_current``).
+           - :math:`i_{max}` is the ``motor`` maximum electric current
+             (:py:attr:`DCMotor.maximum_electric_current <gearpy.mechanical_objects.dc_motor.DCMotor.maximum_electric_current>`),
+           - :math:`i_0` is the ``motor`` no load electric current
+             (:py:attr:`DCMotor.no_load_electric_current <gearpy.mechanical_objects.dc_motor.DCMotor.no_load_electric_current>`).
         """
         angular_position = self.__encoder.get_value()
         angular_speed = self.__tachometer.get_value()
