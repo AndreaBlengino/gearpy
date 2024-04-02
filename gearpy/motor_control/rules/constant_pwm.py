@@ -17,19 +17,21 @@ class ConstantPWM(RuleBase):
         Checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``powertrain`` motor,
         equal to ``target_pwm_value``.
 
-    Raises
-    ------
-    TypeError
-        - If ``timer`` is not an instance of ``Timer``,
-        - if ``powertrain`` is not an instance of ``Powertrain``,
-        - if ``target_pwm_value`` is not a float or an integer.
-    ValueError
-        If ``target_pwm_value`` is not within ``-1`` and ``1``.
+    .. admonition:: Raises
+       :class: warning
 
-    See Also
-    --------
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
-    :py:class:`gearpy.sensors.Timer`
+       TypeError
+           - If ``timer`` is not an instance of ``Timer``,
+           - if ``powertrain`` is not an instance of ``Powertrain``,
+           - if ``target_pwm_value`` is not a float or an integer.
+       ValueError
+           If ``target_pwm_value`` is not within ``-1`` and ``1``.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm` \n
+       :py:class:`gearpy.sensors.Timer`
     """
 
     def __init__(self,

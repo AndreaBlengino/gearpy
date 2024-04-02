@@ -23,26 +23,28 @@ class StartProportionalToAngularPosition(RuleBase):
         Computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
         ``angular_position`` until it reaches the ``target_angular_position``.
 
-    Raises
-    ------
-    TypeError
-        - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
-        - if ``powertrain`` is not an instance of ``Powertrain``,
-        - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
-        - if an element of ``powertrain`` is not an instance of ``RotatingObject``,
-        - if ``target_angular_position`` is not an instance of ``AngularPosition``,
-        - if ``pwm_min_multiplier`` is not a float or an integer,
-        - if ``pwm_min`` is defined and it is not a float or an integer.
-    ValueError
-        - If ``powertrain.elements`` is an empty tuple,
-        - if the ``powertrain`` motor cannot compute ``electric_current`` property,
-        - if ``pwm_min_multiplier`` is less than or equal to ``1``,
-        - if ``pwm_min`` is defined and it is negative or null.
+    .. admonition:: Raises
+       :class: warning
 
-    See Also
-    --------
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
-    :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
+       TypeError
+           - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
+           - if ``powertrain`` is not an instance of ``Powertrain``,
+           - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
+           - if an element of ``powertrain`` is not an instance of ``RotatingObject``,
+           - if ``target_angular_position`` is not an instance of ``AngularPosition``,
+           - if ``pwm_min_multiplier`` is not a float or an integer,
+           - if ``pwm_min`` is defined and it is not a float or an integer.
+       ValueError
+           - If ``powertrain.elements`` is an empty tuple,
+           - if the ``powertrain`` motor cannot compute ``electric_current`` property,
+           - if ``pwm_min_multiplier`` is less than or equal to ``1``,
+           - if ``pwm_min`` is defined and it is negative or null.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm` \n
+       :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
     """
 
     def __init__(self,
@@ -94,7 +96,7 @@ class StartProportionalToAngularPosition(RuleBase):
         self.__pwm_min = pwm_min
 
     def apply(self) -> Union[None, float, int]:
-        r"""Computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
+        """Computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
         ``angular_position`` until it reaches the ``target_angular_position``.
 
         Returns
@@ -102,72 +104,74 @@ class StartProportionalToAngularPosition(RuleBase):
         float or int or None
             PWM value to apply to the motor, proportional to the ``encoder``'s ``target`` ``angular_position``.
 
-        Notes
-        -----
-        The ``powertrain``'s motor has a minimum ``pwm`` which, as is, cannot be used to control the motor, since at
-        this value the motor will remain still. So, in order to properly control the motor motion, it is required to
-        apply a ``pwm`` greater than the minimum ``pwm``, therefore the motor minimum ``pwm`` is multiplied by
-        ``pwm_min_multiplier`` to get a starting ``pwm`` to be applied to the motor. \n
-        If the motor's minimum ``pwm`` is null, then it is useless to multiply this value by ``pwm_min_multiplier`` in
-        order to get a starting ``pwm``; therefore, only in this case, ``pwm_min`` is directly used as starting
-        ``pwm``. \n
-        First of all, the rule computes a *candidate* minimum applicable ``pwm`` as:
+        .. admonition:: Notes
+           :class: tip
 
-        .. math::
-            D_{min}^c \left( T_l \right) = \frac{1}{\eta_t} \, \frac{T_l}{T_{max}} \, \frac{i_{max} - i_0}{i_{max}} +
-            \frac{i_0}{i_{max}}
+           The ``powertrain``'s motor has a minimum ``pwm`` which, as is, cannot be used to control the motor, since at
+           this value the motor will remain still. So, in order to properly control the motor motion, it is required to
+           apply a ``pwm`` greater than the minimum ``pwm``, therefore the motor minimum ``pwm`` is multiplied by
+           ``pwm_min_multiplier`` to get a starting ``pwm`` to be applied to the motor. \n
+           If the motor's minimum ``pwm`` is null, then it is useless to multiply this value by ``pwm_min_multiplier``
+           in order to get a starting ``pwm``; therefore, only in this case, ``pwm_min`` is directly used as starting
+           ``pwm``. \n
+           First of all, the rule computes a *candidate* minimum applicable ``pwm`` as:
+        """\
+        r"""
+           .. math::
+               D_{min}^c \left( T_l \right) = \frac{1}{\eta_t} \, \frac{T_l}{T_{max}} \, \frac{i_{max} - i_0}{i_{max}} +
+               \frac{i_0}{i_{max}}
 
-        where:
+           where:
 
-        - :math:`D_{min}^c` is the *candidate* minimum applicable ``pwm``,
-        - :math:`T_l` is the load torque on the ``powertrain`` DC motor,
-        - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor,
-        - :math:`i_{max}` is the maximum electric current absorbed by the ``powertrain`` DC motor,
-        - :math:`i_0` is the no load electric current absorbed by the ``powertrain`` DC motor,
-        - :math:`\eta_t` is the ``powertrain`` overall efficiency, computed as:
+           - :math:`D_{min}^c` is the *candidate* minimum applicable ``pwm``,
+           - :math:`T_l` is the load torque on the ``powertrain`` DC motor,
+           - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor,
+           - :math:`i_{max}` is the maximum electric current absorbed by the ``powertrain`` DC motor,
+           - :math:`i_0` is the no load electric current absorbed by the ``powertrain`` DC motor,
+           - :math:`\eta_t` is the ``powertrain`` overall efficiency, computed as:
 
-        .. math::
-            \eta_t = \prod_{i = 1}^N \eta_i
+           .. math::
+               \eta_t = \prod_{i = 1}^N \eta_i
 
-        where:
+           where:
 
-        - :math:`\eta_i` is the mechanical mating efficiency of the mating between two gears,
-        - :math:`N` is the total number of gear matings in the ``powertrain``.
+           - :math:`\eta_i` is the mechanical mating efficiency of the mating between two gears,
+           - :math:`N` is the total number of gear matings in the ``powertrain``.
 
-        If both the load torque on the ``powertrain`` DC motor :math:`T_l` and the motor no load electric current
-        :math:`i_0` are null, then also the computed *candidate* minimum applicable ``pwm`` :math:`D_{min}^c` is null.
-        Only in this case, the computed *candidate* minimum applicable ``pwm`` is discarded and it is taken into account
-        the ``pwm_min`` parameter, which must have been set (don't used otherwise):
+           If both the load torque on the ``powertrain`` DC motor :math:`T_l` and the motor no load electric current
+           :math:`i_0` are null, then also the computed *candidate* minimum applicable ``pwm`` :math:`D_{min}^c` is
+           null. Only in this case, the computed *candidate* minimum applicable ``pwm`` is discarded and it is taken
+           into account the ``pwm_min`` parameter, which must have been set (don't used otherwise):
 
-        .. math::
-            D_{min} = D_{min}^p
+           .. math::
+               D_{min} = D_{min}^p
 
-        where:
+           where:
 
-        - :math:`D_{min}` is the minimum applicable ``pwm``,
-        - :math:`D_{min}^p` is the ``pwm_min`` parameter.
+           - :math:`D_{min}` is the minimum applicable ``pwm``,
+           - :math:`D_{min}^p` is the ``pwm_min`` parameter.
 
-        Otherwise, the *candidate* :math:`D_{min}` is multiplied by the ``pwm_min_multiplier`` parameter.
+           Otherwise, the *candidate* :math:`D_{min}` is multiplied by the ``pwm_min_multiplier`` parameter.
 
-        .. math::
-            D_{min} = D_{min}^c \, g
+           .. math::
+               D_{min} = D_{min}^c \, g
 
-        where :math:`g` is the ``pwm_min_multiplier`` parameter.
+           where :math:`g` is the ``pwm_min_multiplier`` parameter.
 
-        Then it checks the applicability condition, defined as:
+           Then it checks the applicability condition, defined as:
 
-        .. math::
-            \theta \le \theta_t
+           .. math::
+               \theta \le \theta_t
 
-        where:
+           where:
 
-        - :math:`\theta` is the ``encoder``'s ``target`` ``angular_position``,
-        - :math:`\theta_t` is the ``target_angular_position``.
+           - :math:`\theta` is the ``encoder``'s ``target`` ``angular_position``,
+           - :math:`\theta_t` is the ``target_angular_position``.
 
-        If the applicability condition is not met, then it returns ``None``, otherwise it computes the ``pwm`` as:
+           If the applicability condition is not met, then it returns ``None``, otherwise it computes the ``pwm`` as:
 
-        .. math::
-            D \left( \theta \right) = \left( 1 - D_{min} \right) \frac{\theta}{\theta_t} + D_{min}
+           .. math::
+               D \left( \theta \right) = \left( 1 - D_{min} \right) \frac{\theta}{\theta_t} + D_{min}
         """
         angular_position = self.__encoder.get_value()
 

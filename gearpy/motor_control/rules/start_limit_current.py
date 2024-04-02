@@ -20,23 +20,25 @@ class StartLimitCurrent(RuleBase):
         or equal to ``limit_electric_current``, until the ``encoder``'s ``target`` rotating object's
         ``angular_position`` equals the ``target_angular_position``.
 
-    Raises
-    ------
-    TypeError
-        - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
-        - If ``tachometer`` is not an instance of ``Tachometer``,
-        - If ``motor`` is not an instance of ``DCMotor``,
-        - if ``target_angular_position`` is not an instance of ``AngularPosition``,
-        - if ``limit_electric_current`` is not an instance of ``Current``.
-    ValueError
-        - If the ``motor`` cannot compute ``electric_current`` property,
-        - if ``limit_electric_current`` is negative or null.
+    .. admonition:: Raises
+       :class: warning
 
-    See Also
-    --------
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
-    :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
-    :py:class:`gearpy.sensors.Tachometer`
+       TypeError
+           - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
+           - If ``tachometer`` is not an instance of ``Tachometer``,
+           - If ``motor`` is not an instance of ``DCMotor``,
+           - if ``target_angular_position`` is not an instance of ``AngularPosition``,
+           - if ``limit_electric_current`` is not an instance of ``Current``.
+       ValueError
+           - If the ``motor`` cannot compute ``electric_current`` property,
+           - if ``limit_electric_current`` is negative or null.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm` \n
+       :py:class:`gearpy.sensors.AbsoluteRotaryEncoder` \n
+       :py:class:`gearpy.sensors.Tachometer`
     """
 
     def __init__(self,
@@ -85,33 +87,34 @@ class StartLimitCurrent(RuleBase):
             PWM value to apply to the ``motor`` in order to limit its absorbed electric current to be lower or equal to
             ``limit_electric_current``
 
-        Notes
-        -----
-        It checks the applicability condition, defined as:
+        .. admonition:: Notes
+           :class: tip
 
-        .. math::
-            \theta \le \theta_t
+           It checks the applicability condition, defined as:
 
-        where:
+           .. math::
+               \theta \le \theta_t
 
-        - :math:`\theta` is the ``encoder``'s ``target`` ``angular_position``,
-        - :math:`\theta_t` is the ``target_angular_position``.
+           where:
 
-        If the applicability condition is not met, then it returns ``None``, otherwise it computes the ``pwm`` as:
+           - :math:`\theta` is the ``encoder``'s ``target`` ``angular_position``,
+           - :math:`\theta_t` is the ``target_angular_position``.
 
-        .. math::
-            D \left( \dot{\theta} \right) = \frac{1}{2} \, \left( \frac{\dot{\theta}}{\dot{\theta}_0} +
-            \frac{i_{lim}}{i_{max}} + \sqrt{ \left( \frac{\dot{\theta}}{\dot{\theta}_0} \right)^2 +
-            \left( \frac{i_{lim}}{i_{max}} \right)^2 +
-            2 \frac{\dot{\theta}}{\dot{\theta}_0} \frac{i_{lim} - 2 i_0}{i_{max}} } \right)
+           If the applicability condition is not met, then it returns ``None``, otherwise it computes the ``pwm`` as:
 
-        where:
+           .. math::
+               D \left( \dot{\theta} \right) = \frac{1}{2} \, \left( \frac{\dot{\theta}}{\dot{\theta}_0} +
+               \frac{i_{lim}}{i_{max}} + \sqrt{ \left( \frac{\dot{\theta}}{\dot{\theta}_0} \right)^2 +
+               \left( \frac{i_{lim}}{i_{max}} \right)^2 +
+               2 \frac{\dot{\theta}}{\dot{\theta}_0} \frac{i_{lim} - 2 i_0}{i_{max}} } \right)
 
-        - :math:`\dot{\theta}` is the ``tachometer``'s ``target``'s angular speed,
-        - :math:`\dot{\theta}_0` is the ``motor`` no load angular speed (``no_load_speed``),
-        - :math:`i_{lim}` is the ``limit_electric_current`` parameter,
-        - :math:`i_{max}` is the ``motor`` maximum electric current (``maximum_electric_current``),
-        - :math:`i_0` is the ``motor`` no load electric current (``no_load_electric_current``).
+           where:
+
+           - :math:`\dot{\theta}` is the ``tachometer``'s ``target``'s angular speed,
+           - :math:`\dot{\theta}_0` is the ``motor`` no load angular speed (``no_load_speed``),
+           - :math:`i_{lim}` is the ``limit_electric_current`` parameter,
+           - :math:`i_{max}` is the ``motor`` maximum electric current (``maximum_electric_current``),
+           - :math:`i_0` is the ``motor`` no load electric current (``no_load_electric_current``).
         """
         angular_position = self.__encoder.get_value()
         angular_speed = self.__tachometer.get_value()

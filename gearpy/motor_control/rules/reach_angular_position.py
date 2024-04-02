@@ -17,22 +17,24 @@ class ReachAngularPosition(RuleBase):
         Computes the ``pwm`` to apply to the ``powertrain``'s motor in order to reach a ``target_angular_position`` by
         the ``target`` rotating object of the ``encoder``, within a specific ``braking_angle``.
 
-    Raises
-    ------
-    TypeError
-        - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
-        - if ``powertrain`` is not an instance of ``Powertrain``,
-        - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
-        - if an element of ``powertrain`` is not an instance of ``RotatingObject``,
-        - if ``target_angular_position`` is not an instance of ``AngularPosition``,
-        - if ``braking_angle`` is not an instance of ``Angle``.
-    ValueError
-        If ``powertrain.elements`` is an empty tuple.
+    .. admonition:: Raises
+       :class: warning
 
-    See Also
-    --------
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
-    :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
+       TypeError
+           - If ``encoder`` is not an instance of ``AbsoluteRotaryEncoder``,
+           - if ``powertrain`` is not an instance of ``Powertrain``,
+           - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
+           - if an element of ``powertrain`` is not an instance of ``RotatingObject``,
+           - if ``target_angular_position`` is not an instance of ``AngularPosition``,
+           - if ``braking_angle`` is not an instance of ``Angle``.
+       ValueError
+           If ``powertrain.elements`` is an empty tuple.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm` \n
+       :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
     """
 
     def __init__(self,
@@ -69,7 +71,7 @@ class ReachAngularPosition(RuleBase):
         self.__braking_angle = braking_angle
 
     def apply(self) -> Union[None, float, int]:
-        r"""Computes the ``pwm`` to apply to the ``powertrain``'s DC motor in order to reach a
+        """Computes the ``pwm`` to apply to the ``powertrain``'s DC motor in order to reach a 
         ``target_angular_position`` by the ``target`` rotating object of the ``encoder``, within a specific
         ``braking_angle``.
 
@@ -78,53 +80,55 @@ class ReachAngularPosition(RuleBase):
         float or int or None
             PWM value to apply to the motor in order to reach the target angular position.
 
-        Notes
-        -----
-        The braking angle is the angle within which the motor's ``pwm`` is controlled in order to brake and reach the
-        ``target_angular_position``. \n
-        The rule is applied only if the difference between ``target_angular_position`` and the ``encoder``'s target
-        ``angular_position`` is lower than or equal to the ``braking_angle``. \n
-        The lower the ``braking_angle`` the higher the deceleration of the system, thus the higher the vibrations
-        produced. \n
-        First of all, the rule computes the ``powertrain``'s *static error* according to the following formula:
+        .. admonition:: Notes
+           :class: tip
 
-        .. math::
-            \theta_{err} \left( T_l \right) = \frac{T_l}{T_{max}} \, \frac{\theta_b}{\eta_t}
+           The braking angle is the angle within which the motor's ``pwm`` is controlled in order to brake and reach the
+           ``target_angular_position``. \n
+           The rule is applied only if the difference between ``target_angular_position`` and the ``encoder``'s target
+           ``angular_position`` is lower than or equal to the ``braking_angle``. \n
+           The lower the ``braking_angle`` the higher the deceleration of the system, thus the higher the vibrations
+           produced. \n
+           First of all, the rule computes the ``powertrain``'s *static error* according to the following formula:
+        """\
+        r"""
+           .. math::
+               \theta_{err} \left( T_l \right) = \frac{T_l}{T_{max}} \, \frac{\theta_b}{\eta_t}
 
-        where:
+           where:
 
-        - :math:`\theta_{err}` is the ``powertrain`` static error,
-        - :math:`T_l` is the load torque on the ``powertrain`` DC motor,
-        - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor,
-        - :math:`\theta_b` is the ``braking_angle`` parameter,
-        - :math:`\eta_t` is the ``powertrain`` overall efficiency, computed as:
+           - :math:`\theta_{err}` is the ``powertrain`` static error,
+           - :math:`T_l` is the load torque on the ``powertrain`` DC motor,
+           - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor,
+           - :math:`\theta_b` is the ``braking_angle`` parameter,
+           - :math:`\eta_t` is the ``powertrain`` overall efficiency, computed as:
 
-        .. math::
-            \eta_t = \prod_{i = 1}^N \eta_i
+           .. math::
+               \eta_t = \prod_{i = 1}^N \eta_i
 
-        where:
+           where:
 
-        - :math:`\eta_i` is the mechanical mating efficiency of the mating between two gears,
-        - :math:`N` is the total number of gear matings in the ``powertrain``.
+           - :math:`\eta_i` is the mechanical mating efficiency of the mating between two gears,
+           - :math:`N` is the total number of gear matings in the ``powertrain``.
 
-        Then it checks the applicability condition, defined as:
+           Then it checks the applicability condition, defined as:
 
-        .. math::
-            \theta \ge \theta_s = \theta_t - \theta_b + \theta_{err}
+           .. math::
+               \theta \ge \theta_s = \theta_t - \theta_b + \theta_{err}
 
-        where:
+           where:
 
-        - :math:`\theta` is the ``encoder``'s ``target`` ``angular_position``,
-        - :math:`\theta_s` is the braking starting angle,
-        - :math:`\theta_t` is the ``target_angular_position`` parameter.
+           - :math:`\theta` is the ``encoder``'s ``target`` ``angular_position``,
+           - :math:`\theta_s` is the braking starting angle,
+           - :math:`\theta_t` is the ``target_angular_position`` parameter.
 
-        If the applicability condition is not met, then it returns ``None``, otherwise it computes the ``pwm`` as:
+           If the applicability condition is not met, then it returns ``None``, otherwise it computes the ``pwm`` as:
 
-        .. math::
-            D \left( \theta \right) = 1 - \frac{\theta - \theta_s}{\theta_b}
+           .. math::
+               D \left( \theta \right) = 1 - \frac{\theta - \theta_s}{\theta_b}
 
-        where :math:`D` is the supply voltage PWM duty cycle (``pwm``) to apply to the DC motor in order to reach the
-        ``target_angular_position`` by the ``encoder``'s ``target`` rotating object.
+           where :math:`D` is the supply voltage PWM duty cycle (``pwm``) to apply to the DC motor in order to reach the
+           ``target_angular_position`` by the ``encoder``'s ``target`` rotating object.
         """
         angular_position = self.__encoder.get_value()
 

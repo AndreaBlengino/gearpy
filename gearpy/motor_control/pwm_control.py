@@ -18,18 +18,20 @@ class PWMControl(MotorControlBase):
     :py:meth:`apply_rules`
         Applies all the ``rules`` in order to get a valid ``pwm`` value to set to the ``powertrain``'s motor.
 
-    Raises
-    ------
-    TypeError
-        - If ``powertrain`` is not an instance of ``Powertrain``,
-        - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
-        - if an element of ``powertrain`` is not an instance of ``RotatingObject``.
-    ValueError
-        If ``powertrain.elements`` is an empty tuple.
+    .. admonition:: Raises
+       :class: warning
 
-    See Also
-    --------
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
+       TypeError
+           - If ``powertrain`` is not an instance of ``Powertrain``,
+           - if the first element in ``powertrain`` is not an instance of ``MotorBase``,
+           - if an element of ``powertrain`` is not an instance of ``RotatingObject``.
+       ValueError
+           If ``powertrain.elements`` is an empty tuple.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
     """
 
     def __init__(self, powertrain: Powertrain):
@@ -47,9 +49,10 @@ class PWMControl(MotorControlBase):
         list
             The list of the ``pwm`` rules to be applied.
 
-        See Also
-        --------
-        :py:mod:`rules`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:mod:`rules`
         """
         return self.__rules
 
@@ -61,14 +64,16 @@ class PWMControl(MotorControlBase):
         rule : RuleBase
             Rule to be added to ``rules`` list.
 
-        Raises
-        ------
-        TypeError
-            If ``rule`` is not an instance of ``RuleBase``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:mod:`rules`
+           TypeError
+               If ``rule`` is not an instance of ``RuleBase``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:mod:`rules`
         """
         super().add_rule(rule = rule)
 
@@ -85,11 +90,12 @@ class PWMControl(MotorControlBase):
 
         Before settings the ``pwm``, its value is saturated in order to be within ``-1`` and ``1``.
 
-        Raises
-        ------
-        ValueError
-            If two different rules are applicable at the same time. Only a single applicable rule is allowed to a
-            specific simulation time.
+        .. admonition:: Raises
+           :class: warning
+
+           ValueError
+               If two different rules are applicable at the same time. Only a single applicable rule is allowed to a
+               specific simulation time.
         """
 
         pwm_values = [rule.apply() for rule in self.__rules]
