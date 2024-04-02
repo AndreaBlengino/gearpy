@@ -5,17 +5,17 @@ from typing import Optional, Union
 
 
 class AbsoluteRotaryEncoder(SensorBase):
-    r"""``gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder`` object.
+    r""":py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>` object.
 
     Attributes
     ----------
-    :py:attr:`target` : RotatingObject
+    :py:attr:`target` : :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
         Target rotating object whose angular position is probed by the sensor.
 
     Methods
     -------
     :py:meth:`get_value`
-        Gets the angular position of the ``target`` rotating object.
+        It gets the angular position of the :py:attr:`target` rotating object.
     """
 
     def __init__(self, target: RotatingObject):
@@ -30,44 +30,46 @@ class AbsoluteRotaryEncoder(SensorBase):
 
         Returns
         -------
-        RotatingObject
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
             Target rotating object whose angular position is probed by the sensor.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``target`` is not an instance of ``RotatingObject``.
+           ``TypeError``
+               If :py:attr:`target` is not an instance of
+               :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`.
         """
         return self.__target
 
     def get_value(self, unit: Optional[str] = None) -> Union[AngularPosition, float, int]:
-        """Gets the angular position of the ``target`` rotating object. \n
+        """It gets the angular position of the :py:attr:`target` rotating object. \n
         If a ``unit`` is set, then it converts the angular position to that unit and returns only the numerical value as
         float or integer.
 
         Parameters
         ----------
-        unit : str, optional
-            The unit to which convert the ``target`` angular position. If specified, it converts the angular position
-            and returns only the numerical value as float or integer, otherwise it returns an ``AngularPosition``.
-            Default is ``None``, so it returns an ``AngularPosition``.
+        ``unit`` : :py:class:`str`, optional
+            The unit to which convert the :py:attr:`target` angular position. If specified, it converts the angular
+            position and returns only the numerical value as float or integer, otherwise it returns an
+            :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`. Default is :py:obj:`None`, so it returns
+            an :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`.
 
         Returns
         -------
-        AngularPosition or float or int
-            Angular position of the ``target`` rotating object.
+        :py:class:`AngularPosition <gearpy.units.units.AngularPosition>` or :py:class:`float` or :py:class:`int`
+            Angular position of the :py:attr:`target` rotating object.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``unit`` is not a string.
+           ``TypeError``
+               If ``unit`` is not a :py:class:`str`.
 
         .. admonition:: See Also
            :class: seealso
 
-           :py:func:`gearpy.units.units.AngularPosition`
+           :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`
         """
         if not isinstance(unit, str) and unit is not None:
             raise TypeError("Parameter 'unit' must be a string.")

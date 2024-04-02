@@ -2,20 +2,20 @@ from gearpy.units import Time, TimeInterval
 
 
 class Timer:
-    r"""``gearpy.sensors.timer.Timer`` object.
+    r""":py:class:`Timer <gearpy.sensors.timer.Timer>` object.
 
     Attributes
     ----------
-    :py:attr:`start_time` : Time
+    :py:attr:`start_time` : :py:class:`Time <gearpy.units.units.Time>`
         Start time after which the timer is active.
-    :py:attr:`duration` : TimeInterval
-        Time duration of the timer, starting from ``start_time``
+    :py:attr:`duration` : :py:class:`TimeInterval <gearpy.units.units.TimeInterval>`
+        Time duration of the timer, starting from :py:attr:`start_time`
 
     Methods
     -------
     :py:meth:`is_active`
-        Checks if the simulation ``current_time`` is greater than or equal to ``start_time`` but lower than or equal
-        to ``current_time`` + ``duration``.
+        It checks if the simulation ``current_time`` is greater than or equal to :py:attr:`start_time` but lower than or
+        equal to the sum of ``current_time`` and :py:attr:`duration`.
     """
 
     def __init__(self, start_time: Time, duration: TimeInterval):
@@ -34,54 +34,54 @@ class Timer:
 
         Returns
         -------
-        Time
+        :py:class:`Time <gearpy.units.units.Time>`
             Start time after which the timer is active.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``start_time`` is not an instance of ``Time``.
+           ``TypeError``
+               If :py:attr:`start_time` is not an instance of :py:class:`Time <gearpy.units.units.Time>`.
         """
         return self.__start_time
 
     @property
     def duration(self) -> TimeInterval:
-        """Time duration of the timer, starting from ``start_time``.
+        """Time duration of the timer, starting from :py:attr:`start_time`.
 
         Returns
         -------
-        TimeInterval
-            Time duration of the timer, starting from ``start_time``
+        :py:class:`TimeInterval <gearpy.units.units.TimeInterval>`
+            Time duration of the timer, starting from :py:attr:`start_time`
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``duration`` is not an instance of ``TimeInterval``.
+           ``TypeError``
+               If :py:attr:`duration` is not an instance of :py:class:`TimeInterval <gearpy.units.units.TimeInterval>`.
         """
         return self.__duration
 
     def is_active(self, current_time: Time) -> bool:
-        """Checks if the simulation ``current_time`` is greater than or equal to ``start_time`` but lower than or equal
-        to ``current_time`` + ``duration``.
+        """It checks if the simulation ``current_time`` is greater than or equal to :py:attr:`start_time` but lower than
+        or equal to the sum of ``current_time`` and :py:attr:`duration`.
 
         Parameters
         ----------
-        current_time : Time
-            Current time of the simulation, to be compared with ``start_time`` and ``duration``.
+        ``current_time`` : :py:class:`Time <gearpy.units.units.Time>`
+            Current time of the simulation, to be compared with :py:attr:`start_time` and :py:attr:`duration`.
 
         Returns
         -------
-        bool
-            Whether ``current_time`` is greater than or equal to ``start_time`` but lower than or equal to
-            ``start_time`` + ``duration``.
+        :py:class:`bool`
+            Whether ``current_time`` is greater than or equal to :py:attr:`start_time` but lower than or equal to the
+            sum of :py:attr:`start_time` and :py:attr:`duration`.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``current_time`` is not an instance of ``Time``.
+           ``TypeError``
+               If ``current_time`` is not an instance of :py:class:`Time <gearpy.units.units.Time>`.
         """
         if not isinstance(current_time, Time):
             raise TypeError(f"Parameter 'current_time' must be an instance of {Time.__name__!r}.")
