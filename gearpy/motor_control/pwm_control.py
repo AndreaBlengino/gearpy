@@ -8,8 +8,6 @@ class PWMControl(MotorControlBase):
 
     Attributes
     ----------
-    :py:attr:`powertrain` : Powertrain
-        Powertrain to be controlled by applying a ``pwm`` to its motor.
     :py:attr:`rules` : list
         The list of the ``pwm`` rules to be applied.
 
@@ -37,20 +35,8 @@ class PWMControl(MotorControlBase):
     def __init__(self, powertrain: Powertrain):
         super().__init__(powertrain = powertrain)
 
-    @property
-    def powertrain(self) -> Powertrain:
-        """Powertrain to be controlled by applying a ``pwm`` to its motor.
-
-        Returns
-        -------
-        Powertrain
-            Powertrain to be controlled by applying a ``pwm`` to its motor.
-
-        See Also
-        --------
-        :py:class:`gearpy.powertrain.Powertrain`
-        """
-        return super().powertrain
+        self.__powertrain = powertrain
+        self.__rules = []
 
     @property
     def rules(self) -> list:
@@ -65,7 +51,7 @@ class PWMControl(MotorControlBase):
         --------
         :py:mod:`rules`
         """
-        return super().rules
+        return self.__rules
 
     def add_rule(self, rule: RuleBase):
         """Adds a ``rule`` to ``rules`` list.
@@ -86,6 +72,8 @@ class PWMControl(MotorControlBase):
         """
         super().add_rule(rule = rule)
 
+        self.__rules.append(rule)
+
     def apply_rules(self):
         """Applies all the ``rules`` in order to get a valid ``pwm`` value to set to the ``powertrain``'s motor. \n
         It loops over listed ``rules`` and applies all of them:
@@ -104,7 +92,7 @@ class PWMControl(MotorControlBase):
             specific simulation time.
         """
 
-        pwm_values = [rule.apply() for rule in super().rules]
+        pwm_values = [rule.apply() for rule in self.__rules]
         applied_rules = sum([pwm_value is not None for pwm_value in pwm_values])
         if applied_rules >= 2:
             raise ValueError("At least two rules are simultaneously applicable. Check PWM rules conditions.")
@@ -113,7 +101,7 @@ class PWMControl(MotorControlBase):
         else:
             pwm = 1
 
-        self.powertrain.elements[0].pwm = pwm
+        self.__powertrain.elements[0].pwm = pwm
 
     @staticmethod
     def _saturate_pwm(pwm):
