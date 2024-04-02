@@ -14,5 +14,4 @@ PWMControl
 
    add_rule
    apply_rules
-   powertrain
    rules
