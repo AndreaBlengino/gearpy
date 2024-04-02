@@ -26,11 +26,11 @@ class TestStartLimitCurrentInit:
                                  target_angular_position = target_angular_position,
                                  limit_electric_current = limit_electric_current)
 
-        assert rule.encoder == encoder
-        assert rule.tachometer == tachometer
-        assert rule.motor == motor
-        assert rule.limit_electric_current == limit_electric_current
-        assert rule.target_angular_position == target_angular_position
+        assert rule._StartLimitCurrent__encoder == encoder
+        assert rule._StartLimitCurrent__tachometer == tachometer
+        assert rule._StartLimitCurrent__motor == motor
+        assert rule._StartLimitCurrent__limit_electric_current == limit_electric_current
+        assert rule._StartLimitCurrent__target_angular_position == target_angular_position
 
 
     @mark.error

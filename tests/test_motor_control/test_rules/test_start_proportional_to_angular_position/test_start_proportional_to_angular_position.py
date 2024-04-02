@@ -30,11 +30,11 @@ class TestStartProportionalToAngularPositionInit:
                                                   target_angular_position = target_angular_position,
                                                   pwm_min_multiplier = pwm_min_multiplier, pwm_min = pwm_min)
 
-        assert rule.encoder == encoder
-        assert rule.powertrain == powertrain
-        assert rule.target_angular_position == target_angular_position
-        assert rule.pwm_min_multiplier == pwm_min_multiplier
-        assert rule.pwm_min == pwm_min
+        assert rule._StartProportionalToAngularPosition__encoder == encoder
+        assert rule._StartProportionalToAngularPosition__powertrain == powertrain
+        assert rule._StartProportionalToAngularPosition__target_angular_position == target_angular_position
+        assert rule._StartProportionalToAngularPosition__pwm_min_multiplier == pwm_min_multiplier
+        assert rule._StartProportionalToAngularPosition__pwm_min == pwm_min
 
 
     @mark.error

@@ -20,9 +20,9 @@ class TestConstantPWMInit:
     def test_method(self, timer, powertrain, target_pwm_value):
         rule = ConstantPWM(timer = timer, powertrain = powertrain, target_pwm_value = target_pwm_value)
 
-        assert rule.timer == timer
-        assert rule.powertrain == powertrain
-        assert rule.target_pwm_value == target_pwm_value
+        assert rule._ConstantPWM__timer == timer
+        assert rule._ConstantPWM__powertrain == powertrain
+        assert rule._ConstantPWM__target_pwm_value == target_pwm_value
 
 
     @mark.error

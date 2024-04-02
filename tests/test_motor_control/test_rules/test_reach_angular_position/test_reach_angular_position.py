@@ -26,10 +26,10 @@ class TestReachAngularPositionInit:
         rule = ReachAngularPosition(encoder = encoder, powertrain = powertrain,
                                     target_angular_position = target_angular_position, braking_angle = braking_angle)
 
-        assert rule.encoder == encoder
-        assert rule.powertrain == powertrain
-        assert rule.target_angular_position == target_angular_position
-        assert rule.braking_angle == braking_angle
+        assert rule._ReachAngularPosition__encoder == encoder
+        assert rule._ReachAngularPosition__powertrain == powertrain
+        assert rule._ReachAngularPosition__target_angular_position == target_angular_position
+        assert rule._ReachAngularPosition__braking_angle == braking_angle
 
 
     @mark.error
