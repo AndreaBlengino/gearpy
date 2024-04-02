@@ -17,21 +17,6 @@ class StartProportionalToAngularPosition(RuleBase):
     ``pwm`` increases up to ``1`` when the ``encoder``'s ``target``'s ``angular_position`` equals
     ``target_angular_position``.
 
-    Attributes
-    ----------
-    :py:attr:`encoder` : AbsoluteRotaryEncoder
-        Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
-        ``target_angular_position``.
-    :py:attr:`powertrain` : Powertrain
-        Powertrain whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
-        ``angular_position``.
-    :py:attr:`target_angular_position` : AngularPosition
-        Angular position to be reached by the ``encoder``'s target.
-    :py:attr:`pwm_min_multiplier` : float or int
-        Multiplication factor of motor's minimum ``pwm``.
-    :py:attr:`pwm_min` : float or int, optional
-        Minimum ``pwm`` to be used in case the ``powertrain``'s motor minimum ``pwm`` is null.
-
     Methods
     -------
     :py:meth:`apply`
@@ -57,6 +42,7 @@ class StartProportionalToAngularPosition(RuleBase):
     See Also
     --------
     :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
+    :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
     """
 
     def __init__(self,
@@ -107,98 +93,6 @@ class StartProportionalToAngularPosition(RuleBase):
         self.__pwm_min_multiplier = pwm_min_multiplier
         self.__pwm_min = pwm_min
 
-    @property
-    def encoder(self) -> AbsoluteRotaryEncoder:
-        """Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
-        ``target_angular_position``.
-
-        Returns
-        -------
-        AbsoluteRotaryEncoder
-            Sensor used to measure the ``angular_position`` of a ``RotatingObject``, which is compared to
-            ``target_angular_position``.
-
-        Notes
-        -----
-        This parameter serves as a remainder for the user about the need to use an encoder in the mechanism, otherwise
-        this type of control cannot be applied.
-
-        See Also
-        --------
-        :py:class:`gearpy.sensors.AbsoluteRotaryEncoder`
-        """
-        return self.__encoder
-
-    @property
-    def powertrain(self) -> Powertrain:
-        """Powertrain whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
-        ``angular_position``.
-
-        Returns
-        -------
-        Powertrain
-            Powertrain whose motor's ``pwm`` is controlled proportionally to the ``encoder``'s target
-            ``angular_position``.
-
-        See Also
-        --------
-        :py:class:`gearpy.powertrain.Powertrain`
-        """
-        return self.__powertrain
-
-    @property
-    def target_angular_position(self) -> AngularPosition:
-        """Angular position to be reached by the ``encoder``'s target. The rule is applied up until the ``encoder``'s
-        target's ``angular_position`` equals the ``target_angular_position``.
-
-        Returns
-        -------
-        AngularPosition
-            Angular position to be reached by the ``encoder``'s target.
-
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularPosition`
-        """
-        return self.__target_angular_position
-
-    @property
-    def pwm_min_multiplier(self) -> Union[float, int]:
-        """Multiplication factor of motor's minimum ``pwm``. \n
-        The ``powertrain``'s motor has a minimum ``pwm`` which, as is, cannot be used to control the motor, since at
-        this value the motor will remain still. So, in order to properly control the motor motion, it is required to
-        apply a ``pwm`` greater than the minimum ``pwm``, therefore the motor minimum ``pwm`` is multiplied by
-        ``pwm_min_multiplier`` to get a starting ``pwm`` to be applied to the motor.
-
-        Returns
-        -------
-        float or int
-            Multiplication factor of motor's minimum ``pwm``.
-
-        See Also
-        --------
-        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
-        """
-        return self.__pwm_min_multiplier
-
-    @property
-    def pwm_min(self) -> Union[None, float, int]:
-        """Minimum ``pwm`` to be used in case the ``powertrain``'s motor minimum ``pwm`` is null. \n
-        If the motor's minimum ``pwm`` is null, then it is useless to multiply this value by ``pwm_min_multiplier`` in
-        order to get a starting ``pwm``; therefore, only in this case, ``pwm_min`` is directly used as starting ``pwm``.
-
-        Returns
-        -------
-        None or float or int
-            Minimum ``pwm`` to be used in case the ``powertrain``'s motor minimum ``pwm`` is null.
-
-        See Also
-        --------
-        :py:attr:`pwm_min_multiplier`
-        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
-        """
-        return self.__pwm_min
-
     def apply(self) -> Union[None, float, int]:
         r"""Computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
         ``angular_position`` until it reaches the ``target_angular_position``.
@@ -210,7 +104,14 @@ class StartProportionalToAngularPosition(RuleBase):
 
         Notes
         -----
-        It computes a *candidate* minimum applicable ``pwm`` as:
+        The ``powertrain``'s motor has a minimum ``pwm`` which, as is, cannot be used to control the motor, since at
+        this value the motor will remain still. So, in order to properly control the motor motion, it is required to
+        apply a ``pwm`` greater than the minimum ``pwm``, therefore the motor minimum ``pwm`` is multiplied by
+        ``pwm_min_multiplier`` to get a starting ``pwm`` to be applied to the motor. \n
+        If the motor's minimum ``pwm`` is null, then it is useless to multiply this value by ``pwm_min_multiplier`` in
+        order to get a starting ``pwm``; therefore, only in this case, ``pwm_min`` is directly used as starting
+        ``pwm``. \n
+        First of all, the rule computes a *candidate* minimum applicable ``pwm`` as:
 
         .. math::
             D_{min}^c \left( T_l \right) = \frac{1}{\eta_t} \, \frac{T_l}{T_{max}} \, \frac{i_{max} - i_0}{i_{max}} +
@@ -246,7 +147,7 @@ class StartProportionalToAngularPosition(RuleBase):
         - :math:`D_{min}` is the minimum applicable ``pwm``,
         - :math:`D_{min}^p` is the ``pwm_min`` parameter.
 
-        Otherwise, the *candidate* :math:`D_{min}` is multiplied by the ``pwm_min_multiplier`` parameter:
+        Otherwise, the *candidate* :math:`D_{min}` is multiplied by the ``pwm_min_multiplier`` parameter.
 
         .. math::
             D_{min} = D_{min}^c \, g
@@ -268,15 +169,15 @@ class StartProportionalToAngularPosition(RuleBase):
         .. math::
             D \left( \theta \right) = \left( 1 - D_{min} \right) \frac{\theta}{\theta_t} + D_{min}
         """
-        angular_position = self.encoder.get_value()
+        angular_position = self.__encoder.get_value()
 
-        computed_pwm_min = self.pwm_min_multiplier*_compute_pwm_min(powertrain = self.powertrain)
+        computed_pwm_min = self.__pwm_min_multiplier*_compute_pwm_min(powertrain = self.__powertrain)
         if computed_pwm_min != 0:
             pwm_min = computed_pwm_min
         else:
-            if self.pwm_min is None:
+            if self.__pwm_min is None:
                 raise ValueError("Missing 'pwm_min' parameter.")
-            pwm_min = self.pwm_min
+            pwm_min = self.__pwm_min
 
-        if angular_position <= self.target_angular_position:
-            return (1 - pwm_min)*angular_position/self.target_angular_position + pwm_min
+        if angular_position <= self.__target_angular_position:
+            return (1 - pwm_min)*angular_position/self.__target_angular_position + pwm_min
