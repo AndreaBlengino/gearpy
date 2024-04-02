@@ -26,7 +26,8 @@ class TestSolverInit:
     def test_method(self, powertrain):
         solver = Solver(powertrain = powertrain)
 
-        assert solver.powertrain == powertrain
+        assert solver._Solver__powertrain == powertrain
+        assert solver._Solver__powertrain_is_locked is False
 
 
     @mark.error
