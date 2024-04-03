@@ -60,12 +60,13 @@ class Flywheel(RotatingObject):
         str
             Name of the flywheel.
 
-        Raises
-        ------
-        TypeError
-            If ``name`` is not a string.
-        ValueError
-            If ``name`` is an empty string.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``name`` is not a string.
+           ValueError
+               If ``name`` is an empty string.
         """
         return super().name
 
@@ -79,14 +80,16 @@ class Flywheel(RotatingObject):
         RotatingObject
             Master rotating object that drives the flywheel.
 
-        Raises
-        ------
-        TypeError
-            If ``driven_by`` is not an instance of ``RotatingObject``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           TypeError
+               If ``driven_by`` is not an instance of ``RotatingObject``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return self.__driven_by
 
@@ -107,14 +110,16 @@ class Flywheel(RotatingObject):
         RotatingObject
             Rotating object driven by the flywheel.
 
-        Raises
-        ------
-        TypeError
-            If ``drives`` is not an instance of ``RotatingObject``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           TypeError
+               If ``drives`` is not an instance of ``RotatingObject``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return self.__drives
 
@@ -134,14 +139,16 @@ class Flywheel(RotatingObject):
         AngularPosition
             Angular position of the flywheel.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_position`` is not an instance of ``AngularPosition``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularPosition`
+           TypeError
+               If ``angular_position`` is not an instance of ``AngularPosition``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.AngularPosition`
         """
         return super().angular_position
 
@@ -158,14 +165,16 @@ class Flywheel(RotatingObject):
         AngularSpeed
             Angular speed of the flywheel.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_speed`` is not an instance of ``AngularSpeed``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularSpeed`
+           TypeError
+               If ``angular_speed`` is not an instance of ``AngularSpeed``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.AngularSpeed`
         """
         return super().angular_speed
 
@@ -182,14 +191,16 @@ class Flywheel(RotatingObject):
         AngularAcceleration
             Angular acceleration of the flywheel.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_acceleration`` is not an instance of ``AngularAcceleration``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularAcceleration`
+           TypeError
+               If ``angular_acceleration`` is not an instance of ``AngularAcceleration``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.AngularAcceleration`
         """
         return super().angular_acceleration
 
@@ -207,14 +218,16 @@ class Flywheel(RotatingObject):
         Torque
             Net torque applied on the flywheel.
 
-        Raises
-        ------
-        TypeError
-            If ``torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           TypeError
+               If ``torque`` is not an instance of ``Torque``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Torque`
         """
         return super().torque
 
@@ -231,14 +244,16 @@ class Flywheel(RotatingObject):
         Torque
             Driving torque applied on the flywheel by its driving rotating object.
 
-        Raises
-        ------
-        TypeError
-            If ``driving_torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           TypeError
+               If ``driving_torque`` is not an instance of ``Torque``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Torque`
         """
         return super().driving_torque
 
@@ -255,14 +270,16 @@ class Flywheel(RotatingObject):
         Torque
             Load torque applied on the flywheel by its driven rotating object.
 
-        Raises
-        ------
-        TypeError
-            If ``load_torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           TypeError
+               If ``load_torque`` is not an instance of ``Torque``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Torque`
         """
         return super().load_torque
 
@@ -282,16 +299,18 @@ class Flywheel(RotatingObject):
         float
             Gear ratio of the fixed joint between the flywheel and its driving rotating object.
 
-        Raises
-        ------
-        TypeError
-            If ``master_gear_ratio`` is not a float.
-        ValueError
-            If ``master_gear_ratio`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           TypeError
+               If ``master_gear_ratio`` is not a float.
+           ValueError
+               If ``master_gear_ratio`` is negative or null.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return self.__master_gear_ratio
 
@@ -316,9 +335,10 @@ class Flywheel(RotatingObject):
         float or int
             Efficiency of the fixed joint between the flywheel and its driving rotating object.
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return self.__master_gear_efficiency
 
@@ -332,14 +352,16 @@ class Flywheel(RotatingObject):
         InertiaMoment
             Moment of inertia of the flywheel.
 
-        Raises
-        ------
-        TypeError
-            If ``inertia_moment`` is not an instance of ``InertiaMoment``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.InertiaMoment`
+           TypeError
+               If ``inertia_moment`` is not an instance of ``InertiaMoment``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.InertiaMoment`
         """
         return super().inertia_moment
 
@@ -364,9 +386,10 @@ class Flywheel(RotatingObject):
         dict
             Time variables of the flywheel.
 
-        See Also
-        --------
-        :py:meth:`update_time_variables`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`update_time_variables`
         """
         return super().time_variables
 
@@ -374,8 +397,9 @@ class Flywheel(RotatingObject):
         """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
         dictionary) to corresponding list (value of the dictionary).
 
-        See Also
-        --------
-        :py:attr:`time_variables`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`time_variables`
         """
         super().update_time_variables()

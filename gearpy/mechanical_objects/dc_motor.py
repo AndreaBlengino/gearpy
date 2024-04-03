@@ -114,12 +114,13 @@ class DCMotor(MotorBase):
         str
             Name of the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``name`` is not a string.
-        ValueError
-            If ``name`` is an empty string.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``name`` is not a string.
+           ValueError
+               If ``name`` is an empty string.
         """
         return super().name
 
@@ -133,14 +134,16 @@ class DCMotor(MotorBase):
         RotatingObject
             Rotating object driven by the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``drives`` is not an instance of ``RotatingObject``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           TypeError
+               If ``drives`` is not an instance of ``RotatingObject``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return super().drives
 
@@ -157,14 +160,16 @@ class DCMotor(MotorBase):
         AngularPosition
             Angular position of the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_position`` is not an instance of ``AngularPosition``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularPosition`
+           TypeError
+               If ``angular_position`` is not an instance of ``AngularPosition``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.AngularPosition`
         """
         return super().angular_position
 
@@ -181,14 +186,16 @@ class DCMotor(MotorBase):
         AngularSpeed
             Angular speed of the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_speed`` is not an instance of ``AngularSpeed``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularSpeed`
+           TypeError
+               If ``angular_speed`` is not an instance of ``AngularSpeed``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.AngularSpeed`
         """
         return super().angular_speed
 
@@ -205,14 +212,16 @@ class DCMotor(MotorBase):
         AngularAcceleration
             Angular acceleration of the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_acceleration`` is not an instance of ``AngularAcceleration``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularAcceleration`
+           TypeError
+               If ``angular_acceleration`` is not an instance of ``AngularAcceleration``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.AngularAcceleration`
         """
         return super().angular_acceleration
 
@@ -232,16 +241,18 @@ class DCMotor(MotorBase):
         AngularSpeed
             No load angular speed of the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``no_load_speed`` is not an instance of ``AngularSpeed``.
-        ValueError
-            If ``no_load_speed`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
 
-        Se Also
-        -------
-        :py:class:`gearpy.units.units.AngularSpeed`
+           TypeError
+               If ``no_load_speed`` is not an instance of ``AngularSpeed``.
+           ValueError
+               If ``no_load_speed`` is negative or null.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.AngularSpeed`
         """
         return self.__no_load_speed
 
@@ -257,16 +268,18 @@ class DCMotor(MotorBase):
         Torque
             Maximum torque developed by the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``maximum_torque`` is not an instance of ``Torque``.
-        ValueError
-            If ``maximum_torque`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
 
-        Se Also
-        -------
-        :py:class:`gearpy.units.units.Torque`
+           TypeError
+               If ``maximum_torque`` is not an instance of ``Torque``.
+           ValueError
+               If ``maximum_torque`` is negative or null.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Torque`
         """
         return self.__maximum_torque
 
@@ -280,14 +293,16 @@ class DCMotor(MotorBase):
         Torque
             Net torque applied on the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           TypeError
+               If ``torque`` is not an instance of ``Torque``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Torque`
         """
         return super().torque
 
@@ -304,14 +319,16 @@ class DCMotor(MotorBase):
         Torque
             Driving torque developed by the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``driving_torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           TypeError
+               If ``driving_torque`` is not an instance of ``Torque``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Torque`
         """
         return super().driving_torque
 
@@ -328,14 +345,16 @@ class DCMotor(MotorBase):
         Torque
             Load torque applied on the DC motor by its driven gear.
 
-        Raises
-        ------
-        TypeError
-            If ``load_torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           TypeError
+               If ``load_torque`` is not an instance of ``Torque``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Torque`
         """
         return super().load_torque
 
@@ -353,14 +372,16 @@ class DCMotor(MotorBase):
         InertiaMoment
             Moment of inertia of the DC motor's rotor.
 
-        Raises
-        ------
-        TypeError
-            If ``inertia_moment`` is not an instance of ``InertiaMoment``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.InertiaMoment`
+           TypeError
+               If ``inertia_moment`` is not an instance of ``InertiaMoment``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.InertiaMoment`
         """
         return super().inertia_moment
 
@@ -370,49 +391,51 @@ class DCMotor(MotorBase):
         ``angular_speed`` and ``pwm`` of the DCMotor.
         The computed torque has the same unit of ``maximum_torque``.
 
-        Notes
-        -----
-        The computation is based on the following relationship:
+        .. admonition:: Notes
+           :class: tip
 
-        .. math::
-            T \left( \dot{\theta} , T_{max}^D , \dot{\theta}_0^D \right) =
-            T_{max}^D \left( 1 - \frac{\dot{\theta}}{\dot{\theta}_0^D} \right)
+           The computation is based on the following relationship:
 
-        where:
+           .. math::
+               T \left( \dot{\theta} , T_{max}^D , \dot{\theta}_0^D \right) =
+               T_{max}^D \left( 1 - \frac{\dot{\theta}}{\dot{\theta}_0^D} \right)
 
-        - :math:`T` is the DC motor developed driving torque,
-        - :math:`\dot{\theta}` is the actual DC motor angular speed,
-        - :math:`T_{max}^D` is the DC motor maximum torque developed by the DC motor keeping into account ``pwm``,
-        - :math:`\dot{\theta}_0^D` is the DC motor no load angular speed keeping into account ``pwm``.
+           where:
 
-        The maximum torque can be computed as:
+           - :math:`T` is the DC motor developed driving torque,
+           - :math:`\dot{\theta}` is the actual DC motor angular speed,
+           - :math:`T_{max}^D` is the DC motor maximum torque developed by the DC motor keeping into account ``pwm``,
+           - :math:`\dot{\theta}_0^D` is the DC motor no load angular speed keeping into account ``pwm``.
 
-        .. math::
-            T_{max}^D \left( D \right) = T_{max} \frac{D \, i_{max} - i_0}{i_{max} - i_0}
+           The maximum torque can be computed as:
 
-        and the no load angular speed can be computed as:
+           .. math::
+               T_{max}^D \left( D \right) = T_{max} \frac{D \, i_{max} - i_0}{i_{max} - i_0}
 
-        .. math::
-            \dot{\theta}_0^D \left( D \right) = D \, \dot{\theta}_0
+           and the no load angular speed can be computed as:
 
-        where:
+           .. math::
+               \dot{\theta}_0^D \left( D \right) = D \, \dot{\theta}_0
 
-        - :math:`D` is the DC motor supply voltage PWM duty cycle (``pwm``),
-        - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
-        - :math:`i_{max}` is the DC motor maximum electric current (``maximum_electric_current``),
-        - :math:`i_0` is the DC motor no load electric current (``no_load_electric_current``),
-        - :math:`\dot{\theta}_0` is the DC motor no load angular speed (``no_load_speed``).
+           where:
 
-        If the ``pwm`` is lower than a critical threshold, then the motor cannot develop any torque, so the
-        ``driving_torque`` will be null. The critical ``pwm`` value can be computed as:
+           - :math:`D` is the DC motor supply voltage PWM duty cycle (``pwm``),
+           - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
+           - :math:`i_{max}` is the DC motor maximum electric current (``maximum_electric_current``),
+           - :math:`i_0` is the DC motor no load electric current (``no_load_electric_current``),
+           - :math:`\dot{\theta}_0` is the DC motor no load angular speed (``no_load_speed``).
 
-        .. math::
-            D_{lim} = \frac{i_0}{i_{max}}
+           If the ``pwm`` is lower than a critical threshold, then the motor cannot develop any torque, so the
+           ``driving_torque`` will be null. The critical ``pwm`` value can be computed as:
 
-        See Also
-        --------
-        :py:attr:`driving_torque`
-        :py:attr:`pwm`
+           .. math::
+               D_{lim} = \frac{i_0}{i_{max}}
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`driving_torque`
+           :py:attr:`pwm`
         """
         if not self.electric_current_is_computable:
             self.driving_torque = Torque(value = (1 - self.angular_speed/self.no_load_speed)*self.maximum_torque.value,
@@ -450,17 +473,19 @@ class DCMotor(MotorBase):
         Current
             No load electric current of the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``no_load_electric_current`` is not an instance of ``Current``.
-        ValueError
-            - If ``no_load_electric_current`` is negative,
-            - if ``no_load_electric_current`` is higher than or equal to ``maximum_electric_current``.
+        .. admonition:: Raises
+           :class: warning
 
-        Se Also
-        -------
-        :py:class:`gearpy.units.units.Current`
+           TypeError
+               If ``no_load_electric_current`` is not an instance of ``Current``.
+           ValueError
+               - If ``no_load_electric_current`` is negative,
+               - if ``no_load_electric_current`` is higher than or equal to ``maximum_electric_current``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Current`
         """
         return self.__no_load_electric_current
 
@@ -476,17 +501,19 @@ class DCMotor(MotorBase):
         Current
             Maximum electric current absorbed by the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``maximum_electric_current`` is not an instance of ``Current``.
-        ValueError
-            - If ``maximum_electric_current`` is negative or null,
-            - if ``maximum_electric_current`` is lower than or equal to ``no_load_electric_current``.
+        .. admonition:: Raises
+           :class: warning
 
-        Se Also
-        -------
-        :py:class:`gearpy.units.units.Current`
+           TypeError
+               If ``maximum_electric_current`` is not an instance of ``Current``.
+           ValueError
+               - If ``maximum_electric_current`` is negative or null,
+               - if ``maximum_electric_current`` is lower than or equal to ``no_load_electric_current``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Current`
         """
         return self.__maximum_electric_current
 
@@ -496,55 +523,57 @@ class DCMotor(MotorBase):
         and ``pwm`` of the DC motor.
         The computed electric current has the same unit of ``maximum_electric_current``.
 
-        Notes
-        -----
-        The computation is based on the following relationship:
+        .. admonition:: Notes
+           :class: tip
 
-        .. math::
-            i \left( T \right) = \left( i_{max}^D - i_0 \right) \frac{T}{T_{max}^D} + i_0
+           The computation is based on the following relationship:
 
-        where:
+           .. math::
+               i \left( T \right) = \left( i_{max}^D - i_0 \right) \frac{T}{T_{max}^D} + i_0
 
-        - :math:`i` is the electric current absorbed by the DC motor,
-        - :math:`T` is the DC motor developed driving torque,
-        - :math:`i_{max}^D` is the maximum electric current absorbed by the DC motor keeping into account ``pwm``,
-        - :math:`i_0` is the no load electric current absorbed by the DC motor (``no_load_electric_current``),
-        - :math:`T_{max}^D` is the DC motor maximum torque developed by the DC motor keeping into account ``pwm``.
+           where:
 
-        The maximum torque can be computed as:
+           - :math:`i` is the electric current absorbed by the DC motor,
+           - :math:`T` is the DC motor developed driving torque,
+           - :math:`i_{max}^D` is the maximum electric current absorbed by the DC motor keeping into account ``pwm``,
+           - :math:`i_0` is the no load electric current absorbed by the DC motor (``no_load_electric_current``),
+           - :math:`T_{max}^D` is the DC motor maximum torque developed by the DC motor keeping into account ``pwm``.
 
-        .. math::
-            T_{max}^D \left( D \right) = T_{max} \frac{D \, i_{max} - i_0}{i_{max} - i_0}
+           The maximum torque can be computed as:
 
-        and the maximum electric current can be computed as:
+           .. math::
+               T_{max}^D \left( D \right) = T_{max} \frac{D \, i_{max} - i_0}{i_{max} - i_0}
 
-        .. math::
-            i_{max}^D \left( D \right) = D \, i_{max}
+           and the maximum electric current can be computed as:
 
-        where:
+           .. math::
+               i_{max}^D \left( D \right) = D \, i_{max}
 
-        - :math:`D` is the DC motor supply voltage PWM duty cycle (``pwm``),
-        - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
-        - :math:`i_{max}` is the DC motor maximum electric current (``maximum_electric_current``),
-        - :math:`i_0` is the DC motor no load electric current (``no_load_electric_current``).
+           where:
 
-        If the ``pwm`` is lower than a critical threshold, then the motor cannot develop any torque, so the
-        ``electrical_current`` will depend only on ``pwm`` value. The critical ``pwm`` value can be computed as:
+           - :math:`D` is the DC motor supply voltage PWM duty cycle (``pwm``),
+           - :math:`T_{max}` is the DC motor maximum torque (``maximum_torque``),
+           - :math:`i_{max}` is the DC motor maximum electric current (``maximum_electric_current``),
+           - :math:`i_0` is the DC motor no load electric current (``no_load_electric_current``).
 
-        .. math::
-            D_{lim} = \frac{i_0}{i_{max}}
+           If the ``pwm`` is lower than a critical threshold, then the motor cannot develop any torque, so the
+           ``electrical_current`` will depend only on ``pwm`` value. The critical ``pwm`` value can be computed as:
 
-        and the relative electric current can be computed as:
+           .. math::
+               D_{lim} = \frac{i_0}{i_{max}}
 
-        .. math::
-            i_{lim} \left( D \right) = D \, i_{max}
+           and the relative electric current can be computed as:
 
-        See Also
-        --------
-        :py:attr:`no_load_electric_current`
-        :py:attr:`maximum_electric_current`
-        :py:attr:`electric_current`
-        :py:attr:`pwm`
+           .. math::
+               i_{lim} \left( D \right) = D \, i_{max}
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`no_load_electric_current`
+           :py:attr:`maximum_electric_current`
+           :py:attr:`electric_current`
+           :py:attr:`pwm`
         """
         maximum_electric_current = self.pwm*self.maximum_electric_current
         pwm_min = self.no_load_electric_current/self.maximum_electric_current
@@ -583,11 +612,12 @@ class DCMotor(MotorBase):
         bool
             Whether is possible to compute the electric current absorbed by the DC motor.
 
-        See Also
-        --------
-        :py:attr:`no_load_electric_current`
-        :py:attr:`maximum_electric_current`
-        :py:meth:`compute_electric_current`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`no_load_electric_current`
+           :py:attr:`maximum_electric_current`
+           :py:meth:`compute_electric_current`
         """
         return (self.__no_load_electric_current is not None) and (self.__maximum_electric_current is not None)
 
@@ -600,14 +630,16 @@ class DCMotor(MotorBase):
         Current
             Electric current absorbed by the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``electric_current`` is not an instance of ``Current``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Current`
+           TypeError
+               If ``electric_current`` is not an instance of ``Current``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Current`
         """
         return self.__electric_current
 
@@ -643,9 +675,10 @@ class DCMotor(MotorBase):
         dict
             Time variables of the DC motor.
 
-        See Also
-        --------
-        :py:meth:`update_time_variables`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`update_time_variables`
         """
         return super().time_variables
 
@@ -653,9 +686,10 @@ class DCMotor(MotorBase):
         """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
         dictionary) to corresponding list (value of the dictionary).
 
-        See Also
-        --------
-        :py:attr:`time_variables`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`time_variables`
         """
         super().update_time_variables()
         if self.electric_current_is_computable:
@@ -684,17 +718,19 @@ class DCMotor(MotorBase):
         float or int
             Pulse Width Modulation duty cycle of the supply voltage of the DC motor.
 
-        Raises
-        ------
-        TypeError
-            If ``pwm`` is not a float or an integer.
-        ValueError
-            If ``pwm`` is not within ``-1`` and ``1``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:meth:`compute_torque`
-        :py:meth:`compute_electric_current`
+           TypeError
+               If ``pwm`` is not a float or an integer.
+           ValueError
+               If ``pwm`` is not within ``-1`` and ``1``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`compute_torque`
+           :py:meth:`compute_electric_current`
         """
         return self.__pwm
 

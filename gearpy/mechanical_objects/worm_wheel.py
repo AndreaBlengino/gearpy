@@ -125,12 +125,13 @@ class WormWheel(HelicalGear):
         str
             Name of the worm wheel.
 
-        Raises
-        ------
-        TypeError
-            If ``name`` is not a string.
-        ValueError
-            If ``name`` is an empty string.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``name`` is not a string.
+           ValueError
+               If ``name`` is an empty string.
         """
         return super().name
 
@@ -144,12 +145,13 @@ class WormWheel(HelicalGear):
         int
             Number of gear teeth.
 
-        Raises
-        ------
-        TypeError
-            If ``n_teeth`` is not an integer.
-        ValueError
-            If ``n_teeth`` is less than the minimum number of teeth, based on Lewis Factor table.
+        .. admonition:: Raises
+           :class: warning
+
+           TypeError
+               If ``n_teeth`` is not an integer.
+           ValueError
+               If ``n_teeth`` is less than the minimum number of teeth, based on Lewis Factor table.
         """
         return super().n_teeth
 
@@ -163,14 +165,16 @@ class WormWheel(HelicalGear):
         InertiaMoment
             Moment of inertia of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``inertia_moment`` is not an instance of ``InertiaMoment``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.InertiaMoment`
+           TypeError
+               If ``inertia_moment`` is not an instance of ``InertiaMoment``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.InertiaMoment`
         """
         return super().inertia_moment
 
@@ -185,16 +189,18 @@ class WormWheel(HelicalGear):
         Angle
             The helix angle of the worm wheel.
 
-        Raises
-        ------
-        TypeError
-            If ``helix_angle`` is not an instance of ``Angle``.
-        ValueError
-            If ``helix_angle`` is greater than the maximum allowable helix angle, depending on ``pressure_angle`` value.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Angle`
+           TypeError
+               If ``helix_angle`` is not an instance of ``Angle``.
+           ValueError
+               If ``helix_angle`` is greater than the maximum allowable helix angle, depending on ``pressure_angle`` value.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Angle`
         """
         return self.__helix_angle
 
@@ -209,16 +215,18 @@ class WormWheel(HelicalGear):
         Angle
             The pressure angle of the worm wheel.
 
-        Raises
-        ------
-        TypeError
-            If ``pressure_angle`` is not an instance of ``Angle``.
-        ValueError
-            If ``pressure_angle`` value is not among available ones: 14.5 deg, 20 deg, 25 deg or 30 deg.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Angle`
+           TypeError
+               If ``pressure_angle`` is not an instance of ``Angle``.
+           ValueError
+               If ``pressure_angle`` value is not among available ones: 14.5 deg, 20 deg, 25 deg or 30 deg.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Angle`
         """
         return self.__pressure_angle
 
@@ -232,14 +240,16 @@ class WormWheel(HelicalGear):
         Length
             Unit of the gear teeth size.
 
-        Raises
-        ------
-        TypeError
-            If ``module`` is not an instance of ``Length``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Length`
+           TypeError
+               If ``module`` is not an instance of ``Length``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Length`
         """
         return super().module
 
@@ -254,9 +264,10 @@ class WormWheel(HelicalGear):
         Length
             Reference diameter of the gear.
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Length`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Length`
         """
         return super().reference_diameter
 
@@ -269,14 +280,16 @@ class WormWheel(HelicalGear):
         Length
             Face width of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``face_width`` is not an instance of ``Length``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Length`
+           TypeError
+               If ``face_width`` is not an instance of ``Length``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Length`
         """
         return super().face_width
 
@@ -290,9 +303,10 @@ class WormWheel(HelicalGear):
         float
             Factor used to compute stresses on the gear tooth.
 
-        See Also
-        --------
-        :py:attr:`pressure_angle`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`pressure_angle`
         """
         return self.__lewis_factor
 
@@ -306,15 +320,17 @@ class WormWheel(HelicalGear):
         RotatingObject
             Master rotating object that drives the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``driven_by`` is not an instance of ``RotatingObject``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_worm_gear_mating`
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           TypeError
+               If ``driven_by`` is not an instance of ``RotatingObject``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:func:`gearpy.utils.relations.add_worm_gear_mating`
+           :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return super().driven_by
 
@@ -332,15 +348,17 @@ class WormWheel(HelicalGear):
         RotatingObject
             Rotating object driven by the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``drives`` is not an instance of ``RotatingObject``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_worm_gear_mating`
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           TypeError
+               If ``drives`` is not an instance of ``RotatingObject``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:func:`gearpy.utils.relations.add_worm_gear_mating`
+           :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return super().drives
 
@@ -362,17 +380,19 @@ class WormWheel(HelicalGear):
         float
             Gear ratio of the mating between the gear and its driving gear.
 
-        Raises
-        ------
-        TypeError
-            If ``master_gear_ratio`` is not a float.
-        ValueError
-            If ``master_gear_ratio`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_worm_gear_mating`
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           TypeError
+               If ``master_gear_ratio`` is not a float.
+           ValueError
+               If ``master_gear_ratio`` is negative or null.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:func:`gearpy.utils.relations.add_worm_gear_mating`
+           :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return super().master_gear_ratio
 
@@ -392,17 +412,19 @@ class WormWheel(HelicalGear):
         float or int
             Efficiency of the gear mating between the gear and its driving gear.
 
-        Raises
-        ------
-        TypeError
-            If ``master_gear_efficiency`` is not a float or an integer.
-        ValueError
-            If ``master_gear_efficiency`` is not within ``0`` and ``1``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_worm_gear_mating`
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           TypeError
+               If ``master_gear_efficiency`` is not a float or an integer.
+           ValueError
+               If ``master_gear_efficiency`` is not within ``0`` and ``1``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:func:`gearpy.utils.relations.add_worm_gear_mating`
+           :py:func:`gearpy.utils.relations.add_fixed_joint`
         """
         return super().master_gear_efficiency
 
@@ -421,10 +443,11 @@ class WormWheel(HelicalGear):
         Role
             The role of the gear in the gear mating.
 
-        Raises
-        ------
-        ValueError
-            If ``mating_role`` is not a subclass of ``Role``.
+        .. admonition:: Raises
+           :class: warning
+
+           ValueError
+               If ``mating_role`` is not a subclass of ``Role``.
         """
         return super().mating_role
 
@@ -441,14 +464,16 @@ class WormWheel(HelicalGear):
         AngularPosition
             Angular position of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_position`` is not an instance of ``AngularPosition``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularPosition`
+           TypeError
+               If ``angular_position`` is not an instance of ``AngularPosition``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.AngularPosition`
         """
         return super().angular_position
 
@@ -465,14 +490,16 @@ class WormWheel(HelicalGear):
         AngularSpeed
             Angular speed of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_speed`` is not an instance of ``AngularSpeed``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularSpeed`
+           TypeError
+               If ``angular_speed`` is not an instance of ``AngularSpeed``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.AngularSpeed`
         """
         return super().angular_speed
 
@@ -489,14 +516,16 @@ class WormWheel(HelicalGear):
         AngularAcceleration
             Angular acceleration of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_acceleration`` is not an instance of ``AngularAcceleration``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularAcceleration`
+           TypeError
+               If ``angular_acceleration`` is not an instance of ``AngularAcceleration``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.AngularAcceleration`
         """
         return super().angular_acceleration
 
@@ -514,14 +543,16 @@ class WormWheel(HelicalGear):
         Torque
             Net torque applied on the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           TypeError
+               If ``torque`` is not an instance of ``Torque``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Torque`
         """
         return super().torque
 
@@ -538,14 +569,16 @@ class WormWheel(HelicalGear):
         Torque
             Driving torque applied on the gear by its driving gear.
 
-        Raises
-        ------
-        TypeError
-            If ``driving_torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           TypeError
+               If ``driving_torque`` is not an instance of ``Torque``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Torque`
         """
         return super().driving_torque
 
@@ -562,14 +595,16 @@ class WormWheel(HelicalGear):
         Torque
             Load torque applied on the gear by its driven gear or an external load.
 
-        Raises
-        ------
-        TypeError
-            If ``load_torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           TypeError
+               If ``load_torque`` is not an instance of ``Torque``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Torque`
         """
         return super().load_torque
 
@@ -586,15 +621,17 @@ class WormWheel(HelicalGear):
         Force
             Tangential force applied on the gear teeth by the mating gear.
 
-        Raises
-        ------
-        TypeError
-            If ``tangential_force`` is not an instance of ``Force``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Force`
-        :py:meth:`compute_tangential_force`
+           TypeError
+               If ``tangential_force`` is not an instance of ``Force``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Force`
+           :py:meth:`compute_tangential_force`
         """
         return super().tangential_force
 
@@ -612,14 +649,16 @@ class WormWheel(HelicalGear):
         The tangential force is computed dividing the just described reference torque by the reference radius (half of
         the reference diameter).
 
-        Raises
-        ------
-        ValueError
-            If a gear mating between two gears has not been set.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:attr:`tangential_force`
+           ValueError
+               If a gear mating between two gears has not been set.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`tangential_force`
         """
         if self.mating_role == MatingMaster:
             self.tangential_force = abs(self.load_torque)/(self.reference_diameter/2)
@@ -640,11 +679,12 @@ class WormWheel(HelicalGear):
         bool
             Whether is possible to compute the tangential force on the gear teeth.
 
-        See Also
-        --------
-        :py:attr:`module`
-        :py:attr:`tangential_force`
-        :py:meth:`compute_tangential_force`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`module`
+           :py:attr:`tangential_force`
+           :py:meth:`compute_tangential_force`
         """
         return super().tangential_force_is_computable
 
@@ -657,15 +697,17 @@ class WormWheel(HelicalGear):
         Stress
             Bending stress applied on the gear teeth by the mating gear.
 
-        Raises
-        ------
-        TypeError
-            If ``bending_stress`` is not an instance of ``Stress``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Stress`
-        :py:meth:`compute_bending_stress`
+           TypeError
+               If ``bending_stress`` is not an instance of ``Stress``.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:class:`gearpy.units.units.Stress`
+           :py:meth:`compute_bending_stress`
         """
         return super().bending_stress
 
@@ -676,50 +718,52 @@ class WormWheel(HelicalGear):
     def compute_bending_stress(self):
         r"""Computes the bending stress applied on the gear teeth by the mating gear.
 
-        Notes
-        -----
-        The bending stress computation is based on the following assumptions:
+        .. admonition:: Notes
+           :class: tip
 
-        - the tooth is stressed by the overall force acting on the tip of the tooth itself,
-        - the most unfavorable situation is considered in the calculation, as if there is only one pair of teeth in
-          contact within the contact segment,
-        - the component of the overall force that determines the bending on the tooth is the only one considered and,
-          for simplicity, is taken as having a value equal to the tangential force on the reference diameter,
-        - the radial component of the overall force that causes a compressive stress on the tooth is neglected.
+           The bending stress computation is based on the following assumptions:
 
-        The bending stress is computed with the following formula:
+           - the tooth is stressed by the overall force acting on the tip of the tooth itself,
+           - the most unfavorable situation is considered in the calculation, as if there is only one pair of teeth in
+             contact within the contact segment,
+           - the component of the overall force that determines the bending on the tooth is the only one considered and,
+             for simplicity, is taken as having a value equal to the tangential force on the reference diameter,
+           - the radial component of the overall force that causes a compressive stress on the tooth is neglected.
 
-        .. math::
-            \sigma_b = \frac{F_t}{p_n \, b_{eff} \, Y_{LW}}
+           The bending stress is computed with the following formula:
 
-        where:
+           .. math::
+               \sigma_b = \frac{F_t}{p_n \, b_{eff} \, Y_{LW}}
 
-        - :math:`F_t` is the tangential force applied on the tooth,
-        - :math:`p_n` is the normal pitch,
-        - :math:`b_{eff}` is the effective tooth face width,
-        - :math:`Y_{LW}` is the gear Lewis factor (``lewis_factor``).
+           where:
 
-        The normal pitch can be computed with:
+           - :math:`F_t` is the tangential force applied on the tooth,
+           - :math:`p_n` is the normal pitch,
+           - :math:`b_{eff}` is the effective tooth face width,
+           - :math:`Y_{LW}` is the gear Lewis factor (``lewis_factor``).
 
-        .. math::
-            p_n = \frac{\pi d_{wg} \sin \beta}{N}
+           The normal pitch can be computed with:
 
-        where:
+           .. math::
+               p_n = \frac{\pi d_{wg} \sin \beta}{N}
 
-        - :math:`d_{wg}` is the mating worm gear reference diameter,
-        - :math:`\beta` is the mating worm gear helix angle,
-        - :math:`N` is the worm wheel number of teeth (``n_teeth``).
+           where:
 
-        The effective tooth face width `b_{eff}` is the minimum between the worm wheel face width (``face_width``) and
-        the mating worm gear reference diameter multiplied by 0.67.
+           - :math:`d_{wg}` is the mating worm gear reference diameter,
+           - :math:`\beta` is the mating worm gear helix angle,
+           - :math:`N` is the worm wheel number of teeth (``n_teeth``).
 
-        See Also
-        --------
-        :py:attr:`bending_stress`
-        :py:attr:`tangential_force`
-        :py:attr:`module`
-        :py:attr:`face_width`
-        :py:attr:`lewis_factor`
+           The effective tooth face width `b_{eff}` is the minimum between the worm wheel face width (``face_width``)
+           and the mating worm gear reference diameter multiplied by 0.67.
+
+        .. admonition:: Raises
+           :class: warning
+
+           :py:attr:`bending_stress`
+           :py:attr:`tangential_force`
+           :py:attr:`module`
+           :py:attr:`face_width`
+           :py:attr:`lewis_factor`
         """
         if self.mating_role == MatingMaster:
             normal_pitch = pi*self.drives.reference_diameter*self.drives.helix_angle.sin()/self.n_teeth
@@ -744,12 +788,13 @@ class WormWheel(HelicalGear):
         bool
             Whether is possible to compute the bending stress on the gear teeth.
 
-        See Also
-        --------
-        :py:attr:`module`
-        :py:attr:`face_width`
-        :py:attr:`bending_stress`
-        :py:meth:`compute_bending_stress`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`module`
+           :py:attr:`face_width`
+           :py:attr:`bending_stress`
+           :py:meth:`compute_bending_stress`
         """
         if self.mating_role == MatingMaster:
             return super().bending_stress_is_computable and (self.drives.reference_diameter is not None)
@@ -768,48 +813,50 @@ class WormWheel(HelicalGear):
         Callable
             The function to compute the external torque applied on the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``external_torque`` is not callable.
-        KeyError
-            If ``external_torque`` misses parameters ``angular_position``, ``angular_speed`` or ``time``.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        Constant torque, not dependent on ``angular_position``, ``angular_speed`` or ``time``.
+           TypeError
+               If ``external_torque`` is not callable.
+           KeyError
+               If ``external_torque`` misses parameters ``angular_position``, ``angular_speed`` or ``time``.
 
-        >>> from gearpy.mechanical_objects import WormWheel
-        >>> from gearpy.units import InertiaMoment, Torque
-        >>> gear = WormWheel(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
-        >>> gear.external_torque = lambda angular_position, angular_speed, time: Torque(5, 'Nm')
+        .. admonition:: Examples
+           :class: important
 
-        Torque dependent on ``angular_position`` and ``time``. \n
-        In this case the gear gets a periodic load, dependent on time, and an extra load dependent on its angular
-        position. The dependence by angular position may be used to model cases where cams are involved.
+           Constant torque, not dependent on ``angular_position``, ``angular_speed`` or ``time``.
 
-        >>> import numpy as np
-        >>> from gearpy.units import AngularPosition, AngularSpeed, Time
-        >>> def custom_external_torque(angular_position: AngularPosition,
-        ...                            angular_speed: AngularSpeed,
-        ...                            time: Time):
-        ...     return Torque(value = angular_position.sin() +
-        ...                           np.cos(time.to('sec').value),
-        ...                   unit = 'Nm')
-        >>> gear.external_torque = custom_external_torque
+           >>> from gearpy.mechanical_objects import WormWheel
+           >>> from gearpy.units import InertiaMoment, Torque
+           >>> gear = WormWheel(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+           >>> gear.external_torque = lambda angular_position, angular_speed, time: Torque(5, 'Nm')
 
-        Torque dependent on ``angular_position``, ``angular_speed`` and ``time``. \n
-        With respect ot the previous case, the gear gets an extra load dependent on its angular speed. The dependence by
-        angular speed may be used to model cases where air friction is not negligible.
+           Torque dependent on ``angular_position`` and ``time``. \n
+           In this case the gear gets a periodic load, dependent on time, and an extra load dependent on its angular
+           position. The dependence by angular position may be used to model cases where cams are involved.
 
-        >>> def complex_external_torque(angular_position: AngularPosition,
-        ...                             angular_speed: AngularSpeed,
-        ...                             time: Time):
-        ...     return Torque(value = angular_position.sin() +
-        ...                           0.001*(angular_speed.to('rad/s').value)**2 +
-        ...                           np.cos(time.to('sec').value),
-        ...                   unit = 'Nm')
-        >>> gear.external_torque = complex_external_torque
+           >>> import numpy as np
+           >>> from gearpy.units import AngularPosition, AngularSpeed, Time
+           >>> def custom_external_torque(angular_position: AngularPosition,
+           ...                            angular_speed: AngularSpeed,
+           ...                            time: Time):
+           ...     return Torque(value = angular_position.sin() +
+           ...                           np.cos(time.to('sec').value),
+           ...                   unit = 'Nm')
+           >>> gear.external_torque = custom_external_torque
+
+           Torque dependent on ``angular_position``, ``angular_speed`` and ``time``. \n
+           With respect ot the previous case, the gear gets an extra load dependent on its angular speed. The dependence by
+           angular speed may be used to model cases where air friction is not negligible.
+
+           >>> def complex_external_torque(angular_position: AngularPosition,
+           ...                             angular_speed: AngularSpeed,
+           ...                             time: Time):
+           ...     return Torque(value = angular_position.sin() +
+           ...                           0.001*(angular_speed.to('rad/s').value)**2 +
+           ...                           np.cos(time.to('sec').value),
+           ...                   unit = 'Nm')
+           >>> gear.external_torque = complex_external_torque
         """
         return super().external_torque
 
@@ -842,9 +889,10 @@ class WormWheel(HelicalGear):
         dict
             Time variables of the worm wheel.
 
-        See Also
-        --------
-        :py:meth:`update_time_variables`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`update_time_variables`
         """
         return super().time_variables
 
@@ -852,8 +900,9 @@ class WormWheel(HelicalGear):
         """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
         dictionary) to corresponding list (value of the dictionary).
 
-        See Also
-        --------
-        :py:attr:`time_variables`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:attr:`time_variables`
         """
         super().update_time_variables()
