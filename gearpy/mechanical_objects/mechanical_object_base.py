@@ -484,4 +484,10 @@ class GearBase(RotatingObject):
 class Role(ABC):
     """:py:class:`Role <gearpy.mechanical_objects.mechanical_object_base.Role>` object. \n
     Abstract base class for creating role objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`MatingMaster <gearpy.mechanical_objects.mating_roles.MatingMaster>` \n
+       :py:class:`MatingSlave <gearpy.mechanical_objects.mating_roles.MatingSlave>`
     """

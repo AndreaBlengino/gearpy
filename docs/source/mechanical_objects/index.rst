@@ -33,6 +33,20 @@ mechanical_objects
    :no-index:
 
 
+.. currentmodule:: gearpy.mechanical_objects.mating_roles
+.. autoclass:: MatingMaster
+   :members:
+   :show-inheritance:
+   :no-index:
+
+
+.. currentmodule:: gearpy.mechanical_objects.mating_roles
+.. autoclass:: MatingSlave
+   :members:
+   :show-inheritance:
+   :no-index:
+
+
 .. currentmodule:: gearpy.mechanical_objects.mechanical_object_base
 .. autoclass:: MechanicalObject
    :members:
@@ -92,6 +106,8 @@ mechanical_objects
    Flywheel/index
    GearBase/index
    HelicalGear/index
+   MatingMaster/index
+   MatingSlave/index
    MechanicalObject/index
    MotorBase/index
    Role/index
