@@ -294,6 +294,34 @@ class HelicalGear(SpurGear):
         -------
         :py:class:`float`
             Factor used to compute stresses on the gear tooth.
+        """\
+        r"""
+        .. admonition:: Notes
+           :class: tip
+
+           The Lewis factor is a tabular value that depends on the helical gear virtual number of teeth, which can be
+           computed as:
+
+           .. math::
+               z_v = \frac{z}{\cos^2 \beta_b \, \cos \beta}
+
+           where:
+
+           - :math:`z` is the gear number of teeth :py:attr:`n_teeth`,
+           - :math:`\beta` is the gear :py:attr:`helix_angle`,
+           - :math:`\beta_b` is the gear base helix angle.
+
+           The gear base helix angle :math:`\beta_b` can be computed as:
+
+           .. math::
+               \beta_b = \tan^{-1} \left( \cos \alpha_t \, \cos \beta \right)
+
+           where the :math:`\alpha_t` is the gear transverse pressure angle, which can be computed as:
+
+           .. math::
+               \alpha_t = \tan^{-1} \frac{\tan \alpha}{\cos \beta}
+
+           where :math:`\alpha` is the pressure angle of the gear, always equal to 20 degrees.
         """
         return self.__lewis_factor
 

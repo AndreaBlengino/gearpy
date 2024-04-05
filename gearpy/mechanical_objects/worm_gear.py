@@ -194,7 +194,7 @@ class WormGear(RotatingObject):
     @property
     def helix_angle(self) -> Angle:
         """Helix angle of the worm gear. It must be an instance of :py:class:`Angle <gearpy.units.units.Angle>`. \n
-        The maximum allowable value of helix angle depends on the pressure angle. \n
+        The maximum allowable value of helix angle depends on the :py:attr:`pressure_angle`. \n
         Once set at the worm gear instantiation, it cannot be changed afterward.
 
         Returns

@@ -190,7 +190,7 @@ class WormWheel(HelicalGear):
     @property
     def helix_angle(self) -> Angle:
         """Helix angle of the worm wheel. It must be an instance of :py:class:`Angle <gearpy.units.units.Angle>`. \n
-        The maximum allowable value of helix angle depends on the pressure angle. \n
+        The maximum allowable value of helix angle depends on the :py:attr:`pressure_angle`. \n
         Once set at the worm gear instantiation, it cannot be changed afterward.
 
         Returns
@@ -281,7 +281,7 @@ class WormWheel(HelicalGear):
     @property
     def lewis_factor(self) -> Optional[float]:
         """Factor used to compute stresses on the gear tooth. \n
-        It is a tabular value that in general depends on the :py:attr:`pressure_angle`.
+        It is a tabular value that depends on the :py:attr:`pressure_angle`.
 
         Returns
         -------

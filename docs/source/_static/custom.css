@@ -10,3 +10,8 @@
 .admonition, .topic {
     font-size: 1.0rem;
 }
+
+article table.align-default {
+    display: table;
+    text-align: center;
+}
