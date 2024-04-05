@@ -8,61 +8,74 @@ from typing import Callable, Dict, List, Union, Optional
 
 
 class WormGear(RotatingObject):
-    r"""``gearpy.mechanical_objects.worm_gear.WormGear`` object.
+    r""":py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` object.
 
     Attributes
     ----------
-    :py:attr:`name` : str
+    :py:attr:`name` : :py:class:`str`
         Name of the worm gear.
-    :py:attr:`n_starts` : int
+    :py:attr:`n_starts` : :py:class:`int`
         Number of starts, which refers to the number of independent threads running around the length of the thread.
-    :py:attr:`inertia_moment` : InertiaMoment
+    :py:attr:`inertia_moment` : :py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>`
         Moment of inertia of the gear.
-    :py:attr:`helix_angle` : Angle
+    :py:attr:`helix_angle` : :py:class:`Angle <gearpy.units.units.Angle>`
         Helix angle of the worm gear.
-    :py:attr:`pressure_angle` : Angle
+    :py:attr:`pressure_angle` : :py:class:`Angle <gearpy.units.units.Angle>`
         Pressure angle of the worm gear.
-    :py:attr:`reference_diameter` : Length
+    :py:attr:`reference_diameter` : :py:class:`Length <gearpy.units.units.Length>`
         Reference diameter of the gear.
-    :py:attr:`self_locking` : bool
-        Whether the WormGear cannot be moved by the mating WormWheel.
-    :py:attr:`driven_by` : RotatingObject
-        Rotating object that drives the gear, for example a motor, a flywheel or another gear.
-    :py:attr:`drives` : RotatingObject
-        Rotating object driven by the gear, it can be a flywheel or another gear.
-    :py:attr:`master_gear_ratio` : float
+    :py:attr:`self_locking` : :py:class:`bool`
+        Whether the :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` cannot be moved by the mating
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`.
+    :py:attr:`driven_by` : :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
+        Rotating object that drives the gear, for example a
+        :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`, a
+        :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` or another gear
+        (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
+        :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
+        :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`).
+    :py:attr:`drives` : :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
+        Rotating object driven by the gear, it can be a
+        :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` or another gear
+        (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
+        :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
+        :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`).
+    :py:attr:`master_gear_ratio` : :py:class:`float`
         Gear ratio of the mating between the gear and its driving gear.
-    :py:attr:`master_gear_efficiency` : float or int
+    :py:attr:`master_gear_efficiency` : :py:class:`float` or :py:class:`int`
         Efficiency of the gear mating between the gear and its driving gear.
-    :py:attr:`mating_role`: Role
+    :py:attr:`mating_role`: :py:class:`Role <gearpy.mechanical_objects.mechanical_object_base.Role>`
         The role of the gear in the gear mating.
-    :py:attr:`angular_position` : AngularPosition
+    :py:attr:`angular_position` : :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`
         Angular position of the gear.
-    :py:attr:`angular_speed` : AngularSpeed
+    :py:attr:`angular_speed` : :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`
         Angular speed of the gear.
-    :py:attr:`angular_acceleration` : AngularAcceleration
+    :py:attr:`angular_acceleration` : :py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>`
         Angular acceleration of the gear.
-    :py:attr:`torque` : Torque
+    :py:attr:`torque` : :py:class:`Torque <gearpy.units.units.Torque>`
         Net torque applied on the gear.
-    :py:attr:`driving_torque` : Torque
+    :py:attr:`driving_torque` : :py:class:`Torque <gearpy.units.units.Torque>`
         Driving torque applied on the gear by its driving gear.
-    :py:attr:`load_torque` : Torque
+    :py:attr:`load_torque` : :py:class:`Torque <gearpy.units.units.Torque>`
         Load torque applied on the gear by its driven gear or an external load.
-    :py:attr:`tangential_force` : Force
+    :py:attr:`tangential_force` : :py:class:`Force <gearpy.units.units.Force>`
         Tangential force applied on the gear threads by the mating gear.
-    :py:attr:`tangential_force_is_computable` : bool
-        Whether is possible to compute the tangential force on the gear threads.
-    :py:attr:`time_variables` : dict
+    :py:attr:`tangential_force_is_computable` : :py:class:`bool`
+        Whether is possible to compute the :py:attr:`tangential_force` on the gear threads.
+    :py:attr:`time_variables` : :py:class:`dict`
         Time variables of the gear.
 
     Methods
     -------
     :py:meth:`compute_tangential_force`
-        Computes the tangential force applied on the gear threads by the mating gear.
+        It computes the :py:attr:`tangential_force` applied on the gear threads by the mating gear.
     :py:meth:`external_torque`
         Custom function to compute the external torque applied on the gear.
     :py:meth:`update_time_variables`
-        Updates ``time_variables`` dictionary by appending the last value of each time variable to corresponding list.
+        It updates :py:attr:`time_variables` dictionary by appending the last value of each time variable to
+        corresponding list.
     """
 
     def __init__(self,
@@ -118,162 +131,142 @@ class WormGear(RotatingObject):
 
     @property
     def name(self) -> str:
-        """Name of the worm gear. It must be a non-empty string. \n
+        """Name of the worm gear. It must be a non-empty :py:class:`str`. \n
         It must be a unique name, not shared by other elements in the powertrain elements. \n
         Once set at the worm gear instantiation, it cannot be changed afterward.
 
         Returns
         -------
-        str
+        :py:class:`str`
             Name of the worm gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``name`` is not a string.
-           ValueError
-               If ``name`` is an empty string.
+           ``TypeError``
+               If :py:attr:`name` is not a :py:class:`str`.
+           ``ValueError``
+               If :py:attr:`name` is an empty :py:class:`str`.
         """
         return super().name
 
     @property
     def n_starts(self) -> int:
         """Number of starts, which refers to the number of independent threads running around the length of the thread.
-        It must be a positive integer equal to or greater than one. \n
+        It must be a positive :py:class:`int` equal to or greater than ``1``. \n
         Once set at the worm gear instantiation, it cannot be changed afterward.
 
         Returns
         -------
-        int
+        :py:class:`int`
             Number of starts, which refers to the number of independent threads running around the length of the thread.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``n_starts`` is not an integer.
-           ValueError
-               If ``n_starts`` is lower than ``1``.
+           ``TypeError``
+               If :py:attr:`n_starts` is not an :py:class:`int`.
+           ``ValueError``
+               If :py:attr:`n_starts` is lower than ``1``.
         """
         return self.__n_starts
 
     @property
     def inertia_moment(self) -> InertiaMoment:
-        """Moment of inertia of the gear. It must be an instance of ``InertiaMoment``. \n
+        """Moment of inertia of the gear. It must be an instance of
+        :py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>`. \n
         Once set at the worm gear instantiation, it cannot be changed afterward.
 
         Returns
         -------
-        InertiaMoment
+        :py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>`
             Moment of inertia of the gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``inertia_moment`` is not an instance of ``InertiaMoment``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`gearpy.units.units.InertiaMoment`
+           ``TypeError``
+               If :py:attr:`inertia_moment` is not an instance of
+               :py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>`.
         """
         return super().inertia_moment
 
     @property
     def helix_angle(self) -> Angle:
-        """Helix angle of the worm gear. It must be an instance of ``Angle``. \n
+        """Helix angle of the worm gear. It must be an instance of :py:class:`Angle <gearpy.units.units.Angle>`. \n
         The maximum allowable value of helix angle depends on the pressure angle. \n
         Once set at the worm gear instantiation, it cannot be changed afterward.
 
         Returns
         -------
-        Angle
+        :py:class:`Angle <gearpy.units.units.Angle>`
             The helix angle of the worm gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``helix_angle`` is not an instance of ``Angle``.
-           ValueError
-               If ``helix_angle`` is greater than the maximum allowable helix angle, depending on ``pressure_angle`` value.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`gearpy.units.units.Angle`
+           ``TypeError``
+               If :py:attr:`helix_angle` is not an instance of :py:class:`Angle <gearpy.units.units.Angle>`.
+           ``ValueError``
+               If :py:attr:`helix_angle` is greater than the maximum allowable helix angle, depending on
+               :py:attr:`pressure_angle` value.
         """
         return self.__helix_angle
 
     @property
     def pressure_angle(self) -> Angle:
-        """Pressure angle of the worm gear. It must be an instance of ``Angle`` and its value must be one of: 14.5 deg,
-        20 deg, 25 deg or 30 deg. \n
+        """Pressure angle of the worm gear. It must be an instance of :py:class:`Angle <gearpy.units.units.Angle>` and
+        its value must be one of: 14.5 deg, 20 deg, 25 deg or 30 deg. \n
         Once set at the worm gear instantiation, it cannot be changed afterward.
 
         Returns
         -------
-        Angle
+        :py:class:`Angle <gearpy.units.units.Angle>`
             The pressure angle of the worm gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``pressure_angle`` is not an instance of ``Angle``.
-           ValueError
-               If ``pressure_angle`` value is not among available ones: 14.5 deg, 20 deg, 25 deg or 30 deg.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`gearpy.units.units.Angle`
+           ``TypeError``
+               If :py:attr:`pressure_angle` is not an instance of :py:class:`Angle <gearpy.units.units.Angle>`.
+           ``ValueError``
+               If :py:attr:`pressure_angle` value is not among available ones: 14.5 deg, 20 deg, 25 deg or 30 deg.
         """
         return self.__pressure_angle
 
     @property
     def reference_diameter(self) -> Optional[Length]:
-        """Reference diameter of the gear. It must be an instance of ``Length``. \n
+        """Reference diameter of the gear. It must be an instance of :py:class:`Length <gearpy.units.units.Length>`. \n
         Once set at the worm gear instantiation, it cannot be changed afterward.
 
         Returns
         -------
-        Length
+        :py:class:`Length <gearpy.units.units.Length>`
             Reference diameter of the gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``reference_diameter`` is not an instance of ``Length``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`gearpy.units.units.Length`
+           ``TypeError``
+               If :py:attr:`reference_diameter` is not an instance of :py:class:`Length <gearpy.units.units.Length>`.
         """
         return self.__reference_diameter
 
     @property
     def self_locking(self) -> bool:
-        """Whether the WormGear cannot be moved by the mating WormWheel. \n
+        """Whether the :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` cannot be moved by the mating
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`. \n
         The gear mating can be self-locking if the amount of friction is high enough with respect to the gear pressure
         and helix angles. \n
-        If the mating is self-locking, then the ``WormGear`` cannot be moved by the mating ``WormWheel``. \n
-        To set this property use :py:func:`gearpy.utils.relations.add_worm_gear_mating`.
+        If the mating is self-locking, then the :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`
+        cannot be moved by the mating :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`. \n
+        To set this property use :py:func:`add_worm_gear_mating <gearpy.utils.relations.add_worm_gear_mating>`.
 
         Returns
         -------
-        bool
-            Whether the WormGear cannot be moved by the mating WormWheel.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:func:`gearpy.utils.relations.add_worm_gear_mating`
-           :py:class:`gearpy.mechanical_objects.worm_wheel.WormWheel`
+        :py:class:`bool`
+            Whether the :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` cannot be moved by the
+            mating :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`.
         """
         return self.__self_locking
 
@@ -286,25 +279,28 @@ class WormGear(RotatingObject):
 
     @property
     def driven_by(self) -> RotatingObject:
-        """Rotating object that drives the gear, for example a motor, a flywheel or another gear. It must be a
-        ``RotatingObject``.
+        """Rotating object that drives the gear, for example a
+        :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`, a
+        :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` or another gear
+        (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
+        :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
+        :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`). It must be a
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`. \n
+        To set this property use :py:func:`add_worm_gear_mating <gearpy.utils.relations.add_worm_gear_mating>` or
+        :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
         Returns
         -------
-        RotatingObject
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
             Master rotating object that drives the gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``driven_by`` is not an instance of ``RotatingObject``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:func:`gearpy.utils.relations.add_worm_gear_mating`
-           :py:func:`gearpy.utils.relations.add_fixed_joint`
+           ``TypeError``
+               If :py:attr:`driven_by` is not an instance of
+               :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`.
         """
         return self.__driven_by
 
@@ -317,24 +313,27 @@ class WormGear(RotatingObject):
 
     @property
     def drives(self) -> RotatingObject:
-        """Rotating object driven by the gear, it can be a flywheel or another gear. It must be a ``RotatingObject``.
+        """Rotating object driven by the gear, it can be a
+        :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` or another gear
+        (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
+        :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
+        :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`). It must be a
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`. \n
+        To set this property use :py:func:`add_worm_gear_mating <gearpy.utils.relations.add_worm_gear_mating>` or
+        :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
         Returns
         -------
-        RotatingObject
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
             Rotating object driven by the gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``drives`` is not an instance of ``RotatingObject``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:func:`gearpy.utils.relations.add_worm_gear_mating`
-           :py:func:`gearpy.utils.relations.add_fixed_joint`
+           ``TypeError``
+               If :py:attr:`drives` is not an instance of
+               :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`.
         """
         return self.__drives
 
@@ -347,31 +346,27 @@ class WormGear(RotatingObject):
 
     @property
     def master_gear_ratio(self) -> float:
-        """Gear ratio of the mating between the gear and its driving gear. It must be a positive a float. \n
-        If the worm gear is fixed to another driving ``RotatingObject``, then the ratio is ``1``, otherwise it is
-        defined as the ratio between the worm gear number of starts ``n_starts`` and the driving wheel gear number of
-        teeth ``n_teeth``. \n
-        To set this property use :py:func:`gearpy.utils.relations.add_worm_gear_mating` or
-        :py:func:`gearpy.utils.relations.add_fixed_joint`.
+        """Gear ratio of the mating between the gear and its driving gear. It must be a positive a :py:class:`float`. \n
+        If the worm gear is fixed to another driving
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`, then the ratio is
+        ``1``, otherwise it is defined as the ratio between the worm gear number of starts :py:attr:`n_starts` and the
+        driving wheel gear number of teeth
+        :py:attr:`WormWheel.n_teeth <gearpy.mechanical_objects.worm_wheel.WormWheel.n_teeth>`. \n
+        To set this property use :py:func:`add_worm_gear_mating <gearpy.utils.relations.add_worm_gear_mating>` or
+        :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
         Returns
         -------
-        float
+        :py:class:`float`
             Gear ratio of the mating between the gear and its driving gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``master_gear_ratio`` is not a float.
-           ValueError
-               If ``master_gear_ratio`` is negative or null.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:func:`gearpy.utils.relations.add_worm_gear_mating`
-           :py:func:`gearpy.utils.relations.add_fixed_joint`
+           ``TypeError``
+               If :py:attr:`master_gear_ratio` is not a :py:class:`float`.
+           ``ValueError``
+               If :py:attr:`master_gear_ratio` is negative or null.
         """
         return self.__master_gear_ratio
 
@@ -387,29 +382,23 @@ class WormGear(RotatingObject):
 
     @property
     def master_gear_efficiency(self) -> Union[float, int]:
-        """Efficiency of the gear mating between the gear and its driving gear. It must be a float or an integer within
-        ``0`` and ``1``. \n
-        To set this property use :py:func:`gearpy.utils.relations.add_worm_gear_mating` or
-        :py:func:`gearpy.utils.relations.add_fixed_joint`.
+        """Efficiency of the gear mating between the gear and its driving gear. It must be a :py:class:`float` or an
+        :py:class:`int` within ``0`` and ``1``. \n
+        To set this property use :py:func:`add_worm_gear_mating <gearpy.utils.relations.add_worm_gear_mating>` or
+        :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Efficiency of the gear mating between the gear and its driving gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``master_gear_efficiency`` is not a float or an integer.
-           ValueError
-               If ``master_gear_efficiency`` is not within ``0`` and ``1``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:func:`gearpy.utils.relations.add_worm_gear_mating`
-           :py:func:`gearpy.utils.relations.add_fixed_joint`
+           ``TypeError``
+               If :py:attr:`master_gear_efficiency` is not a :py:class:`float` or an :py:class:`int`.
+           ``ValueError``
+               If :py:attr:`master_gear_efficiency` is not within ``0`` and ``1``.
         """
         return self.__master_gear_efficiency
 
@@ -425,20 +414,23 @@ class WormGear(RotatingObject):
 
     @property
     def mating_role(self) -> Role:
-        """Role of the gear in the gear mating. To set this parameter use ``add_worm_gear_mating``. \n
-        If the gear drives the mate one, then it is the "master" gear and its role is ``MatingMaster``, otherwise it is
-        the "slave" one and its role is ``MatingSlave``.
+        """Role of the gear in the gear mating. \n
+        If the gear drives the mate one, then it is the "master" gear and its role is
+        :py:class:`MatingMaster <gearpy.mechanical_objects.mating_roles.MatingMaster>`, otherwise it is
+        the "slave" one and its role is :py:class:`MatingSlave <gearpy.mechanical_objects.mating_roles.MatingSlave>`. \n
+        To set this parameter use :py:func:`add_worm_gear_mating <gearpy.utils.relations.add_worm_gear_mating>`.
 
         Returns
         -------
-        Role
+        :py:class:`Role <gearpy.mechanical_objects.mechanical_object_base.Role>`
             The role of the gear in the gear mating.
 
         .. admonition:: Raises
            :class: warning
 
-           ValueError
-               If ``mating_role`` is not a subclass of ``Role``.
+           ``ValueError``
+               If :py:attr:`mating_role` is not a subclass of
+               :py:class:`Role <gearpy.mechanical_objects.mechanical_object_base.Role>`.
         """
         return self.__mating_role
 
@@ -454,23 +446,20 @@ class WormGear(RotatingObject):
 
     @property
     def angular_position(self) -> AngularPosition:
-        """Angular position of the gear. It must be an instance of ``AngularPosition``.
+        """Angular position of the gear. It must be an instance of
+        :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`.
 
         Returns
         -------
-        AngularPosition
+        :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`
             Angular position of the gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``angular_position`` is not an instance of ``AngularPosition``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`gearpy.units.units.AngularPosition`
+           ``TypeError``
+               If :py:attr:`angular_position` is not an instance of
+               :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`.
         """
         return super().angular_position
 
@@ -480,23 +469,20 @@ class WormGear(RotatingObject):
 
     @property
     def angular_speed(self) -> AngularSpeed:
-        """Angular speed of the gear. It must be an instance of ``AngularSpeed``.
+        """Angular speed of the gear. It must be an instance of
+        :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`.
 
         Returns
         -------
-        AngularSpeed
+        :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`
             Angular speed of the gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``angular_speed`` is not an instance of ``AngularSpeed``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`gearpy.units.units.AngularSpeed`
+           ``TypeError``
+               If :py:attr:`angular_speed` is not an instance of
+               :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`.
         """
         return super().angular_speed
 
@@ -506,23 +492,20 @@ class WormGear(RotatingObject):
 
     @property
     def angular_acceleration(self) -> AngularAcceleration:
-        """Angular acceleration of the gear. It must be an instance of ``AngularAcceleration``.
+        """Angular acceleration of the gear. It must be an instance of
+        :py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>`.
 
         Returns
         -------
-        AngularAcceleration
+        :py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>`
             Angular acceleration of the gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``angular_acceleration`` is not an instance of ``AngularAcceleration``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`gearpy.units.units.AngularAcceleration`
+           ``TypeError``
+               If :py:attr:`angular_acceleration` is not an instance of
+               :py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>`.
         """
         return super().angular_acceleration
 
@@ -532,24 +515,19 @@ class WormGear(RotatingObject):
 
     @property
     def torque(self) -> Torque:
-        """Net torque applied on the gear. It must be an instance of ``Torque``. \n
-        It is computed as the difference between ``driving_torque`` and ``load_torque``.
+        """Net torque applied on the gear. It must be an instance of :py:class:`Torque <gearpy.units.units.Torque>`. \n
+        It is computed as the difference between :py:attr:`driving_torque` and :py:attr:`load_torque`.
 
         Returns
         -------
-        Torque
+        :py:class:`Torque <gearpy.units.units.Torque>`
             Net torque applied on the gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``torque`` is not an instance of ``Torque``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`gearpy.units.units.Torque`
+           ``TypeError``
+               If :py:attr:`torque` is not an instance of :py:class:`Torque <gearpy.units.units.Torque>`.
         """
         return super().torque
 
@@ -559,23 +537,19 @@ class WormGear(RotatingObject):
 
     @property
     def driving_torque(self) -> Torque:
-        """Driving torque applied on the gear by its driving gear. It must be an instance of ``Torque``.
+        """Driving torque applied on the gear by its driving gear. It must be an instance of
+        :py:class:`Torque <gearpy.units.units.Torque>`.
 
         Returns
         -------
-        Torque
+        :py:class:`Torque <gearpy.units.units.Torque>`
             Driving torque applied on the gear by its driving gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``driving_torque`` is not an instance of ``Torque``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`gearpy.units.units.Torque`
+           ``TypeError``
+               If :py:attr:`driving_torque` is not an instance of :py:class:`Torque <gearpy.units.units.Torque>`.
         """
         return super().driving_torque
 
@@ -585,23 +559,19 @@ class WormGear(RotatingObject):
 
     @property
     def load_torque(self) -> Torque:
-        """Load torque applied on the gear by its driven gear or an external load. It must be an instance of ``Torque``.
+        """Load torque applied on the gear by its driven gear or an external load. It must be an instance of
+        :py:class:`Torque <gearpy.units.units.Torque>`.
 
         Returns
         -------
-        Torque
+        :py:class:`Torque <gearpy.units.units.Torque>`
             Load torque applied on the gear by its driven gear or an external load.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``load_torque`` is not an instance of ``Torque``.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`gearpy.units.units.Torque`
+           ``TypeError``
+               If :py:attr:`load_torque` is not an instance of :py:class:`Torque <gearpy.units.units.Torque>`.
         """
         return super().load_torque
 
@@ -611,23 +581,23 @@ class WormGear(RotatingObject):
 
     @property
     def tangential_force(self) -> Force:
-        """Tangential force applied on the gear threads by the mating gear. It must be an instance of ``Force``.
+        """Tangential force applied on the gear threads by the mating gear. It must be an instance of
+        :py:class:`Force <gearpy.units.units.Force>`.
 
         Returns
         -------
-        Force
+        :py:class:`Force <gearpy.units.units.Force>`
             Tangential force applied on the gear threads by the mating gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``tangential_force`` is not an instance of ``Force``.
+           ``TypeError``
+               If :py:attr:`tangential_force` is not an instance of :py:class:`Force <gearpy.units.units.Force>`.
 
         .. admonition:: See Also
            :class: seealso
 
-           :py:class:`gearpy.units.units.Force`
            :py:meth:`compute_tangential_force`
         """
         return self.__tangential_force
@@ -639,26 +609,21 @@ class WormGear(RotatingObject):
 
         self.__tangential_force = tangential_force
 
-    def compute_tangential_force(self):
-        """Computes the tangential force applied on the gear threads by the mating gear. \n
+    def compute_tangential_force(self) -> None:
+        """It computes the :py:attr:`tangential_force` applied on the gear threads by the mating gear. \n
         Considering a gear mating:
 
-        - if the gear is the master one, then it takes into account the ``load_torque`` for the computation,
-        - if the gear is the slave one, then it take into account the ``driving_torque`` for the computation.
+        - if the gear is the master one, then it takes into account the :py:attr:`load_torque` for the computation,
+        - if the gear is the slave one, then it take into account the :py:attr:`driving_torque` for the computation.
 
         The tangential force is computed dividing the just described reference torque by the reference radius (half of
-        the reference diameter).
+        the :py:attr:`reference_diameter`).
 
         .. admonition:: Raises
            :class: warning
 
-           ValueError
+           ``ValueError``
                If a gear mating between two gears has not been set.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:attr:`tangential_force`
         """
         if self.mating_role == MatingMaster:
             self.tangential_force = abs(self.load_torque)/(self.reference_diameter/2)*self.helix_angle.tan()
@@ -670,21 +635,19 @@ class WormGear(RotatingObject):
 
     @property
     def tangential_force_is_computable(self) -> bool:
-        """Whether is possible to compute the tangential force on the gear threads. The tangential force computation
-        depends on the value of ``reference_diameter``, so if this optional parameter has been set at worm gear
-        instantiation, then it is possible to compute the tangential force and this property is ``True``, otherwise is
-        ``False``.
+        """Whether is possible to compute the :py:attr:`tangential_force` on the gear threads. \n
+        The tangential force computation depends on the value of :py:attr:`reference_diameter`, so if this optional
+        parameter has been set at worm gear instantiation, then it is possible to compute the tangential force and this
+        property is ``True``, otherwise is ``False``.
 
         Returns
         -------
-        bool
+        :py:class:`bool`
             Whether is possible to compute the tangential force on the gear threads.
 
         .. admonition:: See Also
            :class: seealso
 
-           :py:attr:`reference_diameter`
-           :py:attr:`tangential_force`
            :py:meth:`compute_tangential_force`
         """
         return self.__reference_diameter is not None
@@ -692,20 +655,21 @@ class WormGear(RotatingObject):
     @property
     def external_torque(self) -> Callable[[AngularPosition, AngularSpeed, Time], Torque]:
         """Custom function to compute the external torque applied on the gear. It must be a function with parameters
-        ``angular_position``, ``angular_speed`` and ``time``. The function must return an instance of ``Torque``.
+        ``angular_position``, ``angular_speed`` and ``time``. The function must return an instance of
+        :py:class:`Torque <gearpy.units.units.Torque>`.
 
         Returns
         -------
-        Callable
+        :py:obj:`Callable <typing.Callable>`
             The function to compute the external torque applied on the gear.
 
         .. admonition:: Raises
            :class: warning
 
-           TypeError
-               If ``external_torque`` is not callable.
-           KeyError
-               If ``external_torque`` misses parameters ``angular_position``, ``angular_speed`` or ``time``.
+           ``TypeError``
+               If :py:meth:`external_torque` is not callable.
+           ``KeyError``
+               If :py:meth:`external_torque` misses parameters ``angular_position``, ``angular_speed`` or ``time``.
 
         .. admonition:: Examples
            :class: important
@@ -764,23 +728,23 @@ class WormGear(RotatingObject):
         """Time variables of the gear. Each time variable is stored as a dictionary key-value pair. The available time
         variables are:
 
-        - ``angular position``,
-        - ``angular speed``,
-        - ``angular acceleration``,
-        - ``torque``,
-        - ``driving torque``,
-        - ``load torque``,
-        - ``tangential force``.
+        - :py:attr:`angular_position`: ``'angular position'``,
+        - :py:attr:`angular_speed`: ``'angular speed'``,
+        - :py:attr:`angular_acceleration`: ``'angular acceleration'``,
+        - :py:attr:`torque`: ``'torque'``,
+        - :py:attr:`driving_torque`: ``'driving torque'``,
+        - :py:attr:`load_torque`: ``'load torque'``,
+        - :py:attr:`tangential_force`: ``'tangential force'``
 
-        ``tangential force`` is listed among time variables only if they are computable indeed, depending on which gear
-        parameters are set at gear instantiation. \n
+        ``'tangential force'`` is listed among time variables only if they are computable indeed, depending on which gear
+        parameters are set at gear instantiation; see :py:attr:`tangential_force_is_computable`. \n
         Corresponding values of the dictionary are lists of the respective time variable values. \n
-        At each time iteration, the ``Solver`` appends every time variables' values to the relative list in the
-        dictionary.
+        At each time iteration, the :py:class:`Solver <gearpy.solver.Solver>` appends every time variables' values to
+        the relative list in the dictionary.
 
         Returns
         -------
-        dict
+        :py:class:`dict`
             Time variables of the gear.
 
         .. admonition:: See Also
@@ -791,13 +755,8 @@ class WormGear(RotatingObject):
         return super().time_variables
 
     def update_time_variables(self) -> None:
-        """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
+        """It updates :py:attr:`time_variables` dictionary by appending the last value of each time variable (key of the
         dictionary) to corresponding list (value of the dictionary).
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:attr:`time_variables`
         """
         super().update_time_variables()
         if self.tangential_force_is_computable:
