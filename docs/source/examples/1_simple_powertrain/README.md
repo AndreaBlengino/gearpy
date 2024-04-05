@@ -51,6 +51,10 @@ gear_6 = SpurGear(name = 'gear 6',
                   inertia_moment = InertiaMoment(7600, 'gcm^2'))
 ```
 
+See :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`,
+:py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` and 
+:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` for 
+more details on instantiation parameters.  
 Then it is necessary to specify the connection types between the 
 components. We choose to study a non-ideal powertrain so, in order to 
 take into account power loss in matings due to friction, we specify a 
@@ -68,6 +72,9 @@ add_fixed_joint(master = gear_4, slave = gear_5)
 add_gear_mating(master = gear_5, slave = gear_6, efficiency = 0.9)
 ```
 
+See :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>` 
+and :py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>` 
+for more details.  
 We have to define the external load applied to *gear 6*. To keep the 
 example simple, we can consider a constant load torque:
 
@@ -87,12 +94,15 @@ from gearpy.powertrain import Powertrain
 powertrain = Powertrain(motor = motor)
 ```
 
+See :py:class:`Powertrain <gearpy.powertrain.Powertrain>` for more 
+details on this class and its methods.
+
 ### Simulation Set Up
 
 Before performing the simulation, it is necessary to specify the initial
 condition of the system in terms of angular position and speed of the 
-last gear in the mechanical powertrain. In this case we can consider 
-the *gear 6* still in the reference position:
+last gear in the mechanical powertrain. In this case we can consider the 
+*gear 6* still in the reference position:
 
 ```python
 from gearpy.units import AngularPosition
@@ -113,6 +123,8 @@ solver = Solver(powertrain = powertrain)
 solver.run(time_discretization = TimeInterval(0.5, 'sec'), 
            simulation_time = TimeInterval(20, 'sec'))
 ```
+
+See :py:class:`Solver <gearpy.solver.Solver>` for more details.
 
 ### Results Analysis
 
@@ -161,6 +173,9 @@ gear 5                 32.211996              23.331144                        0
 gear 6                  6.442399               4.666229                        0.004521      2.227489            502.227489         500.000000                    
 ```
 
+See 
+:py:meth:`Powertrain.snapshot <gearpy.powertrain.Powertrain.snapshot>` 
+for more details on method parameters.  
 Notice that the load torque applied on the *gear 6* is exactly the 
 constant external torque we defined beforehand.  
 About 10 seconds after the simulation start, the driving torque applied 
@@ -190,6 +205,8 @@ powertrain.plot(elements = ['gear 6', motor],
 
 ![](images/plot_2.png)
 
+See :py:meth:`Powertrain.plot <gearpy.powertrain.Powertrain.plot>` for 
+more details on method parameters.  
 Notice that we specified the elements either by the string name or by 
 instance name, both ways work. Also notice that the plot automatically 
 sorts:
@@ -197,7 +214,7 @@ sorts:
 - the elements: the motor on the left and following elements proceeding
 to the right,
 - the time variables: kinematic variables at the top, then torques 
-grouped together in a single row and motor PWM in the last row.
+- grouped together in a single row and motor PWM in the last row.
   
 We can see that at 10 seconds the angular speeds of *motor* and *gear 6* 
 are almost constant, confirming the insight previously mentioned by 

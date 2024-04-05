@@ -6,13 +6,13 @@ The mechanical powertrain to be studied is reported in the image below:
 
 ![](images/scheme.png)
 
-The *flywheel* and the *worm gear* are connected to the *DC motor* output 
-shaft and rotate with it. The *worm gear* mates with the *worm wheel*,
-which is connected to *gear 1* through a rigid shaft, so the *worm wheel*
-and the *gear 1* rotate together. The *gear 2* mates with *gear 1* and is 
-connected to *gear 3* through a rigid shaft, so *gear 2* and *gear 3* 
-rotate together. Finally, *gear 3* mates with *gear 4*, which is connected 
-to the external load.  
+The *flywheel* and the *worm gear* are connected to the *DC motor* 
+output shaft and rotate with it. The *worm gear* mates with the 
+*worm wheel*, which is connected to *gear 1* through a rigid shaft, so 
+the *worm wheel* and the *gear 1* rotate together. The *gear 2* mates 
+with *gear 1* and is connected to *gear 3* through a rigid shaft, so 
+*gear 2* and *gear 3* rotate together. Finally, *gear 3* mates with 
+*gear 4*, which is connected to the external load.  
 *gear 1*, *gear 2*, *gear 3* and *gear 4* are helical gears.  
 The analysis is focused on powertrain elements kinematics, torques and 
 stresses.
@@ -76,11 +76,16 @@ gear_4 = HelicalGear(name = 'gear 4',
                      elastic_modulus = Stress(200, 'GPa'))
 ```
 
+See :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+:py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>` 
+and 
+:py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` 
+for more details on instantiation parameters.  
 Then it is necessary to specify the connection types between the 
 components. We choose to study a non-ideal powertrain so, in order to 
 take into account power loss in matings due to friction, we specify a 
-gear mating efficiency below `$100\%$` and a friction coefficient in 
-the worm gear mating:
+gear mating efficiency below `$100\%$` and a friction coefficient in the 
+worm gear mating:
 
 ```python
 from gearpy.utils import add_fixed_joint, add_gear_mating, add_worm_gear_mating
@@ -94,6 +99,10 @@ add_fixed_joint(master = gear_2, slave = gear_3)
 add_gear_mating(master = gear_3, slave = gear_4, efficiency = 0.9)
 ```
 
+See :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`, 
+:py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>` and
+:py:func:`add_worm_gear_mating <gearpy.utils.relations.add_worm_gear_mating>`
+for more details.  
 We have to define the external load applied to *gear 4*. To keep the 
 example simple, we can consider a constant load torque:
 
@@ -117,8 +126,8 @@ powertrain = Powertrain(motor = motor)
 
 Before performing the simulation, it is necessary to specify the initial
 condition of the system in terms of angular position and speed of the 
-last gear in the mechanical powertrain. In this case we can consider 
-the *gear 4* still in the reference position:
+last gear in the mechanical powertrain. In this case we can consider the 
+*gear 4* still in the reference position:
 
 ```python
 from gearpy.units import AngularPosition

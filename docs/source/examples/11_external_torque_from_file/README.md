@@ -9,8 +9,9 @@ We want to apply an external load torque picked from a file.
 
 ### External Load Torque Analysis
 
-The external load torque data are stored in a file named `'external_torque_data.csv`'
-in the `'data'` folder; we have to open this file: 
+The external load torque data are stored in a file named 
+`'external_torque_data.csv`' in the `'data'` folder; we have to open 
+this file: 
 
 ```python
 import os
@@ -38,9 +39,9 @@ print(ext_torque_data)
 
 We can see that the file contains two columns: one for the angular 
 position of the last gear, in deg, and the other one for the applied 
-external torque, in mNm. The file contains 181 rows, one for each 
-degree from 0 deg up to 180 deg.  
-We can plot this data in oder to have a better understanding of the
+external torque, in mNm. The file contains 181 rows, one for each degree 
+from 0 deg up to 180 deg.  
+We can plot this data in oder to have a better understanding of the 
 applied external torque:
 
 ```python
@@ -60,13 +61,15 @@ plt.show()
 
 The external load starts from 800 mNm and decreases up to a base level
 at 200 mNm. Then, it gradually increases up to 1200 mNm, where stays
-constant up to 90 deg, after which it quickly decreases to the base level.
-Finally, it increases faster and faster as the angular position approaches
-to 180 deg.
+constant up to 90 deg, after which it quickly decreases to the base 
+level.
+Finally, it increases faster and faster as the angular position 
+approaches to 180 deg.
 
 ### Model Set Up
 
-We have to use an interpolation function to model the external load torque:
+We have to use an interpolation function to model the external load 
+torque:
 
 ```python
 from scipy.interpolate import interp1d
@@ -76,10 +79,12 @@ ext_torque_func = interp1d(x = ext_torque_data['angular position (deg)'],
                            fill_value = 'extrapolate')
 ```
 
-This interpolation function accept values in deg and returns values in mNm.  
+This interpolation function accept values in deg and returns values in 
+mNm.  
 Moreover, this interpolation function can accept values outside the 
-0 deg - 180 deg interval provided by data, so we can compute the external 
-load torque even if the last gear angular position is outside this range.  
+0 deg - 180 deg interval provided by data, so we can compute the 
+external load torque even if the last gear angular position is outside 
+this range.  
 Now we can set the external load:
 
 ```python
@@ -90,8 +95,8 @@ def ext_torque(time, angular_position, angular_speed):
 gear_4.external_torque = ext_torque
 ```
 
-In order to grasp the external torque pattern, we use a fine time discretization
-in the solver:
+In order to grasp the external torque pattern, we use a fine time 
+discretization in the solver:
 
 ```python
 solver = Solver(powertrain = powertrain)
@@ -142,13 +147,13 @@ powertrain.plot(figsize = (8, 8),
 ![](images/plot_2.png)
 
 We can see that the tangential force on the *gear 3* follows the same 
-pattern of the applied external torque. There is only a slight difference 
-at the beginning, when the angular position of the system is not linear 
-with respect to the time, and at the end, when the external load torque is 
-so high that the motor cannot push forward anymore.  
+pattern of the applied external torque. There is only a slight 
+difference at the beginning, when the angular position of the system is 
+not linear with respect to the time, and at the end, when the external 
+load torque is so high that the motor cannot push forward anymore.  
 The load torque of each powertrain's element follow the same pattern.  
-We can see from the snapshot and from the plot that the *gear 4*'s angular 
-position is more than 197 deg. Even if this angular position is outside 
-the 0 deg - 180 deg provided by the data in the file, the defined interpolation 
-function `ext_torque_func` is still able to compute the external load torque, 
-which is more than 6600 mNm.
+We can see from the snapshot and from the plot that the *gear 4*'s 
+angular position is more than 197 deg. Even if this angular position is 
+outside the 0 deg - 180 deg provided by the data in the file, the 
+defined interpolation function `ext_torque_func` is still able to 
+compute the external load torque, which is more than 6600 mNm.

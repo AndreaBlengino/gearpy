@@ -14,8 +14,8 @@ components:
 
   1. a 200 mNm constant value
   2. a periodic component dependent on the last gear's angular position, 
-     with a 60 rad period and an 80 mNm amplitude, due to the presence of 
-     cams in the mechanism
+     with a 60 rad period and an 80 mNm amplitude, due to the presence 
+     of cams in the mechanism
   3. a component proportional to the square of the last gear's angular 
      speed, with a 2 mNm s²/rad², due to the effect of air friction
   4. a periodic component dependent on the simulation time, with a 2 sec

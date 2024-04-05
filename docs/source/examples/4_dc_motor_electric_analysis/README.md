@@ -8,9 +8,9 @@ example.
 
 ### Model Set Up
 
-We want to deep dive the analysis on the DC motor's electric current. 
-In order to take into account these computation, we have to edit the 
-motor definition, to include some required data:
+We want to deep dive the analysis on the DC motor's electric current. In 
+order to take into account these computation, we have to edit the motor 
+definition, to include some required data:
 
 ```python
 from gearpy.units import Current
@@ -23,6 +23,8 @@ motor = DCMotor(name = 'motor',
                 maximum_electric_current = Current(5, 'A'))
 ```
 
+See :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` for 
+more details on instantiation parameters.  
 The remaining set up of the model stay the same.
 
 ### Results Analysis

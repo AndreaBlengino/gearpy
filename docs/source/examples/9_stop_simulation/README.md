@@ -38,6 +38,8 @@ from gearpy.sensors import  Amperometer
 amperometer = Amperometer(target = motor)
 ```
 
+See :py:class:`Amperometer <gearpy.sensors.amperometer.Amperometer>` for 
+more details on instantiation parameters.  
 Then, we have to define the simulation stopping condition:
 
 ```python
@@ -48,6 +50,9 @@ stop_condition = StopCondition(sensor = amperometer,
                                operator = StopCondition.greater_than_or_equal_to)
 ```
 
+See 
+:py:class:`StopCondition <gearpy.utils.stop_condition.stop_condition.StopCondition>` 
+for more details on instantiation parameters.  
 In this specific case, the solver will stop the computation if the 
 measured absorbed current is greater than or equal to 4 A.  
 We also apply a PWM motor control at the powertrain start-up, in order 
@@ -102,15 +107,15 @@ powertrain.plot(figsize = (8, 8),
 
 ![](images/plot.png)
 
-We can see that the motor PWM control is limiting the current 
-absorption below 2 A at the start-up, up until 4 seconds, then
-the powertrain reaches a stationary working condition.  
-Around 25 seconds after the start-up, the load torque is increasing, 
-and it is no more negligible. In fact, also the motor absorbed 
-current is increasing up to 4 A, after which the simulation is 
-stopped as desired, even if the solver simulation time was set to 100 
-seconds.  
-The simulation stopping condition can be based on a current, an 
-angular position or an angular speed; so it is required to 
-respectively pass an amperometer, an encoder or a tachometer to the 
-``StopCondition`` object.
+We can see that the motor PWM control is limiting the current absorption 
+below 2 A at the start-up, up until 4 seconds, then the powertrain 
+reaches a stationary working condition.  
+Around 25 seconds after the start-up, the load torque is increasing, and 
+it is no more negligible. In fact, also the motor absorbed current is 
+increasing up to 4 A, after which the simulation is stopped as desired, 
+even if the solver simulation time was set to 100 seconds.  
+The simulation stopping condition can be based on a current, an angular 
+position or an angular speed; so it is required to respectively pass an 
+amperometer, an encoder or a tachometer to the 
+:py:class:`StopCondition <gearpy.utils.stop_condition.stop_condition.StopCondition>` 
+object.

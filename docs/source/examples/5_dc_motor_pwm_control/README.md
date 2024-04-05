@@ -32,6 +32,11 @@ start_1 = StartProportionalToAngularPosition(encoder = encoder,
                                              pwm_min_multiplier = 5)
 ```
 
+See 
+:py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>`
+and 
+:py:class:`StartProportionalToAngularPosition <gearpy.motor_control.rules.start_proportional_to_angular_position.StartProportionalToAngularPosition>` 
+for more details on instantiation parameters.  
 At the start up the motor is supplied with a PWM that is 5 times its 
 minimum PWM and it increases up to 1 when the *gear 6* approaches 10 
 rotations from the reference position.  
@@ -43,6 +48,9 @@ from gearpy.motor_control import PWMControl
 motor_control_1 = PWMControl(powertrain = powertrain)
 motor_control_1.add_rule(rule = start_1)
 ``` 
+
+See :py:class:`PWMControl <gearpy.motor_control.pwm_control.PWMControl>` 
+for more details this class and its methods.
 
 ### Simulation Set Up
 
@@ -100,7 +108,10 @@ start_2 = StartLimitCurrent(encoder = encoder,
                             limit_electric_current = Current(2, 'A'),
                             target_angular_position = AngularPosition(10, 'rot'))
 ```
- 
+
+See :py:class:`Tachometer <gearpy.sensors.tachometer.Tachometer>` and 
+:py:class:`StartLimitCurrent <gearpy.motor_control.rules.start_limit_current.StartLimitCurrent>` 
+for more details on instantiation parameters.  
 This rule let us limit the maximum electric current absorbed by the 
 motor to 2 A up until the *gear 6* (to which is attached the encoder) 
 reaches 10 rotations from the reference position.  
@@ -116,6 +127,9 @@ reach_position = ReachAngularPosition(encoder = encoder,
                                       braking_angle = Angle(10, 'rot'))
 ```
 
+See 
+:py:class:`ReachAngularPosition <gearpy.motor_control.rules.reach_angular_position.ReachAngularPosition>` 
+for more details on instantiation parameters.  
 With this rule, the DC motor's PWM is controlled in order to make the 
 *gear 6* reach 40 rotations from the reference position and the whole
 system will begin to brake 10 rotation before the target.  
