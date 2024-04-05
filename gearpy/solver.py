@@ -31,11 +31,6 @@ class Solver:
              :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`.
        ``ValueError``
            If :py:attr:`Powertrain.elements <gearpy.powertrain.Powertrain.elements>` is an empty :py:class:`tuple`.
-
-    .. admonition:: See Also
-       :class: seealso
-
-       :py:class:`Powertrain <gearpy.powertrain.Powertrain>`
     """
 
     def __init__(self, powertrain: Powertrain):
@@ -111,13 +106,6 @@ class Solver:
            If :py:attr:`Powertrain.time <gearpy.powertrain.Powertrain.time>` is an empty :py:class:`list`, it performs
            the simulation starting the time from ``0 sec``; otherwise it concatenates another simulation to existing
            values of time and time variables.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`TimeInterval <gearpy.units.units.TimeInterval>` \n
-           :py:class:`MotorControlBase <gearpy.motor_control.motor_control_base.MotorControlBase>` \n
-           :py:class:`StopCondition <gearpy.utils.stop_condition.stop_condition.StopCondition>`
         """
         if not isinstance(time_discretization, TimeInterval):
             raise TypeError(f"Parameter 'time_discretization' must be an instance of {TimeInterval.__name__!r}.")

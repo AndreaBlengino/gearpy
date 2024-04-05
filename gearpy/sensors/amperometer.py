@@ -68,11 +68,6 @@ class Amperometer(SensorBase):
 
            ``TypeError``
                If ``unit`` is not a :py:class:`str`.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:class:`Current <gearpy.units.units.Current>`
          """
         if not isinstance(unit, str) and unit is not None:
             raise TypeError("Parameter 'unit' must be a string.")

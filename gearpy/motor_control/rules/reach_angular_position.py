@@ -37,8 +37,7 @@ class ReachAngularPosition(RuleBase):
     .. admonition:: See Also
        :class: seealso
 
-       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>` \n
-       :py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>`
+       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>`
     """
 
     def __init__(self,

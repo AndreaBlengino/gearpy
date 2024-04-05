@@ -48,8 +48,7 @@ class StartProportionalToAngularPosition(RuleBase):
     .. admonition:: See Also
        :class: seealso
 
-       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>` \n
-       :py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>`
+       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>`
     """
 
     def __init__(self,
@@ -129,8 +128,8 @@ class StartProportionalToAngularPosition(RuleBase):
            where:
 
            - :math:`D_{min}^c` is the *candidate* minimum applicable ``pwm``,
-           - :math:`T_l` is the load torque on the ``powertrain`` DC motor 
-             (:py:attr:`DCMotor.load_torque <gearpy.mechanical_objects.dc_motor.DCMotor.load_torque>`),
+           - :math:`T_l` is the load torque on the ``powertrain`` 
+             :py:attr:`DCMotor.load_torque <gearpy.mechanical_objects.dc_motor.DCMotor.load_torque>`,
            - :math:`T_{max}` is the maximum torque developed by the ``powertrain`` DC motor 
              (:py:attr:`DCMotor.maximum_torque <gearpy.mechanical_objects.dc_motor.DCMotor.maximum_torque>`),
            - :math:`i_{max}` is the maximum electric current absorbed by the ``powertrain`` DC motor 

@@ -184,7 +184,7 @@ def add_worm_gear_mating(master: Union[WormGear, WormWheel],
        - :math:`\alpha` is the gear pressure angle, equal for both worm gear and worm wheel 
          (:py:attr:`WormGear.pressure_angle <gearpy.mechanical_objects.worm_gear.WormGear.pressure_angle>` or 
          :py:class:`WormWheel.pressure_angle <gearpy.mechanical_objects.worm_wheel.WormWheel.pressure_angle>`),
-       - :math:`f` is the friction coefficient (``friction_coefficient``),
+       - :math:`f` is the ``friction_coefficient``,
        - :math:`\beta` is the gear helix angle 
          (:py:attr:`WormGear.helix_angle <gearpy.mechanical_objects.worm_gear.WormGear.helix_angle>` or 
          :py:class:`WormWheel.helix_angle <gearpy.mechanical_objects.worm_wheel.WormWheel.helix_angle>`).

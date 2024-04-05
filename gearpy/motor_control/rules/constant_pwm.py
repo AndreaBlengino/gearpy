@@ -30,8 +30,7 @@ class ConstantPWM(RuleBase):
     .. admonition:: See Also
        :class: seealso
 
-       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>` \n
-       :py:class:`Timer <gearpy.sensors.timer.Timer>`
+       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>`
     """
 
     def __init__(self,

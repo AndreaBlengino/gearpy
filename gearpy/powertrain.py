@@ -44,7 +44,8 @@ class Powertrain:
        :class: warning
 
        ``TypeError``
-           If ``motor`` parameter is not an instance of ``MotorBase``.
+           If ``motor`` parameter is not an instance of
+           :py:class:`MotorBase <gearpy.mechanical_objects.mechanical_object_base.MotorBase>`.
        ``ValueError``
            If ``motor`` is not connected to any other element.
        ``NameError``
@@ -114,7 +115,6 @@ class Powertrain:
         .. admonition:: See Also
            :class: seealso
 
-           :py:class:`Time <gearpy.units.units.Time>` \n
            :py:meth:`Solver.run() <gearpy.solver.Solver.run>`
         """
         return self.__time
@@ -140,9 +140,7 @@ class Powertrain:
         .. admonition:: See Also
            :class: seealso
 
-           :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` \n
-           :py:attr:`WormGear.self_locking <gearpy.mechanical_objects.worm_gear.WormGear.self_locking>` \n
-           :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
+           :py:attr:`WormGear.self_locking <gearpy.mechanical_objects.worm_gear.WormGear.self_locking>`
         """
         return self.__self_locking
 
@@ -159,11 +157,6 @@ class Powertrain:
 
            ``TypeError``
                If ``instant`` is not an instance of :py:class:`Time <gearpy.units.units.Time>`.
-
-        .. admonition:: See Also
-           :class: seealso
-
-           :py:attr:`time`
         """
         if not isinstance(instant, Time):
             raise TypeError(f"Parameter 'instant' must be instances of {Time.__name__!r}.")
@@ -178,8 +171,6 @@ class Powertrain:
         .. admonition:: See Also
            :class: seealso
 
-           :py:attr:`time` \n
-           :py:attr:`elements` \n
            :py:attr:`DCMotor.time_variables <gearpy.mechanical_objects.dc_motor.DCMotor.time_variables>` \n
            :py:attr:`Flywheel.time_variables <gearpy.mechanical_objects.flywheel.Flywheel.time_variables>` \n
            :py:attr:`HelicalGear.time_variables <gearpy.mechanical_objects.helical_gear.HelicalGear.time_variables>` \n

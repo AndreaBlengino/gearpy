@@ -39,9 +39,7 @@ class StartLimitCurrent(RuleBase):
     .. admonition:: See Also
        :class: seealso
 
-       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>` \n
-       :py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>` \n
-       :py:class:`Tachometer <gearpy.sensors.tachometer.Tachometer>`
+       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>`
     """
 
     def __init__(self,

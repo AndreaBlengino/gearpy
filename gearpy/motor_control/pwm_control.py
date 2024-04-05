@@ -15,7 +15,7 @@ class PWMControl(MotorControlBase):
     Methods
     -------
     :py:meth:`add_rule`
-        It adds a ``rule`` to :py:attr:`rules`.
+        It adds a ``rule`` to :py:attr:`rules` list.
     :py:meth:`apply_rules`
         It applies all the :py:attr:`rules` in order to get a valid ``pwm`` value to set to the ``powertrain``'s motor.
 
@@ -55,12 +55,12 @@ class PWMControl(MotorControlBase):
         .. admonition:: See Also
            :class: seealso
 
-           :py:mod:`rules`
+           :py:mod:`rules` module
         """
         return self.__rules
 
     def add_rule(self, rule: RuleBase) -> None:
-        """It adds a ``rule`` to :py:attr:`rules`.
+        """It adds a ``rule`` to :py:attr:`rules` list.
 
         Parameters
         ----------
@@ -76,7 +76,7 @@ class PWMControl(MotorControlBase):
         .. admonition:: See Also
            :class: seealso
 
-           :py:mod:`rules`
+           :py:mod:`rules` module
         """
         super().add_rule(rule = rule)
 
