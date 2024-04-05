@@ -169,7 +169,7 @@ def worm_wheels(draw, structural = False, pressure_angle = None):
     maximum_helix_angle = 15
     if pressure_angle is None:
         pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
-        maximum_helix_angle = WORM_GEAR_AND_WHEEL_DATA.set_index('pressure angle').loc[pressure_angle.value, 'maximum helix angle']
+        maximum_helix_angle = WORM_GEAR_AND_WHEEL_DATA.set_index('Pressure Angle').loc[pressure_angle.value, 'Maximum Helix Angle']
     helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = maximum_helix_angle))
     if structural:
         module_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 5))
