@@ -1,11 +1,11 @@
-name: Tests
+name: macOS Tests
 on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [macos-latest]
         python-version: ["3.9", "3.10", "3.11", "3.12"]
 
     steps:
@@ -22,9 +22,9 @@ jobs:
         uses: actions/checkout@master
       - name: Test
         run: |
-          python -m pytest --verbose --disable-pytest-warnings --cov=gearpy --cov-report=xml -nauto
+          python -m pytest --verbose --disable-pytest-warnings --cov=gearpy --cov-report=xml:macos_coverage.xml -nauto
       - name: Upload
         uses: codecov/codecov-action@v2
         with:
-          files: ./coverage.xml
+          files: ./macos_coverage.xml
           token: ${{ secrets.CODECOV_TOKEN }}
