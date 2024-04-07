@@ -3,7 +3,7 @@
 ## Reporting issues
 
 When reporting issues please include as much detail as possible about 
-your operating system, python version, dependencies version and geapy 
+your operating system, python version, dependencies version and gearpy 
 version.  
 Whenever possible, please also include a brief, self-contained code 
 example that demonstrates the problem.
