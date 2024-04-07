@@ -13,6 +13,7 @@ Powertrain
    :hidden:
 
    elements
+   export_time_variables
    plot
    reset
    self_locking

@@ -22,25 +22,13 @@ class TestAbsoluteRotaryEncoderInit:
         encoder = AbsoluteRotaryEncoder(target = rotating_object)
 
         assert isinstance(encoder, AbsoluteRotaryEncoder)
+        assert encoder.target == rotating_object
 
 
     @mark.error
     def test_raises_type_error(self, absolute_rotary_encoder_init_type_error):
         with raises(TypeError):
             AbsoluteRotaryEncoder(*absolute_rotary_encoder_init_type_error)
-
-
-@mark.sensors
-class TestAbsoluteRotaryEncoderTarget:
-
-
-    @mark.genuine
-    @given(rotating_object = rotating_objects())
-    @settings(max_examples = 100, deadline = None)
-    def test_property(self, rotating_object):
-        encoder = AbsoluteRotaryEncoder(target = rotating_object)
-
-        assert encoder.target == rotating_object
 
 
 @mark.sensors

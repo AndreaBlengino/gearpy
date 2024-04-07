@@ -22,25 +22,13 @@ class TestTachometerInit:
         tachometer = Tachometer(target = rotating_object)
 
         assert isinstance(tachometer, Tachometer)
+        assert tachometer.target == rotating_object
 
 
     @mark.error
     def test_raises_type_error(self, tachometer_init_type_error):
         with raises(TypeError):
             Tachometer(*tachometer_init_type_error)
-
-
-@mark.sensors
-class TestTachometerTarget:
-
-
-    @mark.genuine
-    @given(rotating_object = rotating_objects())
-    @settings(max_examples = 100, deadline = None)
-    def test_property(self, rotating_object):
-        tachometer = Tachometer(target = rotating_object)
-
-        assert tachometer.target == rotating_object
 
 
 @mark.sensors

@@ -12,4 +12,5 @@ motor_control
    :hidden:
 
    PWMControl/index
+   MotorControlBase/index
    rules/index

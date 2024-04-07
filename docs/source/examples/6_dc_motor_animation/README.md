@@ -23,6 +23,9 @@ dc_motor_characteristics_animation(motor = motor,
 
 ![](animations/animation_1.gif)
 
+See 
+:py:func:`dc_motor_characteristics_animation <gearpy.utils.animate.dc_motor_characteristics_animation>`
+for more details.  
 On the left hand side there is the torque-speed characteristic, while on
 the right hand side there is the torque-current characteristic and the 
 orange dot is the working point of the motor. The characteristics can 

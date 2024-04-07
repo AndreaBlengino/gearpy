@@ -1,0 +1,30 @@
+name: Windows Tests
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [windows-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install -r requirements/common.txt
+          pip install -r requirements/tests.txt
+      - name: Fetch
+        uses: actions/checkout@master
+      - name: Test
+        run: |
+          python -m pytest --verbose --disable-pytest-warnings --cov=gearpy --cov-report=xml:windows_coverage.xml -nauto
+      - name: Upload
+        uses: codecov/codecov-action@v2
+        with:
+          files: ./windows_coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}

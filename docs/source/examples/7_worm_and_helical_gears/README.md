@@ -6,13 +6,13 @@ The mechanical powertrain to be studied is reported in the image below:
 
 ![](images/scheme.png)
 
-The *flywheel* and the *worm gear* are connected to the *DC motor* output 
-shaft and rotate with it. The *worm gear* mates with the *worm wheel*,
-which is connected to *gear 1* through a rigid shaft, so the *worm wheel*
-and the *gear 1* rotate together. The *gear 2* mates with *gear 1* and is 
-connected to *gear 3* through a rigid shaft, so *gear 2* and *gear 3* 
-rotate together. Finally, *gear 3* mates with *gear 4*, which is connected 
-to the external load.  
+The *flywheel* and the *worm gear* are connected to the *DC motor* 
+output shaft and rotate with it. The *worm gear* mates with the 
+*worm wheel*, which is connected to *gear 1* through a rigid shaft, so 
+the *worm wheel* and the *gear 1* rotate together. The *gear 2* mates 
+with *gear 1* and is connected to *gear 3* through a rigid shaft, so 
+*gear 2* and *gear 3* rotate together. Finally, *gear 3* mates with 
+*gear 4*, which is connected to the external load.  
 *gear 1*, *gear 2*, *gear 3* and *gear 4* are helical gears.  
 The analysis is focused on powertrain elements kinematics, torques and 
 stresses.
@@ -76,11 +76,16 @@ gear_4 = HelicalGear(name = 'gear 4',
                      elastic_modulus = Stress(200, 'GPa'))
 ```
 
+See :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+:py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>` 
+and 
+:py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` 
+for more details on instantiation parameters.  
 Then it is necessary to specify the connection types between the 
 components. We choose to study a non-ideal powertrain so, in order to 
 take into account power loss in matings due to friction, we specify a 
-gear mating efficiency below `$100\%$` and a friction coefficient in 
-the worm gear mating:
+gear mating efficiency below `$100\%$` and a friction coefficient in the 
+worm gear mating:
 
 ```python
 from gearpy.utils import add_fixed_joint, add_gear_mating, add_worm_gear_mating
@@ -94,6 +99,10 @@ add_fixed_joint(master = gear_2, slave = gear_3)
 add_gear_mating(master = gear_3, slave = gear_4, efficiency = 0.9)
 ```
 
+See :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`, 
+:py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>` and
+:py:func:`add_worm_gear_mating <gearpy.utils.relations.add_worm_gear_mating>`
+for more details.  
 We have to define the external load applied to *gear 4*. To keep the 
 example simple, we can consider a constant load torque:
 
@@ -117,8 +126,8 @@ powertrain = Powertrain(motor = motor)
 
 Before performing the simulation, it is necessary to specify the initial
 condition of the system in terms of angular position and speed of the 
-last gear in the mechanical powertrain. In this case we can consider 
-the *gear 4* still in the reference position:
+last gear in the mechanical powertrain. In this case we can consider the 
+*gear 4* still in the reference position:
 
 ```python
 from gearpy.units import AngularPosition
@@ -159,12 +168,12 @@ Mechanical Powertrain Status at Time = 10 sec
             angular position (rot)  angular speed (rad/s)  angular acceleration (rad/s^2)  torque (mNm)  driving torque (mNm)  load torque (mNm) tangential force (N) bending stress (MPa) contact stress (MPa)  pwm
 motor                  1750.283916            1212.664997                        0.158727      0.001448              2.279935           2.278487                                                                 1.0
 flywheel               1750.283916            1212.664997                        0.158727      0.001448              2.279935           2.278487                                                                    
-worm gear              1750.283916            1212.664997                        0.158727      0.001448              2.279935           2.278487                                                                    
+worm gear              1750.283916            1212.664997                        0.158727      0.001448              2.279935           2.278487             0.080352                                               
 worm wheel               35.005678              24.253300                        0.003175      0.019617             30.883814          30.864198             1.235353            13.519356                          
 gear 1                   35.005678              24.253300                        0.003175      0.019617             30.883814          30.864198              6.17284             1.697105            61.723522     
 gear 2                    7.001136               4.850660                        0.000635      0.088274            138.977163         138.888889             5.559087             0.881963             58.57468     
 gear 3                    7.001136               4.850660                        0.000635      0.088274            138.977163         138.888889            18.518519             2.545658            77.154403     
-gear 4                    1.750284               1.212665                        0.000159      0.317788            500.317788         500.000000             16.67726             1.377898             73.21835               
+gear 4                    1.750284               1.212665                        0.000159      0.317788            500.317788         500.000000             16.67726             1.377898             73.21835                    
 ```
 
 Notice that the load torque applied on the *gear 4* is exactly the 
@@ -177,11 +186,11 @@ We can get a more general view of the system by plotting the time
 variables of each element with respect to time:
 
 ```python
-powertrain.plot(elements = [motor, worm_gear, worm_wheel, gear_4],
+powertrain.plot(figsize = (8, 8),
+                elements = [motor, worm_gear, worm_wheel, gear_4],
                 variables = ['angular position', 'angular speed', 'torque', 'driving torque', 'load torque',
                              'bending stress', 'contact stress'],
-                torque_unit = 'mNm',
-                figsize = (10, 8))
+                torque_unit = 'mNm')
 ```
 
 ![](images/plot.png)

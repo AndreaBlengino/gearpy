@@ -5,39 +5,32 @@ from typing import Union
 
 
 class ConstantPWM(RuleBase):
-    """gearpy.motor_control.rules.constant_pwm.ConstantPWM object. \n
+    """:py:class:`ConstantPWM <gearpy.motor_control.rules.constant_pwm.ConstantPWM>` object. \n
     It can be used to make a gradual start of the ``powertrain``'s motion, in order to avoid a peak in the
     ``powertrain``'s DC motor absorbed electric current. \n
     It checks whether the ``timer`` is active and, if so, it sets the ``pwm`` of ``powertrain`` motor to the constant
     ``target_pwm_value``.
 
-    Attributes
-    ----------
-    :py:attr:`timer` : Timer
-        The timer which, when active, sets the control of ``powertrain`` motor ``pwm``.
-    :py:attr:`powertrain` : Powertrain
-        Powertrain whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
-    :py:attr:`target_pwm_min` : float or int
-        Target value to set ``powertrain`` motor ``pwm`` when the ``timer`` is active.
-
     Methods
     -------
     :py:meth:`apply`
-        Checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``powertrain`` motor,
+        It checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``powertrain`` motor,
         equal to ``target_pwm_value``.
 
-    Raises
-    ------
-    TypeError
-        - If ``timer`` is not an instance of ``Timer``,
-        - if ``powertrain`` is not an instance of ``Powertrain``,
-        - if ``target_pwm_value`` is not a float or an integer.
-    ValueError
-        If ``target_pwm_value`` is not within ``-1`` and ``1``.
+    .. admonition:: Raises
+       :class: warning
 
-    See Also
-    --------
-    :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
+       ``TypeError``
+           - If ``timer`` is not an instance of :py:class:`Timer <gearpy.sensors.timer.Timer>`,
+           - if ``powertrain`` is not an instance of :py:class:`Powertrain <gearpy.powertrain.Powertrain>`,
+           - if ``target_pwm_value`` is not a :py:class:`float` or an :py:class:`int`.
+       ``ValueError``
+           If ``target_pwm_value`` is not within ``-1`` and ``1``.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>`
     """
 
     def __init__(self,
@@ -62,76 +55,14 @@ class ConstantPWM(RuleBase):
         self.__powertrain = powertrain
         self.__target_pwm_value = target_pwm_value
 
-    @property
-    def timer(self) -> Timer:
-        """Timer which, when active, sets the control of ``powertrain`` motor ``pwm``.
-
-        Returns
-        -------
-        Timer
-            The timer which, when active, sets the control of ``powertrain`` motor ``pwm``.
-
-        Raises
-        ------
-        TypeError
-            If ``timer`` is not an instance of ``Timer``.
-
-        See Also
-        --------
-        :py:class:`gearpy.sensors.Timer`
-        """
-        return self.__timer
-
-    @property
-    def powertrain(self) -> Powertrain:
-        """Powertrain whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
-
-        Returns
-        -------
-        Powertrain
-            Powertrain whose motor's ``pwm`` is set to a constant value equal to ``target_pwm_value``.
-
-        Raises
-        ------
-        TypeError
-            If ``powertrain`` is not an instance of ``Powertrain``.
-
-        See Also
-        --------
-        :py:class:`gearpy.powertrain.Powertrain`
-        """
-        return self.__powertrain
-
-    @property
-    def target_pwm_value(self) -> Union[float, int]:
-        """Target value to set ``powertrain`` motor ``pwm`` when the ``timer`` is active.
-
-        Returns
-        -------
-        float or int
-            Target value to set ``powertrain`` motor ``pwm`` when the ``timer`` is active.
-
-        Raises
-        ------
-        TypeError
-            If ``target_pwm_value`` is not a float or an integer.
-        ValueError
-            If ``target_pwm_value`` is not within ``-1`` and ``1``.
-
-        See Also
-        --------
-        :py:attr:`gearpy.mechanical_objects.dc_motor.DCMotor.pwm`
-        """
-        return self.__target_pwm_value
-
     def apply(self) -> Union[None, float, int]:
-        r"""Checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``powertrain`` motor,
+        r"""It checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``powertrain`` motor,
         equal to ``target_pwm_value``.
 
         Returns
         -------
-        float or int or None
+        :py:class:`float` or :py:class:`int` or :py:obj:`None`
             PWM value to apply to the motor, equal to ``target_pwm_value``.
         """
-        if self.timer.is_active(current_time = self.powertrain.time[-1]):
-            return self.target_pwm_value
+        if self.__timer.is_active(current_time = self.__powertrain.time[-1]):
+            return self.__target_pwm_value

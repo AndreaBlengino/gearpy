@@ -5,12 +5,12 @@ gearpy documentation
 
 **Date**: |today|
 
-**Version**: |version|
+**Release**: |release|
 
 
 .. toctree::
    :hidden:
-   :caption: Module
+   :caption: Library
 
    gearpy
    examples/index
@@ -21,17 +21,10 @@ gearpy documentation
    :caption: References
 
    get_started
-   Source Code <https://github.com/AndreaBlengino/gearpy>
    PyPI <https://pypi.org/project/gearpy>
    Issue Tracker <https://github.com/AndreaBlengino/gearpy/issues>
+   Source Code <https://github.com/AndreaBlengino/gearpy>
    license
 
 
-.. mdinclude:: ../../README.md
-
-
-Indices and tables
-==================
-
-* :ref:`modindex`
-* :ref:`search`
+.. mdinclude:: ../../README.rst

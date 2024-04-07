@@ -26,7 +26,7 @@ class TestPWMControlInit:
     def test_method(self, powertrain):
         motor_control = PWMControl(powertrain = powertrain)
 
-        assert motor_control.powertrain == powertrain
+        assert motor_control._PWMControl__powertrain == powertrain
         assert isinstance(motor_control.rules, list)
         assert not motor_control.rules
 

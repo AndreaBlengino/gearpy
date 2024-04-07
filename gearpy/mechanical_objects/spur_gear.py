@@ -7,75 +7,87 @@ from typing import Callable, Dict, List, Union, Optional
 
 
 class SpurGear(GearBase):
-    r"""``gearpy.mechanical_objects.spur_gear.SpurGear`` object.
+    r""":py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` object.
 
     Attributes
     ----------
-    :py:attr:`name` : str
+    :py:attr:`name` : :py:class:`str`
         Name of the spur gear.
-    :py:attr:`n_teeth` : int
+    :py:attr:`n_teeth` : :py:class:`int`
         Number of gear teeth.
-    :py:attr:`inertia_moment` : InertiaMoment
+    :py:attr:`inertia_moment` : :py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>`
         Moment of inertia of the gear.
-    :py:attr:`module` : Length
+    :py:attr:`module` : :py:class:`Length <gearpy.units.units.Length>`
         Unit of the gear teeth size.
-    :py:attr:`reference_diameter` : Length
+    :py:attr:`reference_diameter` : :py:class:`Length <gearpy.units.units.Length>`
         Reference diameter of the gear.
-    :py:attr:`face_width` : Length
+    :py:attr:`face_width` : :py:class:`Length <gearpy.units.units.Length>`
         Face width of the gear.
-    :py:attr:`elastic_modulus` : Stress
+    :py:attr:`elastic_modulus` : :py:class:`Stress <gearpy.units.units.Stress>`
         Elastic modulus of the material of the gear.
-    :py:attr:`lewis_factor` : float
+    :py:attr:`lewis_factor` : :py:class:`float`
         Factor used to compute stresses on the gear tooth.
-    :py:attr:`driven_by` : RotatingObject
-        Rotating object that drives the gear, for example a motor, a flywheel or another gear.
-    :py:attr:`drives` : RotatingObject
-        Rotating object driven by the gear, it can be a flywheel or another gear.
-    :py:attr:`master_gear_ratio` : float
+    :py:attr:`driven_by` : :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
+        Rotating object that drives the gear, for example a
+        :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`, a
+        :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` or another gear
+        (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
+        :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
+        :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`).
+    :py:attr:`drives` : :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
+        Rotating object driven by the gear, it can be a
+        :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` or another gear
+        (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
+        :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
+        :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`).
+    :py:attr:`master_gear_ratio` : :py:class:`float`
         Gear ratio of the mating between the gear and its driving gear.
-    :py:attr:`master_gear_efficiency` : float or int
+    :py:attr:`master_gear_efficiency` : :py:class:`float` or :py:class:`int`
         Efficiency of the gear mating between the gear and its driving gear.
-    :py:attr:`mating_role`: Role
+    :py:attr:`mating_role`: :py:class:`Role <gearpy.mechanical_objects.mechanical_object_base.Role>`
         The role of the gear in the gear mating.
-    :py:attr:`angular_position` : AngularPosition
+    :py:attr:`angular_position` : :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`
         Angular position of the gear.
-    :py:attr:`angular_speed` : AngularSpeed
+    :py:attr:`angular_speed` : :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`
         Angular speed of the gear.
-    :py:attr:`angular_acceleration` : AngularAcceleration
+    :py:attr:`angular_acceleration` : :py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>`
         Angular acceleration of the gear.
-    :py:attr:`torque` : Torque
+    :py:attr:`torque` : :py:class:`Torque <gearpy.units.units.Torque>`
         Net torque applied on the gear.
-    :py:attr:`driving_torque` : Torque
+    :py:attr:`driving_torque` : :py:class:`Torque <gearpy.units.units.Torque>`
         Driving torque applied on the gear by its driving gear.
-    :py:attr:`load_torque` : Torque
+    :py:attr:`load_torque` : :py:class:`Torque <gearpy.units.units.Torque>`
         Load torque applied on the gear by its driven gear or an external load.
-    :py:attr:`tangential_force` : Force
+    :py:attr:`tangential_force` : :py:class:`Force <gearpy.units.units.Force>`
         Tangential force applied on the gear teeth by the mating gear.
-    :py:attr:`tangential_force_is_computable` : bool
-        Whether is possible to compute the tangential force on the gear teeth.
-    :py:attr:`bending_stress` : Stress
+    :py:attr:`tangential_force_is_computable` : :py:class:`bool`
+        Whether is possible to compute the :py:attr:`tangential_force` on the gear teeth.
+    :py:attr:`bending_stress` : :py:class:`Stress <gearpy.units.units.Stress>`
         Bending stress applied on the gear teeth by the mating gear.
-    :py:attr:`bending_stress_is_computable` : bool
-        Whether is possible to compute the bending stress on the gear teeth.
-    :py:attr:`contact_stress` : Stress
+    :py:attr:`bending_stress_is_computable` : :py:class:`bool`
+        Whether is possible to compute the :py:attr:`bending_stress` on the gear teeth.
+    :py:attr:`contact_stress` : :py:class:`Stress <gearpy.units.units.Stress>`
         The stress generated by the contact with mating gear teeth.
-    :py:attr:`contact_stress_is_computable` : bool
-        Whether is possible to compute the contact stress on the gear teeth.
-    :py:attr:`time_variables` : dict
+    :py:attr:`contact_stress_is_computable` : :py:class:`bool`
+        Whether is possible to compute the :py:attr:`contact_stress` on the gear teeth.
+    :py:attr:`time_variables` : :py:class:`dict`
         Time variables of the gear.
 
     Methods
     -------
     :py:meth:`compute_tangential_force`
-        Computes the tangential force applied on the gear teeth by the mating gear.
+        It computes the :py:attr:`tangential_force` applied on the gear teeth by the mating gear.
     :py:meth:`compute_bending_stress`
-        Computes the bending stress applied on the gear teeth by the mating gear.
+        It computes the :py:attr:`bending_stress` applied on the gear teeth by the mating gear.
     :py:meth:`compute_contact_stress`
-        Computes the contact stress generated by the contact with mating gear teeth.
+        It computes the :py:attr:`contact_stress` generated by the contact with mating gear teeth.
     :py:meth:`external_torque`
         Custom function to compute the external torque applied on the gear.
     :py:meth:`update_time_variables`
-        Updates ``time_variables`` dictionary by appending the last value of each time variable to corresponding list.
+        It updates :py:attr:`time_variables` dictionary by appending the last value of each time variable to
+        corresponding list.
     """
 
     def __init__(self,
@@ -105,21 +117,22 @@ class SpurGear(GearBase):
 
     @property
     def name(self) -> str:
-        """Name of the spur gear. It must be a non-empty string. \n
+        """Name of the spur gear. It must be a non-empty :py:class:`str`. \n
         It must be a unique name, not shared by other elements in the powertrain elements. \n
         Once set at the spur gear instantiation, it cannot be changed afterward.
 
         Returns
         -------
-        str
+        :py:class:`str`
             Name of the spur gear.
 
-        Raises
-        ------
-        TypeError
-            If ``name`` is not a string.
-        ValueError
-            If ``name`` is an empty string.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`name` is not a :py:class:`str`.
+           ``ValueError``
+               If :py:attr:`name` is an empty :py:class:`str`.
         """
         return super().name
 
@@ -130,116 +143,104 @@ class SpurGear(GearBase):
 
         Returns
         -------
-        int
+        :py:class:`int`
             Number of gear teeth.
 
-        Raises
-        ------
-        TypeError
-            If ``n_teeth`` is not an integer.
-        ValueError
-            If ``n_teeth`` is less than the minimum number of teeth, based on Lewis Factor table.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`n_teeth` is not an :py:class:`int`.
+           ``ValueError``
+               If :py:attr:`n_teeth` is less than the minimum number of teeth, based on Lewis Factor table.
         """
         return super().n_teeth
 
     @property
     def inertia_moment(self) -> InertiaMoment:
-        """Moment of inertia of the gear. It must be an instance of ``InertiaMoment``. \n
+        """Moment of inertia of the gear. It must be an instance of
+        :py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>`. \n
         Once set at the spur gear instantiation, it cannot be changed afterward.
 
         Returns
         -------
-        InertiaMoment
+        :py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>`
             Moment of inertia of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``inertia_moment`` is not an instance of ``InertiaMoment``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.InertiaMoment`
+           ``TypeError``
+               If :py:attr:`inertia_moment` is not an instance of
+               :py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>`.
         """
         return super().inertia_moment
 
     @property
     def module(self) -> Optional[Length]:
-        """Unit of the gear teeth size. It must be an instance of ``Length``. \n
+        """Unit of the gear teeth size. It must be an instance of :py:class:`Length <gearpy.units.units.Length>`. \n
         Once set at the spur gear instantiation, it cannot be changed afterward.
 
         Returns
         -------
-        Length
+        :py:class:`Length <gearpy.units.units.Length>`
             Unit of the gear teeth size.
 
-        Raises
-        ------
-        TypeError
-            If ``module`` is not an instance of ``Length``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Length`
+           ``TypeError``
+               If :py:attr:`module` is not an instance of :py:class:`Length <gearpy.units.units.Length>`.
         """
         return super().module
 
     @property
     def reference_diameter(self) -> Optional[Length]:
-        """Reference diameter of the gear. It must be an instance of ``Length``. \n
-        It is computed as the product of ``n_teeth`` times ``module`` at the spur gear instantiation and it cannot be
-        changed afterward.
+        """Reference diameter of the gear. It must be an instance of :py:class:`Length <gearpy.units.units.Length>`. \n
+        It is computed as the product of :py:attr:`n_teeth` times :py:attr:`module` at the spur gear instantiation and
+        it cannot be changed afterward.
 
         Returns
         -------
-        Length
+        :py:class:`Length <gearpy.units.units.Length>`
             Reference diameter of the gear.
-
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Length`
         """
         return super().reference_diameter
 
     @property
     def face_width(self) -> Optional[Length]:
-        """Face width of the gear. It must be an instance of ``Length``.
+        """Face width of the gear. It must be an instance of :py:class:`Length <gearpy.units.units.Length>`.
 
         Returns
         -------
-        Length
+        :py:class:`Length <gearpy.units.units.Length>`
             Face width of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``face_width`` is not an instance of ``Length``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Length`
+           ``TypeError``
+               If :py:attr:`face_width` is not an instance of :py:class:`Length <gearpy.units.units.Length>`.
         """
         return super().face_width
 
     @property
     def elastic_modulus(self) -> Optional[Stress]:
-        """Elastic modulus of the material of the gear. It must be an instance of ``Stress``. It must be positive.
+        """Elastic modulus of the material of the gear. It must be an instance of
+        :py:class:`Stress <gearpy.units.units.Stress>`. It must be positive.
 
         Returns
         -------
-        Stress
+        :py:class:`Stress <gearpy.units.units.Stress>`
             Elastic modulus of the material of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``elastic_modulus`` is not an instance of ``Stress``.
-        ValueError
-            If ``elastic_modulus`` value is negative or null.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Stress`
+           ``TypeError``
+               If :py:attr:`elastic_modulus` is not an instance of :py:class:`Stress <gearpy.units.units.Stress>`.
+           ``ValueError``
+               If :py:attr:`elastic_modulus` value is negative or null.
         """
         return super().elastic_modulus
 
@@ -248,34 +249,39 @@ class SpurGear(GearBase):
         """Factor used to compute stresses on the gear tooth. \n
         It is a tabular value that in general depends on the number of gear teeth and the pressure angle. In this
         case, the considered pressure angle is always 20 degrees, so the Lewis factor depends only on the number of gear
-        teeth.
+        teeth :py:attr:`n_teeth`.
 
         Returns
         -------
-        float
+        :py:class:`float`
             Factor used to compute stresses on the gear tooth.
         """
         return self.__lewis_factor
 
     @property
     def driven_by(self) -> RotatingObject:
-        """Rotating object that drives the gear, for example a motor, a flywheel or another gear. It must be a
-        ``RotatingObject``.
+        """Rotating object that drives the gear, for example a
+        :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`, a
+        :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` or another gear
+        (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
+        :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
+        :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`). It must be a
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`. \n
+        To set this property use :py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>` or
+        :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
         Returns
         -------
-        RotatingObject
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
             Master rotating object that drives the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``driven_by`` is not an instance of ``RotatingObject``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_gear_mating`
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           ``TypeError``
+               If :py:attr:`driven_by` is not an instance of
+               :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`.
         """
         return super().driven_by
 
@@ -285,22 +291,27 @@ class SpurGear(GearBase):
 
     @property
     def drives(self) -> RotatingObject:
-        """Rotating object driven by the gear, it can be a flywheel or another gear. It must be a ``RotatingObject``.
+        """Rotating object driven by the gear, it can be a
+        :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` or another gear
+        (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
+        :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
+        :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`). It must be a
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`. \n
+        To set this property use :py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>` or
+        :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
         Returns
         -------
-        RotatingObject
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
             Rotating object driven by the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``drives`` is not an instance of ``RotatingObject``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_gear_mating`
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           ``TypeError``
+               If :py:attr:`drives` is not an instance of
+               :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`.
         """
         return super().drives
 
@@ -310,28 +321,26 @@ class SpurGear(GearBase):
 
     @property
     def master_gear_ratio(self) -> float:
-        """Gear ratio of the mating between the gear and its driving gear. It must be a positive a float. \n
-        If the gear is fixed to another driving ``RotatingObject``, then the ratio is ``1``, otherwise it is defined as
-        the ratio between the gear number of teeth ``n_teeth`` and the same parameter of the master (driving) gear. \n
-        To set this property use :py:func:`gearpy.utils.relations.add_gear_mating` or
-        :py:func:`gearpy.utils.relations.add_fixed_joint`.
+        """Gear ratio of the mating between the gear and its driving gear. It must be a positive a :py:class:`float`. \n
+        If the gear is fixed to another driving
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`, then the ratio is
+        ``1``, otherwise it is defined as the ratio between the gear number of teeth :py:attr:`n_teeth` and the same
+        parameter of the master (driving) gear. \n
+        To set this property use :py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>` or
+        :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
         Returns
         -------
-        float
+        :py:class:`float`
             Gear ratio of the mating between the gear and its driving gear.
 
-        Raises
-        ------
-        TypeError
-            If ``master_gear_ratio`` is not a float.
-        ValueError
-            If ``master_gear_ratio`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_gear_mating`
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           ``TypeError``
+               If :py:attr:`master_gear_ratio` is not a :py:class:`float`.
+           ``ValueError``
+               If :py:attr:`master_gear_ratio` is negative or null.
         """
         return super().master_gear_ratio
 
@@ -341,27 +350,23 @@ class SpurGear(GearBase):
 
     @property
     def master_gear_efficiency(self) -> Union[float, int]:
-        """Efficiency of the gear mating between the gear and its driving gear. It must be a float or an integer within
-        ``0`` and ``1``. \n
-        To set this property use :py:func:`gearpy.utils.relations.add_gear_mating` or
-        :py:func:`gearpy.utils.relations.add_fixed_joint`.
+        """Efficiency of the gear mating between the gear and its driving gear. It must be a :py:class:`float` or an
+        :py:class:`int` within ``0`` and ``1``. \n
+        To set this property use :py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>` or
+        :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Efficiency of the gear mating between the gear and its driving gear.
 
-        Raises
-        ------
-        TypeError
-            If ``master_gear_efficiency`` is not a float or an integer.
-        ValueError
-            If ``master_gear_efficiency`` is not within ``0`` and ``1``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.utils.relations.add_gear_mating`
-        :py:func:`gearpy.utils.relations.add_fixed_joint`
+           ``TypeError``
+               If :py:attr:`master_gear_efficiency` is not a :py:class:`float` or an :py:class:`int`.
+           ``ValueError``
+               If :py:attr:`master_gear_efficiency` is not within ``0`` and ``1``.
         """
         return super().master_gear_efficiency
 
@@ -371,19 +376,23 @@ class SpurGear(GearBase):
 
     @property
     def mating_role(self) -> Role:
-        """Role of the gear in the gear mating. To set this parameter use ``add_gear_mating``. \n
-        If the gear drives the mate one, then it is the "master" gear and its role is ``MatingMaster``, otherwise it is
-        the "slave" one and its role is ``MatingSlave``.
+        """Role of the gear in the gear mating. \n
+        If the gear drives the mate one, then it is the "master" gear and its role is
+        :py:class:`MatingMaster <gearpy.mechanical_objects.mating_roles.MatingMaster>`, otherwise it is the "slave" one
+        and its role is :py:class:`MatingSlave <gearpy.mechanical_objects.mating_roles.MatingSlave>`. \n
+        To set this parameter use :py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>`.
 
         Returns
         -------
-        Role
+        :py:class:`Role <gearpy.mechanical_objects.mechanical_object_base.Role>`
             The role of the gear in the gear mating.
 
-        Raises
-        ------
-        ValueError
-            If ``mating_role`` is not a subclass of ``Role``.
+        .. admonition:: Raises
+           :class: warning
+
+           ``ValueError``
+               If :py:attr:`mating_role` is not a subclass of
+               :py:class:`Role <gearpy.mechanical_objects.mechanical_object_base.Role>`.
         """
         return super().mating_role
 
@@ -393,21 +402,20 @@ class SpurGear(GearBase):
 
     @property
     def angular_position(self) -> AngularPosition:
-        """Angular position of the gear. It must be an instance of ``AngularPosition``.
+        """Angular position of the gear. It must be an instance of
+        :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`.
 
         Returns
         -------
-        AngularPosition
+        :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`
             Angular position of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_position`` is not an instance of ``AngularPosition``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularPosition`
+           ``TypeError``
+               If :py:attr:`angular_position` is not an instance of
+               :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`.
         """
         return super().angular_position
 
@@ -417,21 +425,20 @@ class SpurGear(GearBase):
 
     @property
     def angular_speed(self) -> AngularSpeed:
-        """Angular speed of the gear. It must be an instance of ``AngularSpeed``.
+        """Angular speed of the gear. It must be an instance of
+        :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`.
 
         Returns
         -------
-        AngularSpeed
+        :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`
             Angular speed of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_speed`` is not an instance of ``AngularSpeed``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularSpeed`
+           ``TypeError``
+               If :py:attr:`angular_speed` is not an instance of
+               :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`.
         """
         return super().angular_speed
 
@@ -441,21 +448,20 @@ class SpurGear(GearBase):
 
     @property
     def angular_acceleration(self) -> AngularAcceleration:
-        """Angular acceleration of the gear. It must be an instance of ``AngularAcceleration``.
+        """Angular acceleration of the gear. It must be an instance of
+        :py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>`.
 
         Returns
         -------
-        AngularAcceleration
+        :py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>`
             Angular acceleration of the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``angular_acceleration`` is not an instance of ``AngularAcceleration``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.AngularAcceleration`
+           ``TypeError``
+               If :py:attr:`angular_acceleration` is not an instance of
+               :py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>`.
         """
         return super().angular_acceleration
 
@@ -465,22 +471,19 @@ class SpurGear(GearBase):
 
     @property
     def torque(self) -> Torque:
-        """Net torque applied on the gear. It must be an instance of ``Torque``. \n
-        It is computed as the difference between ``driving_torque`` and ``load_torque``.
+        """Net torque applied on the gear. It must be an instance of :py:class:`Torque <gearpy.units.units.Torque>`. \n
+        It is computed as the difference between :py:attr:`driving_torque` and :py:attr:`load_torque`.
 
         Returns
         -------
-        Torque
+        :py:class:`Torque <gearpy.units.units.Torque>`
             Net torque applied on the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           ``TypeError``
+               If :py:attr:`torque` is not an instance of :py:class:`Torque <gearpy.units.units.Torque>`.
         """
         return super().torque
 
@@ -490,21 +493,19 @@ class SpurGear(GearBase):
 
     @property
     def driving_torque(self) -> Torque:
-        """Driving torque applied on the gear by its driving gear. It must be an instance of ``Torque``.
+        """Driving torque applied on the gear by its driving gear. It must be an instance of
+        :py:class:`Torque <gearpy.units.units.Torque>`.
 
         Returns
         -------
-        Torque
+        :py:class:`Torque <gearpy.units.units.Torque>`
             Driving torque applied on the gear by its driving gear.
 
-        Raises
-        ------
-        TypeError
-            If ``driving_torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           ``TypeError``
+               If :py:attr:`driving_torque` is not an instance of :py:class:`Torque <gearpy.units.units.Torque>`.
         """
         return super().driving_torque
 
@@ -514,21 +515,19 @@ class SpurGear(GearBase):
 
     @property
     def load_torque(self) -> Torque:
-        """Load torque applied on the gear by its driven gear or an external load. It must be an instance of ``Torque``.
+        """Load torque applied on the gear by its driven gear or an external load. It must be an instance of
+        :py:class:`Torque <gearpy.units.units.Torque>`.
 
         Returns
         -------
-        Torque
+        :py:class:`Torque <gearpy.units.units.Torque>`
             Load torque applied on the gear by its driven gear or an external load.
 
-        Raises
-        ------
-        TypeError
-            If ``load_torque`` is not an instance of ``Torque``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Torque`
+           ``TypeError``
+               If :py:attr:`load_torque` is not an instance of :py:class:`Torque <gearpy.units.units.Torque>`.
         """
         return super().load_torque
 
@@ -538,22 +537,24 @@ class SpurGear(GearBase):
 
     @property
     def tangential_force(self) -> Force:
-        """Tangential force applied on the gear teeth by the mating gear. It must be an instance of ``Force``.
+        """Tangential force applied on the gear teeth by the mating gear. It must be an instance of
+        :py:class:`Force <gearpy.units.units.Force>`.
 
         Returns
         -------
-        Force
+        :py:class:`Force <gearpy.units.units.Force>`
             Tangential force applied on the gear teeth by the mating gear.
 
-        Raises
-        ------
-        TypeError
-            If ``tangential_force`` is not an instance of ``Force``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Force`
-        :py:meth:`compute_tangential_force`
+           ``TypeError``
+               If :py:attr:`tangential_force` is not an instance of :py:class:`Force <gearpy.units.units.Force>`.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`compute_tangential_force`
         """
         return super().tangential_force
 
@@ -561,24 +562,21 @@ class SpurGear(GearBase):
     def tangential_force(self, tangential_force: Force):
         super(SpurGear, type(self)).tangential_force.fset(self, tangential_force)
 
-    def compute_tangential_force(self):
-        """Computes the tangential force applied on the gear teeth by the mating gear. \n
+    def compute_tangential_force(self) -> None:
+        """It computes the :py:attr:`tangential_force` applied on the gear teeth by the mating gear. \n
         Considering a gear mating:
 
-        - if the gear is the master one, then it takes into account the ``load_torque`` for the computation,
-        - if the gear is the slave one, then it take into account the ``driving_torque`` for the computation.
+        - if the gear is the master one, then it takes into account the :py:attr:`load_torque` for the computation,
+        - if the gear is the slave one, then it take into account the :py:attr:`driving_torque` for the computation.
 
         The tangential force is computed dividing the just described reference torque by the reference radius (half of
-        the reference diameter).
+        the :py:attr:`reference_diameter`).
 
-        Raises
-        ------
-        ValueError
-            If a gear mating between two gears has not been set.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:attr:`tangential_force`
+           ``ValueError``
+               If a gear mating between two gears has not been set.
         """
         if self.mating_role == MatingMaster:
             self.tangential_force = abs(self.load_torque)/(self.reference_diameter/2)
@@ -590,41 +588,43 @@ class SpurGear(GearBase):
 
     @property
     def tangential_force_is_computable(self) -> bool:
-        """Whether is possible to compute the tangential force on the gear teeth. The tangential force computation
-        depends on the value of ``module``, so if this optional parameter has been set at spur gear instantiation, then
-        it is possible to compute the tangential force and this property is ``True``, otherwise is ``False``.
+        """Whether is possible to compute the :py:attr:`tangential_force` on the gear teeth. \n
+        The tangential force computation depends on the value of :py:attr:`module`, so if this optional parameter has
+        been set at spur gear instantiation, then it is possible to compute the tangential force and this property is
+        ``True``, otherwise is ``False``.
 
         Returns
         -------
-        bool
+        :py:class:`bool`
             Whether is possible to compute the tangential force on the gear teeth.
 
-        See Also
-        --------
-        :py:attr:`module`
-        :py:attr:`tangential_force`
-        :py:meth:`compute_tangential_force`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`compute_tangential_force`
         """
         return super().tangential_force_is_computable
 
     @property
     def bending_stress(self) -> Stress:
-        """Bending stress applied on the gear teeth by the mating gear. It must be an instance of ``Stress``.
+        """Bending stress applied on the gear teeth by the mating gear. It must be an instance of
+        :py:class:`Stress <gearpy.units.units.Stress>`.
 
         Returns
         -------
-        Stress
+        :py:class:`Stress <gearpy.units.units.Stress>`
             Bending stress applied on the gear teeth by the mating gear.
 
-        Raises
-        ------
-        TypeError
-            If ``bending_stress`` is not an instance of ``Stress``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Stress`
-        :py:meth:`compute_bending_stress`
+           ``TypeError``
+               If :py:attr:`bending_stress` is not an instance of :py:class:`Stress <gearpy.units.units.Stress>`.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`compute_bending_stress`
         """
         return super().bending_stress
 
@@ -632,81 +632,74 @@ class SpurGear(GearBase):
     def bending_stress(self, bending_stress: Stress):
         super(SpurGear, type(self)).bending_stress.fset(self, bending_stress)
 
-    def compute_bending_stress(self):
-        r"""Computes the bending stress applied on the gear teeth by the mating gear.
+    def compute_bending_stress(self) -> None:
+        r"""It computes the :py:attr:`bending_stress` applied on the gear teeth by the mating gear.
 
-        Notes
-        -----
-        The bending stress computation is based on the following assumptions:
+        .. admonition:: Notes
+           :class: tip
 
-        - the tooth is stressed by the overall force acting on the tip of the tooth itself,
-        - the most unfavorable situation is considered in the calculation, as if there is only one pair of teeth in
-          contact within the contact segment,
-        - the component of the overall force that determines the bending on the tooth is the only one considered and,
-          for simplicity, is taken as having a value equal to the tangential force on the reference diameter,
-        - the radial component of the overall force that causes a compressive stress on the tooth is neglected.
+           The bending stress computation is based on the following assumptions:
 
-        The bending stress is computed with the following formula:
+           - the tooth is stressed by the overall force acting on the tip of the tooth itself,
+           - the most unfavorable situation is considered in the calculation, as if there is only one pair of teeth in
+             contact within the contact segment,
+           - the component of the overall force that determines the bending on the tooth is the only one considered and,
+             for simplicity, is taken as having a value equal to the tangential force on the reference diameter,
+           - the radial component of the overall force that causes a compressive stress on the tooth is neglected.
 
-        .. math::
-            \sigma_b = \frac{F_t}{m \, b \, Y_{LW}}
+           The bending stress is computed with the following formula:
 
-        where:
+           .. math::
+               \sigma_b = \frac{F_t}{m \, b \, Y_{LW}}
 
-        - :math:`F_t` is the tangential force applied on the tooth,
-        - :math:`m` is the gear module (``module``),
-        - :math:`b` is the gear tooth face width (``face_width``),
-        - :math:`Y_{LW}` is the gear Lewis factor (``lewis_factor``).
+           where:
 
-        See Also
-        --------
-        :py:attr:`bending_stress`
-        :py:attr:`tangential_force`
-        :py:attr:`module`
-        :py:attr:`face_width`
-        :py:attr:`lewis_factor`
+           - :math:`F_t` is the :py:attr:`tangential_force` applied on the tooth,
+           - :math:`m` is the gear :py:attr:`module`,
+           - :math:`b` is the gear tooth :py:attr:`face_width`,
+           - :math:`Y_{LW}` is the gear :py:attr:`lewis_factor`.
         """
         self.bending_stress = self.tangential_force/(self.module*self.face_width)/self.lewis_factor
 
     @property
     def bending_stress_is_computable(self) -> bool:
-        """Whether is possible to compute the bending stress on the gear teeth. The bending stress computation depends
-        on the value of ``module`` and ``face_width``, so if these optional parameters have been set at spur gear
-        instantiation, then it is possible to compute the bending stress and this property is ``True``, otherwise is
-        ``False``.
+        """Whether is possible to compute the :py:attr:`bending_stress` on the gear teeth. \n
+        The bending stress computation depends on the value of :py:attr:`module` and :py:attr:`face_width`, so if these
+        optional parameters have been set at spur gear instantiation, then it is possible to compute the bending stress
+        and this property is ``True``, otherwise is ``False``.
 
         Returns
         -------
-        bool
+        :py:class:`bool`
             Whether is possible to compute the bending stress on the gear teeth.
 
-        See Also
-        --------
-        :py:attr:`module`
-        :py:attr:`face_width`
-        :py:attr:`bending_stress`
-        :py:meth:`compute_bending_stress`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`compute_bending_stress`
         """
         return super().bending_stress_is_computable
 
     @property
     def contact_stress(self) -> Stress:
-        """Stress generated by the contact with mating gear teeth. It must be an instance of ``Stress``.
+        """Stress generated by the contact with mating gear teeth. It must be an instance of
+        :py:class:`Stress <gearpy.units.units.Stress>`.
 
         Returns
         -------
-        Stress
+        :py:class:`Stress <gearpy.units.units.Stress>`
             The stress generated by the contact with mating gear teeth.
 
-        Raises
-        ------
-        TypeError
-            If ``contact_stress`` is not an instance of ``Stress``.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:class:`gearpy.units.units.Stress`
-        :py:meth:`compute_contact_stress`
+           ``TypeError``
+               If :py:attr:`contact_stress` is not an instance of :py:class:`Stress <gearpy.units.units.Stress>`.
+
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`compute_contact_stress`
         """
         return super().contact_stress
 
@@ -714,49 +707,51 @@ class SpurGear(GearBase):
     def contact_stress(self, contact_stress: Stress):
         super(SpurGear, type(self)).contact_stress.fset(self, contact_stress)
 
-    def compute_contact_stress(self):
-        r"""Computes the contact stress generated by the contact with mating gear teeth.
+    def compute_contact_stress(self) -> None:
+        r"""It computes the :py:attr:`contact_stress` generated by the contact with mating gear teeth.
 
-        Raises
-        ------
-        ValueError
-            - If a gear mating between two gears has not been set,
-            - if gear role is ``MatingMaster`` and its slave gear misses ``module`` parameter,
-            - if gear role is ``MatingMaster`` and its slave gear misses ``elastic_modulus`` parameter,
-            - if gear role is ``MatingSlave`` and its master gear misses ``module`` parameter,
-            - if gear role is ``MatingSlave`` and its master gear misses ``elastic_modulus`` parameter.
+        .. admonition:: Raises
+           :class: warning
 
-        Notes
-        -----
-        The contact stress computation is based on the following assumptions:
+           ``ValueError``
+               - If a gear mating between two gears has not been set,
+               - if :py:attr:`mating_role` is 
+                 :py:class:`MatingMaster <gearpy.mechanical_objects.mating_roles.MatingMaster>` and its slave gear 
+                 misses :py:attr:`module` parameter,
+               - if :py:attr:`mating_role` is 
+                 :py:class:`MatingMaster <gearpy.mechanical_objects.mating_roles.MatingMaster>` and its slave gear 
+                 misses :py:attr:`elastic_modulus` parameter,
+               - if :py:attr:`mating_role` is 
+                 :py:class:`MatingSlave <gearpy.mechanical_objects.mating_roles.MatingSlave>` and its master gear misses 
+                 :py:attr:`module` parameter,
+               - if :py:attr:`mating_role` is 
+                 :py:class:`MatingSlave <gearpy.mechanical_objects.mating_roles.MatingSlave>` and its master gear misses 
+                 :py:attr:`elastic_modulus` parameter.
 
-        - perfect elasticity of the materials the two mating gear,
-        - absence of friction forces in the contact point,
-        - small size of the contact surface compared to the size of the bodies between which contact occurs.
+        .. admonition:: Notes
+           :class: tip
 
-        The contact stress is computed with the following formula:
+           The contact stress computation is based on the following assumptions:
 
-        .. math::
-            \sigma_c = 0.262922 \, \sqrt{\frac{4 \, F_t}{b \, \cos \alpha \, \sin \alpha}
-            \left( \frac{1}{D_1} + \frac{1}{D_2} \right) \, \frac{E_1 \, E_2}{E_1 + E_2}}
+           - perfect elasticity of the materials the two mating gear,
+           - absence of friction forces in the contact point,
+           - small size of the contact surface compared to the size of the bodies between which contact occurs.
 
-        where:
+           The contact stress is computed with the following formula:
 
-        - :math:`F_t` is the tangential force applied on the tooth,
-        - :math:`b` is the gear face width (``face_width``),
-        - :math:`\alpha` is the pressure angle of the gear, always equal to 20 degrees,
-        - :math:`D_1` is the gear reference diameter (``reference_diameter``),
-        - :math:`D_2` is the mating gear reference diameter,
-        - :math:`E_1` is the gear elastic modulus (``elastic_modulus``),
-        - :math:`E_2` is the mating gear elastic modulus.
+           .. math::
+               \sigma_c = 0.262922 \, \sqrt{\frac{4 \, F_t}{b \, \cos \alpha \, \sin \alpha}
+               \left( \frac{1}{D_1} + \frac{1}{D_2} \right) \, \frac{E_1 \, E_2}{E_1 + E_2}}
 
-        See Also
-        --------
-        :py:attr:`contact_stress`
-        :py:attr:`tangential_force`
-        :py:attr:`elastic_modulus`
-        :py:attr:`face_width`
-        :py:attr:`reference_diameter`
+           where:
+
+           - :math:`F_t` is the :py:attr:`tangential_force` tangential force applied on the tooth,
+           - :math:`b` is the gear :py:attr:`face_width`,
+           - :math:`\alpha` is the pressure angle of the gear, always equal to 20 degrees,
+           - :math:`D_1` is the gear :py:attr:`reference_diameter`,
+           - :math:`D_2` is the mating gear :py:attr:`reference_diameter`,
+           - :math:`E_1` is the gear :py:attr:`elastic_modulus`,
+           - :math:`E_2` is the mating gear :py:attr:`elastic_modulus`.
         """
         if self.mating_role == MatingMaster:
             if self.drives.module is not None:
@@ -800,78 +795,78 @@ class SpurGear(GearBase):
 
     @property
     def contact_stress_is_computable(self) -> bool:
-        """Whether is possible to compute the contact stress force on the gear teeth. The contact stress computation
-        depends on the value of ``module``, ``face_width`` and ``elastic_modulus``, so if these optional parameters have
-        been set at spur gear instantiation, then it is possible to compute the contact stress and this property is
-        ``True``, otherwise is ``False``.
+        """Whether is possible to compute the :py:attr:`contact_stress` force on the gear teeth. \n
+        The contact stress computation depends on the value of :py:attr:`module`, :py:attr:`face_width` and
+        :py:attr:`elastic_modulus`, so if these optional parameters have been set at spur gear instantiation, then it is
+        possible to compute the contact stress and this property is ``True``, otherwise is ``False``.
 
         Returns
         -------
-        bool
+        :py:class:`bool`
             Whether is possible to compute the contact stress on the gear teeth.
 
-        See Also
-        --------
-        :py:attr:`module`
-        :py:attr:`face_width`
-        :py:attr:`elastic_modulus`
-        :py:attr:`contact_stress`
-        :py:meth:`compute_contact_stress`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`compute_contact_stress`
         """
         return super().contact_stress_is_computable
 
     @property
     def external_torque(self) -> Callable[[AngularPosition, AngularSpeed, Time], Torque]:
         """Custom function to compute the external torque applied on the gear. It must be a function with parameters
-        ``angular_position``, ``angular_speed`` and ``time``. The function must return an instance of ``Torque``.
+        ``angular_position``, ``angular_speed`` and ``time``. The function must return an instance of
+        :py:class:`Torque <gearpy.units.units.Torque>`.
 
         Returns
         -------
-        Callable
+        :py:obj:`Callable <typing.Callable>`
             The function to compute the external torque applied on the gear.
 
-        Raises
-        ------
-        TypeError
-            If ``external_torque`` is not callable.
-        KeyError
-            If ``external_torque`` misses parameters ``angular_position``, ``angular_speed`` or ``time``.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        Constant torque, not dependent on ``angular_position``, ``angular_speed`` or ``time``.
+           ``TypeError``
+               If :py:meth:`external_torque` is not callable.
+           ``KeyError``
+               If :py:meth:`external_torque` misses parameters ``angular_position``, ``angular_speed`` or ``time``.
 
-        >>> from gearpy.mechanical_objects import SpurGear
-        >>> from gearpy.units import InertiaMoment, Torque
-        >>> gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
-        >>> gear.external_torque = lambda angular_position, angular_speed, time: Torque(5, 'Nm')
+        .. admonition:: Examples
+           :class: important
 
-        Torque dependent on ``angular_position`` and ``time``. \n
-        In this case the gear gets a periodic load, dependent on time, and an extra load dependent on its angular
-        position. The dependence by angular position may be used to model cases where cams are involved.
+           Constant torque, not dependent on ``angular_position``, ``angular_speed`` or ``time``.
 
-        >>> import numpy as np
-        >>> from gearpy.units import AngularPosition, AngularSpeed, Time
-        >>> def custom_external_torque(angular_position: AngularPosition,
-        ...                            angular_speed: AngularSpeed,
-        ...                            time: Time):
-        ...     return Torque(value = angular_position.sin() +
-        ...                           np.cos(time.to('sec').value),
-        ...                   unit = 'Nm')
-        >>> gear.external_torque = custom_external_torque
+           >>> from gearpy.mechanical_objects import SpurGear
+           >>> from gearpy.units import InertiaMoment, Torque
+           >>> gear = SpurGear(name = 'gear', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'))
+           >>> gear.external_torque = lambda angular_position, angular_speed, time: Torque(5, 'Nm')
 
-        Torque dependent on ``angular_position``, ``angular_speed`` and ``time``. \n
-        With respect ot the previous case, the gear gets an extra load dependent on its angular speed. The dependence by
-        angular speed may be used to model cases where air friction is not negligible.
+           Torque dependent on ``angular_position`` and ``time``. \n
+           In this case the gear gets a periodic load, dependent on time, and an extra load dependent on its angular
+           position. The dependence by angular position may be used to model cases where cams are involved.
 
-        >>> def complex_external_torque(angular_position: AngularPosition,
-        ...                             angular_speed: AngularSpeed,
-        ...                             time: Time):
-        ...     return Torque(value = angular_position.sin() +
-        ...                           0.001*(angular_speed.to('rad/s').value)**2 +
-        ...                           np.cos(time.to('sec').value),
-        ...                   unit = 'Nm')
-        >>> gear.external_torque = complex_external_torque
+           >>> import numpy as np
+           >>> from gearpy.units import AngularPosition, AngularSpeed, Time
+           >>> def custom_external_torque(angular_position: AngularPosition,
+           ...                            angular_speed: AngularSpeed,
+           ...                            time: Time):
+           ...     return Torque(value = angular_position.sin() +
+           ...                           np.cos(time.to('sec').value),
+           ...                   unit = 'Nm')
+           >>> gear.external_torque = custom_external_torque
+
+           Torque dependent on ``angular_position``, ``angular_speed`` and ``time``. \n
+           With respect ot the previous case, the gear gets an extra load dependent on its angular speed. The dependence
+           by angular speed may be used to model cases where air friction is not negligible.
+
+           >>> def complex_external_torque(angular_position: AngularPosition,
+           ...                             angular_speed: AngularSpeed,
+           ...                             time: Time):
+           ...     return Torque(value = angular_position.sin() +
+           ...                           0.001*(angular_speed.to('rad/s').value)**2 +
+           ...                           np.cos(time.to('sec').value),
+           ...                   unit = 'Nm')
+           >>> gear.external_torque = complex_external_torque
         """
         return super().external_torque
 
@@ -884,40 +879,39 @@ class SpurGear(GearBase):
         """Time variables of the gear. Each time variable is stored as a dictionary key-value pair. The available time
         variables are:
 
-        - ``angular position``,
-        - ``angular speed``,
-        - ``angular acceleration``,
-        - ``torque``,
-        - ``driving torque``,
-        - ``load torque``,
-        - ``tangential force``,
-        - ``bending stress``,
-        - ``contact stress``.
+        - :py:attr:`angular_position`: ``'angular position'``,
+        - :py:attr:`angular_speed`: ``'angular speed'``,
+        - :py:attr:`angular_acceleration`: ``'angular acceleration'``,
+        - :py:attr:`torque`: ``'torque'``,
+        - :py:attr:`driving_torque`: ``'driving torque'``,
+        - :py:attr:`load_torque`: ``'load torque'``,
+        - :py:attr:`tangential_force`: ``'tangential force'``,
+        - :py:attr:`bending_stress`: ``'bending stress'``,
+        - :py:attr:`contact_stress`: ``'contact stress'``.
 
-        ``tangential force``, ``bending stress`` and ``contact stress`` are listed among time variables only if they are
-        computable indeed, depending on which gear parameters are set at gear instantiation. \n
+        ``'tangential force'``, ``'bending stress'`` and ``'contact stress'`` are listed among time variables only if
+        they are computable indeed, depending on which gear parameters are set at gear instantiation; see
+        :py:attr:`tangential_force_is_computable`, :py:attr:`bending_stress_is_computable` and
+        :py:attr:`contact_stress_is_computable` for more details. \n
         Corresponding values of the dictionary are lists of the respective time variable values. \n
-        At each time iteration, the ``Solver`` appends every time variables' values to the relative list in the
-        dictionary.
+        At each time iteration, the :py:class:`Solver <gearpy.solver.Solver>` appends every time variables' values to
+        the relative list in the dictionary.
 
         Returns
         -------
-        dict
+        :py:class:`dict`
             Time variables of the gear.
 
-        See Also
-        --------
-        :py:meth:`update_time_variables`
+        .. admonition:: See Also
+           :class: seealso
+
+           :py:meth:`update_time_variables`
         """
         return super().time_variables
 
     def update_time_variables(self) -> None:
-        """Updates ``time_variables`` dictionary by appending the last value of each time variable (key of the
+        """It updates :py:attr:`time_variables` dictionary by appending the last value of each time variable (key of the
         dictionary) to corresponding list (value of the dictionary).
-
-        See Also
-        --------
-        :py:attr:`time_variables`
         """
         super().update_time_variables()
         if self.tangential_force_is_computable:

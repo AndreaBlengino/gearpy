@@ -4,25 +4,26 @@ from .unit_base import UnitBase
 
 
 class AngularPosition(UnitBase):
-    r"""``gearpy.units.units.AngularPosition`` object.
+    r""":py:class:`AngularPosition <gearpy.units.units.AngularPosition>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for angular position.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Angular position numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     :py:meth:`sin`
-        Computes the sine of the angular position at a given frequency.
+        It computes the sine of the angular position at a given frequency.
     :py:meth:`cos`
-        Computes the cosine of the angular position at a given frequency.
+        It computes the cosine of the angular position at a given frequency.
     :py:meth:`tan`
-        Computes the tangent of the angular position at a given frequency.
+        It computes the tangent of the angular position at a given frequency.
     """
 
     __UNITS = {'rad': 1,
@@ -73,23 +74,24 @@ class AngularPosition(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Angular position numerical value. The relative unit is expressed by the ``unit`` property.
+        """Angular position numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Angular position numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for angular position. It must be a string.
+        """Symbol of the unit of measurement for angular position. It must be a :py:class:`str`.
         Available units are:
 
         - ``'rad'`` for radian,
@@ -100,66 +102,71 @@ class AngularPosition(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for angular position.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'AngularPosition':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        AngularPosition
+        :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`
             Converted angular position.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``AngularPosition`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import AngularPosition
-        >>> p = AngularPosition(180, 'deg')
-        >>> p
-        ... 180 deg
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current value.
+           ``AngularPosition`` instantiation.
 
-        >>> p.to('rad')
-        ... 3.141592653589793 rad
-        >>> p
-        ... 180 deg
+           >>> from gearpy.units import AngularPosition
+           >>> p = AngularPosition(180, 'deg')
+           >>> p
+           ... 180 deg
 
-        Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+           Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current
+           value.
 
-        >>> p.to('arcmin', inplace = True)
-        ... 10800.0 arcmin
-        >>> p
-        ... 10800.0 arcmin
+           >>> p.to('rad')
+           ... 3.141592653589793 rad
+           >>> p
+           ... 180 deg
+
+           Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+
+           >>> p.to('arcmin', inplace = True)
+           ... 10800.0 arcmin
+           >>> p
+           ... 10800.0 arcmin
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -180,71 +187,72 @@ class AngularPosition(UnitBase):
             return AngularPosition(value = target_value, unit = target_unit)
 
     def sin(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
-        """Computes the sine of the angular position at a given frequency.
+        r"""It computes the sine of the angular position at a given frequency.
 
         Parameters
         ----------
-        frequency : float or int, optional
-            Frequency to multiply by before computing the sine.
+        ``frequency`` : :py:class:`float` or :py:class:`int`, optional
+            Frequency to multiply by before computing the sine. Default is :math:`\frac{1}{2 \pi}`.
 
         Returns
         -------
-        float
+        :py:class:`float`
             Computed sine of the angular position.
         """
         return sin(2*pi*frequency*self.to('rad').value)
 
     def cos(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
-        """Computes the cosine of the angular position at a given frequency.
+        r"""It computes the cosine of the angular position at a given frequency.
 
         Parameters
         ----------
-        frequency : float or int, optional
-            Frequency to multiply by before computing the cosine.
+        ``frequency`` : :py:class:`float` or :py:class:`int`, optional
+            Frequency to multiply by before computing the cosine. Default is :math:`\frac{1}{2 \pi}`.
 
         Returns
         -------
-        float
+        :py:class:`float`
             Computed cosine of the angular position.
         """
         return cos(2*pi*frequency*self.to('rad').value)
 
     def tan(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
-        """Computes the tangent of the angular position at a given frequency.
+        r"""It computes the tangent of the angular position at a given frequency.
 
         Parameters
         ----------
-        frequency : float or int, optional
-            Frequency to multiply by before computing the tangent.
+        ``frequency`` : :py:class:`float` or :py:class:`int`, optional
+            Frequency to multiply by before computing the tangent. Default is :math:`\frac{1}{2 \pi}`.
 
         Returns
         -------
-        float
+        :py:class:`float`
             Computed tangent of the angular position.
         """
         return tan(2*pi*frequency*self.to('rad').value)
 
 
 class Angle(AngularPosition):
-    r"""``gearpy.units.units.Angle`` object.
+    r""":py:class:`Angle <gearpy.units.units.Angle>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for angle.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Angle numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     :py:meth:`sin`
-        Computes the sine of the angle at a given frequency.
+        It computes the sine of the angle at a given frequency.
     :py:meth:`cos`
-        Computes the cosine of the angle at a given frequency.
+        It computes the cosine of the angle at a given frequency.
     :py:meth:`tan`
-        Computes the tangent of the angle at a given frequency.
+        It computes the tangent of the angle at a given frequency.
     """
 
     def __init__(self, value: Union[float, int], unit: str):
@@ -298,25 +306,27 @@ class Angle(AngularPosition):
 
     @property
     def value(self) -> Union[float, int]:
-        """Angle numerical value. The relative unit is expressed by the ``unit`` property. It must be positive or null.
+        """Angle numerical value. The relative unit is expressed by the :py:attr:`unit` property. It must be positive or
+        null.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Angle numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
-        ValueError
-            If ``value`` is negative.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
+           ``ValueError``
+               If :py:attr:`value` is negative.
         """
         return super().value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for angle. It must be a string.
+        """Symbol of the unit of measurement for angle. It must be a :py:class:`str`.
         Available units are:
 
         - ``'rad'`` for radian,
@@ -327,66 +337,71 @@ class Angle(AngularPosition):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for angle.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return super().unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'Angle':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        Angle
+        :py:class:`Angle <gearpy.units.units.Angle>`
             Converted angle.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Angle`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Angle
-        >>> a = Angle(180, 'deg')
-        >>> a
-        ... 180 deg
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current value.
+           ``Angle`` instantiation.
 
-        >>> a.to('rad')
-        ... 3.141592653589793 rad
-        >>> a
-        ... 180 deg
+           >>> from gearpy.units import Angle
+           >>> a = Angle(180, 'deg')
+           >>> a
+           ... 180 deg
 
-        Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+           Conversion from degree to radian with ``inplace = False`` by default, so it does not override the current
+           value.
 
-        >>> a.to('arcmin', inplace = True)
-        ... 10800.0 arcmin
-        >>> a
-        ... 10800.0 arcmin
+           >>> a.to('rad')
+           ... 3.141592653589793 rad
+           >>> a
+           ... 180 deg
+
+           Conversion from degree to minute of arc with ``inplace = True``, in order to override the current value.
+
+           >>> a.to('arcmin', inplace = True)
+           ... 10800.0 arcmin
+           >>> a
+           ... 10800.0 arcmin
         """
         converted = super().to(target_unit = target_unit, inplace = inplace)
 
@@ -398,65 +413,66 @@ class Angle(AngularPosition):
             return Angle(value = converted.value, unit = converted.unit)
 
     def sin(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
-        """Computes the sine of the angle at a given frequency.
+        r"""It computes the sine of the angle at a given frequency.
 
         Parameters
         ----------
-        frequency : float or int, optional
-            Frequency to multiply by before computing the sine.
+        ``frequency`` : :py:class:`float` or :py:class:`int`, optional
+            Frequency to multiply by before computing the sine. Default is :math:`\frac{1}{2 \pi}`.
 
         Returns
         -------
-        float
+        :py:class:`float`
             Computed sine of the angle.
         """
         return super().sin(frequency = frequency)
 
     def cos(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
-        """Computes the cosine of the angle at a given frequency.
+        r"""It computes the cosine of the angle at a given frequency.
 
         Parameters
         ----------
-        frequency : float or int, optional
-            Frequency to multiply by before computing the cosine.
+        ``frequency`` : :py:class:`float` or :py:class:`int`, optional
+            Frequency to multiply by before computing the cosine. Default is :math:`\frac{1}{2 \pi}`.
 
         Returns
         -------
-        float
+        :py:class:`float`
             Computed cosine of the angle.
         """
         return super().cos(frequency = frequency)
 
     def tan(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
-        """Computes the tangent of the angle at a given frequency.
+        r"""It computes the tangent of the angle at a given frequency.
 
         Parameters
         ----------
-        frequency : float or int, optional
-            Frequency to multiply by before computing the tangent.
+        ``frequency`` : :py:class:`float` or :py:class:`int`, optional
+            Frequency to multiply by before computing the tangent. Default is :math:`\frac{1}{2 \pi}`.
 
         Returns
         -------
-        float
+        :py:class:`float`
             Computed tangent of the angle.
         """
         return super().tan(frequency = frequency)
 
 
 class AngularSpeed(UnitBase):
-    r"""``gearpy.units.units.AngularSpeed`` object.
+    r""":py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for angular speed.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Angular speed numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     __UNITS = {'rad/s': 1,
@@ -516,23 +532,24 @@ class AngularSpeed(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Angular speed numerical value. The relative unit is expressed by the ``unit`` property.
+        """Angular speed numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Angular speed numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for angular speed. It must be a string.
+        """Symbol of the unit of measurement for angular speed. It must be a :py:class:`str`.
         Available units are:
 
         - ``'rad/s'`` for radian per second,
@@ -547,68 +564,72 @@ class AngularSpeed(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for angular speed.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'AngularSpeed':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        AngularSpeed
+        :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`
             Converted angular speed.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``AngularSpeed`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import AngularSpeed
-        >>> s = AngularSpeed(1000, 'rpm')
-        >>> s
-        ... 1000 rpm
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from revolutions per minute to radian per second with ``inplace = False`` by default, so it does not
-        override the current value.
+           ``AngularSpeed`` instantiation.
 
-        >>> s.to('rad/s')
-        ... 104.71975511965977 rad/s
-        >>> s
-        ... 1000 rpm
+           >>> from gearpy.units import AngularSpeed
+           >>> s = AngularSpeed(1000, 'rpm')
+           >>> s
+           ... 1000 rpm
 
-        Conversion from revolutions per minute to revolutions per second with ``inplace = True``, in order to override
-        the current value.
+           Conversion from revolutions per minute to radian per second with ``inplace = False`` by default, so it does
+           not override the current value.
 
-        >>> s.to('rps', inplace = True)
-        ... 16.666666666666664 rps
-        >>> s
-        ... 16.666666666666664 rps
+           >>> s.to('rad/s')
+           ... 104.71975511965977 rad/s
+           >>> s
+           ... 1000 rpm
+
+           Conversion from revolutions per minute to revolutions per second with ``inplace = True``, in order to
+           override the current value.
+
+           >>> s.to('rps', inplace = True)
+           ... 16.666666666666664 rps
+           >>> s
+           ... 16.666666666666664 rps
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -630,19 +651,20 @@ class AngularSpeed(UnitBase):
 
 
 class AngularAcceleration(UnitBase):
-    r"""``gearpy.units.units.AngularAcceleration`` object.
+    r""":py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for angular acceleration.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Angular acceleration numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     __UNITS = {'rad/s^2': 1,
@@ -697,23 +719,24 @@ class AngularAcceleration(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Angular acceleration numerical value. The relative unit is expressed by the ``unit`` property.
+        """Angular acceleration numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Angular acceleration numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for angular acceleration. It must be a string.
+        """Symbol of the unit of measurement for angular acceleration. It must be a :py:class:`str`.
         Available units are:
 
         - ``'rad/s^2'`` for radian per second squared,
@@ -722,68 +745,72 @@ class AngularAcceleration(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for angular acceleration.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'AngularAcceleration':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        AngularAcceleration
+        :py:class:`AngularAcceleration <gearpy.units.units.AngularAcceleration>`
             Converted angular acceleration.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``AngularAcceleration`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import AngularAcceleration
-        >>> a = AngularAcceleration(180, 'deg/s^2')
-        >>> a
-        ... 180 deg/s^2
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from degree per second squared to radian per second squared with ``inplace = False`` by default, so
-        it does not override the current value.
+           ``AngularAcceleration`` instantiation.
 
-        >>> a.to('rad/s^2')
-        ... 3.141592653589793 rad/s^2
-        >>> a
-        ... 180 deg/s^2
+           >>> from gearpy.units import AngularAcceleration
+           >>> a = AngularAcceleration(180, 'deg/s^2')
+           >>> a
+           ... 180 deg/s^2
 
-        Conversion from degree per second squared to radian per second squared with ``inplace = True``, in order to
-        override the current value.
+           Conversion from degree per second squared to radian per second squared with ``inplace = False`` by default,
+           so it does not override the current value.
 
-        >>> a.to('rad/s^2', inplace = True)
-        ... 3.141592653589793 rad/s^2
-        >>> a
-        ... 3.141592653589793 rad/s^2
+           >>> a.to('rad/s^2')
+           ... 3.141592653589793 rad/s^2
+           >>> a
+           ... 180 deg/s^2
+
+           Conversion from degree per second squared to radian per second squared with ``inplace = True``, in order to
+           override the current value.
+
+           >>> a.to('rad/s^2', inplace = True)
+           ... 3.141592653589793 rad/s^2
+           >>> a
+           ... 3.141592653589793 rad/s^2
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -805,19 +832,20 @@ class AngularAcceleration(UnitBase):
 
 
 class InertiaMoment(UnitBase):
-    r"""``gearpy.units.units.InertiaMoment`` object.
+    r""":py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for moment of inertia.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Moment of inertia numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     __UNITS = {'kgm^2': 1,
@@ -880,26 +908,27 @@ class InertiaMoment(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Moment of inertia numerical value. The relative unit is expressed by the ``unit`` property. It must be
+        """Moment of inertia numerical value. The relative unit is expressed by the :py:attr:`unit` property. It must be
         positive.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Moment of inertia numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
-        ValueError
-            If ``value`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
+           ``ValueError``
+               If :py:attr:`value` is negative or null.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for moment of inertia. It must be a string.
+        """Symbol of the unit of measurement for moment of inertia. It must be a :py:class:`str`.
         Available units are:
 
         - ``'kgm^2'`` for kilogram-square meter,
@@ -913,68 +942,72 @@ class InertiaMoment(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for moment of inertia.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'InertiaMoment':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        InertiaMoment
+        :py:class:`InertiaMoment <gearpy.units.units.InertiaMoment>`
             Converted moment of inertia.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``InertiaMoment`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import InertiaMoment
-        >>> i = InertiaMoment(1, 'kgm^2')
-        >>> i
-        ... 1 kgm^2
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from kilogram-square meter to gram-square meter with ``inplace = False`` by default, so it does not
-        override the current value.
+           ``InertiaMoment`` instantiation.
 
-        >>> i.to('gm^2')
-        ... 1000.0 gm^2
-        >>> i
-        ... 1 kgm^2
+           >>> from gearpy.units import InertiaMoment
+           >>> i = InertiaMoment(1, 'kgm^2')
+           >>> i
+           ... 1 kgm^2
 
-        Conversion from kilograms-square meter to gram-square meter with ``inplace = True``, in order to override the
-        current value.
+           Conversion from kilogram-square meter to gram-square meter with ``inplace = False`` by default, so it does
+           not override the current value.
 
-        >>> i.to('gm^2', inplace = True)
-        ... 1000.0 gm^2
-        >>> i
-        ... 1000.0 gm^2
+           >>> i.to('gm^2')
+           ... 1000.0 gm^2
+           >>> i
+           ... 1 kgm^2
+
+           Conversion from kilograms-square meter to gram-square meter with ``inplace = True``, in order to override the
+           current value.
+
+           >>> i.to('gm^2', inplace = True)
+           ... 1000.0 gm^2
+           >>> i
+           ... 1000.0 gm^2
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -996,19 +1029,20 @@ class InertiaMoment(UnitBase):
 
 
 class Torque(UnitBase):
-    r"""``gearpy.units.units.Torque`` object.
+    r""":py:class:`Torque <gearpy.units.units.Torque>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for torque.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Torque numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     __UNITS = {'Nm': 1,
@@ -1076,23 +1110,24 @@ class Torque(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Torque numerical value. The relative unit is expressed by the ``unit`` property.
+        """Torque numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Torque numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for Torque. It must be a string.
+        """Symbol of the unit of measurement for Torque. It must be a :py:class:`str`.
         Available units are:
 
         - ``'Nm'`` for newton-meter,
@@ -1115,68 +1150,72 @@ class Torque(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for torque.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'Torque':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        Torque
+        :py:class:`Torque <gearpy.units.units.Torque>`
             Converted torque.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Torque`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Torque
-        >>> T = Torque(1, 'Nm')
-        >>> T
-        ... 1 Nm
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from newton-meter to kilogram force-meter with ``inplace = False`` by default, so it does not
-        override the current value.
+           ``Torque`` instantiation.
 
-        >>> T.to('kgfm')
-        ... 0.10197162129779283 kgfm
-        >>> T
-        ... 1 Nm
+           >>> from gearpy.units import Torque
+           >>> T = Torque(1, 'Nm')
+           >>> T
+           ... 1 Nm
 
-        Conversion from newton-meter to kilogram force-meter with ``inplace = True``, in order to override the current
-        value.
+           Conversion from newton-meter to kilogram force-meter with ``inplace = False`` by default, so it does not
+           override the current value.
 
-        >>> T.to('kgfm', inplace = True)
-        ... 0.10197162129779283 kgfm
-        >>> T
-        ... 0.10197162129779283 kgfm
+           >>> T.to('kgfm')
+           ... 0.10197162129779283 kgfm
+           >>> T
+           ... 1 Nm
+
+           Conversion from newton-meter to kilogram force-meter with ``inplace = True``, in order to override the
+           current value.
+
+           >>> T.to('kgfm', inplace = True)
+           ... 0.10197162129779283 kgfm
+           >>> T
+           ... 0.10197162129779283 kgfm
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1198,19 +1237,20 @@ class Torque(UnitBase):
 
 
 class Time(UnitBase):
-    r"""``gearpy.units.units.Time`` object.
+    r""":py:class:`Time <gearpy.units.units.Time>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for time.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Time numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     __UNITS = {'sec': 1,
@@ -1273,23 +1313,24 @@ class Time(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Time numerical value. The relative unit is expressed by the ``unit`` property.
+        """Time numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Time numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for time. It must be a string.
+        """Symbol of the unit of measurement for time. It must be a :py:class:`str`.
         Available units are:
 
         - ``'sec'`` for second,
@@ -1299,66 +1340,71 @@ class Time(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for time.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'Time':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        Time
+        :py:class:`Time <gearpy.units.units.Time>`
             Converted time.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Time`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Time
-        >>> t = Time(1, 'hour')
-        >>> t
-        ... 1 hour
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from hour to second with ``inplace = False`` by default, so it does not override the current value.
+           ``Time`` instantiation.
 
-        >>> t.to('sec')
-        ... 3600.0 sec
-        >>> t
-        ... 1 hour
+           >>> from gearpy.units import Time
+           >>> t = Time(1, 'hour')
+           >>> t
+           ... 1 hour
 
-        Conversion from hour to second with ``inplace = True``, in order to override the current value.
+           Conversion from hour to second with ``inplace = False`` by default, so it does not override the current
+           value.
 
-        >>> t.to('sec', inplace = True)
-        ... 3600.0 sec
-        >>> t
-        ... 3600.0 sec
+           >>> t.to('sec')
+           ... 3600.0 sec
+           >>> t
+           ... 1 hour
+
+           Conversion from hour to second with ``inplace = True``, in order to override the current value.
+
+           >>> t.to('sec', inplace = True)
+           ... 3600.0 sec
+           >>> t
+           ... 3600.0 sec
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1380,19 +1426,20 @@ class Time(UnitBase):
 
 
 class TimeInterval(Time):
-    r"""``gearpy.units.units.TimeInterval`` object.
+    r""":py:class:`TimeInterval <gearpy.units.units.TimeInterval>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for time interval.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Time interval numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     def __init__(self, value: Union[float, int], unit: str):
@@ -1446,25 +1493,27 @@ class TimeInterval(Time):
 
     @property
     def value(self) -> Union[float, int]:
-        """Time interval numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+        """Time interval numerical value. The relative unit is expressed by the :py:attr:`unit` property. It must be
+        positive.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Time interval numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
-        ValueError
-            If ``value`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
+           ``ValueError``
+               If :py:attr:`value` is negative or null.
         """
         return super().value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for time interval. It must be a string.
+        """Symbol of the unit of measurement for time interval. It must be a :py:class:`str`.
         Available units are:
 
         - ``'sec'`` for second,
@@ -1474,66 +1523,71 @@ class TimeInterval(Time):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for time interval.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return super().unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'TimeInterval':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        TimeInterval
+        :py:class:`TimeInterval <gearpy.units.units.TimeInterval>`
             Converted time interval.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``TimeInterval`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import TimeInterval
-        >>> dt = TimeInterval(1, 'hour')
-        >>> dt
-        ... 1 hour
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from hour to second with ``inplace = False`` by default, so it does not override the current value.
+           ``TimeInterval`` instantiation.
 
-        >>> dt.to('sec')
-        ... 3600.0 sec
-        >>> dt
-        ... 1 hour
+           >>> from gearpy.units import TimeInterval
+           >>> dt = TimeInterval(1, 'hour')
+           >>> dt
+           ... 1 hour
 
-        Conversion from hour to second with ``inplace = True``, in order to override the current value.
+           Conversion from hour to second with ``inplace = False`` by default, so it does not override the current
+           value.
 
-        >>> dt.to('sec', inplace = True)
-        ... 3600.0 sec
-        >>> dt
-        ... 3600.0 sec
+           >>> dt.to('sec')
+           ... 3600.0 sec
+           >>> dt
+           ... 1 hour
+
+           Conversion from hour to second with ``inplace = True``, in order to override the current value.
+
+           >>> dt.to('sec', inplace = True)
+           ... 3600.0 sec
+           >>> dt
+           ... 3600.0 sec
         """
         converted = super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1546,19 +1600,20 @@ class TimeInterval(Time):
 
 
 class Length(UnitBase):
-    r"""``gearpy.units.units.Length`` object.
+    r""":py:class:`Length <gearpy.units.units.Length>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for length.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Length numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     __UNITS = {'m': 1,
@@ -1614,25 +1669,26 @@ class Length(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Length numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+        """Length numerical value. The relative unit is expressed by the :py:attr:`unit` property. It must be positive.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Length numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
-        ValueError
-            If ``value`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
+           ``ValueError``
+               If :py:attr:`value` is negative or null.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for length. It must be a string.
+        """Symbol of the unit of measurement for length. It must be a :py:class:`str`.
         Available units are:
 
         - ``'m'`` for meter,
@@ -1642,67 +1698,71 @@ class Length(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for length.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'Length':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        Length
+        :py:class:`Length <gearpy.units.units.Length>`
             Converted length.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Length`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Length
-        >>> l = Length(1, 'm')
-        >>> l
-        ... 1 m
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from meter to centimeter with ``inplace = False`` by default, so it does not override the current
-        value.
+           ``Length`` instantiation.
 
-        >>> l.to('cm')
-        ... 100.0 cm
-        >>> l
-        ... 1 m
+           >>> from gearpy.units import Length
+           >>> l = Length(1, 'm')
+           >>> l
+           ... 1 m
 
-        Conversion from meter to centimeter with ``inplace = True``, in order to override the current value.
+           Conversion from meter to centimeter with ``inplace = False`` by default, so it does not override the current
+           value.
 
-        >>> l.to('cm', inplace = True)
-        ... 100.0 cm
-        >>> l
-        ... 100.0 cm
+           >>> l.to('cm')
+           ... 100.0 cm
+           >>> l
+           ... 1 m
+
+           Conversion from meter to centimeter with ``inplace = True``, in order to override the current value.
+
+           >>> l.to('cm', inplace = True)
+           ... 100.0 cm
+           >>> l
+           ... 100.0 cm
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1724,19 +1784,20 @@ class Length(UnitBase):
 
 
 class Surface(UnitBase):
-    r"""``gearpy.units.units.Surface`` object.
+    r""":py:class:`Surface <gearpy.units.units.Surface>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for surface.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Surface numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     __UNITS = {'m^2': 1,
@@ -1789,25 +1850,26 @@ class Surface(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Surface numerical value. The relative unit is expressed by the ``unit`` property. It must be positive.
+        """Surface numerical value. The relative unit is expressed by the :py:attr:`unit` property. It must be positive.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Surface numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
-        ValueError
-            If ``value`` is negative or null.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
+           ``ValueError``
+               If :py:attr:`value` is negative or null.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for surface. It must be a string.
+        """Symbol of the unit of measurement for surface. It must be a :py:class:`str`.
         Available units are:
 
         - ``'m^2'`` for square meter,
@@ -1817,68 +1879,72 @@ class Surface(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for surface.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'Surface':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        Surface
+        :py:class:`Surface <gearpy.units.units.Surface>`
             Converted surface.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Surface`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Surface
-        >>> s = Surface(1, 'm^2')
-        >>> s
-        ... 1 m^2
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from square meter to square millimeter with ``inplace = False`` by default, so it does not override
-        the current value.
+           ``Surface`` instantiation.
 
-        >>> s.to('mm^2')
-        ... 1000000.0 mm^2
-        >>> s
-        ... 1 m^2
+           >>> from gearpy.units import Surface
+           >>> s = Surface(1, 'm^2')
+           >>> s
+           ... 1 m^2
 
-        Conversion from square meter to square millimeter with ``inplace = True``, in order to override the current
-        value.
+           Conversion from square meter to square millimeter with ``inplace = False`` by default, so it does not
+           override the current value.
 
-        >>> s.to('mm^2', inplace = True)
-        ... 1000000.0 mm^2
-        >>> s
-        ... 1000000.0 mm^2
+           >>> s.to('mm^2')
+           ... 1000000.0 mm^2
+           >>> s
+           ... 1 m^2
+
+           Conversion from square meter to square millimeter with ``inplace = True``, in order to override the current
+           value.
+
+           >>> s.to('mm^2', inplace = True)
+           ... 1000000.0 mm^2
+           >>> s
+           ... 1000000.0 mm^2
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -1900,19 +1966,20 @@ class Surface(UnitBase):
 
 
 class Force(UnitBase):
-    r"""``gearpy.units.units.Force`` object.
+    r""":py:class:`Force <gearpy.units.units.Force>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for force.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Force numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     __UNITS = {'N': 1,
@@ -1966,23 +2033,24 @@ class Force(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Force numerical value. The relative unit is expressed by the ``unit`` property.
+        """Force numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Force numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for force. It must be a string.
+        """Symbol of the unit of measurement for force. It must be a :py:class:`str`.
         Available units are:
 
         - ``'N'`` for newton,
@@ -1993,67 +2061,71 @@ class Force(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for force.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'Force':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        Force
+        :py:class:`Force <gearpy.units.units.Force>`
             Converted force.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Force`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Force
-        >>> f = Force(1, 'N')
-        >>> f
-        ... 1 N
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from newton to kilogram force with ``inplace = False`` by default, so it does not override the
-        current value.
+           ``Force`` instantiation.
 
-        >>> f.to('kgf')
-        ... 0.10197162129779283 kgf
-        >>> f
-        ... 1 N
+           >>> from gearpy.units import Force
+           >>> f = Force(1, 'N')
+           >>> f
+           ... 1 N
 
-        Conversion from newton to kilogram force with ``inplace = True``, in order to override the current value.
+           Conversion from newton to kilogram force with ``inplace = False`` by default, so it does not override the
+           current value.
 
-        >>> f.to('kgf', inplace = True)
-        ... 0.10197162129779283 kgf
-        >>> f
-        ... 0.10197162129779283 kgf
+           >>> f.to('kgf')
+           ... 0.10197162129779283 kgf
+           >>> f
+           ... 1 N
+
+           Conversion from newton to kilogram force with ``inplace = True``, in order to override the current value.
+
+           >>> f.to('kgf', inplace = True)
+           ... 0.10197162129779283 kgf
+           >>> f
+           ... 0.10197162129779283 kgf
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -2075,19 +2147,20 @@ class Force(UnitBase):
 
 
 class Stress(UnitBase):
-    r"""``gearpy.units.units.Stress`` object.
+    r""":py:class:`Stress <gearpy.units.units.Stress>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for stress.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Stress numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     __UNITS = {'Pa': 1,
@@ -2137,23 +2210,24 @@ class Stress(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Stress numerical value. The relative unit is expressed by the ``unit`` property.
+        """Stress numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Stress numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for stress. It must be a string.
+        """Symbol of the unit of measurement for stress. It must be a :py:class:`str`.
         Available units are:
 
         - ``'Pa'`` for pascal,
@@ -2163,67 +2237,71 @@ class Stress(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for stress.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'Stress':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
+        ``target_unit`` : :py:class:`str`
             Target unit to which convert the current value.
-        inplace : bool, optional
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        Stress
+        :py:class:`Stress <gearpy.units.units.Stress>`
             Converted stress.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Stress`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Stress
-        >>> s = Stress(1, 'GPa')
-        >>> s
-        ... 1 GPa
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from giga-pascal to mega-pascal with ``inplace = False`` by default, so it does not override the
-        current value.
+           ``Stress`` instantiation.
 
-        >>> s.to('MPa')
-        ... 1000.0 MPa
-        >>> s
-        ... 1 GPa
+           >>> from gearpy.units import Stress
+           >>> s = Stress(1, 'GPa')
+           >>> s
+           ... 1 GPa
 
-        Conversion from giga-pascal to mega-pascal with ``inplace = True``, in order to override the current value.
+           Conversion from giga-pascal to mega-pascal with ``inplace = False`` by default, so it does not override the
+           current value.
 
-        >>> s.to('MPa', inplace = True)
-        ... 1000.0 MPa
-        >>> s
-        ... 1000.0 MPa
+           >>> s.to('MPa')
+           ... 1000.0 MPa
+           >>> s
+           ... 1 GPa
+
+           Conversion from giga-pascal to mega-pascal with ``inplace = True``, in order to override the current value.
+
+           >>> s.to('MPa', inplace = True)
+           ... 1000.0 MPa
+           >>> s
+           ... 1000.0 MPa
         """
         super().to(target_unit = target_unit, inplace = inplace)
 
@@ -2245,19 +2323,20 @@ class Stress(UnitBase):
 
 
 class Current(UnitBase):
-    r"""``gearpy.units.units.Current`` object.
+    r""":py:class:`Current <gearpy.units.units.Current>` object.
 
     Attributes
     ----------
-    :py:attr:`unit` : str
+    :py:attr:`unit` : :py:class:`str`
         Symbol of the unit of measurement for electrical current.
-    :py:attr:`value` : float or int
+    :py:attr:`value` : :py:class:`float` or :py:class:`int`
         Electrical current numerical value.
 
     Methods
     -------
     :py:meth:`to`
-        Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
+        It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement.
     """
 
     __UNITS = {'A': 1,
@@ -2306,23 +2385,24 @@ class Current(UnitBase):
 
     @property
     def value(self) -> Union[float, int]:
-        """Electrical current numerical value. The relative unit is expressed by the ``unit`` property.
+        """Electrical current numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
         -------
-        float or int
+        :py:class:`float` or :py:class:`int`
             Electrical current numerical value.
 
-        Raises
-        ------
-        TypeError
-            If ``value`` is not a float or an integer.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`value` is not a :py:class:`float` or an :py:class:`int`.
         """
         return self.__value
 
     @property
     def unit(self) -> str:
-        """Symbol of the unit of measurement for electrical current. It must be a string.
+        """Symbol of the unit of measurement for electrical current. It must be a :py:class:`str`.
         Available units are:
 
         - ``'A'`` for ampere,
@@ -2331,67 +2411,71 @@ class Current(UnitBase):
 
         Returns
         -------
-        str
+        :py:class:`str`
             Symbol of the unit of measurement for electrical current.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
-        KeyError
-            If the ``unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`unit` is not a :py:class:`str`.
+           ``KeyError``
+               If the :py:attr:`unit` is not among available ones.
         """
         return self.__unit
 
     def to(self, target_unit: str, inplace: bool = False) -> 'Current':
-        """Converts actual ``value`` to a new value computed using ``target_unit`` as the reference unit of measurement.
-        If ``inplace`` is ``True``, it overrides actual ``value`` and ``unit``, otherwise it returns a new instance with
-        the converted ``value`` and the ``target_unit`` as ``unit``.
+        """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
+        measurement. \n
+        If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
+        instance with the converted :py:attr:`value` and the ``target_unit`` as :py:attr:`unit`.
 
         Parameters
         ----------
-        target_unit : str
-            Target unit to which convert the electrical current value.
-        inplace : bool, optional
+        ``target_unit`` : :py:class:`str`
+            Target unit to which convert the current value.
+        ``inplace`` : :py:class:`bool`, optional
             Whether to override the current instance value. Default is ``False``, so it does not override the current
             value.
 
         Returns
         -------
-        Current
+        :py:class:`Current <gearpy.units.units.Current>`
             Converted electrical current.
 
-        Raises
-        ------
-        TypeError
-            - If ``target_unit`` is not a string,
-            - if ``inplace`` is not a bool.
-        KeyError
-            If the ``target_unit`` is not among available ones.
+        .. admonition:: Raises
+           :class: warning
 
-        Examples
-        --------
-        ``Current`` instantiation.
+           ``TypeError``
+               - If ``target_unit`` is not a :py:class:`str`,
+               - if ``inplace`` is not a :py:class:`bool`.
+           ``KeyError``
+               If the ``target_unit`` is not among available ones.
 
-        >>> from gearpy.units import Current
-        >>> i = Current(1, 'A')
-        >>> i
-        ... 1 A
+        .. admonition:: Examples
+           :class: important
 
-        Conversion from ampere to milli-ampere with ``inplace = False`` by default, so it does not override the current
-        value.
+           ``Current`` instantiation.
 
-        >>> i.to('mA')
-        ... 1000.0 mA
-        >>> i
-        ... 1 A
+           >>> from gearpy.units import Current
+           >>> i = Current(1, 'A')
+           >>> i
+           ... 1 A
 
-        Conversion from ampere to milli-ampere with ``inplace = True``, in order to override the current value.
+           Conversion from ampere to milli-ampere with ``inplace = False`` by default, so it does not override the
+           current value.
 
-        >>> i.to('mA', inplace = True)
-        ... 1000.0 mA
-        >>> i
-        ... 1000.0 mA
+           >>> i.to('mA')
+           ... 1000.0 mA
+           >>> i
+           ... 1 A
+
+           Conversion from ampere to milli-ampere with ``inplace = True``, in order to override the current value.
+
+           >>> i.to('mA', inplace = True)
+           ... 1000.0 mA
+           >>> i
+           ... 1000.0 mA
         """
         super().to(target_unit = target_unit, inplace = inplace)
 

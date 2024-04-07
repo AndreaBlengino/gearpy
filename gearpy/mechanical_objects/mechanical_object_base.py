@@ -11,30 +11,43 @@ from typing import Callable, Dict, List, Union
 
 LEWIS_FACTOR_DATA_FILE = (imp_resources.files(gear_data) / 'lewis_factor_table.csv')
 LEWIS_FACTOR_DATA = pd.read_csv(LEWIS_FACTOR_DATA_FILE)
-MINIMUM_TEETH_NUMBER = LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[0], 'number of teeth']
-lewis_factor_function = interp1d(x = LEWIS_FACTOR_DATA['number of teeth'],
-                                 y = LEWIS_FACTOR_DATA['Lewis factor'],
-                                 fill_value = (LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[0], 'Lewis factor'],
-                                               LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[-1], 'Lewis factor']),
+MINIMUM_TEETH_NUMBER = LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[0], 'Number of teeth']
+lewis_factor_function = interp1d(x = LEWIS_FACTOR_DATA['Number of teeth'],
+                                 y = LEWIS_FACTOR_DATA['Lewis Factor'],
+                                 fill_value = (LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[0], 'Lewis Factor'],
+                                               LEWIS_FACTOR_DATA.loc[LEWIS_FACTOR_DATA.index[-1], 'Lewis Factor']),
                                  bounds_error = False)
 
 WORM_GEAR_AND_WHEEL_DATA_FILE = (imp_resources.files(gear_data) / 'worm_gear_and_wheel_data.csv')
 WORM_GEAR_AND_WHEEL_DATA = pd.read_csv(WORM_GEAR_AND_WHEEL_DATA_FILE)
 WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES = [Angle(value, 'deg')
-                                                 for value in WORM_GEAR_AND_WHEEL_DATA['pressure angle']]
+                                                 for value in WORM_GEAR_AND_WHEEL_DATA['Pressure Angle']]
 
 
 def worm_gear_and_wheel_maximum_helix_angle_function(pressure_angle: Angle) -> Angle:
-    return Angle(value = float(WORM_GEAR_AND_WHEEL_DATA.set_index('pressure angle').
-                               loc[pressure_angle.to('deg').value, 'maximum helix angle']),
+    return Angle(value = float(WORM_GEAR_AND_WHEEL_DATA.set_index('Pressure Angle').
+                               loc[pressure_angle.to('deg').value, 'Maximum Helix Angle']),
                                 unit = 'deg')
 
 
 def worm_wheel_lewis_factor_function(pressure_angle: Angle) -> Angle:
-    return WORM_GEAR_AND_WHEEL_DATA.set_index('pressure angle').loc[pressure_angle.to('deg').value, 'Lewis factor']
+    return WORM_GEAR_AND_WHEEL_DATA.set_index('Pressure Angle').loc[pressure_angle.to('deg').value, 'Lewis Factor']
 
 
 class MechanicalObject(ABC):
+    """:py:class:`MechanicalObject <gearpy.mechanical_objects.mechanical_object_base.MechanicalObject>` object. \n
+    Abstract base class for creating mechanical objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` \n
+       :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` \n
+       :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` \n
+       :py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` \n
+       :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` \n
+       :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
+    """
 
     @abstractmethod
     def __init__(self, name: str):
@@ -53,6 +66,19 @@ class MechanicalObject(ABC):
 
 
 class RotatingObject(MechanicalObject):
+    """:py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>` object. \n
+    Abstract base class for creating rotating objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` \n
+       :py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` \n
+       :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` \n
+       :py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` \n
+       :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>` \n
+       :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
+    """
 
     @abstractmethod
     def __init__(self, name: str, inertia_moment: InertiaMoment):
@@ -175,6 +201,14 @@ class RotatingObject(MechanicalObject):
 
 
 class MotorBase(RotatingObject):
+    """:py:class:`MotorBase <gearpy.mechanical_objects.mechanical_object_base.MotorBase>` object. \n
+    Abstract base class for creating motor objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`
+    """
 
     @abstractmethod
     def __init__(self, name: str, inertia_moment: InertiaMoment):
@@ -199,6 +233,16 @@ class MotorBase(RotatingObject):
 
 
 class GearBase(RotatingObject):
+    """:py:class:`GearBase <gearpy.mechanical_objects.mechanical_object_base.GearBase>` object. \n
+    Abstract base class for creating gear objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` \n
+       :py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` \n
+       :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
+    """
 
     @abstractmethod
     def __init__(self,
@@ -437,4 +481,13 @@ class GearBase(RotatingObject):
         self.__external_torque = external_torque
 
 
-class Role(ABC): ...
+class Role(ABC):
+    """:py:class:`Role <gearpy.mechanical_objects.mechanical_object_base.Role>` object. \n
+    Abstract base class for creating role objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`MatingMaster <gearpy.mechanical_objects.mating_roles.MatingMaster>` \n
+       :py:class:`MatingSlave <gearpy.mechanical_objects.mating_roles.MatingSlave>`
+    """

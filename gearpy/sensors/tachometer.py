@@ -1,20 +1,21 @@
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import AngularSpeed
+from .sensor_base import SensorBase
 from typing import Optional, Union
 
 
-class Tachometer:
-    r"""``gearpy.sensors.tachometer.Tachometer`` object.
+class Tachometer(SensorBase):
+    r""":py:class:`Tachometer <gearpy.sensors.tachometer.Tachometer>` object.
 
     Attributes
     ----------
-    :py:attr:`target` : RotatingObject
+    :py:attr:`target` : :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
         Target rotating object whose angular speed is probed by the sensor.
 
     Methods
     -------
     :py:meth:`get_value`
-        Gets the angular speed of the ``target`` rotating object.
+        It gets the angular speed of the :py:attr:`target` rotating object.
     """
 
     def __init__(self, target: RotatingObject):
@@ -29,41 +30,41 @@ class Tachometer:
 
         Returns
         -------
-        RotatingObject
+        :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
             Target rotating object whose angular speed is probed by the sensor.
 
-        Raises
-        ------
-        TypeError
-            If ``target`` is not an instance of ``RotatingObject``.
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If :py:attr:`target` is not an instance of
+               :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`.
         """
         return self.__target
 
     def get_value(self, unit: Optional[str] = None) -> Union[AngularSpeed, float, int]:
-        """Gets the angular speed of the ``target`` rotating object. \n
+        """It gets the angular speed of the :py:attr:`target` rotating object. \n
         If a ``unit`` is set, then it converts the angular speed to that unit and returns only the numerical value as
         float or integer.
 
         Parameters
         ----------
-        unit : str, optional
-            The unit to which convert the ``target`` angular speed. If specified, it converts the angular speed and
-            returns only the numerical value as float or integer, otherwise it returns an ``AngularSpeed``. Default is
-            ``None``, so it returns an ``AngularSpeed``.
+        ``unit`` : :py:class:`str`, optional
+            The unit to which convert the :py:attr:`target` angular speed. If specified, it converts the angular speed
+            and returns only the numerical value as float or integer, otherwise it returns an
+            :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`. Default is :py:obj:`None`, so it returns an
+            :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`.
 
         Returns
         -------
-        AngularSpeed or float or int
-            Angular speed of the ``target`` rotating object.
+        :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>` or :py:class:`float` or :py:class:`int`
+            Angular speed of the :py:attr:`target` rotating object.
 
-        Raises
-        ------
-        TypeError
-            If ``unit`` is not a string.
+        .. admonition:: Raises
+           :class: warning
 
-        See Also
-        --------
-        :py:func:`gearpy.units.units.AngularSpeed`
+           ``TypeError``
+               If ``unit`` is not a :py:class:`str`.
         """
         if not isinstance(unit, str) and unit is not None:
             raise TypeError("Parameter 'unit' must be a string.")

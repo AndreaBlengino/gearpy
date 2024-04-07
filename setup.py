@@ -3,7 +3,7 @@ import subprocess
 
 version = subprocess.run(['git', 'describe', '--tags'], stdout = subprocess.PIPE).stdout.decode('utf-8').strip()
 
-with open('README.md', 'r') as f:
+with open('README.rst', 'r') as f:
     long_description = f.read()
 
 def read_requirements(path: str):
@@ -23,7 +23,7 @@ setup(name = 'gearpy',
       description = "Python package for mechanical transmission analysis",
       packages = find_packages(where = '.'),
       long_description = long_description,
-      long_description_content_type = 'text/markdown',
+      long_description_content_type = 'text/x-rst',
       url = 'https://github.com/AndreaBlengino/gearpy',
       project_urls = {'Source': 'https://github.com/AndreaBlengino/gearpy',
                       'Tracker': 'https://github.com/AndreaBlengino/gearpy/issues',

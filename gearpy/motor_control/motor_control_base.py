@@ -5,6 +5,14 @@ from gearpy.motor_control.rules.rules_base import RuleBase
 
 
 class MotorControlBase(ABC):
+    """:py:class:`MotorControlBase <gearpy.motor_control.motor_control_base.MotorControlBase>` object. \n
+    Abstract base class for creating motor control objects.
+
+    .. admonition:: See Also
+       :class: seealso
+
+       :py:class:`PWMControl <gearpy.motor_control.pwm_control.PWMControl>`
+    """
 
     @abstractmethod
     def __init__(self, powertrain: Powertrain):
@@ -20,25 +28,14 @@ class MotorControlBase(ABC):
         if not all([isinstance(item, RotatingObject) for item in powertrain.elements]):
             raise TypeError(f"All elements of 'powertrain' must be instances of {RotatingObject.__name__!r}.")
 
-        self.__powertrain = powertrain
-        self.__rules = []
-
     @property
     @abstractmethod
-    def powertrain(self) -> Powertrain:
-        return self.__powertrain
-
-    @property
-    @abstractmethod
-    def rules(self) -> list:
-        return self.__rules
+    def rules(self) -> list: ...
 
     @abstractmethod
     def add_rule(self, rule: RuleBase):
         if not isinstance(rule, RuleBase):
             raise TypeError(f"Parameter 'rule' must be an instance of {RuleBase.__name__!r}.")
-
-        self.__rules.append(rule)
 
     @abstractmethod
     def apply_rules(self): ...

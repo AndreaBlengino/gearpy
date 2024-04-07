@@ -6,7 +6,7 @@ The mechanical powertrain to be studied is the one described in the
 [4 - DC Motor Electric Analysis](https://gearpy.readthedocs.io/en/latest/examples/4_dc_motor_electric_analysis/index.html) 
 example.  
 In that example, the motor absorbs its *maximum electric current* at the
-start up, 5 A, which may be too much for the system. Such a high current
+start-up, 5 A, which may be too much for the system. Such a high current
 may demagnetize the magnet inside the motor itself, so we want to keep 
 the absorbed current lower to prevent this issue. In order to do that,
 we can control the motor supply voltage through the PWM.  
@@ -15,7 +15,7 @@ target position.
 
 ### Model Set Up
 
-We can start by limiting the start up absorbed current through a rule 
+We can start by limiting the start-up absorbed current through a rule 
 that maintains the PWM proportional to the angular position of a gear, 
 for example the *gear 6*, to which is attached an encoder that measure
 the gear angular position:
@@ -32,6 +32,11 @@ start_1 = StartProportionalToAngularPosition(encoder = encoder,
                                              pwm_min_multiplier = 5)
 ```
 
+See 
+:py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>`
+and 
+:py:class:`StartProportionalToAngularPosition <gearpy.motor_control.rules.start_proportional_to_angular_position.StartProportionalToAngularPosition>` 
+for more details on instantiation parameters.  
 At the start up the motor is supplied with a PWM that is 5 times its 
 minimum PWM and it increases up to 1 when the *gear 6* approaches 10 
 rotations from the reference position.  
@@ -44,14 +49,20 @@ motor_control_1 = PWMControl(powertrain = powertrain)
 motor_control_1.add_rule(rule = start_1)
 ``` 
 
+See :py:class:`PWMControl <gearpy.motor_control.pwm_control.PWMControl>` 
+for more details this class and its methods.
+
 ### Simulation Set Up
 
 The only modification to the simulation set up consist of passing the 
-motor control object the the solver at instantiation, the remaining set 
-up stay the same:
+motor control object to the solver at simulation launch, the remaining 
+set-ups stay the same:
 
 ```python
-solver = Solver(powertrain = powertrain, motor_control = motor_control_1)
+solver = Solver(powertrain = powertrain)
+solver.run(time_discretization = TimeInterval(0.5, 'sec'),
+           simulation_time = TimeInterval(100, 'sec'),
+           motor_control = motor_control_1)
 ```
 
 ### Results Analysis
@@ -61,7 +72,7 @@ and focus the plot only on interesting elements and variables. We can
 also specify a more convenient unit to use when plotting torques:
 
 ```python
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (8, 10),
                 elements = ['motor', 'gear 6'],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',
@@ -97,7 +108,10 @@ start_2 = StartLimitCurrent(encoder = encoder,
                             limit_electric_current = Current(2, 'A'),
                             target_angular_position = AngularPosition(10, 'rot'))
 ```
- 
+
+See :py:class:`Tachometer <gearpy.sensors.tachometer.Tachometer>` and 
+:py:class:`StartLimitCurrent <gearpy.motor_control.rules.start_limit_current.StartLimitCurrent>` 
+for more details on instantiation parameters.  
 This rule let us limit the maximum electric current absorbed by the 
 motor to 2 A up until the *gear 6* (to which is attached the encoder) 
 reaches 10 rotations from the reference position.  
@@ -113,6 +127,9 @@ reach_position = ReachAngularPosition(encoder = encoder,
                                       braking_angle = Angle(10, 'rot'))
 ```
 
+See 
+:py:class:`ReachAngularPosition <gearpy.motor_control.rules.reach_angular_position.ReachAngularPosition>` 
+for more details on instantiation parameters.  
 With this rule, the DC motor's PWM is controlled in order to make the 
 *gear 6* reach 40 rotations from the reference position and the whole
 system will begin to brake 10 rotation before the target.  
@@ -127,22 +144,24 @@ motor_control_2.add_rule(rule = reach_position)
 ### Simulation Set Up
 
 We have to reset the previous simulation result and update the solver
-instantiation with the new motor control:
+simulation parameters with the new motor control:
 
 ```python
 powertrain.reset()
 
-solver = Solver(powertrain = powertrain, motor_control = motor_control_2)
+solver.run(time_discretization = TimeInterval(0.5, 'sec'),
+           simulation_time = TimeInterval(100, 'sec'),
+           motor_control = motor_control_2)
 ```
 
-The remaining set up of the model stay the same.
+The remaining set-ups of the model stay the same.
 
 ### Results Analysis
 
 We can get the updated plot with the same code:
 
 ```python
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (8, 10),
                 elements = ['motor', 'gear 6'],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',

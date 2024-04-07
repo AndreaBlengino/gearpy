@@ -94,14 +94,14 @@ powertrain.snapshot(target_time = Time(10, 'sec'),
                     driving_torque_unit = 'mNm',
                     load_torque_unit = 'mNm')
 
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (10, 10),
                 elements = [gear_1, gear_2, gear_3, gear_4, gear_5, gear_6],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',
                 variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
                              'contact stress'])
 
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (8, 8),
                 elements = [gear_5, gear_6],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',

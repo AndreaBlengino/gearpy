@@ -1,6 +1,6 @@
 from gearpy.mechanical_objects import SpurGear, HelicalGear, DCMotor, Flywheel, MatingMaster, MatingSlave, WormGear, WormWheel
 from gearpy.mechanical_objects.mechanical_object_base import WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES, WORM_GEAR_AND_WHEEL_DATA
-from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer, Timer
+from gearpy.sensors import AbsoluteRotaryEncoder, Amperometer, Tachometer, Timer
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Current, Force, InertiaMoment, Length, \
@@ -8,6 +8,7 @@ from gearpy.units import AngularAcceleration, AngularPosition, AngularSpeed, Cur
 from gearpy.utils import add_fixed_joint, add_gear_mating, add_worm_gear_mating
 from hypothesis.strategies import composite, text, integers, floats, lists, sampled_from, shared, builds, characters, one_of
 import numpy as np
+import os
 from random import shuffle
 
 
@@ -79,6 +80,7 @@ basic_solver.run(time_discretization = TimeInterval(1, 'sec'), simulation_time =
 
 basic_encoder = AbsoluteRotaryEncoder(target = basic_spur_gear_1)
 basic_tachometer = Tachometer(target = basic_spur_gear_1)
+basic_amperometer = Amperometer(target = basic_dc_motor_2)
 basic_timer = Timer(start_time = Time(0, 'sec'), duration = TimeInterval(5, 'sec'))
 
 
@@ -89,8 +91,9 @@ types_to_check = ['string', 2, 2.2, True, (0, 1), [0, 1], {0, 1}, {0: 1}, None, 
                   Stress(1, 'Pa'), Surface(1, 'm^2'), Time(1, 'sec'),
                   TimeInterval(1, 'sec'), Torque(1, 'Nm'), Angle(1, 'rad'),
                   basic_dc_motor_1, basic_spur_gear_1, basic_helical_gear_1, basic_helical_gear_2, basic_flywheel,
-                  basic_solver, basic_powertrain, basic_encoder, basic_tachometer, basic_timer, basic_worm_gear_1,
-                  basic_worm_gear_2, basic_worm_wheel_1, basic_worm_wheel_2, MatingMaster, MatingSlave, SpurGear]
+                  basic_solver, basic_powertrain, basic_encoder, basic_amperometer, basic_tachometer, basic_timer,
+                  basic_worm_gear_1, basic_worm_gear_2, basic_worm_wheel_1, basic_worm_wheel_2, MatingMaster,
+                  MatingSlave, SpurGear]
 
 
 @composite
@@ -166,7 +169,7 @@ def worm_wheels(draw, structural = False, pressure_angle = None):
     maximum_helix_angle = 15
     if pressure_angle is None:
         pressure_angle = draw(sampled_from(elements = WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES))
-        maximum_helix_angle = WORM_GEAR_AND_WHEEL_DATA.set_index('pressure angle').loc[pressure_angle.value, 'maximum helix angle']
+        maximum_helix_angle = WORM_GEAR_AND_WHEEL_DATA.set_index('Pressure Angle').loc[pressure_angle.value, 'Maximum Helix Angle']
     helix_angle_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = maximum_helix_angle))
     if structural:
         module_value = draw(floats(allow_nan = False, allow_infinity = False, min_value = 0.1, max_value = 5))
@@ -261,7 +264,14 @@ def powertrains(draw, allow_motors_without_current = True, allow_motors_with_cur
 def solved_powertrains(draw):
     motor = draw(one_of(dc_motors(), dc_motors(current = True)))
     flywheel = draw(flywheels())
-    gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
+    worm_gear = WormGear(name = 'worm gear', n_starts = 1, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                         helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'),
+                         reference_diameter = Length(10, 'mm'))
+    worm_wheel = WormWheel(name = 'worm wheel', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                           helix_angle = Angle(10, 'deg'), pressure_angle = Angle(20, 'deg'),
+                           module = Length(1, 'mm'), face_width = Length(10, 'mm'))
+    gear_1 = SpurGear(name = 'gear 1', n_teeth = 10, inertia_moment = InertiaMoment(1, 'kgm^2'),
+                      module = Length(1, 'mm'), face_width = Length(10, 'mm'))
     gear_2 = SpurGear(name = 'gear 2', n_teeth = 20, inertia_moment = InertiaMoment(1, 'kgm^2'), module = Length(1, 'mm'))
     non_structural_spur_gear_set = draw(lists(elements = spur_gears(), min_size = 2, max_size = 4))
     structural_spur_gear_set = draw(lists(elements = spur_gears(structural = True), min_size = 2, max_size = 4))
@@ -301,7 +311,9 @@ def solved_powertrains(draw):
     simulation_steps = draw(floats(min_value = 5, max_value = 50, allow_nan = False, allow_infinity = False))
 
     add_fixed_joint(master = motor, slave = flywheel)
-    add_fixed_joint(master = flywheel, slave = gears[0])
+    add_fixed_joint(master = flywheel, slave = worm_gear)
+    add_worm_gear_mating(master = worm_gear, slave = worm_wheel, friction_coefficient = 0.4)
+    add_fixed_joint(master = worm_wheel, slave = gears[0])
 
     for i in range(0, len(gears) - 1):
         if i%2 == 0:
@@ -327,3 +339,14 @@ def time_intervals(draw):
     unit = draw(sampled_from(elements = list(TimeInterval._Time__UNITS.keys())))
 
     return TimeInterval(value = value, unit = unit)
+
+
+@composite
+def paths(draw):
+    folder_list = draw(lists(elements = text(min_size = 5, max_size = 10, alphabet = characters(min_codepoint = 97,
+                                                                                                max_codepoint = 122)),
+                             min_size = 2,
+                             max_size = 5))
+    folder_list.insert(0, os.path.join('.', 'test_data'))
+
+    return os.path.join(*folder_list)

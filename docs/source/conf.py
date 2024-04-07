@@ -14,18 +14,22 @@ sys.path.insert(0, os.path.abspath('../..'))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'gearpy'
-copyright = '2023, Andrea Blengino'
+copyright = '2024, Andrea Blengino'
 author = 'Andrea Blengino'
-version = subprocess.run(['git', 'describe', '--tags'], stdout = subprocess.PIPE).stdout.decode('utf-8').split('-')[0]
+release = subprocess.run(['git', 'describe', '--tags'], stdout = subprocess.PIPE).stdout.decode('utf-8').split('-')[0]
 
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.autodoc', 'm2r2']
+extensions = ['sphinx.ext.autodoc', 'm2r2', 'sphinx.ext.intersphinx']
 
 templates_path = ['_templates']
 exclude_patterns = []
+
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
+                       'pandas': ('https://pandas.pydata.org/docs/', None),
+                       'matplotlib': ('https://matplotlib.org/stable/', None)}
 
 
 # -- Options for HTML output -------------------------------------------------

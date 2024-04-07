@@ -81,14 +81,15 @@ gear_6.angular_position = AngularPosition(0, 'rad')
 gear_6.angular_speed = AngularSpeed(0, 'rad/s')
 
 
-solver = Solver(powertrain = powertrain, motor_control = motor_control_1)
+solver = Solver(powertrain = powertrain)
 solver.run(time_discretization = TimeInterval(0.5, 'sec'),
-           simulation_time = TimeInterval(100, 'sec'))
+           simulation_time = TimeInterval(100, 'sec'),
+           motor_control = motor_control_1)
 
 
 # Result Analysis
 
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (8, 10),
                 elements = ['motor', 'gear 6'],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',
@@ -120,14 +121,14 @@ motor_control_2.add_rule(rule = reach_position)
 
 powertrain.reset()
 
-solver = Solver(powertrain = powertrain, motor_control = motor_control_2)
 solver.run(time_discretization = TimeInterval(0.5, 'sec'),
-           simulation_time = TimeInterval(100, 'sec'))
+           simulation_time = TimeInterval(100, 'sec'),
+           motor_control = motor_control_2)
 
 
 # Result Analysis
 
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (8, 10),
                 elements = ['motor', 'gear 6'],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',

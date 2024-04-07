@@ -55,6 +55,13 @@ gear_6 = SpurGear(name = 'gear 6',
                   elastic_modulus = Stress(200, 'GPa'))
 ```
 
+See :py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` 
+for more details on instantiation parameters.  
+Structural analysis is also available for 
+:py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`
+and 
+:py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
+(bending stress only).  
 All gears are made in steel, which yield stress is 250 MPa.  
 The remaining set up of the model stay the same.
 
@@ -87,7 +94,7 @@ variables and focus the plot only on interesting elements and variables.
 We can also specify a more convenient unit to use when plotting torques:
 
 ```python
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (10, 10),
                 elements = [gear_1, gear_2, gear_3, gear_4, gear_5, gear_6],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',
@@ -105,7 +112,7 @@ gears, and increase in the last gears, so we can draw a more clean plot
 and focus on the last two gears only:
 
 ```python
-powertrain.plot(figsize = (12, 8),
+powertrain.plot(figsize = (8, 8),
                 elements = [gear_5, gear_6],
                 angular_position_unit = 'rot',
                 torque_unit = 'mNm',

@@ -2,3 +2,15 @@
     box-sizing: border-box;
     width: 22em;
 }
+
+.admonition p.admonition-title, p.topic-title {
+    font-size: 1.0rem;
+}
+
+.admonition, .topic {
+    font-size: 1.0rem;
+}
+
+table.data-table {
+    display: table;
+}

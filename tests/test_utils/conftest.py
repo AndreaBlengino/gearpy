@@ -131,8 +131,8 @@ motor_control.add_rule(rule = rule)
 gear.external_torque = lambda angular_position, angular_speed, time: Torque(0, 'Nm')
 gear.angular_position = AngularPosition(0, 'rad')
 gear.angular_speed = AngularSpeed(0, 'rad/s')
-solver = Solver(powertrain = powertrain_1, motor_control = motor_control)
-solver.run(time_discretization = TimeInterval(2, 'sec'), simulation_time = TimeInterval(60, 'sec'))
+solver = Solver(powertrain = powertrain_1)
+solver.run(time_discretization = TimeInterval(2, 'sec'), simulation_time = TimeInterval(60, 'sec'), motor_control = motor_control)
 
 
 motor_2 = DCMotor(name = 'motor', no_load_speed = AngularSpeed(1000, 'rad/s'), maximum_torque = Torque(1, 'Nm'),
@@ -242,4 +242,84 @@ def dc_motor_characteristics_animation_type_error(request):
                    {'motor': basic_powertrain.elements[0], 'time': basic_powertrain.time, 'figsize': (1, 2, 3)},
                    {'motor': basic_powertrain.elements[0], 'time': basic_powertrain.time, 'padding': -1}])
 def dc_motor_characteristics_animation_value_error(request):
+    return request.param
+
+
+export_time_variables_type_error_1 = [{'rotating_object': type_to_check, 'file_path': './test_data',
+                                       'time_array': [Time(1, 'sec')]} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, RotatingObject)]
+
+export_time_variables_type_error_2 = [{'rotating_object': basic_dc_motor_1, 'file_path': type_to_check,
+                                       'time_array': [Time(1, 'sec')]} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, str)]
+
+export_time_variables_type_error_3 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                       'time_array': type_to_check} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, list)]
+
+export_time_variables_type_error_4 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                       'time_array': [type_to_check]} for type_to_check in types_to_check
+                                      if not isinstance(type_to_check, Time)]
+
+export_time_variables_type_error_5 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                       'time_array': [Time(1, 'sec')], 'time_unit': type_to_check}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+export_time_variables_type_error_6 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                       'time_array': [Time(1, 'sec')], 'angular_position_unit': type_to_check}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+export_time_variables_type_error_7 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                       'time_array': [Time(1, 'sec')], 'angular_speed_unit': type_to_check}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+export_time_variables_type_error_8 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                       'time_array': [Time(1, 'sec')], 'angular_acceleration_unit': type_to_check}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+export_time_variables_type_error_9 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                       'time_array': [Time(1, 'sec')], 'torque_unit': type_to_check}
+                                      for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+export_time_variables_type_error_10 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                        'time_array': [Time(1, 'sec')], 'driving_torque_unit': type_to_check}
+                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+export_time_variables_type_error_11 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                        'time_array': [Time(1, 'sec')], 'load_torque_unit': type_to_check}
+                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+export_time_variables_type_error_12 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                        'time_array': [Time(1, 'sec')], 'force_unit': type_to_check}
+                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+export_time_variables_type_error_13 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                        'time_array': [Time(1, 'sec')], 'stress_unit': type_to_check}
+                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+export_time_variables_type_error_14 = [{'rotating_object': basic_dc_motor_1, 'file_path': './test_data',
+                                        'time_array': [Time(1, 'sec')], 'current_unit': type_to_check}
+                                       for type_to_check in types_to_check if not isinstance(type_to_check, str)]
+
+@fixture(params = [*export_time_variables_type_error_1,
+                   *export_time_variables_type_error_2,
+                   *export_time_variables_type_error_3,
+                   *export_time_variables_type_error_4,
+                   *export_time_variables_type_error_5,
+                   *export_time_variables_type_error_6,
+                   *export_time_variables_type_error_7,
+                   *export_time_variables_type_error_8,
+                   *export_time_variables_type_error_9,
+                   *export_time_variables_type_error_10,
+                   *export_time_variables_type_error_11,
+                   *export_time_variables_type_error_12,
+                   *export_time_variables_type_error_13,
+                   *export_time_variables_type_error_14])
+def export_time_variables_type_error(request):
+    return request.param
+
+
+@fixture(params = [{'rotating_object': basic_dc_motor_1, 'file_path': '', 'time_array': [Time(1, 'sec')]},
+                   {'rotating_object': basic_dc_motor_1, 'file_path': './test_data', 'time_array': []}])
+def export_time_variables_value_error(request):
     return request.param
