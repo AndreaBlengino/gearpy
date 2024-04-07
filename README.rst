@@ -30,19 +30,19 @@ Powertrain Analysis
    :target: https://pypi.org/project/gearpy/
    :alt: PyPI - Supported Python Versions
 
-.. |build| image:: https://img.shields.io/github/actions/workflow/status/AndreaBlengino/gearpy/release.yml?logo=github
+.. |build| image:: https://img.shields.io/github/actions/workflow/status/AndreaBlengino/gearpy/release.yml.svg?logo=github
    :target: https://github.com/AndreaBlengino/gearpy/actions/workflows/release.yml
    :alt: Package Build
 
-.. |linux_tests| image:: https://img.shields.io/github/actions/workflow/status/AndreaBlengino/gearpy/linux_test.yml?logo=linux&label=Linux
+.. |linux_tests| image:: https://img.shields.io/github/actions/workflow/status/AndreaBlengino/gearpy/linux_test.yml.svg?logo=linux&label=Linux
    :target: https://github.com/AndreaBlengino/gearpy/actions/workflows/linux_test.yml
    :alt: Linux Tests
 
-.. |macos_tests| image:: https://img.shields.io/github/actions/workflow/status/AndreaBlengino/gearpy/macos_test.yml?logo=apple&label=macOS
+.. |macos_tests| image:: https://img.shields.io/github/actions/workflow/status/AndreaBlengino/gearpy/macos_test.yml.svg?logo=apple&label=macOS
    :target: https://github.com/AndreaBlengino/gearpy/actions/workflows/macos_test.yml
    :alt: macOS Tests
 
-.. |windows_tests| image:: https://img.shields.io/github/actions/workflow/status/AndreaBlengino/gearpy/windows_test.yml?logo=windows&label=Windows
+.. |windows_tests| image:: https://img.shields.io/github/actions/workflow/status/AndreaBlengino/gearpy/windows_test.yml.svg?logo=windows&label=Windows
    :target: https://github.com/AndreaBlengino/gearpy/actions/workflows/windows_test.yml
    :alt: Windows Tests
 
