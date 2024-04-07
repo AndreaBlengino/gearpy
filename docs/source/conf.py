@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 project = 'gearpy'
 copyright = '2024, Andrea Blengino'
 author = 'Andrea Blengino'
-version = subprocess.run(['git', 'describe', '--tags'], stdout = subprocess.PIPE).stdout.decode('utf-8').split('-')[0]
+release = subprocess.run(['git', 'describe', '--tags'], stdout = subprocess.PIPE).stdout.decode('utf-8').split('-')[0]
 
 
 # -- General configuration ---------------------------------------------------
