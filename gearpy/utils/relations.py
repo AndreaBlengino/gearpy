@@ -74,7 +74,7 @@ def add_gear_mating(master: GearBase,
         raise TypeError(f"Parameter 'slave' must be an instance of {GearBase.__name__!r}.")
 
     if master == slave:
-        raise ValueError(f"Parameters 'master' and 'slave' cannot be the same gear.")
+        raise ValueError("Parameters 'master' and 'slave' cannot be the same gear.")
 
     if not isinstance(efficiency, float) and not isinstance(efficiency, int):
         raise TypeError("Parameter 'efficiency' must be a float or an integer.")
@@ -319,7 +319,7 @@ def add_fixed_joint(master: RotatingObject,
         raise TypeError(f"Parameter 'slave' is an instance of {MotorBase.__name__!r}, but motor can only be 'master'.")
 
     if master == slave:
-        raise ValueError(f"Parameters 'master' and 'slave' cannot be the same rotating object.")
+        raise ValueError("Parameters 'master' and 'slave' cannot be the same rotating object.")
 
     master.drives = slave
     slave.driven_by = master

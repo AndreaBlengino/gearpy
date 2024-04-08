@@ -89,10 +89,10 @@ class WormGear(RotatingObject):
                          inertia_moment = inertia_moment)
 
         if not isinstance(n_starts, int):
-            raise TypeError(f"Parameter 'n_starts' must be an integer.")
+            raise TypeError("Parameter 'n_starts' must be an integer.")
 
         if n_starts < 1:
-            raise ValueError(f"Parameter 'n_starts' must be equal to or greater than one.")
+            raise ValueError("Parameter 'n_starts' must be equal to or greater than one.")
 
         if not isinstance(helix_angle, Angle):
             raise TypeError(f"Parameter 'helix_angle' must be an instance of {Angle.__name__!r}.")
@@ -273,7 +273,7 @@ class WormGear(RotatingObject):
     @self_locking.setter
     def self_locking(self, self_locking: bool):
         if not isinstance(self_locking, bool):
-            raise TypeError(f"Parameter 'self_locking' must be a boolean.")
+            raise TypeError("Parameter 'self_locking' must be a boolean.")
 
         self.__self_locking = self_locking
 

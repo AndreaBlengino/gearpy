@@ -81,17 +81,17 @@ class StartProportionalToAngularPosition(RuleBase):
             raise TypeError(f"Parameter 'target_angular_position' must be an instance of {AngularPosition.__name__!r}.")
 
         if not isinstance(pwm_min_multiplier, float) and not isinstance(pwm_min_multiplier, int):
-            raise TypeError(f"Parameter 'pwm_min_multiplier' must be a float or an integer.")
+            raise TypeError("Parameter 'pwm_min_multiplier' must be a float or an integer.")
 
         if pwm_min_multiplier <= 1:
-            raise ValueError(f"Parameter 'pwm_min_multiplier' must be greater than 1.")
+            raise ValueError("Parameter 'pwm_min_multiplier' must be greater than 1.")
 
         if pwm_min is not None:
             if not isinstance(pwm_min, float) and not isinstance(pwm_min, int):
-                raise TypeError(f"Parameter 'pwm_min' must be a float or an integer.")
+                raise TypeError("Parameter 'pwm_min' must be a float or an integer.")
 
             if pwm_min <= 0:
-                raise ValueError(f"Parameter 'pwm_min' must be positive.")
+                raise ValueError("Parameter 'pwm_min' must be positive.")
 
         self.__encoder = encoder
         self.__powertrain = powertrain

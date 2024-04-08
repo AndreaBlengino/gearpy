@@ -689,8 +689,8 @@ class Powertrain:
                  'bending stress': stress_unit, 'contact stress': stress_unit, 'electric current': current_unit,
                  'pwm': ''}
 
-        fig, ax = plt.subplots(nrows = n_variables, ncols = n_elements, sharex = 'all',
-                               layout = 'constrained', figsize = figsize)
+        _, ax = plt.subplots(nrows = n_variables, ncols = n_elements, sharex = 'all',
+                             layout = 'constrained', figsize = figsize)
 
         stress_legend_items = {}
 

@@ -273,7 +273,7 @@ class GearBase(RotatingObject):
                 raise TypeError(f"Parameter 'elastic_modulus' must be an instance of {Stress.__name__!r}.")
 
             if elastic_modulus.value <= 0:
-                raise ValueError(f"Parameter 'elastic_modulus' must be positive.")
+                raise ValueError("Parameter 'elastic_modulus' must be positive.")
 
         self.__n_teeth = n_teeth
         self.__driven_by = None

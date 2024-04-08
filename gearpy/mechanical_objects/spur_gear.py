@@ -1,6 +1,6 @@
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Angle, Force, InertiaMoment, Length, \
     Stress, Time, Torque, UnitBase
-from math import sin, cos, sqrt
+from math import sqrt
 from .mechanical_object_base import RotatingObject, GearBase, lewis_factor_function, Role
 from .mating_roles import MatingMaster, MatingSlave
 from typing import Callable, Dict, List, Union, Optional

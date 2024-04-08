@@ -1,6 +1,6 @@
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Angle, Force, InertiaMoment, Length, \
     Stress, Time, Torque, UnitBase
-from math import sin, cos, sqrt, atan, tan
+from math import sqrt, atan
 from .mechanical_object_base import RotatingObject, lewis_factor_function, Role
 from .mating_roles import MatingMaster, MatingSlave
 from .spur_gear import SpurGear
@@ -112,7 +112,7 @@ class HelicalGear(SpurGear):
             raise TypeError(f"Parameter 'helix_angle' must be an instance of {Angle.__name__!r}.")
 
         if helix_angle >= Angle(90, 'deg'):
-            raise ValueError(f"Parameter 'helix_angle' cannot be greater than or equal to 90 degrees.")
+            raise ValueError("Parameter 'helix_angle' cannot be greater than or equal to 90 degrees.")
 
         self.__helix_angle = helix_angle
 
