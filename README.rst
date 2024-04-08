@@ -67,7 +67,7 @@ Powertrain Analysis
    :alt: Open Issues
 
 .. |license| image:: https://img.shields.io/badge/License-GPLv3-blue.svg
-   :target: https://github.com/AndreaBlengino/gearpy/blob/v0.1.0/LICENSE
+   :target: https://github.com/AndreaBlengino/gearpy/blob/master/LICENSE
    :alt: License
 
 
