@@ -46,10 +46,10 @@ class ConstantPWM(RuleBase):
             raise TypeError(f"Parameter 'powertrain' must be an instance of {Powertrain.__name__!r}.")
 
         if not isinstance(target_pwm_value, float) and not isinstance(target_pwm_value, int):
-            raise TypeError(f"Parameter 'target_pwm_value' must be a float or an integer.")
+            raise TypeError("Parameter 'target_pwm_value' must be a float or an integer.")
 
         if (target_pwm_value < -1) or (target_pwm_value > 1):
-            raise ValueError(f"Parameter 'target_pwm_value' must be within -1 and 1.")
+            raise ValueError("Parameter 'target_pwm_value' must be within -1 and 1.")
 
         self.__timer = timer
         self.__powertrain = powertrain
