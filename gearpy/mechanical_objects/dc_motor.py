@@ -1,6 +1,7 @@
+from __future__ import annotations
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Current, InertiaMoment, Torque, UnitBase
 from .mechanical_object_base import RotatingObject, MotorBase
-from typing import Dict, List, Union, Optional
+from typing import Optional
 
 
 class DCMotor(MotorBase):
@@ -618,7 +619,7 @@ class DCMotor(MotorBase):
         self.__electric_current = electric_current
 
     @property
-    def time_variables(self) -> Dict[str, List[UnitBase]]:
+    def time_variables(self) -> dict[str, list[UnitBase]]:
         """Time variables of the DC motor. Each time variable is stored as a dictionary key-value pair. The available
         time variables are:
 
@@ -662,7 +663,7 @@ class DCMotor(MotorBase):
             self.time_variables['pwm'].append(self.pwm)
 
     @property
-    def pwm(self) -> Union[float, int]:
+    def pwm(self) -> float | int:
         """Pulse Width Modulation duty cycle of the supply voltage of the DC motor. \n
         It must be a :py:class:`float` or an :py:class:`int` within ``-1`` and ``1``. \n
         In general the duty cycle can be between ``0`` and ``1``, but :py:attr:`pwm` can be between ``-1`` and ``1``, in
@@ -698,7 +699,7 @@ class DCMotor(MotorBase):
         return self.__pwm
 
     @pwm.setter
-    def pwm(self, pwm: Union[float, int]):
+    def pwm(self, pwm: float | int):
         if not isinstance(pwm, float) and not isinstance(pwm, int):
             raise TypeError("Parameter 'pwm' must be a float or an integer.")
 

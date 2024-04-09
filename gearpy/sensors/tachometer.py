@@ -1,7 +1,8 @@
+from __future__ import annotations
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import AngularSpeed
 from .sensor_base import SensorBase
-from typing import Optional, Union
+from typing import Optional
 
 
 class Tachometer(SensorBase):
@@ -42,7 +43,7 @@ class Tachometer(SensorBase):
         """
         return self.__target
 
-    def get_value(self, unit: Optional[str] = None) -> Union[AngularSpeed, float, int]:
+    def get_value(self, unit: Optional[str] = None) -> AngularSpeed | float | int:
         """It gets the angular speed of the :py:attr:`target` rotating object. \n
         If a ``unit`` is set, then it converts the angular speed to that unit and returns only the numerical value as
         float or integer.

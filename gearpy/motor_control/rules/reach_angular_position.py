@@ -1,9 +1,9 @@
+from __future__ import annotations
 from gearpy.mechanical_objects import MotorBase, RotatingObject
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularPosition, Angle
 from gearpy.motor_control.rules.rules_base import RuleBase
-from typing import Union
 from .utils import _compute_static_error
 
 
@@ -73,7 +73,7 @@ class ReachAngularPosition(RuleBase):
         self.__target_angular_position = target_angular_position
         self.__braking_angle = braking_angle
 
-    def apply(self) -> Union[None, float, int]:
+    def apply(self) -> None | float | int:
         """It computes the ``pwm`` to apply to the ``powertrain``'s DC motor in order to reach a 
         ``target_angular_position`` by the ``target`` rotating object of the ``encoder``, within a specific
         ``braking_angle``.

@@ -1,3 +1,4 @@
+from __future__ import annotations
 from collections import Counter
 from gearpy.mechanical_objects import MotorBase, RotatingObject, GearBase, WormGear
 from gearpy.units import Time
@@ -6,7 +7,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 from scipy.interpolate import interp1d
-from typing import List, Tuple, Union, Optional
+from typing import Optional
 
 
 VARIABLES_SORT_ORDER = {'angular position': 0, 'angular speed': 1, 'angular acceleration': 2, 'torque': 3,
@@ -79,7 +80,7 @@ class Powertrain:
                     self.__self_locking = True
 
     @property
-    def elements(self) -> Tuple[RotatingObject]:
+    def elements(self) -> tuple[RotatingObject]:
         """Rotating objects in the powertrain. \n
         The first element is the driving motor, the next elements are in order, from the closest to the farthest from
         the motor. Each element is driven by the previous one and it drives the following one.
@@ -102,7 +103,7 @@ class Powertrain:
         return self.__elements
 
     @property
-    def time(self) -> List[Time]:
+    def time(self) -> list[Time]:
         """List of the simulated time steps. \n
         During computation, the solver appends a simulated time step to this list at each iteration. \n
         Every element of this list must be an instance of :py:class:`Time <gearpy.units.units.Time>`.
@@ -204,7 +205,7 @@ class Powertrain:
 
     def snapshot(self,
                  target_time: Time,
-                 variables: Optional[List[str]] = None,
+                 variables: Optional[list[str]] = None,
                  angular_position_unit: Optional[str] = 'rad',
                  angular_speed_unit: Optional[str] = 'rad/s',
                  angular_acceleration_unit: Optional[str] = 'rad/s^2',
@@ -450,8 +451,8 @@ class Powertrain:
         return data
 
     def plot(self,
-             elements: Optional[List[Union[RotatingObject, str]]] = None,
-             variables: Optional[List[str]] = None,
+             elements: Optional[list[RotatingObject | str]] = None,
+             variables: Optional[list[str]] = None,
              angular_position_unit: Optional[str] = 'rad',
              angular_speed_unit: Optional[str] = 'rad/s',
              angular_acceleration_unit: Optional[str] = 'rad/s^2',

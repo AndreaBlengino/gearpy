@@ -1,7 +1,7 @@
+from __future__ import annotations
 from gearpy.powertrain import Powertrain
 from .motor_control_base import MotorControlBase
 from gearpy.motor_control.rules.rules_base import RuleBase
-from typing import Union
 
 
 class PWMControl(MotorControlBase):
@@ -113,5 +113,5 @@ class PWMControl(MotorControlBase):
         self.__powertrain.elements[0].pwm = pwm
 
     @staticmethod
-    def _saturate_pwm(pwm) -> Union[float, int]:
+    def _saturate_pwm(pwm) -> float | int:
         return min(max(pwm, -1), 1)

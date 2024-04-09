@@ -1,7 +1,8 @@
+from __future__ import annotations
 from gearpy.mechanical_objects import MotorBase
 from gearpy.units import Current
 from .sensor_base import SensorBase
-from typing import Optional, Union
+from typing import Optional
 
 
 class Amperometer(SensorBase):
@@ -45,7 +46,7 @@ class Amperometer(SensorBase):
         """
         return self.__target
 
-    def get_value(self, unit: Optional[str] = None) -> Union[Current, float, int]:
+    def get_value(self, unit: Optional[str] = None) -> Current | float | int:
         """It gets the electric current of the :py:attr:`target` motor object. \n
         If a ``unit`` is set, then it converts the electric current to that unit and returns only the numerical value
         as float or integer.

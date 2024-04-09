@@ -1,11 +1,11 @@
+from __future__ import annotations
 from gearpy.mechanical_objects import RotatingObject, MotorBase, GearBase, MatingMaster, MatingSlave, WormGear, \
                                       WormWheel
-from typing import Union
 
 
 def add_gear_mating(master: GearBase,
                     slave: GearBase,
-                    efficiency: Union[float, int]) -> None:
+                    efficiency: float | int) -> None:
     """It creates a gear mating between two existing gears. This mating is used to compose the
     :py:class:`Powertrain <gearpy.powertrain.Powertrain>`. \n
     The ratio of the angular speed of the ``master`` gear over the angular speed of the ``slave`` gear is equal to the
@@ -108,9 +108,9 @@ def add_gear_mating(master: GearBase,
     slave.master_gear_efficiency = efficiency
 
 
-def add_worm_gear_mating(master: Union[WormGear, WormWheel],
-                         slave: Union[WormGear, WormWheel],
-                         friction_coefficient: Union[float, int]) -> None:
+def add_worm_gear_mating(master: WormGear | WormWheel,
+                         slave: WormGear | WormWheel,
+                         friction_coefficient: float | int) -> None:
     """It creates a gear mating between a worm gear and a worm wheel. This mating is used to compose the
     :py:class:`Powertrain <gearpy.powertrain.Powertrain>`. \n
     The ``master`` gear is closest to the motor and transfers a fraction of the driving torque to the ``slave`` one,

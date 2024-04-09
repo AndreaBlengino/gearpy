@@ -1,3 +1,4 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from . import gear_data
 from gearpy.units import Angle, AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, \
@@ -6,7 +7,7 @@ from importlib import resources as imp_resources
 from inspect import signature
 import pandas as pd
 from scipy.interpolate import interp1d
-from typing import Callable, Dict, List, Union
+from typing import Callable
 
 
 LEWIS_FACTOR_DATA_FILE = (imp_resources.files(gear_data) / 'lewis_factor_table.csv')
@@ -187,7 +188,7 @@ class RotatingObject(MechanicalObject):
 
     @property
     @abstractmethod
-    def time_variables(self) -> Dict[str, List[UnitBase]]:
+    def time_variables(self) -> dict[str, list[UnitBase]]:
         return self.__time_variables
 
     @abstractmethod
@@ -432,12 +433,12 @@ class GearBase(RotatingObject):
 
     @property
     @abstractmethod
-    def master_gear_efficiency(self) -> Union[float, int]:
+    def master_gear_efficiency(self) -> float | int:
         return self.__master_gear_efficiency
 
     @master_gear_efficiency.setter
     @abstractmethod
-    def master_gear_efficiency(self, master_gear_efficiency: Union[float, int]):
+    def master_gear_efficiency(self, master_gear_efficiency: float | int):
         if not isinstance(master_gear_efficiency, float) and not isinstance(master_gear_efficiency, int):
             raise TypeError("Parameter 'master_gear_efficiency' must be a float or an integer.")
 

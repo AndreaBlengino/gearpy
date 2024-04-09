@@ -1,7 +1,7 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import UnitBase
-from typing import Union
 
 
 class SensorBase(ABC):
@@ -21,4 +21,4 @@ class SensorBase(ABC):
     def target(self) -> RotatingObject: ...
 
     @abstractmethod
-    def get_value(self) -> Union[UnitBase, float, int]: ...
+    def get_value(self) -> UnitBase | float | int: ...

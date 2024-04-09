@@ -1,7 +1,7 @@
+from __future__ import annotations
 from gearpy.mechanical_objects import SpurGear
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularPosition, Angle
-from typing import Union
 
 
 def _compute_static_error(braking_angle: Angle, powertrain: Powertrain) -> Union[Angle, AngularPosition]:
@@ -21,7 +21,7 @@ def _compute_static_error(braking_angle: Angle, powertrain: Powertrain) -> Union
     return static_error
 
 
-def _compute_pwm_min(powertrain: Powertrain) -> Union[float, int]:
+def _compute_pwm_min(powertrain: Powertrain) -> float | int:
     maximum_torque = powertrain.elements[0].maximum_torque
     if powertrain.elements[0].time_variables['load torque']:
         load_torque = powertrain.elements[0].time_variables['load torque'][0]
