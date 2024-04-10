@@ -13,10 +13,10 @@ dependencies = [
   "scipy==1.11.3",
 ]
 authors = [
-  {name = "Andrea Blengino", email = "ing.andrea.blengino@gmail.com"},
+  {name = "Andrea Blengino", email = "ing.andrea.blengino@protonmail.com"},
 ]
 maintainers = [
-  {name = "Andrea Blengino", email = "ing.andrea.blengino@gmail.com"},
+  {name = "Andrea Blengino", email = "ing.andrea.blengino@protonmail.com"},
 ]
 description = "Python library for mechanical transmission analysis"
 readme = "README.rst"
