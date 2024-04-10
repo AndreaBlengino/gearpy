@@ -1,13 +1,14 @@
+from __future__ import annotations
 from gearpy.mechanical_objects import DCMotor
 from gearpy.units import Time
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from typing import List, Optional, Union
+from typing import Optional
 
 
 def dc_motor_characteristics_animation(motor: DCMotor,
-                                       time: List[Time],
-                                       interval: Optional[Union[float, int]] = 200,
+                                       time: list[Time],
+                                       interval: Optional[float | int] = 200,
                                        torque_speed_curve: Optional[bool] = True,
                                        torque_current_curve: Optional[bool] = True,
                                        angular_speed_unit: Optional[str] = 'rad/s',
@@ -16,8 +17,8 @@ def dc_motor_characteristics_animation(motor: DCMotor,
                                        figsize: Optional[tuple] = None,
                                        line_color: Optional[str] = None,
                                        marker_color: Optional[str] = None,
-                                       marker_size: Optional[Union[float, int]] = None,
-                                       padding: Optional[Union[float, int]] = 0.1,
+                                       marker_size: Optional[float | int] = None,
+                                       padding: Optional[float | int] = 0.1,
                                        show: Optional[bool] = True) -> FuncAnimation:
     """It generates an animation of a :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` torque-speed and
     torque-current characteristic curves and relative working points during the simulation. \n

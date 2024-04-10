@@ -10,19 +10,46 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
+
+      - name: Install building tools
         run: |
-          pip install -r requirements/common.txt
-          pip install -r requirements/tests.txt
+          pip install build twine
+
+      - name: Build package
+        run: |
+          python -m build
+
+      - name: Install build package
+        run: |
+          pip install .[test]
+
+      - name: Package differences computation
+        run: |
+          if [[ $(diff -r ./gearpy ./build/lib/gearpy | grep -v __pycache__ | wc -m) == 0 ]]; then 
+               echo "packages_are_equal=true" >> $GITHUB_ENV
+          else
+               echo "packages_are_equal=false" >> $GITHUB_ENV
+          fi
+
+      - name: Condition check
+        if: env.packages_are_equal == 'false'
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('Compiled package different from source package.')
+
       - name: Fetch
         uses: actions/checkout@master
-      - name: Test
+
+      - name: Run tests
         run: |
           python -m pytest --verbose --disable-pytest-warnings --cov=gearpy --cov-report=xml:macos_coverage.xml -nauto
+
       - name: Upload
         uses: codecov/codecov-action@v2
         with:

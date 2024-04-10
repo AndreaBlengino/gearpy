@@ -1,9 +1,10 @@
+from __future__ import annotations
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Angle, Force, InertiaMoment, Length, \
     Stress, Time, Torque, UnitBase
 from math import sqrt
 from .mechanical_object_base import RotatingObject, GearBase, lewis_factor_function, Role
 from .mating_roles import MatingMaster, MatingSlave
-from typing import Callable, Dict, List, Union, Optional
+from typing import Callable, Optional
 
 
 class SpurGear(GearBase):
@@ -349,7 +350,7 @@ class SpurGear(GearBase):
         super(SpurGear, type(self)).master_gear_ratio.fset(self, master_gear_ratio)
 
     @property
-    def master_gear_efficiency(self) -> Union[float, int]:
+    def master_gear_efficiency(self) -> float | int:
         """Efficiency of the gear mating between the gear and its driving gear. It must be a :py:class:`float` or an
         :py:class:`int` within ``0`` and ``1``. \n
         To set this property use :py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>` or
@@ -371,7 +372,7 @@ class SpurGear(GearBase):
         return super().master_gear_efficiency
 
     @master_gear_efficiency.setter
-    def master_gear_efficiency(self, master_gear_efficiency: Union[float, int]):
+    def master_gear_efficiency(self, master_gear_efficiency: float | int):
         super(SpurGear, type(self)).master_gear_efficiency.fset(self, master_gear_efficiency)
 
     @property
@@ -875,7 +876,7 @@ class SpurGear(GearBase):
         super(SpurGear, type(self)).external_torque.fset(self, external_torque)
 
     @property
-    def time_variables(self) -> Dict[str, List[UnitBase]]:
+    def time_variables(self) -> dict[str, list[UnitBase]]:
         """Time variables of the gear. Each time variable is stored as a dictionary key-value pair. The available time
         variables are:
 

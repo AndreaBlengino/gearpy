@@ -1,9 +1,9 @@
+from __future__ import annotations
 from gearpy.mechanical_objects import DCMotor
 from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
 from gearpy.units import AngularPosition, Current
 import numpy as np
 from gearpy.motor_control.rules.rules_base import RuleBase
-from typing import Union
 
 
 class StartLimitCurrent(RuleBase):
@@ -77,7 +77,7 @@ class StartLimitCurrent(RuleBase):
         self.__limit_electric_current = limit_electric_current
         self.__target_angular_position = target_angular_position
 
-    def apply(self) -> Union[None, float, int]:
+    def apply(self) -> None | float | int:
         r"""It computes the ``pwm`` to apply to the ``motor`` in order to limit its absorbed electric current to be
         lower or equal to ``limit_electric_current``, until the ``encoder``'s ``target`` rotating object's
         ``angular_position`` equals the ``target_angular_position``.

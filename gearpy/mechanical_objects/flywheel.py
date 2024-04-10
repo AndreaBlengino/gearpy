@@ -1,6 +1,6 @@
+from __future__ import annotations
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Torque, UnitBase
 from .mechanical_object_base import RotatingObject
-from typing import Dict, List, Union
 
 
 class Flywheel(RotatingObject):
@@ -313,7 +313,7 @@ class Flywheel(RotatingObject):
         self.__master_gear_ratio = master_gear_ratio
 
     @property
-    def master_gear_efficiency(self) -> Union[float, int]:
+    def master_gear_efficiency(self) -> float | int:
         """Efficiency of the fixed joint between the flywheel and its driving rotating object. Since the relation
         between the flywheel and its neighbor elements in the powertrain elements is always a fixed joint, the
         efficiency is always equal to ``1`` and cannot be overwritten. \n
@@ -346,7 +346,7 @@ class Flywheel(RotatingObject):
         return super().inertia_moment
 
     @property
-    def time_variables(self) -> Dict[str, List[UnitBase]]:
+    def time_variables(self) -> dict[str, list[UnitBase]]:
         """Time variables of the flywheel. Each time variable is stored as a dictionary key-value pair. The available
         time variables are:
 

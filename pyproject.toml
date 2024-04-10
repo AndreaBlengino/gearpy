@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gearpy"
+dynamic = ["version"]
+requires-python = ">=3.9,<3.13"
+dependencies = [
+  "matplotlib==3.8.0",
+  "numpy==1.26.0",
+  "pandas==2.1.1",
+  "scipy==1.11.3",
+]
+authors = [
+  {name = "Andrea Blengino", email = "ing.andrea.blengino@protonmail.com"},
+]
+maintainers = [
+  {name = "Andrea Blengino", email = "ing.andrea.blengino@protonmail.com"},
+]
+description = "Python library for mechanical transmission analysis"
+readme = "README.rst"
+license = { file = "LICENSE" }
+classifiers = [
+  "Intended Audience :: Education",
+  "Intended Audience :: Manufacturing",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering"
+]
+
+
+[project.optional-dependencies]
+doc = [
+  "furo==2023.9.10",
+  "m2r2==0.3.3.post2",
+  "sphinx==7.2.6"
+]
+test = [
+  "coverage==7.3.2",
+  "hypothesis==6.88.1",
+  "pytest==7.4.3",
+  "pytest-cov==4.1.0",
+  "pytest-xdist==3.3.1",
+]
+
+[tool.setuptools.packages.find]
+include = ["gearpy", "gearpy.*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.csv"]
+
+[project.urls]
+Homepage = "https://github.com/AndreaBlengino/gearpy"
+Documentation = "https://gearpy.readthedocs.io/en/latest/index.html"
+Issues = "https://github.com/AndreaBlengino/gearpy/issues"
+Repository = "https://github.com/AndreaBlengino/gearpy"

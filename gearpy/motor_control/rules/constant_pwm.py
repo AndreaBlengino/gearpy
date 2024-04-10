@@ -1,7 +1,7 @@
+from __future__ import annotations
 from gearpy.sensors import Timer
 from gearpy.powertrain import Powertrain
 from gearpy.motor_control.rules.rules_base import RuleBase
-from typing import Union
 
 
 class ConstantPWM(RuleBase):
@@ -36,7 +36,7 @@ class ConstantPWM(RuleBase):
     def __init__(self,
                  timer: Timer,
                  powertrain: Powertrain,
-                 target_pwm_value: Union[float, int]):
+                 target_pwm_value: float | int):
         super().__init__()
 
         if not isinstance(timer, Timer):
@@ -55,7 +55,7 @@ class ConstantPWM(RuleBase):
         self.__powertrain = powertrain
         self.__target_pwm_value = target_pwm_value
 
-    def apply(self) -> Union[None, float, int]:
+    def apply(self) -> None | float | int:
         r"""It checks if ``timer`` is active and, if so, it returns the ``pwm`` to apply to the ``powertrain`` motor,
         equal to ``target_pwm_value``.
 

@@ -1,9 +1,10 @@
+from __future__ import annotations
 from gearpy.mechanical_objects import MotorBase, RotatingObject
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularPosition
 from gearpy.motor_control.rules.rules_base import RuleBase
-from typing import Union, Optional
+from typing import Optional
 from .utils import _compute_pwm_min
 
 
@@ -55,7 +56,7 @@ class StartProportionalToAngularPosition(RuleBase):
                  encoder: AbsoluteRotaryEncoder,
                  powertrain: Powertrain,
                  target_angular_position: AngularPosition,
-                 pwm_min_multiplier: Union[float, int],
+                 pwm_min_multiplier: float | int,
                  pwm_min: Optional[float] = None):
         super().__init__()
 
@@ -99,7 +100,7 @@ class StartProportionalToAngularPosition(RuleBase):
         self.__pwm_min_multiplier = pwm_min_multiplier
         self.__pwm_min = pwm_min
 
-    def apply(self) -> Union[None, float, int]:
+    def apply(self) -> None | float | int:
         """It computes the ``pwm`` to apply to the ``powertrain`` motor, proportional to the ``encoder``'s ``target``
         ``angular_position`` until it reaches the ``target_angular_position``.
 

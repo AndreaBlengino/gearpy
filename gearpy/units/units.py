@@ -1,5 +1,6 @@
+from __future__ import annotations
 from math import pi, sin, cos, tan
-from typing import Union, Optional
+from typing import Optional
 from .unit_base import UnitBase
 
 
@@ -32,7 +33,7 @@ class AngularPosition(UnitBase):
                'arcsec': pi/180/60/60,
                'rot': 2*pi}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -42,7 +43,7 @@ class AngularPosition(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union[float, int]) -> 'AngularPosition':
+    def __mul__(self, other: float | int) -> AngularPosition:
         super().__mul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -51,7 +52,7 @@ class AngularPosition(UnitBase):
 
         return AngularPosition(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'AngularPosition':
+    def __rmul__(self, other: float | int) -> AngularPosition:
         super().__rmul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -60,7 +61,7 @@ class AngularPosition(UnitBase):
 
         return AngularPosition(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['AngularPosition', float, int]) -> Union['AngularPosition', float]:
+    def __truediv__(self, other: AngularPosition | float | int) -> AngularPosition | float:
         super().__truediv__(other = other)
 
         if not isinstance(other, AngularPosition) and not isinstance(other, float) and not isinstance(other, int):
@@ -73,7 +74,7 @@ class AngularPosition(UnitBase):
             return AngularPosition(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Angular position numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
@@ -115,7 +116,7 @@ class AngularPosition(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'AngularPosition':
+    def to(self, target_unit: str, inplace: bool = False) -> AngularPosition:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -186,7 +187,7 @@ class AngularPosition(UnitBase):
         else:
             return AngularPosition(value = target_value, unit = target_unit)
 
-    def sin(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+    def sin(self, frequency: Optional[float | int] = 1/2/pi) -> float:
         r"""It computes the sine of the angular position at a given frequency.
 
         Parameters
@@ -201,7 +202,7 @@ class AngularPosition(UnitBase):
         """
         return sin(2*pi*frequency*self.to('rad').value)
 
-    def cos(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+    def cos(self, frequency: Optional[float | int] = 1/2/pi) -> float:
         r"""It computes the cosine of the angular position at a given frequency.
 
         Parameters
@@ -216,7 +217,7 @@ class AngularPosition(UnitBase):
         """
         return cos(2*pi*frequency*self.to('rad').value)
 
-    def tan(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+    def tan(self, frequency: Optional[float | int] = 1/2/pi) -> float:
         r"""It computes the tangent of the angular position at a given frequency.
 
         Parameters
@@ -255,7 +256,7 @@ class Angle(AngularPosition):
         It computes the tangent of the angle at a given frequency.
     """
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if value < 0:
@@ -264,7 +265,7 @@ class Angle(AngularPosition):
         self.__value = value
         self.__unit = unit
 
-    def __add__(self, other: Union['AngularPosition', 'Angle']) -> Union['AngularPosition', 'Angle']:
+    def __add__(self, other: AngularPosition | Angle) -> AngularPosition | Angle:
         super().__add__(other = other)
 
         if isinstance(other, Angle):
@@ -272,7 +273,7 @@ class Angle(AngularPosition):
         else:
             return AngularPosition(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
-    def __sub__(self, other: Union['AngularPosition', 'Angle']) -> Union['AngularPosition', 'Angle']:
+    def __sub__(self, other: AngularPosition | Angle) -> AngularPosition | Angle:
         super().__sub__(other = other)
 
         if isinstance(other, Angle):
@@ -280,7 +281,7 @@ class Angle(AngularPosition):
         else:
             return AngularPosition(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
-    def __mul__(self, other: Union[float, int]) -> 'Angle':
+    def __mul__(self, other: float | int) -> Angle:
         super().__mul__(other = other)
 
         if other < 0:
@@ -288,7 +289,7 @@ class Angle(AngularPosition):
 
         return Angle(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'Angle':
+    def __rmul__(self, other: float | int) -> Angle:
         super().__rmul__(other = other)
 
         if other < 0:
@@ -296,7 +297,7 @@ class Angle(AngularPosition):
 
         return Angle(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['AngularPosition', float, int]) -> Union['AngularPosition', float]:
+    def __truediv__(self, other: AngularPosition | float | int) -> AngularPosition | float:
         super().__truediv__(other = other)
 
         if isinstance(other, AngularPosition):
@@ -305,7 +306,7 @@ class Angle(AngularPosition):
             return Angle(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Angle numerical value. The relative unit is expressed by the :py:attr:`unit` property. It must be positive or
         null.
 
@@ -350,7 +351,7 @@ class Angle(AngularPosition):
         """
         return super().unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'Angle':
+    def to(self, target_unit: str, inplace: bool = False) -> Angle:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -412,7 +413,7 @@ class Angle(AngularPosition):
         else:
             return Angle(value = converted.value, unit = converted.unit)
 
-    def sin(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+    def sin(self, frequency: Optional[float | int] = 1/2/pi) -> float:
         r"""It computes the sine of the angle at a given frequency.
 
         Parameters
@@ -427,7 +428,7 @@ class Angle(AngularPosition):
         """
         return super().sin(frequency = frequency)
 
-    def cos(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+    def cos(self, frequency: Optional[float | int] = 1/2/pi) -> float:
         r"""It computes the cosine of the angle at a given frequency.
 
         Parameters
@@ -442,7 +443,7 @@ class Angle(AngularPosition):
         """
         return super().cos(frequency = frequency)
 
-    def tan(self, frequency: Optional[Union[float, int]] = 1/2/pi) -> float:
+    def tan(self, frequency: Optional[float | int] = 1/2/pi) -> float:
         r"""It computes the tangent of the angle at a given frequency.
 
         Parameters
@@ -485,7 +486,7 @@ class AngularSpeed(UnitBase):
                'rpm': 2*pi/60,
                'rph': 2*pi/60/60}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -495,7 +496,7 @@ class AngularSpeed(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union['Time', float, int]) -> Union['AngularPosition', 'AngularSpeed']:
+    def __mul__(self, other: Time | float | int) -> AngularPosition | AngularSpeed:
         super().__mul__(other = other)
 
         if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
@@ -507,7 +508,7 @@ class AngularSpeed(UnitBase):
         else:
             return AngularSpeed(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union['Time', float, int]) -> Union['AngularPosition', 'AngularSpeed']:
+    def __rmul__(self, other: Time | float | int) -> AngularPosition | AngularSpeed:
         super().__rmul__(other = other)
 
         if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
@@ -519,7 +520,7 @@ class AngularSpeed(UnitBase):
         else:
             return AngularSpeed(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['AngularSpeed', float, int]) -> Union['AngularSpeed', float]:
+    def __truediv__(self, other: AngularSpeed | float | int) -> AngularSpeed | float:
         super().__truediv__(other = other)
 
         if not isinstance(other, AngularSpeed) and not isinstance(other, float) and not isinstance(other, int):
@@ -531,7 +532,7 @@ class AngularSpeed(UnitBase):
             return AngularSpeed(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Angular speed numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
@@ -577,7 +578,7 @@ class AngularSpeed(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'AngularSpeed':
+    def to(self, target_unit: str, inplace: bool = False) -> AngularSpeed:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -671,7 +672,7 @@ class AngularAcceleration(UnitBase):
                'deg/s^2': pi/180,
                'rot/s^2': 2*pi}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -681,7 +682,7 @@ class AngularAcceleration(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union['Time', float, int]) -> Union['AngularAcceleration', 'AngularSpeed']:
+    def __mul__(self, other: Time | float | int) -> AngularAcceleration | AngularSpeed:
         super().__mul__(other = other)
 
         if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
@@ -693,7 +694,7 @@ class AngularAcceleration(UnitBase):
         else:
             return AngularAcceleration(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union['Time', float, int]) -> Union['AngularAcceleration', 'AngularSpeed']:
+    def __rmul__(self, other: Time | float | int) -> AngularAcceleration | AngularSpeed:
         super().__rmul__(other = other)
 
         if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
@@ -705,7 +706,7 @@ class AngularAcceleration(UnitBase):
         else:
             return AngularAcceleration(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['AngularAcceleration', float, int]) -> Union['AngularAcceleration', float]:
+    def __truediv__(self, other: AngularAcceleration | float | int) -> AngularAcceleration | float:
         super().__truediv__(other = other)
 
         if not isinstance(other, AngularAcceleration) and not isinstance(other, float) and not isinstance(other, int):
@@ -718,7 +719,7 @@ class AngularAcceleration(UnitBase):
             return AngularAcceleration(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Angular acceleration numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
@@ -758,7 +759,7 @@ class AngularAcceleration(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'AngularAcceleration':
+    def to(self, target_unit: str, inplace: bool = False) -> AngularAcceleration:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -857,7 +858,7 @@ class InertiaMoment(UnitBase):
                'gcm^2': 1e-7,
                'gmm^2': 1e-9}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -870,7 +871,7 @@ class InertiaMoment(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union[float, int]) -> 'InertiaMoment':
+    def __mul__(self, other: float | int) -> InertiaMoment:
         super().__mul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -882,7 +883,7 @@ class InertiaMoment(UnitBase):
 
         return InertiaMoment(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'InertiaMoment':
+    def __rmul__(self, other: float | int) -> InertiaMoment:
         super().__rmul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -894,7 +895,7 @@ class InertiaMoment(UnitBase):
 
         return InertiaMoment(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['InertiaMoment', float, int]) -> Union['InertiaMoment', float]:
+    def __truediv__(self, other: InertiaMoment | float | int) -> InertiaMoment | float:
         super().__truediv__(other = other)
 
         if not isinstance(other, InertiaMoment) and not isinstance(other, float) and not isinstance(other, int):
@@ -907,7 +908,7 @@ class InertiaMoment(UnitBase):
             return InertiaMoment(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Moment of inertia numerical value. The relative unit is expressed by the :py:attr:`unit` property. It must be
         positive.
 
@@ -955,7 +956,7 @@ class InertiaMoment(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'InertiaMoment':
+    def to(self, target_unit: str, inplace: bool = False) -> InertiaMoment:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -1063,7 +1064,7 @@ class Torque(UnitBase):
                'gfcm': 9.80665e-5,
                'gfmm': 9.80665e-6}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -1073,7 +1074,7 @@ class Torque(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union[float, int]) -> 'Torque':
+    def __mul__(self, other: float | int) -> Torque:
         super().__mul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -1082,7 +1083,7 @@ class Torque(UnitBase):
 
         return Torque(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'Torque':
+    def __rmul__(self, other: float | int) -> Torque:
         super().__rmul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -1091,8 +1092,8 @@ class Torque(UnitBase):
 
         return Torque(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['InertiaMoment', 'Length', 'Torque', float, int]) \
-            -> Union['AngularAcceleration', 'Force', float, 'Torque']:
+    def __truediv__(self, other: InertiaMoment | Length | Torque | float | int) \
+            -> AngularAcceleration | Force | float | Torque:
         super().__truediv__(other = other)
 
         if not isinstance(other, InertiaMoment) and not isinstance(other, Length) and not isinstance(other, Torque) \
@@ -1109,7 +1110,7 @@ class Torque(UnitBase):
             return Torque(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Torque numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
@@ -1163,7 +1164,7 @@ class Torque(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'Torque':
+    def to(self, target_unit: str, inplace: bool = False) -> Torque:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -1258,7 +1259,7 @@ class Time(UnitBase):
                'hour': 60*60,
                'ms': 1e-3}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -1268,8 +1269,7 @@ class Time(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) \
-            -> Union['AngularPosition', 'AngularSpeed', 'Time']:
+    def __mul__(self, other: AngularAcceleration | AngularSpeed | float | int) -> AngularPosition | AngularSpeed | Time:
         super().__mul__(other = other)
 
         if not isinstance(other, AngularAcceleration) and not isinstance(other, AngularSpeed) \
@@ -1284,8 +1284,8 @@ class Time(UnitBase):
         else:
             return Time(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union['AngularAcceleration', 'AngularSpeed', float, int]) \
-            -> Union['AngularPosition', 'AngularSpeed', 'Time']:
+    def __rmul__(self, other: AngularAcceleration | AngularSpeed | float | int) \
+            -> AngularPosition | AngularSpeed | Time:
         super().__rmul__(other = other)
 
         if not isinstance(other, AngularAcceleration) and not isinstance(other, AngularSpeed) \
@@ -1300,7 +1300,7 @@ class Time(UnitBase):
         else:
             return Time(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['Time', float, int]) -> Union['Time', float]:
+    def __truediv__(self, other: Time | float | int) -> Time | float:
         super().__truediv__(other = other)
 
         if not isinstance(other, Time) and not isinstance(other, float) and not isinstance(other, int):
@@ -1312,7 +1312,7 @@ class Time(UnitBase):
             return Time(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Time numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
@@ -1353,7 +1353,7 @@ class Time(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'Time':
+    def to(self, target_unit: str, inplace: bool = False) -> Time:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -1442,7 +1442,7 @@ class TimeInterval(Time):
         measurement.
     """
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if value <= 0:
@@ -1451,7 +1451,7 @@ class TimeInterval(Time):
         self.__value = value
         self.__unit = unit
 
-    def __add__(self, other: Union['Time', 'TimeInterval']) -> Union['Time', 'TimeInterval']:
+    def __add__(self, other: Time | TimeInterval) -> Time | TimeInterval:
         super().__add__(other = other)
 
         if isinstance(other, TimeInterval):
@@ -1459,7 +1459,7 @@ class TimeInterval(Time):
         else:
             return Time(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
-    def __sub__(self, other: Union['Time', 'TimeInterval']) -> Union['Time', 'TimeInterval']:
+    def __sub__(self, other: Time | TimeInterval) -> Time | TimeInterval:
         super().__sub__(other = other)
 
         if isinstance(other, TimeInterval):
@@ -1467,7 +1467,7 @@ class TimeInterval(Time):
         else:
             return Time(value = self.__value + other.to(self.__unit).value, unit = self.__unit)
 
-    def __mul__(self, other: Union[float, int]) -> 'TimeInterval':
+    def __mul__(self, other: float | int) -> TimeInterval:
         super().__mul__(other = other)
 
         if other <= 0:
@@ -1475,7 +1475,7 @@ class TimeInterval(Time):
 
         return TimeInterval(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'TimeInterval':
+    def __rmul__(self, other: float | int) -> TimeInterval:
         super().__rmul__(other = other)
 
         if other <= 0:
@@ -1483,7 +1483,7 @@ class TimeInterval(Time):
 
         return TimeInterval(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['Time', float, int]) -> Union['Time', float]:
+    def __truediv__(self, other: Time | float | int) -> Time | float:
         super().__truediv__(other = other)
 
         if isinstance(other, Time):
@@ -1492,7 +1492,7 @@ class TimeInterval(Time):
             return TimeInterval(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Time interval numerical value. The relative unit is expressed by the :py:attr:`unit` property. It must be
         positive.
 
@@ -1536,7 +1536,7 @@ class TimeInterval(Time):
         """
         return super().unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'TimeInterval':
+    def to(self, target_unit: str, inplace: bool = False) -> TimeInterval:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -1621,7 +1621,7 @@ class Length(UnitBase):
                'cm': 1e-2,
                'mm': 1e-3}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -1634,7 +1634,7 @@ class Length(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union['Length', float, int]) -> Union['Surface', 'Length']:
+    def __mul__(self, other: Length | float | int) -> Surface | Length:
         super().__mul__(other = other)
 
         if not isinstance(other, Length) and not isinstance(other, float) and not isinstance(other, int):
@@ -1646,7 +1646,7 @@ class Length(UnitBase):
         else:
             return Length(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'Length':
+    def __rmul__(self, other: float | int) -> Length:
         super().__rmul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -1655,7 +1655,7 @@ class Length(UnitBase):
 
         return Length(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['Length', float, int]) -> Union['Length', float]:
+    def __truediv__(self, other: Length | float | int) -> Length | float:
         super().__truediv__(other = other)
 
         if not isinstance(other, Length) and not isinstance(other, float) and not isinstance(other, int):
@@ -1668,7 +1668,7 @@ class Length(UnitBase):
             return Length(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Length numerical value. The relative unit is expressed by the :py:attr:`unit` property. It must be positive.
 
         Returns
@@ -1711,7 +1711,7 @@ class Length(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'Length':
+    def to(self, target_unit: str, inplace: bool = False) -> Length:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -1805,7 +1805,7 @@ class Surface(UnitBase):
                'cm^2': 1e-4,
                'mm^2': 1e-6}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -1818,7 +1818,7 @@ class Surface(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union[float, int]) -> 'Surface':
+    def __mul__(self, other: float | int) -> Surface:
         super().__mul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -1827,7 +1827,7 @@ class Surface(UnitBase):
 
         return Surface(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'Surface':
+    def __rmul__(self, other: float | int) -> Surface:
         super().__rmul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -1836,7 +1836,7 @@ class Surface(UnitBase):
 
         return Surface(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['Surface', float, int]) -> Union['Surface', float]:
+    def __truediv__(self, other: Surface | float | int) -> Surface | float:
         super().__truediv__(other = other)
 
         if not isinstance(other, Surface) and not isinstance(other, float) and not isinstance(other, int):
@@ -1849,7 +1849,7 @@ class Surface(UnitBase):
             return Surface(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Surface numerical value. The relative unit is expressed by the :py:attr:`unit` property. It must be positive.
 
         Returns
@@ -1892,7 +1892,7 @@ class Surface(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'Surface':
+    def to(self, target_unit: str, inplace: bool = False) -> Surface:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -1988,7 +1988,7 @@ class Force(UnitBase):
                'kgf': 9.80665,
                'gf': 9.80665e-3}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -1998,7 +1998,7 @@ class Force(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union[float, int]) -> 'Force':
+    def __mul__(self, other: float | int) -> Force:
         super().__mul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -2007,7 +2007,7 @@ class Force(UnitBase):
 
         return Force(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'Force':
+    def __rmul__(self, other: float | int) -> Force:
         super().__rmul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -2016,7 +2016,7 @@ class Force(UnitBase):
 
         return Force(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['Force', 'Surface', float, int]) -> Union['Force', 'Stress', float]:
+    def __truediv__(self, other: Force | Surface | float | int) -> Force | Stress | float:
         super().__truediv__(other = other)
 
         if not isinstance(other, Force) and not isinstance(other, Surface) and not isinstance(other, float) \
@@ -2032,7 +2032,7 @@ class Force(UnitBase):
             return Force(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Force numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
@@ -2074,7 +2074,7 @@ class Force(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'Force':
+    def to(self, target_unit: str, inplace: bool = False) -> Force:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -2168,7 +2168,7 @@ class Stress(UnitBase):
                'MPa': 1e6,
                'GPa': 1e9}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -2178,7 +2178,7 @@ class Stress(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union[float, int]) -> 'Stress':
+    def __mul__(self, other: float | int) -> Stress:
         super().__mul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -2187,7 +2187,7 @@ class Stress(UnitBase):
 
         return Stress(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'Stress':
+    def __rmul__(self, other: float | int) -> Stress:
         super().__rmul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -2196,7 +2196,7 @@ class Stress(UnitBase):
 
         return Stress(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['Stress', float, int]) -> Union['Stress', float]:
+    def __truediv__(self, other: Stress | float | int) -> Stress | float:
         super().__truediv__(other = other)
 
         if not isinstance(other, Stress) and not isinstance(other, float) and not isinstance(other, int):
@@ -2209,7 +2209,7 @@ class Stress(UnitBase):
             return Stress(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Stress numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
@@ -2250,7 +2250,7 @@ class Stress(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'Stress':
+    def to(self, target_unit: str, inplace: bool = False) -> Stress:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
@@ -2343,7 +2343,7 @@ class Current(UnitBase):
                'mA': 1e-3,
                'uA': 1e-6}
 
-    def __init__(self, value: Union[float, int], unit: str):
+    def __init__(self, value: float | int, unit: str):
         super().__init__(value = value, unit = unit)
 
         if unit not in self.__UNITS.keys():
@@ -2353,7 +2353,7 @@ class Current(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Union[float, int]) -> 'Current':
+    def __mul__(self, other: float | int) -> Current:
         super().__mul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -2362,7 +2362,7 @@ class Current(UnitBase):
 
         return Current(value = self.__value*other, unit = self.__unit)
 
-    def __rmul__(self, other: Union[float, int]) -> 'Current':
+    def __rmul__(self, other: float | int) -> Current:
         super().__rmul__(other = other)
 
         if not isinstance(other, float) and not isinstance(other, int):
@@ -2371,7 +2371,7 @@ class Current(UnitBase):
 
         return Current(value = self.__value*other, unit = self.__unit)
 
-    def __truediv__(self, other: Union['Current', float, int]) -> Union['Current', float]:
+    def __truediv__(self, other: Current | float | int) -> Current | float:
         super().__truediv__(other = other)
 
         if not isinstance(other, Current) and not isinstance(other, float) and not isinstance(other, int):
@@ -2384,7 +2384,7 @@ class Current(UnitBase):
             return Current(value = self.__value/other, unit = self.__unit)
 
     @property
-    def value(self) -> Union[float, int]:
+    def value(self) -> float | int:
         """Electrical current numerical value. The relative unit is expressed by the :py:attr:`unit` property.
 
         Returns
@@ -2424,7 +2424,7 @@ class Current(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> 'Current':
+    def to(self, target_unit: str, inplace: bool = False) -> Current:
         """It converts actual :py:attr:`value` to a new value computed using ``target_unit`` as the reference unit of
         measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and :py:attr:`unit`, otherwise it returns a new
