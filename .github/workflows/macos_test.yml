@@ -22,11 +22,7 @@ jobs:
 
       - name: Build package
         run: |
-          python -m build
-
-      - name: Install build package
-        run: |
-          pip install .[test]
+          python -m build --wheel
 
       - name: Package differences computation
         run: |
@@ -42,6 +38,10 @@ jobs:
         with:
           script: |
               core.setFailed('Compiled package different from source package.')
+
+      - name: Install build package
+        run: |
+          pip install .[test]
 
       - name: Fetch
         uses: actions/checkout@master
