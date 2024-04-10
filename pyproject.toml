@@ -52,6 +52,9 @@ test = [
 [tool.setuptools.packages.find]
 include = ["gearpy", "gearpy.*"]
 
+[tool.setuptools.package-data]
+"*" = ["*.csv"]
+
 [project.urls]
 Homepage = "https://github.com/AndreaBlengino/gearpy"
 Documentation = "https://gearpy.readthedocs.io/en/latest/index.html"
