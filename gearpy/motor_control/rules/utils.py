@@ -4,7 +4,7 @@ from gearpy.powertrain import Powertrain
 from gearpy.units import AngularPosition, Angle
 
 
-def _compute_static_error(braking_angle: Angle, powertrain: Powertrain) -> Union[Angle, AngularPosition]:
+def _compute_static_error(braking_angle: Angle, powertrain: Powertrain) -> Angle | AngularPosition:
     maximum_torque = powertrain.elements[0].maximum_torque
     load_torque = powertrain.elements[0].load_torque
 

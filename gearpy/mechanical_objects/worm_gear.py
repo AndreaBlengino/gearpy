@@ -404,7 +404,7 @@ class WormGear(RotatingObject):
         return self.__master_gear_efficiency
 
     @master_gear_efficiency.setter
-    def master_gear_efficiency(self, master_gear_efficiency: Union[float, int]):
+    def master_gear_efficiency(self, master_gear_efficiency: float | int):
         if not isinstance(master_gear_efficiency, float) and not isinstance(master_gear_efficiency, int):
             raise TypeError("Parameter 'master_gear_efficiency' must be a float or an integer.")
 
