@@ -10,8 +10,7 @@ build:
     python: "3.9"
   jobs:
     post_create_environment:
-    - pip install .
-    - pip install -r requirements/docs.txt
+    - pip install .[doc]
 
 sphinx:
    configuration: docs/source/conf.py
