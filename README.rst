@@ -12,7 +12,7 @@ Powertrain Analysis
    :width: 100%
 
    * - PyPI
-     - |pypi_release| |supported_python_versions| |build|
+     - |pypi_release| |supported_python_versions| |build| |dependencies|
    * - Tests
      - |linux_tests| |macos_tests| |windows_tests| |test_coverage|
    * - Documentation
@@ -34,7 +34,11 @@ Powertrain Analysis
    :target: https://github.com/AndreaBlengino/gearpy/actions/workflows/release.yml
    :alt: Package Build
 
-.. |linux_tests| image:: https://img.shields.io/github/actions/workflow/status/AndreaBlengino/gearpy/linux_test.yml.svg?logo=linux&label=Linux
+.. |dependencies| image:: https://dependency-dash.repo-helper.uk/github/AndreaBlengino/gearpy/badge.svg
+   :target: https://dependency-dash.repo-helper.uk/github/AndreaBlengino/gearpy
+   :alt: Dependencies Status
+
+.. |linux_tests| image:: https://img.shields.io/github/actions/workflow/status/AndreaBlengino/gearpy/linux_test.yml?logo=linux&logoColor=white&label=Linux
    :target: https://github.com/AndreaBlengino/gearpy/actions/workflows/linux_test.yml
    :alt: Linux Tests
 
