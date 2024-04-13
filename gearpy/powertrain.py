@@ -442,11 +442,9 @@ class Powertrain:
                     data.loc[element.name, f'{variable} ({unit})'] = \
                         interpolation_function(target_time.to('sec').value).take(0)
 
-        data.fillna(value = '', inplace = True)
-
         if print_data:
             print(f'Mechanical Powertrain Status at Time = {target_time}')
-            print(data.to_string())
+            print(data.astype(float).fillna(value = '').to_string())
 
         return data
 
