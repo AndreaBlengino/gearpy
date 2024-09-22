@@ -1,4 +1,3 @@
-from __future__ import annotations
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Torque, UnitBase
 from .mechanical_object_base import RotatingObject
 

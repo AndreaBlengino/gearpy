@@ -1,4 +1,3 @@
-from __future__ import annotations
 from abc import ABC, abstractmethod
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import UnitBase

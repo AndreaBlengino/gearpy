@@ -1,4 +1,3 @@
-from __future__ import annotations
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import AngularSpeed
 from .sensor_base import SensorBase

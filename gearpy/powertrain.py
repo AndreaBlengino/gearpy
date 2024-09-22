@@ -1,4 +1,3 @@
-from __future__ import annotations
 from collections import Counter
 from gearpy.mechanical_objects import MotorBase, RotatingObject, GearBase, WormGear
 from gearpy.units import Time

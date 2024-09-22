@@ -1,4 +1,3 @@
-from __future__ import annotations
 from abc import ABC, abstractmethod
 from . import gear_data
 from gearpy.units import Angle, AngularPosition, AngularSpeed, AngularAcceleration, Force, InertiaMoment, Length, \

@@ -1,4 +1,3 @@
-from __future__ import annotations
 from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, Angle, Force, InertiaMoment, Length, \
     Stress, Time, Torque, UnitBase
 from math import sqrt, atan

@@ -1,4 +1,3 @@
-from __future__ import annotations
 from gearpy.mechanical_objects import MotorBase
 from gearpy.units import Current
 from .sensor_base import SensorBase

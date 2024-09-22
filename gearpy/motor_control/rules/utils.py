@@ -1,4 +1,3 @@
-from __future__ import annotations
 from gearpy.mechanical_objects import SpurGear
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularPosition, Angle

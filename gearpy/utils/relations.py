@@ -1,4 +1,3 @@
-from __future__ import annotations
 from gearpy.mechanical_objects import RotatingObject, MotorBase, GearBase, MatingMaster, MatingSlave, WormGear, \
                                       WormWheel
 

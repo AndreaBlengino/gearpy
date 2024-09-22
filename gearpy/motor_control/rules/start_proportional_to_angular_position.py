@@ -1,4 +1,3 @@
-from __future__ import annotations
 from gearpy.mechanical_objects import MotorBase, RotatingObject
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.powertrain import Powertrain

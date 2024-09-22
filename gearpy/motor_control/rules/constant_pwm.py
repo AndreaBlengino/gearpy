@@ -1,4 +1,3 @@
-from __future__ import annotations
 from gearpy.sensors import Timer
 from gearpy.powertrain import Powertrain
 from gearpy.motor_control.rules.rules_base import RuleBase

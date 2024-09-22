@@ -1,4 +1,3 @@
-from __future__ import annotations
 from gearpy.mechanical_objects import DCMotor
 from gearpy.units import Time
 import matplotlib.pyplot as plt
