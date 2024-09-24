@@ -4,7 +4,8 @@ from gearpy.units import UnitBase
 
 
 class SensorBase(ABC):
-    """:py:class:`SensorBase <gearpy.sensors.sensor_base.SensorBase>` object. \n
+    """:py:class:`SensorBase <gearpy.sensors.sensor_base.SensorBase>`
+    object. \n
     Abstract base class for creating sensor objects.
 
     .. admonition:: See Also

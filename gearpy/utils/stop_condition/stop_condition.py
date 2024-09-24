@@ -1,11 +1,18 @@
 from .operator_base import OperatorBase
-from .operator import GreaterThan, GreaterThanOrEqualTo, EqualTo, LessThan, LessThanOrEqualTo
+from .operator import (
+    GreaterThan,
+    GreaterThanOrEqualTo,
+    EqualTo,
+    LessThan,
+    LessThanOrEqualTo
+)
 from gearpy.sensors import SensorBase
 from gearpy.units import UnitBase
 
 
 class StopCondition:
-    """:py:class:`StopCondition <gearpy.utils.stop_condition.stop_condition.StopCondition>` object.
+    """:py:class:`StopCondition <gearpy.utils.stop_condition.stop_condition.StopCondition>`
+    object.
 
     Attributes
     ----------
@@ -29,15 +36,29 @@ class StopCondition:
     less_than = LessThan()
     less_than_or_equal_to = LessThanOrEqualTo()
 
-    def __init__(self, sensor: SensorBase, threshold: UnitBase, operator: OperatorBase):
+    def __init__(
+        self,
+        sensor: SensorBase,
+        threshold: UnitBase,
+        operator: OperatorBase
+    ):
         if not isinstance(sensor, SensorBase):
-            raise TypeError(f"Parameter 'sensor' must be an instance of {SensorBase.__name__!r}.")
+            raise TypeError(
+                f"Parameter 'sensor' must be an instance of "
+                f"{SensorBase.__name__!r}."
+            )
 
         if not isinstance(threshold, UnitBase):
-            raise TypeError(f"Parameter 'threshold' must be an instance of {UnitBase.__name__!r}.")
+            raise TypeError(
+                f"Parameter 'threshold' must be an instance of "
+                f"{UnitBase.__name__!r}."
+            )
 
         if not isinstance(operator, OperatorBase):
-            raise TypeError(f"Parameter 'operator' must be an instance of {OperatorBase.__name__!r}.")
+            raise TypeError(
+                f"Parameter 'operator' must be an instance of "
+                f"{OperatorBase.__name__!r}."
+            )
 
         self.__sensor = sensor
         self.__threshold = threshold
@@ -81,30 +102,38 @@ class StopCondition:
            :class: warning
 
            ``TypeError``
-               If :py:attr:`threshold` is not an instance of :py:class:`UnitBase <gearpy.units.unit_base.UnitBase>`.
+               If :py:attr:`threshold` is not an instance of
+               :py:class:`UnitBase <gearpy.units.unit_base.UnitBase>`.
         """
         return self.__threshold
 
     @property
     def operator(self) -> OperatorBase:
-        """The comparison operator to use to check if the stop condition is valid. \n
+        """The comparison operator to use to check if the stop condition is
+        valid. \n
         The available operators are:
 
-        - :py:class:`StopCondition.greater_than <gearpy.utils.stop_condition.operator.GreaterThan>` to check if the
-          :py:attr:`sensor` value is greater than the :py:attr:`threshold` value,
+        - :py:class:`StopCondition.greater_than <gearpy.utils.stop_condition.operator.GreaterThan>`
+          to check if the :py:attr:`sensor` value is greater than the
+          :py:attr:`threshold` value,
         - :py:class:`StopCondition.greater_than_or_equal_to <gearpy.utils.stop_condition.operator.GreaterThanOrEqualTo>`
-          to check if the :py:attr:`sensor` value is greater than or equal to the :py:attr:`threshold` value,
-        - :py:class:`StopCondition.equal_to <gearpy.utils.stop_condition.operator.EqualTo>` to check if the
-          :py:attr:`sensor` value is equal to the :py:attr:`threshold` value,
-        - :py:class:`StopCondition.less_than <gearpy.utils.stop_condition.operator.LessThan>` to check if the
-          :py:attr:`sensor` value is less than the :py:attr:`threshold` value,
-        - :py:class:`StopCondition.less_than_or_equal_to <gearpy.utils.stop_condition.operator.LessThanOrEqualTo>` to
-          check if the :py:attr:`sensor` value is less than or equal to the :py:attr:`threshold` value.
+          to check if the :py:attr:`sensor` value is greater than or equal to
+          the :py:attr:`threshold` value,
+        - :py:class:`StopCondition.equal_to <gearpy.utils.stop_condition.operator.EqualTo>`
+          to check if the :py:attr:`sensor` value is equal to the
+          :py:attr:`threshold` value,
+        - :py:class:`StopCondition.less_than <gearpy.utils.stop_condition.operator.LessThan>`
+          to check if the :py:attr:`sensor` value is less than the
+          :py:attr:`threshold` value,
+        - :py:class:`StopCondition.less_than_or_equal_to <gearpy.utils.stop_condition.operator.LessThanOrEqualTo>`
+          to check if the :py:attr:`sensor` value is less than or equal to the
+          :py:attr:`threshold` value.
 
         Returns
         -------
         :py:class:`OperatorBase <gearpy.utils.stop_condition.operator_base.OperatorBase>`
-            The comparison operator to use to check if the stop condition is valid.
+            The comparison operator to use to check if the stop condition is
+            valid.
 
         .. admonition:: Raises
            :class: warning
@@ -116,9 +145,11 @@ class StopCondition:
         return self.__operator
 
     def check_condition(self) -> bool:
-        """It applies the comparison :py:attr:`operator` to the :py:attr:`sensor` value and the :py:attr:`threshold`
-        value to check if the stop condition is valid. \n
-        If the stop condition is valid, then the :py:class:`Solver <gearpy.solver.Solver>` stops the computation even if
+        """It applies the comparison :py:attr:`operator` to the
+        :py:attr:`sensor` value and the :py:attr:`threshold` value to check if
+        the stop condition is valid. \n
+        If the stop condition is valid, then the
+        :py:class:`Solver <gearpy.solver.Solver>` stops the computation even if
         it is not completed to the final simulation time.
 
         Returns
@@ -126,4 +157,7 @@ class StopCondition:
         :py:class:`bool`
             Whether stop condition is valid.
         """
-        return self.operator(sensor_value = self.sensor.get_value(), threshold = self.threshold)
+        return self.operator(
+            sensor_value=self.sensor.get_value(),
+            threshold=self.threshold
+        )

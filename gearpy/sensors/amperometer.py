@@ -5,7 +5,8 @@ from typing import Optional
 
 
 class Amperometer(SensorBase):
-    r""":py:class:`Amperometer <gearpy.sensors.amperometer.Amperometer>` object.
+    r""":py:class:`Amperometer <gearpy.sensors.amperometer.Amperometer>`
+    object.
 
     Attributes
     ----------
@@ -20,10 +21,16 @@ class Amperometer(SensorBase):
 
     def __init__(self, target: MotorBase):
         if not isinstance(target, MotorBase):
-            raise TypeError(f"Parameter 'target' must be an instance of {MotorBase.__name__!r}.")
+            raise TypeError(
+                f"Parameter 'target' must be an instance of "
+                f"{MotorBase.__name__!r}."
+            )
 
         if not target.electric_current_is_computable:
-            raise ValueError(f"Target motor {target.name!r} cannot compute 'electric_current' property.")
+            raise ValueError(
+                f"Target motor {target.name!r} cannot compute "
+                f"'electric_current' property."
+            )
 
         self.__target = target
 
@@ -46,21 +53,24 @@ class Amperometer(SensorBase):
         return self.__target
 
     def get_value(self, unit: Optional[str] = None) -> Current | float | int:
-        """It gets the electric current of the :py:attr:`target` motor object. \n
-        If a ``unit`` is set, then it converts the electric current to that unit and returns only the numerical value
-        as float or integer.
+        """It gets the electric current of the :py:attr:`target` motor
+        object. \n
+        If a ``unit`` is set, then it converts the electric current to that
+        unit and returns only the numerical value as float or integer.
 
         Parameters
         ----------
         ``unit`` : :py:class:`str`, optional
-            The unit to which convert the :py:attr:`target` electric current. If specified, it converts the electric
-            current and returns only the numerical value as float or integer, otherwise it returns a
-            :py:class:`Current <gearpy.units.units.Current>`. Default is :py:obj:`None`, so it returns a
+            The unit to which convert the :py:attr:`target` electric current.
+            If specified, it converts the electric current and returns only the
+            numerical value as float or integer, otherwise it returns a
+            :py:class:`Current <gearpy.units.units.Current>`. Default is
+            :py:obj:`None`, so it returns a
             :py:class:`Current <gearpy.units.units.Current>`.
 
         Returns
         -------
-        :py:class:`Current <gearpy.units.units.Current>` or :py:class:`float` or :py:class:`int`
+        :py:class:`Current <gearpy.units.units.Current>` or :py:class:`float`or :py:class:`int`
             Electric Current of the :py:attr:`target` motor object.
 
         .. admonition:: Raises
