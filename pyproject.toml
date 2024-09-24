@@ -39,7 +39,8 @@ classifiers = [
 doc = [
   "furo==2023.9.10",
   "m2r2==0.3.3.post2",
-  "sphinx==7.2.6"
+  "sphinx==7.2.6",
+  "sphinx-copybutton==0.5.2"
 ]
 test = [
   "coverage==7.3.2",
