@@ -22,8 +22,10 @@ We can define the increasing load torque as following:
 import numpy as np
 
 def ext_torque(time, angular_position, angular_speed):
-    return Torque(value = 50 + np.exp(time.to('sec').value - 20),
-                  unit = 'mNm')
+    return Torque(
+        value=50 + np.exp(time.to('sec').value - 20),
+        unit='mNm'
+    )
 
 gear_6.external_torque = ext_torque
 ```
@@ -35,7 +37,7 @@ instantiate an amperometer:
 ```python
 from gearpy.sensors import  Amperometer
 
-amperometer = Amperometer(target = motor)
+amperometer = Amperometer(target=motor)
 ```
 
 See :py:class:`Amperometer <gearpy.sensors.amperometer.Amperometer>` for 
@@ -45,9 +47,11 @@ Then, we have to define the simulation stopping condition:
 ```python
 from gearpy.utils import StopCondition
 
-stop_condition = StopCondition(sensor = amperometer,
-                               threshold = Current(4, 'A'),
-                               operator = StopCondition.greater_than_or_equal_to)
+stop_condition = StopCondition(
+    sensor=amperometer,
+    threshold=Current(4, 'A'),
+    operator=StopCondition.greater_than_or_equal_to
+)
 ```
 
 See 
@@ -63,17 +67,19 @@ from gearpy.sensors import AbsoluteRotaryEncoder, Tachometer
 from gearpy.motor_control.rules import StartLimitCurrent
 from gearpy.motor_control import PWMControl
 
-encoder = AbsoluteRotaryEncoder(target = gear_6)
-tachometer = Tachometer(target = motor)
+encoder = AbsoluteRotaryEncoder(target=gear_6)
+tachometer = Tachometer(target=motor)
 
-start = StartLimitCurrent(encoder = encoder,
-                          tachometer = tachometer,
-                          motor = motor,
-                          limit_electric_current = Current(2, 'A'),
-                          target_angular_position = AngularPosition(10, 'rot'))
+start = StartLimitCurrent(
+    encoder=encoder,
+    tachometer=tachometer,
+    motor=motor,
+    limit_electric_current=Current(2, 'A'),
+    target_angular_position=AngularPosition(10, 'rot')
+)
 
-motor_control = PWMControl(powertrain = powertrain)
-motor_control.add_rule(rule = start)
+motor_control = PWMControl(powertrain=powertrain)
+motor_control.add_rule(rule=start)
 ```
 
 ### Simulation Set Up
@@ -82,10 +88,12 @@ Finally, we can run the simulation by passing the defined motor control
 and the stopping condition to the solver:
 
 ```python
-solver.run(time_discretization = TimeInterval(0.1, 'sec'),
-           simulation_time = TimeInterval(100, 'sec'),
-           motor_control = motor_control,
-           stop_condition = stop_condition)
+solver.run(
+    time_discretization=TimeInterval(0.1, 'sec'),
+    simulation_time=TimeInterval(100, 'sec'),
+    motor_control=motor_control,
+    stop_condition=stop_condition
+)
 ```
 
 The time discretization is quite fine in order to grasp the rapidly
@@ -97,12 +105,22 @@ The remaining set-ups of the model stay the same.
 We can get the updated plot with the same code:
 
 ```python
-powertrain.plot(figsize = (8, 8),
-                elements = ['motor', 'gear 6'],
-                angular_position_unit = 'rot',
-                torque_unit = 'mNm',
-                variables = ['angular position', 'angular speed', 'angular acceleration',
-                             'driving torque', 'load torque', 'torque', 'electric current', 'pwm'])
+powertrain.plot(
+    figsize=(8, 8),
+    elements=['motor', 'gear 6'],
+    angular_position_unit='rot',
+    torque_unit='mNm',
+    variables=[
+        'angular position',
+        'angular speed',
+        'angular acceleration',
+        'driving torque',
+        'load torque',
+        'torque',
+        'electric current',
+        'pwm'
+    ]
+)
 ```
 
 ![](images/plot.png)

@@ -9,33 +9,37 @@ example.
 ### Model Set Up
 
 We want to deep dive the analysis on the DC motor's electric current. In 
-order to take into account these computation, we have to edit the motor 
+order to take into account these computations, we have to edit the motor 
 definition, to include some required data:
 
 ```python
 from gearpy.units import Current
 
-motor = DCMotor(name = 'motor',
-                no_load_speed = AngularSpeed(15000, 'rpm'),
-                maximum_torque = Torque(10, 'mNm'),
-                inertia_moment = InertiaMoment(3, 'gcm^2'),
-                no_load_electric_current = Current(200, 'mA'),
-                maximum_electric_current = Current(5, 'A'))
+motor = DCMotor(
+    name='motor',
+    no_load_speed=AngularSpeed(15000, 'rpm'),
+    maximum_torque=Torque(10, 'mNm'),
+    inertia_moment=InertiaMoment(3, 'gcm^2'),
+    no_load_electric_current=Current(200, 'mA'),
+    maximum_electric_current=Current(5, 'A')
+)
 ```
 
 See :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` for 
 more details on instantiation parameters.  
-The remaining set up of the model stay the same.
+The remaining set-up of the model stay the same.
 
 ### Results Analysis
 
 We can get a snapshot of the system at a particular time of interest:
 
 ```python
-powertrain.snapshot(target_time = Time(10, 'sec'),
-                    torque_unit = 'mNm',
-                    driving_torque_unit = 'mNm',
-                    load_torque_unit = 'mNm')
+powertrain.snapshot(
+    target_time=Time(10, 'sec'),
+    torque_unit='mNm',
+    driving_torque_unit='mNm',
+    load_torque_unit='mNm'
+)
 ```
 
 ```text
@@ -53,15 +57,23 @@ gear 6                 47.959528               5.732670                        0
 
 We can get a more general view of the system by plotting the time 
 variables and focus the plot only on interesting elements and variables. 
-We can also specify a more convenient unit to use when plotting torques:
+Also, we can specify a more convenient unit to use when plotting torques:
 
 ```python
-powertrain.plot(figsize = (8, 8),
-                elements = [motor, gear_6],
-                angular_position_unit = 'rot',
-                torque_unit = 'mNm',
-                variables = ['angular position', 'angular speed', 'driving torque', 'load torque', 'torque',
-                             'electric current'])
+powertrain.plot(
+    figsize=(8, 8),
+    elements=[motor, gear_6],
+    angular_position_unit='rot',
+    torque_unit='mNm',
+    variables=[
+        'angular position',
+        'angular speed',
+        'driving torque',
+        'load torque',
+        'torque',
+        'electric current'
+    ]
+)
 ```
 
 ![](images/plot.png)

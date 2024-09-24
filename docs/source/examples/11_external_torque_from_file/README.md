@@ -10,7 +10,7 @@ We want to apply an external load torque picked from a file.
 ### External Load Torque Analysis
 
 The external load torque data are stored in a file named 
-`'external_torque_data.csv`' in the `'data'` folder; we have to open 
+`'external_torque_data.csv'` in the `'data'` folder; we have to open 
 this file: 
 
 ```python
@@ -41,7 +41,7 @@ We can see that the file contains two columns: one for the angular
 position of the last gear, in deg, and the other one for the applied 
 external torque, in mNm. The file contains 181 rows, one for each degree 
 from 0 deg up to 180 deg.  
-We can plot this data in oder to have a better understanding of the 
+We can plot this data in order to have a better understanding of the 
 applied external torque:
 
 ```python
@@ -49,7 +49,10 @@ import matplotlib.pyplot as plt
 
 fig, ax = plt.subplots()
 
-ax.plot(ext_torque_data['angular position (deg)'], ext_torque_data['external torque (mNm)'])
+ax.plot(
+    ext_torque_data['angular position (deg)'],
+    ext_torque_data['external torque (mNm)']
+)
 
 ax.set_xlabel('angular position (deg)')
 ax.set_ylabel('external torque (mNm)')
@@ -74,9 +77,11 @@ torque:
 ```python
 from scipy.interpolate import interp1d
 
-ext_torque_func = interp1d(x = ext_torque_data['angular position (deg)'],
-                           y = ext_torque_data['external torque (mNm)'],
-                           fill_value = 'extrapolate')
+ext_torque_func = interp1d(
+    x=ext_torque_data['angular position (deg)'],
+    y=ext_torque_data['external torque (mNm)'],
+    fill_value='extrapolate'
+)
 ```
 
 This interpolation function accept values in deg and returns values in 
@@ -89,8 +94,10 @@ Now we can set the external load:
 
 ```python
 def ext_torque(time, angular_position, angular_speed):
-    return Torque(value = ext_torque_func(angular_position.to('deg').value).take(0),
-                  unit = 'mNm')
+    return Torque(
+        value=ext_torque_func(angular_position.to('deg').value).take(0),
+        unit='mNm'
+    )
 
 gear_4.external_torque = ext_torque
 ```
@@ -99,9 +106,10 @@ In order to grasp the external torque pattern, we use a fine time
 discretization in the solver:
 
 ```python
-solver = Solver(powertrain = powertrain)
-solver.run(time_discretization = TimeInterval(0.01, 'sec'),
-           simulation_time = TimeInterval(8, 'sec'))
+solver = Solver(powertrain=powertrain)
+solver.run(
+    time_discretization=TimeInterval(0.01, 'sec'),
+    simulation_time=TimeInterval(8, 'sec'))
 ```
 
 The remaining set-ups of the model stay the same.
@@ -111,11 +119,13 @@ The remaining set-ups of the model stay the same.
 We can get a snapshot of the system at a particular time of interest:
 
 ```python
-powertrain.snapshot(target_time = Time(8, 'sec'),
-                    angular_position_unit = 'deg',
-                    torque_unit = 'mNm',
-                    driving_torque_unit = 'mNm',
-                    load_torque_unit = 'mNm')
+powertrain.snapshot(
+    target_time=Time(8, 'sec'),
+    angular_position_unit='deg',
+    torque_unit='mNm',
+    driving_torque_unit='mNm',
+    load_torque_unit='mNm'
+)
 ```
 
 ```text
@@ -133,15 +143,24 @@ gear 4                  197.248536                    0.0                       
 
 We can get a more general view of the system by plotting the time 
 variables and focus the plot only on interesting elements and variables. 
-We can also specify a more convenient unit to use when plotting torques:
+Also, we can specify a more convenient unit to use when plotting torques:
 
 ```python
-powertrain.plot(figsize = (8, 8),
-                elements = ['motor', 'gear 3', 'gear 4'],
-                angular_position_unit = 'deg',
-                torque_unit = 'mNm',
-                variables = ['angular position', 'angular speed', 'angular acceleration', 'driving torque',
-                             'load torque', 'torque', 'tangential force'])
+powertrain.plot(
+    figsize=(8, 8),
+    elements=['motor', 'gear 3', 'gear 4'],
+    angular_position_unit='deg',
+    torque_unit='mNm',
+    variables=[
+        'angular position',
+        'angular speed',
+        'angular acceleration',
+        'driving torque',
+        'load torque',
+        'torque',
+        'tangential force'
+    ]
+)
 ```
 
 ![](images/plot_2.png)
