@@ -98,7 +98,7 @@ def add_gear_mating(
             "Parameters 'master' and 'slave' cannot be the same gear."
         )
 
-    if not isinstance(efficiency, float) and not isinstance(efficiency, int):
+    if not isinstance(efficiency, float | int):
         raise TypeError(
             "Parameter 'efficiency' must be a float or an integer."
         )
@@ -276,13 +276,13 @@ def add_worm_gear_mating(
        :py:attr:`WormWheel.pressure_angle <gearpy.mechanical_objects.worm_wheel.WormWheel.pressure_angle>` \n
        :py:attr:`WormWheel.helix_angle <gearpy.mechanical_objects.worm_wheel.WormWheel.helix_angle>`
     """
-    if not isinstance(master, WormGear) and not isinstance(master, WormWheel):
+    if not isinstance(master, WormGear | WormWheel):
         raise TypeError(
             f"Parameter 'master' must be an instance of {WormGear.__name__!r} "
             f"or {WormWheel.__name__!r}."
         )
 
-    if not isinstance(slave, WormGear) and not isinstance(slave, WormWheel):
+    if not isinstance(slave, WormGear | WormWheel):
         raise TypeError(
             f"Parameter 'slave' must be an instance of {WormGear.__name__!r} "
             f"or {WormWheel.__name__!r}."
@@ -304,8 +304,7 @@ def add_worm_gear_mating(
             f"to be a {WormWheel!r}."
         )
 
-    if not isinstance(friction_coefficient, float) and \
-            not isinstance(friction_coefficient, int):
+    if not isinstance(friction_coefficient, float | int):
         raise TypeError(
             "Parameter 'friction_coefficient' must be a float or an integer."
         )

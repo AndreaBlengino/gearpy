@@ -32,7 +32,7 @@ class UnitBase(ABC):
 
     @abstractmethod
     def __init__(self, value: float | int, unit: str):
-        if not isinstance(value, float) and not isinstance(value, int):
+        if not isinstance(value, float | int):
             raise TypeError("Parameter 'value' must be a float or an integer.")
 
         if not isinstance(unit, str):
@@ -91,8 +91,7 @@ class UnitBase(ABC):
 
     @abstractmethod
     def __truediv__(self, other: UnitBase | float | int) -> None:
-        if not isinstance(other, UnitBase) and \
-                not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, UnitBase | float | int):
             raise TypeError(
                 f"It is not allowed to divide a Unit by a "
                 f"{other.__class__.__name__}."

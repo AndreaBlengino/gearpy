@@ -149,7 +149,7 @@ def dc_motor_characteristics_animation(
             f"Each element of 'time' must be an instance of {Time.__name__!r}."
         )
 
-    if not isinstance(interval, float) and not isinstance(interval, int):
+    if not isinstance(interval, float | int):
         raise TypeError("Parameter 'interval' must be a float or an integer.")
 
     if not isinstance(torque_speed_curve, bool):
@@ -190,10 +190,7 @@ def dc_motor_characteristics_animation(
             )
 
         if not all(
-            [
-                isinstance(dimension, float) or isinstance(dimension, int)
-                for dimension in figsize
-            ]
+            [isinstance(dimension, float | int) for dimension in figsize]
         ):
             raise TypeError(
                 "All elements of 'figsize' must be floats or integers."
@@ -208,13 +205,12 @@ def dc_motor_characteristics_animation(
             raise TypeError("Parameter 'marker_color' must be a string.")
 
     if marker_size is not None:
-        if not isinstance(marker_size, float) and \
-                not isinstance(marker_size, int):
+        if not isinstance(marker_size, float | int):
             raise TypeError(
                 "Parameter 'marker_size' must be a float or an integer."
             )
 
-    if not isinstance(padding, float) and not isinstance(padding, int):
+    if not isinstance(padding, float | int):
         raise TypeError("Parameter 'padding' must be a float or an integer.")
 
     if padding < 0:

@@ -54,8 +54,7 @@ class ConstantPWM(RuleBase):
                 f"{Powertrain.__name__!r}."
             )
 
-        if not isinstance(target_pwm_value, float) and \
-                not isinstance(target_pwm_value, int):
+        if not isinstance(target_pwm_value, float | int):
             raise TypeError(
                 "Parameter 'target_pwm_value' must be a float or an integer."
             )

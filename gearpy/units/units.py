@@ -51,7 +51,7 @@ class AngularPosition(UnitBase):
     def __mul__(self, other: float | int) -> AngularPosition:
         super().__mul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply an {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -62,7 +62,7 @@ class AngularPosition(UnitBase):
     def __rmul__(self, other: float | int) -> AngularPosition:
         super().__rmul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
                 f"by an {self.__class__.__name__}."
@@ -76,8 +76,7 @@ class AngularPosition(UnitBase):
     ) -> AngularPosition | float:
         super().__truediv__(other=other)
 
-        if not isinstance(other, AngularPosition) and \
-                not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, AngularPosition | float | int):
             raise TypeError(
                 f"It is not allowed to divide an {self.__class__.__name__} by "
                 f"a {other.__class__.__name__}."
@@ -564,8 +563,7 @@ class AngularSpeed(UnitBase):
     ) -> AngularPosition | AngularSpeed:
         super().__mul__(other=other)
 
-        if not isinstance(other, Time) and not isinstance(other, float) and \
-                not isinstance(other, int):
+        if not isinstance(other, Time | float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -585,8 +583,7 @@ class AngularSpeed(UnitBase):
     ) -> AngularPosition | AngularSpeed:
         super().__rmul__(other=other)
 
-        if not isinstance(other, Time) and not isinstance(other, float) and \
-                not isinstance(other, int):
+        if not isinstance(other, Time | float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
                 f"by a {self.__class__.__name__}."
@@ -606,8 +603,7 @@ class AngularSpeed(UnitBase):
     ) -> AngularSpeed | float:
         super().__truediv__(other=other)
 
-        if not isinstance(other, AngularSpeed) and \
-                not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, AngularSpeed | float | int):
             raise TypeError(
                 f"It is not allowed to divide a {self.__class__.__name__} by "
                 f"a {other.__class__.__name__}."
@@ -789,8 +785,7 @@ class AngularAcceleration(UnitBase):
     ) -> AngularAcceleration | AngularSpeed:
         super().__mul__(other=other)
 
-        if not isinstance(other, Time) and not isinstance(other, float) and \
-                not isinstance(other, int):
+        if not isinstance(other, Time | float | int):
             raise TypeError(
                 f"It is not allowed to multiply an {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -813,8 +808,7 @@ class AngularAcceleration(UnitBase):
     ) -> AngularAcceleration | AngularSpeed:
         super().__rmul__(other=other)
 
-        if not isinstance(other, Time) and not isinstance(other, float) and \
-                not isinstance(other, int):
+        if not isinstance(other, Time | float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
                 f"by an {self.__class__.__name__}."
@@ -837,8 +831,7 @@ class AngularAcceleration(UnitBase):
     ) -> AngularAcceleration | float:
         super().__truediv__(other=other)
 
-        if not isinstance(other, AngularAcceleration) and \
-                not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, AngularAcceleration | float | int):
             raise TypeError(
                 f"It is not allowed to divide an {self.__class__.__name__} by "
                 f"a {other.__class__.__name__}."
@@ -1024,7 +1017,7 @@ class InertiaMoment(UnitBase):
     def __mul__(self, other: float | int) -> InertiaMoment:
         super().__mul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply an {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -1041,7 +1034,7 @@ class InertiaMoment(UnitBase):
     def __rmul__(self, other: float | int) -> InertiaMoment:
         super().__rmul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
                 f"by an {self.__class__.__name__}."
@@ -1061,8 +1054,7 @@ class InertiaMoment(UnitBase):
     ) -> InertiaMoment | float:
         super().__truediv__(other=other)
 
-        if not isinstance(other, InertiaMoment) and \
-                not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, InertiaMoment | float | int):
             raise TypeError(
                 f"It is not allowed to divide an {self.__class__.__name__} by "
                 f"a {other.__class__.__name__}."
@@ -1253,7 +1245,7 @@ class Torque(UnitBase):
     def __mul__(self, other: float | int) -> Torque:
         super().__mul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -1264,7 +1256,7 @@ class Torque(UnitBase):
     def __rmul__(self, other: float | int) -> Torque:
         super().__rmul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
                 f"by a {self.__class__.__name__}."
@@ -1278,10 +1270,9 @@ class Torque(UnitBase):
     ) -> AngularAcceleration | Force | float | Torque:
         super().__truediv__(other=other)
 
-        if (
-            not isinstance(other, InertiaMoment) and
-            not isinstance(other, Length) and not isinstance(other, Torque)
-            and not isinstance(other, float) and not isinstance(other, int)
+        if not isinstance(
+            other,
+            InertiaMoment | Length | Torque | float | int
         ):
             raise TypeError(
                 f"It is not allowed to divide a {self.__class__.__name__} by "
@@ -1483,10 +1474,9 @@ class Time(UnitBase):
     ) -> AngularPosition | AngularSpeed | Time:
         super().__mul__(other=other)
 
-        if (
-            not isinstance(other, AngularAcceleration) and
-            not isinstance(other, AngularSpeed) and
-            not isinstance(other, float) and not isinstance(other, int)
+        if not isinstance(
+            other,
+            AngularAcceleration | AngularSpeed | float | int
         ):
             raise TypeError(
                 f"It is not allowed to multiply a {self.__class__.__name__} "
@@ -1512,10 +1502,9 @@ class Time(UnitBase):
     ) -> AngularPosition | AngularSpeed | Time:
         super().__rmul__(other=other)
 
-        if (
-            not isinstance(other, AngularAcceleration) and
-            not isinstance(other, AngularSpeed) and
-            not isinstance(other, float) and not isinstance(other, int)
+        if not isinstance(
+            other,
+            AngularAcceleration | AngularSpeed | float | int
         ):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
@@ -1538,10 +1527,7 @@ class Time(UnitBase):
     def __truediv__(self, other: Time | float | int) -> Time | float:
         super().__truediv__(other=other)
 
-        if (
-            not isinstance(other, Time) and not isinstance(other, float) and
-            not isinstance(other, int)
-        ):
+        if not isinstance(other, Time | float | int):
             raise TypeError(
                 f"It is not allowed to divide a {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -1911,10 +1897,7 @@ class Length(UnitBase):
     def __mul__(self, other: Length | float | int) -> Surface | Length:
         super().__mul__(other=other)
 
-        if (
-            not isinstance(other, Length) and not isinstance(other, float) and
-            not isinstance(other, int)
-        ):
+        if not isinstance(other, Length | float | int):
             raise TypeError(
                 f"It is not allowed to multiply an {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -1931,7 +1914,7 @@ class Length(UnitBase):
     def __rmul__(self, other: float | int) -> Length:
         super().__rmul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
                 f"by an {self.__class__.__name__}."
@@ -1942,10 +1925,7 @@ class Length(UnitBase):
     def __truediv__(self, other: Length | float | int) -> Length | float:
         super().__truediv__(other=other)
 
-        if (
-            not isinstance(other, Length) and not isinstance(other, float) and
-            not isinstance(other, int)
-        ):
+        if not isinstance(other, Length | float | int):
             raise TypeError(
                 f"It is not allowed to divide an {self.__class__.__name__} by "
                 f"a {other.__class__.__name__}."
@@ -2121,7 +2101,7 @@ class Surface(UnitBase):
     def __mul__(self, other: float | int) -> Surface:
         super().__mul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply an {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -2132,7 +2112,7 @@ class Surface(UnitBase):
     def __rmul__(self, other: float | int) -> Surface:
         super().__rmul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
                 f"by an {self.__class__.__name__}."
@@ -2143,10 +2123,7 @@ class Surface(UnitBase):
     def __truediv__(self, other: Surface | float | int) -> Surface | float:
         super().__truediv__(other=other)
 
-        if (
-            not isinstance(other, Surface) and not isinstance(other, float) and
-            not isinstance(other, int)
-        ):
+        if not isinstance(other, Surface | float | int):
             raise TypeError(
                 f"It is not allowed to divide an {self.__class__.__name__} by "
                 f"a {other.__class__.__name__}."
@@ -2321,7 +2298,7 @@ class Force(UnitBase):
     def __mul__(self, other: float | int) -> Force:
         super().__mul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply an {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -2332,7 +2309,7 @@ class Force(UnitBase):
     def __rmul__(self, other: float | int) -> Force:
         super().__rmul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
                 f"by an {self.__class__.__name__}."
@@ -2346,10 +2323,7 @@ class Force(UnitBase):
     ) -> Force | Stress | float:
         super().__truediv__(other=other)
 
-        if (
-            not isinstance(other, Force) and not isinstance(other, Surface) and
-            not isinstance(other, float) and not isinstance(other, int)
-        ):
+        if not isinstance(other, Force | Surface | float | int):
             raise TypeError(
                 f"It is not allowed to divide an {self.__class__.__name__} by "
                 f"a {other.__class__.__name__}."
@@ -2526,7 +2500,7 @@ class Stress(UnitBase):
     def __mul__(self, other: float | int) -> Stress:
         super().__mul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply an {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -2537,7 +2511,7 @@ class Stress(UnitBase):
     def __rmul__(self, other: float | int) -> Stress:
         super().__rmul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
                 f"by an {self.__class__.__name__}."
@@ -2548,10 +2522,7 @@ class Stress(UnitBase):
     def __truediv__(self, other: Stress | float | int) -> Stress | float:
         super().__truediv__(other=other)
 
-        if (
-            not isinstance(other, Stress) and not isinstance(other, float) and
-            not isinstance(other, int)
-        ):
+        if not isinstance(other, Stress | float | int):
             raise TypeError(
                 f"It is not allowed to divide an {self.__class__.__name__} by "
                 f"a {other.__class__.__name__}."
@@ -2721,7 +2692,7 @@ class Current(UnitBase):
     def __mul__(self, other: float | int) -> Current:
         super().__mul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply an {self.__class__.__name__} "
                 f"by a {other.__class__.__name__}."
@@ -2732,7 +2703,7 @@ class Current(UnitBase):
     def __rmul__(self, other: float | int) -> Current:
         super().__rmul__(other=other)
 
-        if not isinstance(other, float) and not isinstance(other, int):
+        if not isinstance(other, float | int):
             raise TypeError(
                 f"It is not allowed to multiply a {other.__class__.__name__} "
                 f"by an {self.__class__.__name__}."
@@ -2743,10 +2714,7 @@ class Current(UnitBase):
     def __truediv__(self, other: Current | float | int) -> Current | float:
         super().__truediv__(other=other)
 
-        if (
-            not isinstance(other, Current) and not isinstance(other, float) and
-            not isinstance(other, int)
-        ):
+        if not isinstance(other, Current | float | int):
             raise TypeError(
                 f"It is not allowed to divide an {self.__class__.__name__} by "
                 f"a {other.__class__.__name__}."

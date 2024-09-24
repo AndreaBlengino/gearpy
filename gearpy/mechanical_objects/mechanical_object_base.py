@@ -538,8 +538,7 @@ class GearBase(RotatingObject):
     @master_gear_efficiency.setter
     @abstractmethod
     def master_gear_efficiency(self, master_gear_efficiency: float | int):
-        if not isinstance(master_gear_efficiency, float) and \
-                not isinstance(master_gear_efficiency, int):
+        if not isinstance(master_gear_efficiency, float | int):
             raise TypeError(
                 "Parameter 'master_gear_efficiency' must be a float or an "
                 "integer."

@@ -832,7 +832,7 @@ class DCMotor(MotorBase):
 
     @pwm.setter
     def pwm(self, pwm: float | int):
-        if not isinstance(pwm, float) and not isinstance(pwm, int):
+        if not isinstance(pwm, float | int):
             raise TypeError("Parameter 'pwm' must be a float or an integer.")
 
         if (pwm > 1) or (pwm < -1):

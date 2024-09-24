@@ -582,7 +582,7 @@ class Powertrain:
                             target_time.to('sec').value
                         ).take(0)
 
-            if isinstance(element, GearBase) or isinstance(element, WormGear):
+            if isinstance(element, GearBase | WormGear):
                 variable_list = []
                 unit_list = []
                 if element.tangential_force_is_computable and \
@@ -767,8 +767,7 @@ class Powertrain:
                 valid_element.name for valid_element in self.elements
             ]
             for element in elements:
-                if not isinstance(element, RotatingObject) and \
-                        not isinstance(element, str):
+                if not isinstance(element, RotatingObject | str):
                     raise TypeError(
                         f"Each element of 'elements' must be an instance of "
                         f"{RotatingObject.__name__!r} or a string."
@@ -856,10 +855,7 @@ class Powertrain:
                 )
 
             if not all(
-                [
-                    isinstance(dimension, float) or isinstance(dimension, int)
-                    for dimension in figsize
-                ]
+                [isinstance(dimension, float | int) for dimension in figsize]
             ):
                 raise TypeError(
                     "All elements of 'figsize' must be floats or integers."
@@ -1009,7 +1005,7 @@ class Powertrain:
                 if pwm_variables:
                     axes[pwm_variables_index].axis('off')
 
-            if isinstance(element, GearBase) or isinstance(element, WormGear):
+            if isinstance(element, GearBase | WormGear):
                 if element.tangential_force_is_computable:
                     for variable in forces_variables:
                         axes[forces_variables_index].plot(
@@ -1078,8 +1074,7 @@ class Powertrain:
                         last_row_index -= 1
                     if stress_variables:
                         last_row_index -= 1
-            elif isinstance(element, GearBase) or \
-                    isinstance(element, WormGear):
+            elif isinstance(element, GearBase | WormGear):
                 if forces_variables and \
                         not element.tangential_force_is_computable:
                     last_row_index -= 1
@@ -1138,8 +1133,7 @@ class Powertrain:
 
         if forces_variables:
             for i, element in enumerate(elements, 0):
-                if isinstance(element, GearBase) or \
-                        isinstance(element, WormGear):
+                if isinstance(element, GearBase | WormGear):
                     if element.tangential_force_is_computable:
                         if n_variables > 1:
                             axes = ax[:, i] if n_elements > 1 else ax

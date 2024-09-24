@@ -313,7 +313,7 @@ class Solver:
     def _compute_force(self):
 
         for element in self.__powertrain.elements:
-            if isinstance(element, GearBase) or isinstance(element, WormGear):
+            if isinstance(element, GearBase | WormGear):
                 if element.tangential_force_is_computable:
                     element.compute_tangential_force()
 

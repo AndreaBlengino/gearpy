@@ -113,8 +113,7 @@ class StartProportionalToAngularPosition(RuleBase):
                 f"{AngularPosition.__name__!r}."
             )
 
-        if not isinstance(pwm_min_multiplier, float) and \
-                not isinstance(pwm_min_multiplier, int):
+        if not isinstance(pwm_min_multiplier, float | int):
             raise TypeError(
                 "Parameter 'pwm_min_multiplier' must be a float or an integer."
             )
@@ -125,7 +124,7 @@ class StartProportionalToAngularPosition(RuleBase):
             )
 
         if pwm_min is not None:
-            if not isinstance(pwm_min, float) and not isinstance(pwm_min, int):
+            if not isinstance(pwm_min, float | int):
                 raise TypeError(
                     "Parameter 'pwm_min' must be a float or an integer."
                 )
