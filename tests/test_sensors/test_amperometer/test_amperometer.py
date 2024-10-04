@@ -69,8 +69,7 @@ class TestAmperometerGetValue:
             assert isinstance(measured_electric_current, Current)
             assert measured_electric_current == electric_current
         else:
-            assert isinstance(measured_electric_current, float) \
-                or isinstance(measured_electric_current, int)
+            assert isinstance(measured_electric_current, float | int)
             assert measured_electric_current == electric_current.to(unit).value
 
     @mark.error

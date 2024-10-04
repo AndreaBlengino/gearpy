@@ -88,8 +88,7 @@ powertrain_snapshot_type_error_12 = [
 powertrain_snapshot_type_error_13 = [
     {'target_time': Time(1, 'sec'), 'print_data': type_to_check}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, int) and
-    not isinstance(type_to_check, bool)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 powertrain_snapshot_type_error_14 = [{}]
@@ -164,8 +163,7 @@ powertrain_plot_type_error_1 = [
 powertrain_plot_type_error_2 = [
     {'elements': [type_to_check]}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, RotatingObject) and
-    not isinstance(type_to_check, str)
+    if not isinstance(type_to_check, RotatingObject | str)
 ]
 
 powertrain_plot_type_error_3 = [
@@ -228,8 +226,7 @@ powertrain_plot_type_error_13 = [
 powertrain_plot_type_error_14 = [
     {'figsize': (type_to_check, type_to_check)}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 

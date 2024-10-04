@@ -55,8 +55,7 @@ class TestTachometerGetValue:
             assert isinstance(measured_angular_speed, AngularSpeed)
             assert measured_angular_speed == angular_speed
         else:
-            assert isinstance(measured_angular_speed, float) or \
-                isinstance(measured_angular_speed, int)
+            assert isinstance(measured_angular_speed, float | int)
             assert measured_angular_speed == angular_speed.to(unit).value
 
     @mark.error

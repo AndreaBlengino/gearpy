@@ -178,7 +178,7 @@ class TestStartProportionalToAngularPositionApply:
 
                 pwm = rule.apply()
                 if pwm is not None:
-                    assert isinstance(pwm, int) or isinstance(pwm, float)
+                    assert isinstance(pwm, float | int)
         elif pwm_min is not None:
             motor = DCMotor(
                 name='motor',
@@ -217,7 +217,7 @@ class TestStartProportionalToAngularPositionApply:
 
             pwm = rule.apply()
             if pwm is not None:
-                assert isinstance(pwm, int) or isinstance(pwm, float)
+                assert isinstance(pwm, float | int)
 
     @mark.error
     def test_raises_value_error(self):

@@ -25,8 +25,7 @@ worm_wheel_init_type_error_2 = [
         'module': Length(1, 'mm'),
         'face_width': Length(10, 'mm')
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, int)
-    and not isinstance(type_to_check, bool)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 worm_wheel_init_type_error_3 = [

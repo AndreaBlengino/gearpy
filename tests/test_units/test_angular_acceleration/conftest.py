@@ -47,8 +47,7 @@ def times(draw):
 angular_acceleration_init_type_error_1 = [
     {'value': type_to_check, 'unit': 'unit'}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 angular_acceleration_init_type_error_2 = [
@@ -90,9 +89,7 @@ def angular_acceleration_sub_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, Time)
+        if not isinstance(type_to_check, float | int | Time)
     ]
 )
 def angular_acceleration_mul_type_error(request):
@@ -102,10 +99,7 @@ def angular_acceleration_mul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, np.ndarray) and
-        not isinstance(type_to_check, Time)
+        if not isinstance(type_to_check, float | int | np.ndarray | Time)
     ]
 )
 def angular_acceleration_rmul_type_error(request):
@@ -115,9 +109,7 @@ def angular_acceleration_rmul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, AngularAcceleration)
+        if not isinstance(type_to_check, float | int | AngularAcceleration)
     ]
 )
 def angular_acceleration_truediv_type_error(request):
@@ -196,8 +188,8 @@ angular_acceleration_to_type_error_1 = [
 
 angular_acceleration_to_type_error_2 = [
     {'target_unit': 'target_unit', 'inplace': type_to_check}
-    for type_to_check in types_to_check if not isinstance(type_to_check, bool)
-    and not isinstance(type_to_check, int)
+    for type_to_check in types_to_check
+    if not isinstance(type_to_check, int | bool)
 ]
 
 

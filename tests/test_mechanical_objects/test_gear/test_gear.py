@@ -63,7 +63,7 @@ class TestGearComputeTangentialForce:
             basic_structural_gears_1,
             basic_structural_gears_2
         ):
-            if isinstance(master, WormGear) or isinstance(master, WormWheel):
+            if isinstance(master, WormGear | WormWheel):
                 add_worm_gear_mating(
                     master=master,
                     slave=slave,
@@ -139,7 +139,7 @@ class TestGearComputeBendingStress:
             basic_structural_gears_1,
             basic_structural_gears_2
         ):
-            if isinstance(master, WormGear) or isinstance(master, WormWheel):
+            if isinstance(master, WormGear | WormWheel):
                 add_worm_gear_mating(
                     master=master,
                     slave=slave,
@@ -181,8 +181,7 @@ class TestGearBendingStressIsComputable:
     @mark.genuine
     def test_property(self):
         for gear in basic_gears:
-            if not isinstance(gear, WormGear) and \
-                    not isinstance(gear, WormWheel):
+            if not isinstance(gear, WormGear | WormWheel):
                 if (gear.module is None) or (gear.face_width is None):
                     assert not gear.bending_stress_is_computable
                 else:
@@ -196,8 +195,7 @@ class TestGearContactStress:
     def test_property(self):
         contact_stress = Stress(1, 'MPa')
         for gear in basic_gears:
-            if not isinstance(gear, WormGear) and \
-                    not isinstance(gear, WormWheel):
+            if not isinstance(gear, WormGear | WormWheel):
                 gear.contact_stress = contact_stress
 
                 assert gear.contact_stress == contact_stress
@@ -205,8 +203,7 @@ class TestGearContactStress:
     @mark.error
     def test_raises_type_error(self, gear_contact_stress_type_error):
         for gear in basic_gears:
-            if not isinstance(gear, WormGear) and \
-                    not isinstance(gear, WormWheel):
+            if not isinstance(gear, WormGear | WormWheel):
                 with raises(TypeError):
                     gear.contact_stress = gear_contact_stress_type_error
 
@@ -220,8 +217,7 @@ class TestGearComputeContactStress:
             basic_structural_gears_1,
             basic_structural_gears_2
         ):
-            if not isinstance(master, WormGear) and \
-                    not isinstance(slave, WormGear):
+            if not isinstance(master, WormGear | WormWheel):
                 add_gear_mating(master=master, slave=slave, efficiency=0.9)
 
                 for gear in [master, slave]:
@@ -245,8 +241,7 @@ class TestGearContactStressIsComputable:
     @mark.genuine
     def test_property(self):
         for gear in basic_gears:
-            if not isinstance(gear, WormGear) and \
-                    not isinstance(gear, WormWheel):
+            if not isinstance(gear, WormGear | WormWheel):
                 if (gear.module is None) or (gear.face_width is None) \
                         or (gear.elastic_modulus is None):
                     assert not gear.contact_stress_is_computable

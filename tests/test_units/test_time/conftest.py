@@ -26,8 +26,7 @@ def times(draw):
 time_init_type_error_1 = [
     {'value': type_to_check, 'unit': 'unit'}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 time_init_type_error_2 = [
@@ -64,10 +63,10 @@ def time_sub_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, AngularSpeed) and
-        not isinstance(type_to_check, AngularAcceleration)
+        if not isinstance(
+            type_to_check,
+            float | int | AngularSpeed | AngularAcceleration
+        )
     ]
 )
 def time_mul_type_error(request):
@@ -77,11 +76,10 @@ def time_mul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, np.ndarray) and
-        not isinstance(type_to_check, AngularSpeed) and
-        not isinstance(type_to_check, AngularAcceleration)
+        if not isinstance(
+            type_to_check,
+            float | int | np.ndarray | AngularSpeed | AngularAcceleration
+        )
     ]
 )
 def time_rmul_type_error(request):
@@ -91,9 +89,7 @@ def time_rmul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, Time)
+        if not isinstance(type_to_check, float | int | Time)
     ]
 )
 def time_truediv_type_error(request):
@@ -173,8 +169,7 @@ time_to_type_error_1 = [
 time_to_type_error_2 = [{
     'target_unit': 'target_unit', 'inplace': type_to_check}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, bool) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 

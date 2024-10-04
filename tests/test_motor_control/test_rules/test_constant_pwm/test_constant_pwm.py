@@ -78,5 +78,5 @@ class TestConstantPWMApply:
 
         pwm = rule.apply()
         if pwm is not None:
-            assert isinstance(pwm, int) or isinstance(pwm, float)
+            assert isinstance(pwm, float | int)
             assert pwm == target_pwm_value

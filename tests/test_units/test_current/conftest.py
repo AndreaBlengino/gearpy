@@ -29,8 +29,7 @@ def currents(draw, min_value=-1000, max_value=1000, unit=None):
 current_init_type_error_1 = [
     {'value': type_to_check, 'unit': 'unit'}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 current_init_type_error_2 = [
@@ -67,8 +66,7 @@ def current_sub_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int)
+        if not isinstance(type_to_check, float | int)
     ]
 )
 def current_mul_type_error(request):
@@ -78,9 +76,7 @@ def current_mul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, np.ndarray)
+        if not isinstance(type_to_check, float | int | np.ndarray)
     ]
 )
 def current_rmul_type_error(request):
@@ -90,9 +86,7 @@ def current_rmul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, Current)
+        if not isinstance(type_to_check, float | int | Current)
     ]
 )
 def current_truediv_type_error(request):
@@ -172,8 +166,7 @@ current_to_type_error_1 = [
 current_to_type_error_2 = [
     {'target_unit': 'target_unit', 'inplace': type_to_check}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, bool) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 

@@ -29,8 +29,7 @@ def inertia_moments(draw):
 inertia_moment_init_type_error_1 = [
     {'value': type_to_check, 'unit': 'unit'}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 inertia_moment_init_type_error_2 = [
@@ -72,8 +71,7 @@ def inertia_moment_sub_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int)
+        if not isinstance(type_to_check, float | int)
     ]
 )
 def inertia_moment_mul_type_error(request):
@@ -83,9 +81,7 @@ def inertia_moment_mul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, np.ndarray)
+        if not isinstance(type_to_check, float | int | np.ndarray)
     ]
 )
 def inertia_moment_rmul_type_error(request):
@@ -95,9 +91,7 @@ def inertia_moment_rmul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, InertiaMoment)
+        if not isinstance(type_to_check, float | int | InertiaMoment)
     ]
 )
 def inertia_moment_truediv_type_error(request):
@@ -177,8 +171,7 @@ inertia_moment_to_type_error_1 = [
 inertia_moment_to_type_error_2 = [
     {'target_unit': 'target_unit', 'inplace': type_to_check}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, bool) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 @fixture(

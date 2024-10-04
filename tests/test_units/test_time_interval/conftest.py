@@ -26,8 +26,7 @@ def time_intervals(draw):
 time_interval_init_type_error_1 = [
     {'value': type_to_check, 'unit': 'unit'}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 time_interval_init_type_error_2 = [
@@ -46,8 +45,7 @@ def time_interval_init_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, Time) and
-        not isinstance(type_to_check, TimeInterval)
+        if not isinstance(type_to_check, Time | TimeInterval)
     ]
 )
 def time_interval_add_type_error(request):
@@ -57,8 +55,7 @@ def time_interval_add_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, Time) and
-        not isinstance(type_to_check, TimeInterval)
+        if not isinstance(type_to_check, Time | TimeInterval)
     ]
 )
 def time_interval_sub_type_error(request):
@@ -68,10 +65,10 @@ def time_interval_sub_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, AngularSpeed) and
-        not isinstance(type_to_check, AngularAcceleration)
+        if not isinstance(
+            type_to_check,
+            float | int | AngularSpeed | AngularAcceleration
+        )
     ]
 )
 def time_interval_mul_type_error(request):
@@ -81,11 +78,10 @@ def time_interval_mul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, np.ndarray) and
-        not isinstance(type_to_check, AngularSpeed) and
-        not isinstance(type_to_check, AngularAcceleration)
+        if not isinstance(
+            type_to_check,
+            float | int | np.ndarray | AngularSpeed | AngularAcceleration
+        )
     ]
 )
 def time_interval_rmul_type_error(request):
@@ -95,10 +91,7 @@ def time_interval_rmul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, Time) and
-        not isinstance(type_to_check, TimeInterval)
+        if not isinstance(type_to_check, float | int | Time | TimeInterval)
     ]
 )
 def time_interval_truediv_type_error(request):
@@ -113,8 +106,7 @@ def time_interval_truediv_zero_division_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, Time) and
-        not isinstance(type_to_check, TimeInterval)
+        if not isinstance(type_to_check, Time | TimeInterval)
     ]
 )
 def time_interval_eq_type_error(request):
@@ -124,8 +116,7 @@ def time_interval_eq_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, Time) and
-        not isinstance(type_to_check, TimeInterval)
+        if not isinstance(type_to_check, Time | TimeInterval)
     ]
 )
 def time_interval_ne_type_error(request):
@@ -135,8 +126,7 @@ def time_interval_ne_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, Time) and
-        not isinstance(type_to_check, TimeInterval)
+        if not isinstance(type_to_check, Time | TimeInterval)
     ]
 )
 def time_interval_gt_type_error(request):
@@ -146,8 +136,7 @@ def time_interval_gt_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, Time) and
-        not isinstance(type_to_check, TimeInterval)
+        if not isinstance(type_to_check, Time | TimeInterval)
     ]
 )
 def time_interval_ge_type_error(request):
@@ -157,8 +146,7 @@ def time_interval_ge_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, Time) and
-        not isinstance(type_to_check, TimeInterval)
+        if not isinstance(type_to_check, Time | TimeInterval)
     ]
 )
 def time_interval_lt_type_error(request):
@@ -168,8 +156,7 @@ def time_interval_lt_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, Time) and
-        not isinstance(type_to_check, TimeInterval)
+        if not isinstance(type_to_check, Time | TimeInterval)
     ]
 )
 def time_interval_le_type_error(request):
@@ -184,8 +171,7 @@ time_interval_to_type_error_1 = [
 time_interval_to_type_error_2 = [
     {'target_unit': 'target_unit', 'inplace': type_to_check}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, bool) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 

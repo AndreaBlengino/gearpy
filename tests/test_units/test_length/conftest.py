@@ -27,8 +27,7 @@ def lengths(draw):
 length_init_type_error_1 = [
     {'value': type_to_check, 'unit': 'unit'}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 length_init_type_error_2 = [
@@ -65,9 +64,7 @@ def length_sub_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, Length)
+        if not isinstance(type_to_check, float | int | Length)
     ]
 )
 def length_mul_type_error(request):
@@ -77,10 +74,7 @@ def length_mul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, np.ndarray) and
-        not isinstance(type_to_check, Length)
+        if not isinstance(type_to_check, float | int | np.ndarray | Length)
     ]
 )
 def length_rmul_type_error(request):
@@ -90,9 +84,7 @@ def length_rmul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, Length)
+        if not isinstance(type_to_check, float | int | Length)
     ]
 )
 def length_truediv_type_error(request):
@@ -172,8 +164,7 @@ length_to_type_error_1 = [
 length_to_type_error_2 = [
     {'target_unit': 'target_unit', 'inplace': type_to_check}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, bool) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 

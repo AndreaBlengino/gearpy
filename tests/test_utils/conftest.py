@@ -52,8 +52,7 @@ add_gear_mating_type_error_3 = [
         'slave': mate_gear,
         'efficiency': type_to_check
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)
+    if not isinstance(type_to_check, float | int | bool)
 ]
 
 
@@ -175,8 +174,7 @@ add_worm_gear_mating_type_error_1 = [
         'slave': basic_worm_wheel_1,
         'friction_coefficient': 0
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, WormGear) and
-    not isinstance(type_to_check, WormWheel)
+    if not isinstance(type_to_check, WormGear | WormWheel)
 ]
 
 add_worm_gear_mating_type_error_2 = [
@@ -185,8 +183,7 @@ add_worm_gear_mating_type_error_2 = [
         'slave': type_to_check,
         'friction_coefficient': 0
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, WormGear) and
-    not isinstance(type_to_check, WormWheel)
+    if not isinstance(type_to_check, WormGear | WormWheel)
 ]
 
 add_worm_gear_mating_type_error_3 = [
@@ -211,8 +208,7 @@ add_worm_gear_mating_type_error_5 = [
         'slave': basic_worm_wheel_1,
         'friction_coefficient': type_to_check
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)
+    if not isinstance(type_to_check, float | int | bool)
 ]
 
 
@@ -375,8 +371,7 @@ dc_motor_characteristics_animation_type_error_4 = [
         'time': basic_powertrain.time,
         'interval': type_to_check
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)
+    if not isinstance(type_to_check, float | int | bool)
 ]
 
 dc_motor_characteristics_animation_type_error_5 = [
@@ -385,8 +380,7 @@ dc_motor_characteristics_animation_type_error_5 = [
         'time': basic_powertrain.time,
         'torque_speed_curve': type_to_check
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, bool) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 dc_motor_characteristics_animation_type_error_6 = [
@@ -395,8 +389,7 @@ dc_motor_characteristics_animation_type_error_6 = [
         'time': basic_powertrain.time,
         'torque_current_curve': type_to_check
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, bool) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 dc_motor_characteristics_animation_type_error_7 = [
@@ -438,8 +431,7 @@ dc_motor_characteristics_animation_type_error_11 = [
         'time': basic_powertrain.time,
         'figsize': (type_to_check, type_to_check)
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)
+    if not isinstance(type_to_check, float | int | bool)
 ]
 
 dc_motor_characteristics_animation_type_error_12 = [
@@ -466,9 +458,8 @@ dc_motor_characteristics_animation_type_error_14 = [
         'time': basic_powertrain.time,
         'marker_size': type_to_check
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int) and
-    not isinstance(type_to_check, bool) and type_to_check is not None
+    if not isinstance(type_to_check, float | int | bool) and
+    type_to_check is not None
 ]
 
 dc_motor_characteristics_animation_type_error_15 = [
@@ -477,8 +468,7 @@ dc_motor_characteristics_animation_type_error_15 = [
         'time': basic_powertrain.time,
         'padding': type_to_check
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int) and not isinstance(type_to_check, bool)
+    if not isinstance(type_to_check, float | int | bool)
 ]
 
 dc_motor_characteristics_animation_type_error_16 = [
@@ -487,8 +477,7 @@ dc_motor_characteristics_animation_type_error_16 = [
         'time': basic_powertrain.time,
         'show': type_to_check
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, bool) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 

@@ -27,8 +27,7 @@ def torques(draw, min_value=-1000, max_value=1000, unit=None):
 torque_init_type_error_1 = [
     {'value': type_to_check, 'unit': 'unit'}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 torque_init_type_error_2 = [
@@ -65,8 +64,7 @@ def torque_sub_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int)
+        if not isinstance(type_to_check, float | int)
     ]
 )
 def torque_mul_type_error(request):
@@ -76,9 +74,7 @@ def torque_mul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, np.ndarray)
+        if not isinstance(type_to_check, float | int | np.ndarray)
     ]
 )
 def torque_rmul_type_error(request):
@@ -88,11 +84,10 @@ def torque_rmul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, InertiaMoment) and
-        not isinstance(type_to_check, Torque) and
-        not isinstance(type_to_check, Length)
+        if not isinstance(
+            type_to_check,
+            float | int | InertiaMoment | Torque | Length
+        )
     ]
 )
 def torque_truediv_type_error(request):
@@ -172,8 +167,7 @@ torque_to_type_error_1 = [
 torque_to_type_error_2 = [
     {'target_unit': 'target_unit', 'inplace': type_to_check}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, bool) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 

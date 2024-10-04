@@ -55,8 +55,7 @@ class TestAbsoluteRotaryEncoderGetValue:
             assert isinstance(measured_angular_position, AngularPosition)
             assert measured_angular_position == angular_position
         else:
-            assert isinstance(measured_angular_position, float) or \
-                isinstance(measured_angular_position, int)
+            assert isinstance(measured_angular_position, float | int)
             assert measured_angular_position == angular_position.to(unit).value
 
     @mark.error

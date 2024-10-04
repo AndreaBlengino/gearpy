@@ -108,8 +108,7 @@ start_proportional_to_angular_position_init_type_error_6 = [
         'target_angular_position': AngularPosition(1, 'rad'),
         'pwm_min_multiplier': type_to_check
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 start_proportional_to_angular_position_init_type_error_7 = [
@@ -120,8 +119,7 @@ start_proportional_to_angular_position_init_type_error_7 = [
         'pwm_min_multiplier': 2,
         'pwm_min': type_to_check
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int) and type_to_check is not None
+    if not isinstance(type_to_check, float | int) and type_to_check is not None
 ]
 
 

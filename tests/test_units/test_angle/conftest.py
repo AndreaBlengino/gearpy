@@ -29,8 +29,7 @@ def angles(draw, min_value=0, max_value=1000, unit=None):
 angle_init_type_error_1 = [
     {'value': type_to_check, 'unit': 'unit'}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 angle_init_type_error_2 = [
@@ -47,8 +46,7 @@ def angle_init_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, AngularPosition) and
-        not isinstance(type_to_check, Angle)
+        if not isinstance(type_to_check, AngularPosition | Angle)
     ]
 )
 def angle_add_type_error(request):
@@ -58,8 +56,7 @@ def angle_add_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, AngularPosition) and
-        not isinstance(type_to_check, Angle)
+        if not isinstance(type_to_check, AngularPosition | Angle)
     ]
 )
 def angle_sub_type_error(request):
@@ -69,8 +66,7 @@ def angle_sub_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int)
+        if not isinstance(type_to_check, float | int)
     ]
 )
 def angle_mul_type_error(request):
@@ -80,9 +76,7 @@ def angle_mul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, np.ndarray)
+        if not isinstance(type_to_check, float | int | np.ndarray)
     ]
 )
 def angle_rmul_type_error(request):
@@ -92,10 +86,7 @@ def angle_rmul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, AngularPosition) and
-        not isinstance(type_to_check, Angle)
+        if not isinstance(type_to_check, float | int | AngularPosition | Angle)
     ]
 )
 def angle_truediv_type_error(request):
@@ -110,8 +101,7 @@ def angle_truediv_zero_division_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, AngularPosition) and
-        not isinstance(type_to_check, Angle)
+        if not isinstance(type_to_check, AngularPosition | Angle)
     ]
 )
 def angle_eq_type_error(request):
@@ -121,8 +111,7 @@ def angle_eq_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, AngularPosition) and 
-        not isinstance(type_to_check, Angle)
+        if not isinstance(type_to_check, AngularPosition | Angle)
     ]
 )
 def angle_ne_type_error(request):
@@ -132,8 +121,7 @@ def angle_ne_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, AngularPosition) and
-        not isinstance(type_to_check, Angle)
+        if not isinstance(type_to_check, AngularPosition | Angle)
     ]
 )
 def angle_gt_type_error(request):
@@ -143,8 +131,7 @@ def angle_gt_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, AngularPosition) and
-        not isinstance(type_to_check, Angle)
+        if not isinstance(type_to_check, AngularPosition | Angle)
     ]
 )
 def angle_ge_type_error(request):
@@ -154,8 +141,7 @@ def angle_ge_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, AngularPosition) and
-        not isinstance(type_to_check, Angle)
+        if not isinstance(type_to_check, AngularPosition | Angle)
     ]
 )
 def angle_lt_type_error(request):
@@ -165,8 +151,7 @@ def angle_lt_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, AngularPosition) and
-        not isinstance(type_to_check, Angle)
+        if not isinstance(type_to_check, AngularPosition | Angle)
     ]
 )
 def angle_le_type_error(request):
@@ -180,8 +165,8 @@ angle_to_type_error_1 = [
 
 angle_to_type_error_2 = [
     {'target_unit': 'target_unit', 'inplace': type_to_check}
-    for type_to_check in types_to_check if not isinstance(type_to_check, bool)
-    and not isinstance(type_to_check, int)
+    for type_to_check in types_to_check
+    if not isinstance(type_to_check, int | bool)
 ]
 
 

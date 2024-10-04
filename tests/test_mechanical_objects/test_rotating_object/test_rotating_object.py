@@ -160,8 +160,7 @@ class TestRotatingObjectTimeVariables:
             if isinstance(rotating_object, MotorBase):
                 if rotating_object.electric_current_is_computable:
                     time_variables_list.append('electric current')
-            if isinstance(rotating_object, GearBase) or \
-                    isinstance(rotating_object, WormGear):
+            if isinstance(rotating_object, GearBase | WormGear):
                 if rotating_object.tangential_force_is_computable:
                     time_variables_list.append('tangential force')
             if isinstance(rotating_object, GearBase):
@@ -214,8 +213,7 @@ class TestRotatingObjectUpdateTimeVariables:
             if isinstance(rotating_object, MotorBase):
                 if rotating_object.electric_current_is_computable:
                     rotating_object.electric_current = electric_current
-            if isinstance(rotating_object, GearBase) or \
-                    isinstance(rotating_object, WormGear):
+            if isinstance(rotating_object, GearBase | WormGear):
                 if rotating_object.tangential_force_is_computable:
                     rotating_object.tangential_force = tangential_force
             if isinstance(rotating_object, GearBase):
@@ -239,8 +237,7 @@ class TestRotatingObjectUpdateTimeVariables:
                 if rotating_object.electric_current_is_computable:
                     time_variables_list.append('electric current')
                 time_variables_list.append('pwm')
-            if isinstance(rotating_object, GearBase) or \
-                    isinstance(rotating_object, WormGear):
+            if isinstance(rotating_object, GearBase | WormGear):
                 if rotating_object.tangential_force_is_computable:
                     time_variables_list.append('tangential force')
             if isinstance(rotating_object, GearBase):
@@ -262,8 +259,7 @@ class TestRotatingObjectUpdateTimeVariables:
                 if rotating_object.electric_current_is_computable:
                     assert time_variables['electric current'][-1] == \
                         electric_current
-            if isinstance(rotating_object, GearBase) or \
-                    isinstance(rotating_object, WormGear):
+            if isinstance(rotating_object, GearBase | WormGear):
                 if rotating_object.tangential_force_is_computable:
                     assert time_variables['tangential force'][-1] == \
                         tangential_force

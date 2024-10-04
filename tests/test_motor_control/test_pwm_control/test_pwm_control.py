@@ -242,7 +242,7 @@ class TestPWMControlApplyRules:
         pwm = basic_powertrain.elements[0].pwm
 
         assert pwm is not None
-        assert isinstance(pwm, float) or isinstance(pwm, int)
+        assert isinstance(pwm, float | int)
         assert (pwm <= 1) and (pwm >= -1)
 
     @mark.error

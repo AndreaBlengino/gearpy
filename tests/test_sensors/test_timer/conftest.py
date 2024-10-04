@@ -22,8 +22,8 @@ timer_init_type_error_1 = [
 
 timer_init_type_error_2 = [
     {'start_time': Time(0, 'sec'), 'duration': type_to_check}
-    for type_to_check in types_to_check if not isinstance(type_to_check, Time)
-    and not isinstance(type_to_check, TimeInterval)
+    for type_to_check in types_to_check
+    if not isinstance(type_to_check, Time | TimeInterval)
 ]
 
 

@@ -26,8 +26,7 @@ helical_gear_init_type_error_2 = [
         'face_width': Length(5, 'mm'),
         'elastic_modulus': Stress(100, 'GPa')
     } for type_to_check in types_to_check
-    if not isinstance(type_to_check, int) and
-    not isinstance(type_to_check, bool)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 helical_gear_init_type_error_3 = [

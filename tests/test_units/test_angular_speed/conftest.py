@@ -46,8 +46,7 @@ def times(draw):
 angular_speed_init_type_error_1 = [
     {'value': type_to_check, 'unit': 'unit'}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, float) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, float | int)
 ]
 
 angular_speed_init_type_error_2 = [
@@ -89,9 +88,7 @@ def angular_speed_sub_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, Time)
+        if not isinstance(type_to_check, float | int | Time)
     ]
 )
 def angular_speed_mul_type_error(request):
@@ -101,10 +98,7 @@ def angular_speed_mul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, np.ndarray) and
-        not isinstance(type_to_check, Time)
+        if not isinstance(type_to_check, float | int | np.ndarray | Time)
     ]
 )
 def angular_speed_rmul_type_error(request):
@@ -114,9 +108,7 @@ def angular_speed_rmul_type_error(request):
 @fixture(
     params=[
         type_to_check for type_to_check in types_to_check
-        if not isinstance(type_to_check, float) and
-        not isinstance(type_to_check, int) and
-        not isinstance(type_to_check, AngularSpeed)
+        if not isinstance(type_to_check, float | int | AngularSpeed)
     ]
 )
 def angular_speed_truediv_type_error(request):
@@ -196,8 +188,7 @@ angular_speed_to_type_error_1 = [
 angular_speed_to_type_error_2 = [
     {'target_unit': 'target_unit', 'inplace': type_to_check}
     for type_to_check in types_to_check
-    if not isinstance(type_to_check, bool) and
-    not isinstance(type_to_check, int)
+    if not isinstance(type_to_check, int | bool)
 ]
 
 
