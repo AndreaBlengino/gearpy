@@ -247,17 +247,17 @@ class Solver:
             self._transmit_angular_position(gear_ratio=gear_ratio, i=i)
             self._transmit_angular_speed(gear_ratio=gear_ratio, i=i)
 
-    def _transmit_angular_position(self, gear_ratio, i):
+    def _transmit_angular_position(self, gear_ratio: float, i: int):
 
         self.__powertrain.elements[i].angular_position = \
             gear_ratio*self.__powertrain.elements[i + 1].angular_position
 
-    def _transmit_angular_speed(self, gear_ratio, i):
+    def _transmit_angular_speed(self, gear_ratio: float, i: int):
 
         self.__powertrain.elements[i].angular_speed = \
             gear_ratio*self.__powertrain.elements[i + 1].angular_speed
 
-    def _transmit_angular_acceleration(self, gear_ratio, i):
+    def _transmit_angular_acceleration(self, gear_ratio: float, i: int):
 
         self.__powertrain.elements[i].angular_acceleration = \
             gear_ratio * \
