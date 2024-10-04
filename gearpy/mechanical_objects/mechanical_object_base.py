@@ -314,13 +314,15 @@ class GearBase(RotatingObject):
     """
 
     @abstractmethod
-    def __init__(self,
-                 name: str,
-                 n_teeth: int,
-                 module: Length,
-                 face_width: Length,
-                 inertia_moment: InertiaMoment,
-                 elastic_modulus: Stress):
+    def __init__(
+        self,
+        name: str,
+        n_teeth: int,
+        module: Length,
+        face_width: Length,
+        inertia_moment: InertiaMoment,
+        elastic_modulus: Stress
+    ):
         super().__init__(name=name, inertia_moment=inertia_moment)
 
         if not isinstance(n_teeth, int):

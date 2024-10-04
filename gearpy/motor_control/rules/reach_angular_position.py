@@ -44,11 +44,13 @@ class ReachAngularPosition(RuleBase):
        :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>`
     """
 
-    def __init__(self,
-                 encoder: AbsoluteRotaryEncoder,
-                 powertrain: Powertrain,
-                 target_angular_position: AngularPosition,
-                 braking_angle: Angle):
+    def __init__(
+        self,
+        encoder: AbsoluteRotaryEncoder,
+        powertrain: Powertrain,
+        target_angular_position: AngularPosition,
+        braking_angle: Angle
+    ):
         super().__init__()
 
         if not isinstance(encoder, AbsoluteRotaryEncoder):

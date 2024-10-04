@@ -77,11 +77,13 @@ class Solver:
         self.__powertrain = powertrain
         self.__powertrain_is_locked = False
 
-    def run(self,
-            time_discretization: TimeInterval,
-            simulation_time: TimeInterval,
-            motor_control: Optional[MotorControlBase] = None,
-            stop_condition: Optional[StopCondition] = None) -> None:
+    def run(
+        self,
+        time_discretization: TimeInterval,
+        simulation_time: TimeInterval,
+        motor_control: Optional[MotorControlBase] = None,
+        stop_condition: Optional[StopCondition] = None
+    ) -> None:
         """It runs the powertrain simulation. \n
         The simulation is performed in several steps:
 
@@ -219,8 +221,8 @@ class Solver:
             self.__powertrain_inertia_moment += element.inertia_moment
 
     def _compute_powertrain_variables(
-            self,
-            motor_control: Optional[MotorControlBase]
+        self,
+        motor_control: Optional[MotorControlBase]
     ):
 
         self._compute_angular_position_and_speed()
@@ -262,8 +264,8 @@ class Solver:
             self.__powertrain.elements[i + 1].angular_acceleration
 
     def _compute_motor_control(
-            self,
-            motor_control: Optional[MotorControlBase]
+        self,
+        motor_control: Optional[MotorControlBase]
     ):
 
         if motor_control is not None:

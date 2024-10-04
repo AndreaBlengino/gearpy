@@ -71,8 +71,8 @@ class AngularPosition(UnitBase):
         return AngularPosition(value=self.__value*other, unit=self.__unit)
 
     def __truediv__(
-            self,
-            other: AngularPosition | float | int
+        self,
+        other: AngularPosition | float | int
     ) -> AngularPosition | float:
         super().__truediv__(other=other)
 

@@ -37,10 +37,12 @@ class ConstantPWM(RuleBase):
        :py:attr:`DCMotor.pwm <gearpy.mechanical_objects.dc_motor.DCMotor.pwm>`
     """
 
-    def __init__(self,
-                 timer: Timer,
-                 powertrain: Powertrain,
-                 target_pwm_value: float | int):
+    def __init__(
+        self,
+        timer: Timer,
+        powertrain: Powertrain,
+        target_pwm_value: float | int
+    ):
         super().__init__()
 
         if not isinstance(timer, Timer):

@@ -1140,11 +1140,11 @@ class HelicalGear(SpurGear):
 
     @external_torque.setter
     def external_torque(
-            self,
-            external_torque: Callable[
-                [AngularPosition, AngularSpeed, Time],
-                Torque
-            ]
+        self,
+        external_torque: Callable[
+            [AngularPosition, AngularSpeed, Time],
+            Torque
+        ]
     ):
         super(
             HelicalGear,
