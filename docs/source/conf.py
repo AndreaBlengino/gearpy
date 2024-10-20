@@ -16,10 +16,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 project = 'gearpy'
 copyright = '2024, Andrea Blengino'
 author = 'Andrea Blengino'
-release = subprocess.run(['git', 'describe', '--tags'], stdout = subprocess.PIPE).stdout.decode('utf-8')
-
-if not release.startswith('v') or not release.endswith('\n') or '-' in release or release.count('.') != 2:
-    raise ValueError(f"Invalid release name {release}.")
+release = subprocess.run(['git', 'describe', '--tags'], stdout = subprocess.PIPE).stdout.decode('utf-8').strip().split('-')[0]
 
 
 # -- General configuration ---------------------------------------------------
