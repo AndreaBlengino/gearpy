@@ -6,7 +6,7 @@ The recommended installation is through `pip`:
 $ pip install gearpy
 ```
 
-`gearpy` runs for Python versions 3.9+.
+`gearpy` runs for Python versions 3.10+.
 
 ## Dependencies
 
