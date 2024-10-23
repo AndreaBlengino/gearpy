@@ -169,23 +169,23 @@ class AngularPosition(UnitBase):
            >>> from gearpy.units import AngularPosition
            >>> p = AngularPosition(180, 'deg')
            >>> p
-           ... 180 deg
+           180 deg
 
            Conversion from degree to radian with ``inplace=False`` by
            default, so it does not override the current value.
 
            >>> p.to('rad')
-           ... 3.141592653589793 rad
+           3.141592653589793 rad
            >>> p
-           ... 180 deg
+           180 deg
 
            Conversion from degree to minute of arc with ``inplace=True``, in
            order to override the current value.
 
            >>> p.to('arcmin', inplace=True)
-           ... 10800.0 arcmin
+           10800.0 arcmin
            >>> p
-           ... 10800.0 arcmin
+           10800.0 arcmin
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
@@ -440,23 +440,23 @@ class Angle(AngularPosition):
            >>> from gearpy.units import Angle
            >>> a = Angle(180, 'deg')
            >>> a
-           ... 180 deg
+           180 deg
 
            Conversion from degree to radian with ``inplace=False`` by default,
            so it does not override the current value.
 
            >>> a.to('rad')
-           ... 3.141592653589793 rad
+           3.141592653589793 rad
            >>> a
-           ... 180 deg
+           180 deg
 
            Conversion from degree to minute of arc with ``inplace=True``, in
            order to override the current value.
 
            >>> a.to('arcmin', inplace=True)
-           ... 10800.0 arcmin
+           10800.0 arcmin
            >>> a
-           ... 10800.0 arcmin
+           10800.0 arcmin
         """
         converted = super().to(target_unit=target_unit, inplace=inplace)
 
@@ -701,24 +701,24 @@ class AngularSpeed(UnitBase):
            >>> from gearpy.units import AngularSpeed
            >>> s = AngularSpeed(1000, 'rpm')
            >>> s
-           ... 1000 rpm
+           1000 rpm
 
            Conversion from revolutions per minute to radian per second with
            ``inplace=False`` by default, so it does not override the current
            value.
 
            >>> s.to('rad/s')
-           ... 104.71975511965977 rad/s
+           104.71975511965977 rad/s
            >>> s
-           ... 1000 rpm
+           1000 rpm
 
            Conversion from revolutions per minute to revolutions per second
            with ``inplace=True``, in order to override the current value.
 
            >>> s.to('rps', inplace=True)
-           ... 16.666666666666664 rps
+           16.666666666666664 rps
            >>> s
-           ... 16.666666666666664 rps
+           16.666666666666664 rps
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
@@ -929,25 +929,25 @@ class AngularAcceleration(UnitBase):
            >>> from gearpy.units import AngularAcceleration
            >>> a = AngularAcceleration(180, 'deg/s^2')
            >>> a
-           ... 180 deg/s^2
+           180 deg/s^2
 
            Conversion from degree per second squared to radian per second
            squared with ``inplace=False`` by default, so it does not override
            the current value.
 
            >>> a.to('rad/s^2')
-           ... 3.141592653589793 rad/s^2
+           3.141592653589793 rad/s^2
            >>> a
-           ... 180 deg/s^2
+           180 deg/s^2
 
            Conversion from degree per second squared to radian per second
            squared with ``inplace=True``, in order to override the current
            value.
 
            >>> a.to('rad/s^2', inplace=True)
-           ... 3.141592653589793 rad/s^2
+           3.141592653589793 rad/s^2
            >>> a
-           ... 3.141592653589793 rad/s^2
+           3.141592653589793 rad/s^2
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
@@ -1152,24 +1152,24 @@ class InertiaMoment(UnitBase):
            >>> from gearpy.units import InertiaMoment
            >>> i = InertiaMoment(1, 'kgm^2')
            >>> i
-           ... 1 kgm^2
+           1 kgm^2
 
            Conversion from kilogram-square meter to gram-square meter with
            ``inplace=False`` by default, so it does not override the current
            value.
 
            >>> i.to('gm^2')
-           ... 1000.0 gm^2
+           1000.0 gm^2
            >>> i
-           ... 1 kgm^2
+           1 kgm^2
 
            Conversion from kilograms-square meter to gram-square meter with
            ``inplace=True``, in order to override the current value.
 
            >>> i.to('gm^2', inplace=True)
-           ... 1000.0 gm^2
+           1000.0 gm^2
            >>> i
-           ... 1000.0 gm^2
+           1000.0 gm^2
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
@@ -1391,24 +1391,24 @@ class Torque(UnitBase):
            >>> from gearpy.units import Torque
            >>> T = Torque(1, 'Nm')
            >>> T
-           ... 1 Nm
+           1 Nm
 
            Conversion from newton-meter to kilogram force-meter with
            ``inplace=False`` by default, so it does not override the current
            value.
 
            >>> T.to('kgfm')
-           ... 0.10197162129779283 kgfm
+           0.10197162129779283 kgfm
            >>> T
-           ... 1 Nm
+           1 Nm
 
            Conversion from newton-meter to kilogram force-meter with
            ``inplace=True``, in order to override the current value.
 
            >>> T.to('kgfm', inplace=True)
-           ... 0.10197162129779283 kgfm
+           0.10197162129779283 kgfm
            >>> T
-           ... 0.10197162129779283 kgfm
+           0.10197162129779283 kgfm
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
@@ -1619,24 +1619,24 @@ class Time(UnitBase):
            >>> from gearpy.units import Time
            >>> t = Time(1, 'hour')
            >>> t
-           ... 1 hour
+           1 hour
 
            Conversion from hour to second with ``inplace=False`` by default, so
            it does not override the current
            value.
 
            >>> t.to('sec')
-           ... 3600.0 sec
+           3600.0 sec
            >>> t
-           ... 1 hour
+           1 hour
 
            Conversion from hour to second with ``inplace=True``, in order to
            override the current value.
 
            >>> t.to('sec', inplace=True)
-           ... 3600.0 sec
+           3600.0 sec
            >>> t
-           ... 3600.0 sec
+           3600.0 sec
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
@@ -1827,23 +1827,23 @@ class TimeInterval(Time):
            >>> from gearpy.units import TimeInterval
            >>> dt = TimeInterval(1, 'hour')
            >>> dt
-           ... 1 hour
+           1 hour
 
            Conversion from hour to second with ``inplace=False`` by default, so
            it does not override the current value.
 
            >>> dt.to('sec')
-           ... 3600.0 sec
+           3600.0 sec
            >>> dt
-           ... 1 hour
+           1 hour
 
            Conversion from hour to second with ``inplace=True``, in order to
            override the current value.
 
            >>> dt.to('sec', inplace=True)
-           ... 3600.0 sec
+           3600.0 sec
            >>> dt
-           ... 3600.0 sec
+           3600.0 sec
         """
         converted = super().to(target_unit=target_unit, inplace=inplace)
 
@@ -2019,23 +2019,23 @@ class Length(UnitBase):
            >>> from gearpy.units import Length
            >>> l = Length(1, 'm')
            >>> l
-           ... 1 m
+           1 m
 
            Conversion from meter to centimeter with ``inplace=False`` by
            default, so it does not override the current value.
 
            >>> l.to('cm')
-           ... 100.0 cm
+           100.0 cm
            >>> l
-           ... 1 m
+           1 m
 
            Conversion from meter to centimeter with ``inplace=True``, in order
            to override the current value.
 
            >>> l.to('cm', inplace=True)
-           ... 100.0 cm
+           100.0 cm
            >>> l
-           ... 100.0 cm
+           100.0 cm
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
@@ -2217,24 +2217,24 @@ class Surface(UnitBase):
            >>> from gearpy.units import Surface
            >>> s = Surface(1, 'm^2')
            >>> s
-           ... 1 m^2
+           1 m^2
 
            Conversion from square meter to square millimeter with
            ``inplace=False`` by default, so it does not override the current
            value.
 
            >>> s.to('mm^2')
-           ... 1000000.0 mm^2
+           1000000.0 mm^2
            >>> s
-           ... 1 m^2
+           1 m^2
 
            Conversion from square meter to square millimeter with
            ``inplace=True``, in order to override the current value.
 
            >>> s.to('mm^2', inplace=True)
-           ... 1000000.0 mm^2
+           1000000.0 mm^2
            >>> s
-           ... 1000000.0 mm^2
+           1000000.0 mm^2
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
@@ -2421,23 +2421,23 @@ class Force(UnitBase):
            >>> from gearpy.units import Force
            >>> f = Force(1, 'N')
            >>> f
-           ... 1 N
+           1 N
 
            Conversion from newton to kilogram force with ``inplace=False`` by
            default, so it does not override the current value.
 
            >>> f.to('kgf')
-           ... 0.10197162129779283 kgf
+           0.10197162129779283 kgf
            >>> f
-           ... 1 N
+           1 N
 
            Conversion from newton to kilogram force with ``inplace=True``, in
            order to override the current value.
 
            >>> f.to('kgf', inplace=True)
-           ... 0.10197162129779283 kgf
+           0.10197162129779283 kgf
            >>> f
-           ... 0.10197162129779283 kgf
+           0.10197162129779283 kgf
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
@@ -2614,23 +2614,23 @@ class Stress(UnitBase):
            >>> from gearpy.units import Stress
            >>> s = Stress(1, 'GPa')
            >>> s
-           ... 1 GPa
+           1 GPa
 
            Conversion from giga-pascal to mega-pascal with ``inplace=False`` by
            default, so it does not override the current value.
 
            >>> s.to('MPa')
-           ... 1000.0 MPa
+           1000.0 MPa
            >>> s
-           ... 1 GPa
+           1 GPa
 
            Conversion from giga-pascal to mega-pascal with ``inplace=True``, in
            order to override the current value.
 
            >>> s.to('MPa', inplace=True)
-           ... 1000.0 MPa
+           1000.0 MPa
            >>> s
-           ... 1000.0 MPa
+           1000.0 MPa
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
@@ -2805,23 +2805,23 @@ class Current(UnitBase):
            >>> from gearpy.units import Current
            >>> i = Current(1, 'A')
            >>> i
-           ... 1 A
+           1 A
 
            Conversion from ampere to milli-ampere with ``inplace=False`` by
            default, so it does not override the current value.
 
            >>> i.to('mA')
-           ... 1000.0 mA
+           1000.0 mA
            >>> i
-           ... 1 A
+           1 A
 
            Conversion from ampere to milli-ampere with ``inplace=True``, in
            order to override the current value.
 
            >>> i.to('mA', inplace=True)
-           ... 1000.0 mA
+           1000.0 mA
            >>> i
-           ... 1000.0 mA
+           1000.0 mA
         """
         super().to(target_unit=target_unit, inplace=inplace)
 
