@@ -174,8 +174,9 @@ inertia_moment_to_type_error_2 = [
     if not isinstance(type_to_check, int | bool)
 ]
 
+
 @fixture(
-    params=[*inertia_moment_to_type_error_1,*inertia_moment_to_type_error_2]
+    params=[*inertia_moment_to_type_error_1, *inertia_moment_to_type_error_2]
 )
 def inertia_moment_to_type_error(request):
     return request.param

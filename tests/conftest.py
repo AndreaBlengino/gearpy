@@ -1,43 +1,52 @@
-from gearpy.mechanical_objects import SpurGear, HelicalGear, DCMotor, Flywheel, MatingMaster, MatingSlave, WormGear, WormWheel
+from gearpy.mechanical_objects import (
+    SpurGear,
+    HelicalGear,
+    DCMotor,
+    Flywheel,
+    MatingMaster,
+    MatingSlave,
+    WormGear,
+    WormWheel
+)
 from gearpy.mechanical_objects.mechanical_object_base import (
-        WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES,
-        WORM_GEAR_AND_WHEEL_DATA
+    WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES,
+    WORM_GEAR_AND_WHEEL_DATA
 )
 from gearpy.sensors import (
-        AbsoluteRotaryEncoder,
-        Amperometer,
-        Tachometer,
-        Timer
+    AbsoluteRotaryEncoder,
+    Amperometer,
+    Tachometer,
+    Timer
 )
 from gearpy.solver import Solver
 from gearpy.powertrain import Powertrain
 from gearpy.units import (
-        AngularAcceleration,
-        AngularPosition,
-        AngularSpeed,
-        Current,
-        Force,
-        InertiaMoment,
-        Length,
-        Stress,
-        Surface,
-        Time,
-        TimeInterval,
-        Torque,
-        Angle
+    AngularAcceleration,
+    AngularPosition,
+    AngularSpeed,
+    Current,
+    Force,
+    InertiaMoment,
+    Length,
+    Stress,
+    Surface,
+    Time,
+    TimeInterval,
+    Torque,
+    Angle
 )
 from gearpy.utils import add_fixed_joint, add_gear_mating, add_worm_gear_mating
 from hypothesis.strategies import (
-        composite,
-        text,
-        integers,
-        floats,
-        lists,
-        sampled_from,
-        shared,
-        builds,
-        characters,
-        one_of
+    composite,
+    text,
+    integers,
+    floats,
+    lists,
+    sampled_from,
+    shared,
+    builds,
+    characters,
+    one_of
 )
 import numpy as np
 import os
@@ -469,7 +478,7 @@ def worm_wheels(draw, structural=False, pressure_angle=None):
             n_teeth=n_teeth,
             inertia_moment=InertiaMoment(inertia_moment_value, 'kgm^2'),
             pressure_angle=pressure_angle,
-            helix_angle = Angle(helix_angle_value, 'deg'),
+            helix_angle=Angle(helix_angle_value, 'deg'),
             module=Length(module_value, 'mm'),
             face_width=Length(face_width_value, 'mm')
         )

@@ -570,4 +570,4 @@ class TestPowertrainExportTimeVariables:
     @mark.error
     def test_raises_value_error(self):
         with raises(ValueError):
-            basic_powertrain.export_time_variables(folder_path = '')
+            basic_powertrain.export_time_variables(folder_path='')

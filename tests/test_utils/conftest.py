@@ -1,5 +1,13 @@
-from gearpy.mechanical_objects import RotatingObject, GearBase, MotorBase, DCMotor, SpurGear, HelicalGear, WormGear, \
-                                      WormWheel
+from gearpy.mechanical_objects import (
+    RotatingObject,
+    GearBase,
+    MotorBase,
+    DCMotor,
+    SpurGear,
+    HelicalGear,
+    WormGear,
+    WormWheel
+)
 from gearpy.motor_control import PWMControl
 from gearpy.motor_control.rules import ReachAngularPosition
 from gearpy.sensors import AbsoluteRotaryEncoder
@@ -484,7 +492,7 @@ dc_motor_characteristics_animation_type_error_16 = [
 @fixture(
     params=[
         *dc_motor_characteristics_animation_type_error_1,
-        dc_motor_characteristics_animation_type_error_2,
+        *dc_motor_characteristics_animation_type_error_2,
         *dc_motor_characteristics_animation_type_error_3,
         *dc_motor_characteristics_animation_type_error_4,
         *dc_motor_characteristics_animation_type_error_5,

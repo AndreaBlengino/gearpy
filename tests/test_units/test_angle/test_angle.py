@@ -140,7 +140,8 @@ class TestAngleAdd:
         assert result_1.value == angle_1.value + angle_2.to(unit_1).value
         assert result_1.unit == angle_1.unit
         assert isinstance(result_2, AngularPosition)
-        assert result_2.value == angle_1.value + angular_position.to(unit_1).value
+        assert result_2.value == angle_1.value + \
+            angular_position.to(unit_1).value
         assert result_2.unit == angle_1.unit
 
     @mark.error

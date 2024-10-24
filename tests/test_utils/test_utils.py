@@ -334,14 +334,20 @@ class TestDCMotorCharacteristicsAnimation:
                 )
 
     @mark.error
-    def test_raises_type_error(self, dc_motor_characteristics_animation_type_error):
+    def test_raises_type_error(
+        self,
+        dc_motor_characteristics_animation_type_error
+    ):
         with raises(TypeError):
             dc_motor_characteristics_animation(
                 **dc_motor_characteristics_animation_type_error
             )
 
     @mark.error
-    def test_raises_value_error(self, dc_motor_characteristics_animation_value_error):
+    def test_raises_value_error(
+        self,
+        dc_motor_characteristics_animation_value_error
+    ):
         with raises(ValueError):
             dc_motor_characteristics_animation(
                 **dc_motor_characteristics_animation_value_error
