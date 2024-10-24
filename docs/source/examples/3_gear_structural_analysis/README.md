@@ -11,48 +11,60 @@ stress with a safety factor **1.5**.
 ### Model Set Up
 
 We want to deep dive the analysis on gears structural strength. In order
-to take into account these computation, we have to edit the gear 
+to take into account these computations, we have to edit the gear 
 definitions, to include some required data:
 
 ```python
 from gearpy.units import Length, Stress
 
-gear_1 = SpurGear(name = 'gear 1',
-                  n_teeth = 10,
-                  inertia_moment = InertiaMoment(1, 'gcm^2'),
-                  module = Length(1, 'mm'),
-                  face_width = Length(10, 'mm'),
-                  elastic_modulus = Stress(200, 'GPa'))
-gear_2 = SpurGear(name = 'gear 2',
-                  n_teeth = 80,
-                  inertia_moment = InertiaMoment(3100, 'gcm^2'),
-                  module = Length(1, 'mm'),
-                  face_width = Length(10, 'mm'),
-                  elastic_modulus = Stress(200, 'GPa'))
-gear_3 = SpurGear(name = 'gear 3',
-                  n_teeth = 10,
-                  inertia_moment = InertiaMoment(4, 'gcm^2'),
-                  module = Length(1.5, 'mm'),
-                  face_width = Length(10, 'mm'),
-                  elastic_modulus = Stress(200, 'GPa'))
-gear_4 = SpurGear(name = 'gear 4',
-                  n_teeth = 60,
-                  inertia_moment = InertiaMoment(5000, 'gcm^2'),
-                  module = Length(1.5, 'mm'),
-                  face_width = Length(10, 'mm'),
-                  elastic_modulus = Stress(200, 'GPa'))
-gear_5 = SpurGear(name = 'gear 5',
-                  n_teeth = 10,
-                  inertia_moment = InertiaMoment(12, 'gcm^2'),
-                  module = Length(2, 'mm'),
-                  face_width = Length(10, 'mm'),
-                  elastic_modulus = Stress(200, 'GPa'))
-gear_6 = SpurGear(name = 'gear 6',
-                  n_teeth = 50,
-                  inertia_moment = InertiaMoment(7600, 'gcm^2'),
-                  module = Length(2, 'mm'),
-                  face_width = Length(10, 'mm'),
-                  elastic_modulus = Stress(200, 'GPa'))
+gear_1 = SpurGear(
+    name='gear 1',
+    n_teeth=10,
+    inertia_moment=InertiaMoment(1, 'gcm^2'),
+    module=Length(1, 'mm'),
+    face_width=Length(10, 'mm'),
+    elastic_modulus=Stress(200, 'GPa')
+)
+gear_2 = SpurGear(
+    name='gear 2',
+    n_teeth=80,
+    inertia_moment=InertiaMoment(3100, 'gcm^2'),
+    module=Length(1, 'mm'),
+    face_width=Length(10, 'mm'),
+    elastic_modulus=Stress(200, 'GPa')
+)
+gear_3 = SpurGear(
+    name='gear 3',
+    n_teeth=10,
+    inertia_moment=InertiaMoment(4, 'gcm^2'),
+    module=Length(1.5, 'mm'),
+    face_width=Length(10, 'mm'),
+    elastic_modulus=Stress(200, 'GPa')
+)
+gear_4 = SpurGear(
+    name='gear 4',
+    n_teeth=60,
+    inertia_moment=InertiaMoment(5000, 'gcm^2'),
+    module=Length(1.5, 'mm'),
+    face_width=Length(10, 'mm'),
+    elastic_modulus=Stress(200, 'GPa')
+)
+gear_5 = SpurGear(
+    name='gear 5',
+    n_teeth=10,
+    inertia_moment=InertiaMoment(12, 'gcm^2'),
+    module=Length(2, 'mm'),
+    face_width=Length(10, 'mm'),
+    elastic_modulus=Stress(200, 'GPa')
+)
+gear_6 = SpurGear(
+    name='gear 6',
+    n_teeth=50,
+    inertia_moment=InertiaMoment(7600, 'gcm^2'),
+    module=Length(2, 'mm'),
+    face_width=Length(10, 'mm'),
+    elastic_modulus=Stress(200, 'GPa')
+)
 ```
 
 See :py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` 
@@ -63,7 +75,7 @@ and
 :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
 (bending stress only).  
 All gears are made in steel, which yield stress is 250 MPa.  
-The remaining set up of the model stay the same.
+The remaining set-up of the model stay the same.
 
 ### Results Analysis
 
@@ -91,15 +103,23 @@ gear 6                 47.959528               5.732670                        0
 
 We can get a more general view of the system by plotting the time 
 variables and focus the plot only on interesting elements and variables. 
-We can also specify a more convenient unit to use when plotting torques:
+Also, we can specify a more convenient unit to use when plotting torques:
 
 ```python
-powertrain.plot(figsize = (10, 10),
-                elements = [gear_1, gear_2, gear_3, gear_4, gear_5, gear_6],
-                angular_position_unit = 'rot',
-                torque_unit = 'mNm',
-                variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
-                             'contact stress'])
+powertrain.plot(
+    figsize=(10, 10),
+    elements=[gear_1, gear_2, gear_3, gear_4, gear_5, gear_6],
+    angular_position_unit='rot',
+    torque_unit='mNm',
+    variables=[
+        'driving torque',
+        'load torque',
+        'torque',
+        'tangential force',
+        'bending stress',
+        'contact stress'
+    ]
+)
 ```
 
 ![](images/plot_1.png)
@@ -112,12 +132,20 @@ gears, and increase in the last gears, so we can draw a more clean plot
 and focus on the last two gears only:
 
 ```python
-powertrain.plot(figsize = (8, 8),
-                elements = [gear_5, gear_6],
-                angular_position_unit = 'rot',
-                torque_unit = 'mNm',
-                variables = ['driving torque', 'load torque', 'torque', 'tangential force', 'bending stress',
-                             'contact stress'])
+powertrain.plot(
+    figsize=(8, 8),
+    elements=[gear_5, gear_6],
+    angular_position_unit='rot',
+    torque_unit='mNm',
+    variables=[
+        'driving torque',
+        'load torque',
+        'torque',
+        'tangential force',
+        'bending stress',
+        'contact stress'
+    ]
+)
 ```
 
 ![](images/plot_2.png)

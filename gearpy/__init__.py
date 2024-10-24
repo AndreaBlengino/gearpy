@@ -1,3 +1,14 @@
+__all__ = [
+    "mechanical_objects",
+    "motor_control",
+    "sensors",
+    "solver",
+    "powertrain",
+    "units",
+    "utils"
+]
+
+
 from gearpy import mechanical_objects
 from gearpy import motor_control
 from gearpy import sensors

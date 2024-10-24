@@ -26,11 +26,14 @@ components:
 import numpy as np
 
 def ext_torque(time, angular_position, angular_speed):
-    return Torque(value = 200 +
-                          80*angular_position.sin(frequency = 1/60) +
-                          2*angular_speed.to('rad/s').value**2 +
-                          20*np.sin(2*np.pi/3*time.to('sec').value),
-                  unit = 'mNm')
+    return Torque(
+        value = 200 +
+        80*angular_position.sin(frequency=1/60) +
+        2*angular_speed.to('rad/s').value**2 +
+        20*np.sin(2*np.pi/3*time.to('sec').value),
+        unit = 'mNm'
+    )
+
 
 gear_6.external_torque = ext_torque
 ```
@@ -42,11 +45,13 @@ The remaining set-ups of the model stay the same.
 We can get a snapshot of the system at a particular time of interest:
 
 ```python
-powertrain.snapshot(target_time = Time(10, 'sec'),
-                    angular_position_unit = 'rot',
-                    torque_unit = 'mNm',
-                    driving_torque_unit = 'mNm',
-                    load_torque_unit = 'mNm')
+powertrain.snapshot(
+    target_time=Time(10, 'sec'),
+    angular_position_unit='rot',
+    torque_unit='mNm',
+    driving_torque_unit='mNm',
+    load_torque_unit='mNm'
+)
 ```
 
 ```text
@@ -67,10 +72,12 @@ variables and focus the plot only on interesting elements and variables.
 We can also specify a more convenient unit to use when plotting torques:
 
 ```python
-powertrain.plot(elements = ['gear 6', motor],
-                variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
-                torque_unit = 'mNm',
-                figsize = (8, 6))
+powertrain.plot(
+    elements=['gear 6', motor],
+    variables=['torque', 'driving torque', 'angular speed', 'load torque'],
+    torque_unit='mNm',
+    figsize=(8, 6)
+)
 ```
 
 ![](images/plot.png)

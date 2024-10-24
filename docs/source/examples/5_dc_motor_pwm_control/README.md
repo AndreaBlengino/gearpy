@@ -24,12 +24,14 @@ the gear angular position:
 from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.motor_control.rules import StartProportionalToAngularPosition
 
-encoder = AbsoluteRotaryEncoder(target = gear_6)
+encoder = AbsoluteRotaryEncoder(target=gear_6)
 
-start_1 = StartProportionalToAngularPosition(encoder = encoder,
-                                             powertrain = powertrain,
-                                             target_angular_position = AngularPosition(10, 'rot'),
-                                             pwm_min_multiplier = 5)
+start_1 = StartProportionalToAngularPosition(
+    encoder = encoder,
+    powertrain=powertrain,
+    target_angular_position=AngularPosition(10, 'rot'),
+    pwm_min_multiplier=5
+)
 ```
 
 See 
@@ -37,16 +39,16 @@ See
 and 
 :py:class:`StartProportionalToAngularPosition <gearpy.motor_control.rules.start_proportional_to_angular_position.StartProportionalToAngularPosition>` 
 for more details on instantiation parameters.  
-At the start up the motor is supplied with a PWM that is 5 times its 
-minimum PWM and it increases up to 1 when the *gear 6* approaches 10 
+At the start-up the motor is supplied with a PWM that is 5 times its 
+minimum PWM, and it increases up to 1 when the *gear 6* approaches 10 
 rotations from the reference position.  
 This rule has to be passed to the PWM control:
 
 ```python
 from gearpy.motor_control import PWMControl
 
-motor_control_1 = PWMControl(powertrain = powertrain)
-motor_control_1.add_rule(rule = start_1)
+motor_control_1 = PWMControl(powertrain=powertrain)
+motor_control_1.add_rule(rule=start_1)
 ``` 
 
 See :py:class:`PWMControl <gearpy.motor_control.pwm_control.PWMControl>` 
@@ -59,10 +61,12 @@ motor control object to the solver at simulation launch, the remaining
 set-ups stay the same:
 
 ```python
-solver = Solver(powertrain = powertrain)
-solver.run(time_discretization = TimeInterval(0.5, 'sec'),
-           simulation_time = TimeInterval(100, 'sec'),
-           motor_control = motor_control_1)
+solver = Solver(powertrain=powertrain)
+solver.run(
+    time_discretization=TimeInterval(0.5, 'sec'),
+    simulation_time=TimeInterval(100, 'sec'),
+    motor_control=motor_control_1
+)
 ```
 
 ### Results Analysis
@@ -72,12 +76,22 @@ and focus the plot only on interesting elements and variables. We can
 also specify a more convenient unit to use when plotting torques:
 
 ```python
-powertrain.plot(figsize = (8, 10),
-                elements = ['motor', 'gear 6'],
-                angular_position_unit = 'rot',
-                torque_unit = 'mNm',
-                variables = ['angular position', 'angular speed', 'angular acceleration',
-                             'driving torque', 'load torque', 'torque', 'electric current', 'pwm'])
+powertrain.plot(
+    figsize=(8, 10),
+    elements=['motor', 'gear 6'],
+    angular_position_unit='rot',
+    torque_unit='mNm',
+    variables=[
+        'angular position',
+        'angular speed',
+        'angular acceleration',
+        'driving torque',
+        'load torque',
+        'torque',
+        'electric current',
+        'pwm'
+    ]
+)
 ```
 
 ![](images/plot_1.png)
@@ -100,13 +114,15 @@ better control the electric current:
 from gearpy.motor_control.rules import StartLimitCurrent
 from gearpy.sensors import Tachometer
 
-tachometer = Tachometer(target = motor)
+tachometer = Tachometer(target=motor)
 
-start_2 = StartLimitCurrent(encoder = encoder,
-                            tachometer = tachometer,
-                            motor = motor,
-                            limit_electric_current = Current(2, 'A'),
-                            target_angular_position = AngularPosition(10, 'rot'))
+start_2 = StartLimitCurrent(
+    encoder=encoder,
+    tachometer=tachometer,
+    motor=motor,
+    limit_electric_current=Current(2, 'A'),
+    target_angular_position=AngularPosition(10, 'rot')
+)
 ```
 
 See :py:class:`Tachometer <gearpy.sensors.tachometer.Tachometer>` and 
@@ -121,10 +137,12 @@ specific final position and stay there:
 ```python
 from gearpy.motor_control.rules import ReachAngularPosition
 
-reach_position = ReachAngularPosition(encoder = encoder,
-                                      powertrain = powertrain,
-                                      target_angular_position = AngularPosition(40, 'rot'),
-                                      braking_angle = Angle(10, 'rot'))
+reach_position = ReachAngularPosition(
+    encoder=encoder,
+    powertrain=powertrain,
+    target_angular_position=AngularPosition(40, 'rot'),
+    braking_angle=Angle(10, 'rot')
+)
 ```
 
 See 
@@ -133,12 +151,12 @@ for more details on instantiation parameters.
 With this rule, the DC motor's PWM is controlled in order to make the 
 *gear 6* reach 40 rotations from the reference position and the whole
 system will begin to brake 10 rotation before the target.  
-Finally, we have to add this two rules to a new motor control:
+Finally, we have to add these two rules to a new motor control:
 
 ```python
-motor_control_2 = PWMControl(powertrain = powertrain)
-motor_control_2.add_rule(rule = start_2)
-motor_control_2.add_rule(rule = reach_position)
+motor_control_2 = PWMControl(powertrain=powertrain)
+motor_control_2.add_rule(rule=start_2)
+motor_control_2.add_rule(rule=reach_position)
 ``` 
 
 ### Simulation Set Up
@@ -149,9 +167,11 @@ simulation parameters with the new motor control:
 ```python
 powertrain.reset()
 
-solver.run(time_discretization = TimeInterval(0.5, 'sec'),
-           simulation_time = TimeInterval(100, 'sec'),
-           motor_control = motor_control_2)
+solver.run(
+    time_discretization=TimeInterval(0.5, 'sec'),
+    simulation_time=TimeInterval(100, 'sec'),
+    motor_control=motor_control_2
+)
 ```
 
 The remaining set-ups of the model stay the same.
@@ -161,19 +181,29 @@ The remaining set-ups of the model stay the same.
 We can get the updated plot with the same code:
 
 ```python
-powertrain.plot(figsize = (8, 10),
-                elements = ['motor', 'gear 6'],
-                angular_position_unit = 'rot',
-                torque_unit = 'mNm',
-                variables = ['angular position', 'angular speed', 'angular acceleration',
-                             'driving torque', 'load torque', 'torque', 'electric current', 'pwm'])
+powertrain.plot(
+    figsize=(8, 10),
+    elements=['motor', 'gear 6'],
+    angular_position_unit='rot',
+    torque_unit='mNm',
+    variables=[
+        'angular position',
+        'angular speed',
+        'angular acceleration',
+        'driving torque',
+        'load torque',
+        'torque',
+        'electric current',
+        'pwm'
+    ]
+)
 ```
 
 ![](images/plot_2.png)
 
-This time the PWM is controlled in a different manner and we can 
-appreciate how the electric current is always lower than 2 A at the 
-beginning of the simulation.  
+This time the PWM is controlled differently, and we can appreciate how
+the electric current is always lower than 2 A at the beginning of the
+simulation.  
 At 40 seconds from the simulation start, the system starts to brake in 
 order to reach the final position of the *gear 6* at 40 rotations from 
 the reference position, as specified in the rule.

@@ -1,11 +1,11 @@
-from __future__ import annotations
 from abc import ABC, abstractmethod
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import UnitBase
 
 
 class SensorBase(ABC):
-    """:py:class:`SensorBase <gearpy.sensors.sensor_base.SensorBase>` object. \n
+    """:py:class:`SensorBase <gearpy.sensors.sensor_base.SensorBase>`
+    object. \n
     Abstract base class for creating sensor objects.
 
     .. admonition:: See Also

@@ -24,20 +24,24 @@ absorption limit to 2 A and the second target position for the *gear 6*
 to 60 rotations from the reference position:
 
 ```python
-start_2 = StartLimitCurrent(encoder = encoder,
-                          tachometer = tachometer,
-                          motor = motor,
-                          limit_electric_current = Current(2, 'A'),
-                          target_angular_position = AngularPosition(50, 'rot'))
+start_2 = StartLimitCurrent(
+    encoder=encoder,
+    tachometer=tachometer,
+    motor=motor,
+    limit_electric_current=Current(2, 'A'),
+    target_angular_position=AngularPosition(50, 'rot')
+)
 
-reach_position_2 = ReachAngularPosition(encoder = encoder,
-                                        powertrain = powertrain,
-                                        target_angular_position = AngularPosition(60, 'rot'),
-                                        braking_angle = Angle(10, 'rot'))
+reach_position_2 = ReachAngularPosition(
+    encoder=encoder,
+    powertrain=powertrain,
+    target_angular_position=AngularPosition(60, 'rot'),
+    braking_angle=Angle(10, 'rot')
+)
 
-motor_control_2 = PWMControl(powertrain = powertrain)
-motor_control_2.add_rule(rule = start_2)
-motor_control_2.add_rule(rule = reach_position_2)
+motor_control_2 = PWMControl(powertrain=powertrain)
+motor_control_2.add_rule(rule=start_2)
+motor_control_2.add_rule(rule=reach_position_2)
 ```
 
 ### Simulation Set Up
@@ -47,9 +51,11 @@ concatenate the new simulation results to these; so we only need to
 update the solver simulation parameters with the new motor control:
 
 ```python
-solver.run(time_discretization = TimeInterval(0.5, 'sec'),
-           simulation_time = TimeInterval(100, 'sec'),
-           motor_control = motor_control_2)
+solver.run(
+    time_discretization=TimeInterval(0.5, 'sec'),
+    simulation_time=TimeInterval(100, 'sec'),
+    motor_control=motor_control_2
+)
 ```
 
 The remaining set-ups of the model stay the same.
@@ -59,12 +65,22 @@ The remaining set-ups of the model stay the same.
 We can get the updated plot with the same code:
 
 ```python
-powertrain.plot(figsize = (8, 10),
-                elements = ['motor', 'gear 6'],
-                angular_position_unit = 'rot',
-                torque_unit = 'mNm',
-                variables = ['angular position', 'angular speed', 'angular acceleration',
-                             'driving torque', 'load torque', 'torque', 'electric current', 'pwm'])
+powertrain.plot(
+    figsize=(8, 10),
+    elements=['motor', 'gear 6'],
+    angular_position_unit='rot',
+    torque_unit='mNm',
+    variables=[
+        'angular position',
+        'angular speed',
+        'angular acceleration',
+        'driving torque',
+        'load torque',
+        'torque',
+        'electric current',
+        'pwm'
+    ]
+)
 ```
 
 ![](images/plot.png)

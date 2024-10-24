@@ -3,7 +3,8 @@ from gearpy.units import UnitBase
 
 
 class OperatorBase(ABC):
-    """:py:class:`OperatorBase <gearpy.utils.stop_condition.operator_base.OperatorBase>` object. \n
+    """:py:class:`OperatorBase <gearpy.utils.stop_condition.operator_base.OperatorBase>`
+    object. \n
     Abstract base class for creating operator objects.
 
     .. admonition:: See Also
@@ -19,7 +20,13 @@ class OperatorBase(ABC):
     @abstractmethod
     def __call__(self, sensor_value: UnitBase, threshold: UnitBase) -> bool:
         if not isinstance(sensor_value, UnitBase):
-            raise TypeError(f"Parameter 'sensor_value' must be an instance of {UnitBase.__name__!r}.")
+            raise TypeError(
+                f"Parameter 'sensor_value' must be an instance of "
+                f"{UnitBase.__name__!r}."
+            )
 
         if not isinstance(threshold, UnitBase):
-            raise TypeError(f"Parameter 'threshold' must be an instance of {UnitBase.__name__!r}.")
+            raise TypeError(
+                f"Parameter 'threshold' must be an instance of "
+                f"{UnitBase.__name__!r}."
+            )

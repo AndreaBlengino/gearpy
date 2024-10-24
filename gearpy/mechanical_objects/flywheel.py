@@ -1,10 +1,17 @@
-from __future__ import annotations
-from gearpy.units import AngularPosition, AngularSpeed, AngularAcceleration, InertiaMoment, Torque, UnitBase
+from gearpy.units import (
+    AngularPosition,
+    AngularSpeed,
+    AngularAcceleration,
+    InertiaMoment,
+    Torque,
+    UnitBase
+)
 from .mechanical_object_base import RotatingObject
 
 
 class Flywheel(RotatingObject):
-    r""":py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` object.
+    r""":py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>`
+    object.
 
     Attributes
     ----------
@@ -12,7 +19,8 @@ class Flywheel(RotatingObject):
         Name of the flywheel.
     :py:attr:`driven_by` : :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`
         Rotating object that drives the flywheel, for example a
-        :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` or a gear
+        :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` or a
+        gear
         (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
         :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
         :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
@@ -24,9 +32,11 @@ class Flywheel(RotatingObject):
         :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
         :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`).
     :py:attr:`master_gear_ratio` : :py:class:`float`
-        Gear ratio of the fixed joint between the flywheel and its driving rotating object.
+        Gear ratio of the fixed joint between the flywheel and its driving
+        rotating object.
     :py:attr:`master_gear_efficiency` : :py:class:`float` or :py:class:`int`
-        Efficiency of the fixed joint between the flywheel and its driving rotating object.
+        Efficiency of the fixed joint between the flywheel and its driving
+        rotating object.
     :py:attr:`angular_position` : :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`
         Angular position of the flywheel.
     :py:attr:`angular_speed` : :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`
@@ -47,12 +57,12 @@ class Flywheel(RotatingObject):
     Methods
     -------
     :py:meth:`update_time_variables`
-        It updates :py:attr:`time_variables` dictionary by appending the last value of each time variable to
-        corresponding list.
+        It updates :py:attr:`time_variables` dictionary by appending the last
+        value of each time variable to corresponding list.
     """
 
     def __init__(self, name: str, inertia_moment: InertiaMoment):
-        super().__init__(name = name, inertia_moment = inertia_moment)
+        super().__init__(name=name, inertia_moment=inertia_moment)
 
         self.__driven_by = None
         self.__drives = None
@@ -62,7 +72,8 @@ class Flywheel(RotatingObject):
     @property
     def name(self) -> str:
         """Name of the flywheel. It must be a non-empty :py:class:`str`. \n
-        It must be a unique name, not shared by other elements in the powertrain elements. \n
+        It must be a unique name, not shared by other elements in the
+        powertrain elements. \n
         Once set at the flywheel instantiation, it cannot be changed afterward.
 
         Returns
@@ -83,13 +94,16 @@ class Flywheel(RotatingObject):
     @property
     def driven_by(self) -> RotatingObject:
         """Rotating object that drives the flywheel, for example a
-        :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` or a gear
+        :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` or a
+        gear
         (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
         :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
         :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
-        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`). It must be a
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`).
+        It must be a
         :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`. \n
-        To set this property use :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
+        To set this property use
+        :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
         Returns
         -------
@@ -108,7 +122,10 @@ class Flywheel(RotatingObject):
     @driven_by.setter
     def driven_by(self, driven_by: RotatingObject):
         if not isinstance(driven_by, RotatingObject):
-            raise TypeError(f"Parameter 'driven_by' must be an instance of {RotatingObject.__name__!r}.")
+            raise TypeError(
+                f"Parameter 'driven_by' must be an instance of "
+                f"{RotatingObject.__name__!r}."
+            )
 
         self.__driven_by = driven_by
 
@@ -118,7 +135,8 @@ class Flywheel(RotatingObject):
         (:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>`,
         :py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`,
         :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
-        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`). It must be a
+        :py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`).
+        It must be a
         :py:class:`RotatingObject <gearpy.mechanical_objects.mechanical_object_base.RotatingObject>`. \n
         To set this property use :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
@@ -139,7 +157,10 @@ class Flywheel(RotatingObject):
     @drives.setter
     def drives(self, drives: RotatingObject):
         if not isinstance(drives, RotatingObject):
-            raise TypeError(f"Parameter 'drives' must be an instance of {RotatingObject.__name__!r}.")
+            raise TypeError(
+                f"Parameter 'drives' must be an instance of "
+                f"{RotatingObject.__name__!r}."
+            )
 
         self.__drives = drives
 
@@ -164,7 +185,10 @@ class Flywheel(RotatingObject):
 
     @angular_position.setter
     def angular_position(self, angular_position: AngularPosition):
-        super(Flywheel, type(self)).angular_position.fset(self, angular_position)
+        super(
+            Flywheel,
+            type(self)
+        ).angular_position.fset(self, angular_position)
 
     @property
     def angular_speed(self) -> AngularSpeed:
@@ -210,13 +234,17 @@ class Flywheel(RotatingObject):
 
     @angular_acceleration.setter
     def angular_acceleration(self, angular_acceleration: AngularAcceleration):
-        super(Flywheel, type(self)).angular_acceleration.fset(self, angular_acceleration)
+        super(
+            Flywheel,
+            type(self)
+        ).angular_acceleration.fset(self, angular_acceleration)
 
     @property
     def torque(self) -> Torque:
         """Net torque applied on the flywheel. It must be an instance of
         :py:class:`Torque <gearpy.units.units.Torque>`. \n
-        It is computed as the difference between :py:attr:`driving_torque` and :py:attr:`load_torque`.
+        It is computed as the difference between :py:attr:`driving_torque` and
+        :py:attr:`load_torque`.
 
         Returns
         -------
@@ -227,7 +255,8 @@ class Flywheel(RotatingObject):
            :class: warning
 
            ``TypeError``
-               If :py:attr:`torque` is not an instance of :py:class:`Torque <gearpy.units.units.Torque>`.
+               If :py:attr:`torque` is not an instance of
+               :py:class:`Torque <gearpy.units.units.Torque>`.
         """
         return super().torque
 
@@ -237,19 +266,22 @@ class Flywheel(RotatingObject):
 
     @property
     def driving_torque(self) -> Torque:
-        """Driving torque applied on the flywheel by its driving rotating object. It must be an instance of
+        """Driving torque applied on the flywheel by its driving rotating
+        object. It must be an instance of
         :py:class:`Torque <gearpy.units.units.Torque>`.
 
         Returns
         -------
         :py:class:`Torque <gearpy.units.units.Torque>`
-            Driving torque applied on the flywheel by its driving rotating object.
+            Driving torque applied on the flywheel by its driving rotating
+            object.
 
         .. admonition:: Raises
            :class: warning
 
            ``TypeError``
-               If :py:attr:`driving_torque` is not an instance of :py:class:`Torque <gearpy.units.units.Torque>`.
+               If :py:attr:`driving_torque` is not an instance of
+               :py:class:`Torque <gearpy.units.units.Torque>`.
         """
         return super().driving_torque
 
@@ -259,7 +291,8 @@ class Flywheel(RotatingObject):
 
     @property
     def load_torque(self) -> Torque:
-        """Load torque applied on the flywheel by its driven rotating object. It must be an instance of
+        """Load torque applied on the flywheel by its driven rotating object.
+        It must be an instance of
         :py:class:`Torque <gearpy.units.units.Torque>`.
 
         Returns
@@ -271,7 +304,8 @@ class Flywheel(RotatingObject):
            :class: warning
 
            ``TypeError``
-               If :py:attr:`load_torque` is not an instance of :py:class:`Torque <gearpy.units.units.Torque>`.
+               If :py:attr:`load_torque` is not an instance of
+               :py:class:`Torque <gearpy.units.units.Torque>`.
         """
         return super().load_torque
 
@@ -281,16 +315,20 @@ class Flywheel(RotatingObject):
 
     @property
     def master_gear_ratio(self) -> float:
-        """Gear ratio of the fixed joint between the flywheel and its driving rotating object. It must be a positive a
-        float. Since the relation between the flywheel and its neighbor elements in the powertrain elements is always a
-        fixed joint, the gear ratio will be always set to ``1`` by
+        """Gear ratio of the fixed joint between the flywheel and its driving
+        rotating object. It must be a positive a float. Since the relation
+        between the flywheel and its neighbor elements in the powertrain
+        elements is always a fixed joint, the gear ratio will be always set to
+        ``1`` by
         :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`. \n
-        To set this property use :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
+        To set this property use
+        :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`.
 
         Returns
         -------
         :py:class:`float`
-            Gear ratio of the fixed joint between the flywheel and its driving rotating object.
+            Gear ratio of the fixed joint between the flywheel and its driving
+            rotating object.
 
         .. admonition:: Raises
            :class: warning
@@ -314,14 +352,16 @@ class Flywheel(RotatingObject):
 
     @property
     def master_gear_efficiency(self) -> float | int:
-        """Efficiency of the fixed joint between the flywheel and its driving rotating object. Since the relation
-        between the flywheel and its neighbor elements in the powertrain elements is always a fixed joint, the
-        efficiency is always equal to ``1`` and cannot be overwritten. \n
+        """Efficiency of the fixed joint between the flywheel and its driving
+        rotating object. Since the relation between the flywheel and its
+        neighbor elements in the powertrain elements is always a fixed joint,
+        the efficiency is always equal to ``1`` and cannot be overwritten. \n
 
         Returns
         -------
         :py:class:`float` or :py:class:`int`
-            Efficiency of the fixed joint between the flywheel and its driving rotating object.
+            Efficiency of the fixed joint between the flywheel and its driving
+            rotating object.
         """
         return self.__master_gear_efficiency
 
@@ -347,8 +387,8 @@ class Flywheel(RotatingObject):
 
     @property
     def time_variables(self) -> dict[str, list[UnitBase]]:
-        """Time variables of the flywheel. Each time variable is stored as a dictionary key-value pair. The available
-        time variables are:
+        """Time variables of the flywheel. Each time variable is stored as a
+        dictionary key-value pair. The available time variables are:
 
         - :py:attr:`angular_position`: ``'angular position'``,
         - :py:attr:`angular_speed`: ``'angular speed'``,
@@ -357,9 +397,11 @@ class Flywheel(RotatingObject):
         - :py:attr:`driving_torque`: ``'driving torque'``,
         - :py:attr:`load_torque`: ``'load torque'``.
 
-        Corresponding values of the dictionary are lists of the respective time variable values. \n
-        At each time iteration, the :py:class:`Solver <gearpy.solver.Solver>` appends every time variables' values to
-        the relative list in the dictionary.
+        Corresponding values of the dictionary are lists of the respective time
+        variable values. \n
+        At each time iteration, the :py:class:`Solver <gearpy.solver.Solver>`
+        appends every time variables' values to the relative list in the
+        dictionary.
 
         Returns
         -------
@@ -374,7 +416,8 @@ class Flywheel(RotatingObject):
         return super().time_variables
 
     def update_time_variables(self) -> None:
-        """It updates :py:attr:`time_variables` dictionary by appending the last value of each time variable (key of the
-        dictionary) to corresponding list (value of the dictionary).
+        """It updates :py:attr:`time_variables` dictionary by appending the
+        last value of each time variable (key of the dictionary) to
+        corresponding list (value of the dictionary).
         """
         super().update_time_variables()

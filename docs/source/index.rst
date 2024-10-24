@@ -25,6 +25,7 @@ gearpy documentation
    Issue Tracker <https://github.com/AndreaBlengino/gearpy/issues>
    Source Code <https://github.com/AndreaBlengino/gearpy>
    license
+   release_notes/index
 
 
 .. mdinclude:: ../../README.rst

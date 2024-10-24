@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class RuleBase(ABC):
-    """:py:class:`RuleBase <gearpy.motor_control.rules.rules_base.RuleBase>` object. \n
+    """:py:class:`RuleBase <gearpy.motor_control.rules.rules_base.RuleBase>`
+    object. \n
     Abstract base class for creating rules objects.
 
     .. admonition:: See Also

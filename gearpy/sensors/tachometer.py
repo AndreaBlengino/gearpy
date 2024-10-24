@@ -1,4 +1,3 @@
-from __future__ import annotations
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import AngularSpeed
 from .sensor_base import SensorBase
@@ -21,7 +20,10 @@ class Tachometer(SensorBase):
 
     def __init__(self, target: RotatingObject):
         if not isinstance(target, RotatingObject):
-            raise TypeError(f"Parameter 'target' must be an instance of {RotatingObject.__name__!r}.")
+            raise TypeError(
+                f"Parameter 'target' must be an instance of "
+                f"{RotatingObject.__name__!r}."
+            )
 
         self.__target = target
 
@@ -43,17 +45,23 @@ class Tachometer(SensorBase):
         """
         return self.__target
 
-    def get_value(self, unit: Optional[str] = None) -> AngularSpeed | float | int:
-        """It gets the angular speed of the :py:attr:`target` rotating object. \n
-        If a ``unit`` is set, then it converts the angular speed to that unit and returns only the numerical value as
-        float or integer.
+    def get_value(
+        self,
+        unit: Optional[str] = None
+    ) -> AngularSpeed | float | int:
+        """It gets the angular speed of the :py:attr:`target` rotating
+        object. \n
+        If a ``unit`` is set, then it converts the angular speed to that unit
+        and returns only the numerical value as float or integer.
 
         Parameters
         ----------
         ``unit`` : :py:class:`str`, optional
-            The unit to which convert the :py:attr:`target` angular speed. If specified, it converts the angular speed
-            and returns only the numerical value as float or integer, otherwise it returns an
-            :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`. Default is :py:obj:`None`, so it returns an
+            The unit to which convert the :py:attr:`target` angular speed. If
+            specified, it converts the angular speed and returns only the
+            numerical value as float or integer, otherwise it returns an
+            :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`. Default
+            is :py:obj:`None`, so it returns an
             :py:class:`AngularSpeed <gearpy.units.units.AngularSpeed>`.
 
         Returns

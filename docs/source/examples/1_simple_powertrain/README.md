@@ -25,30 +25,46 @@ powertrain:
 from gearpy.mechanical_objects import DCMotor, Flywheel, SpurGear
 from gearpy.units import AngularSpeed, InertiaMoment, Torque
 
-motor = DCMotor(name = 'motor',
-                no_load_speed = AngularSpeed(15000, 'rpm'),
-                maximum_torque = Torque(10, 'mNm'),
-                inertia_moment = InertiaMoment(3, 'gcm^2'))
-flywheel = Flywheel(name = 'flywheel',
-                    inertia_moment = InertiaMoment(20, 'kgcm^2'))
-gear_1 = SpurGear(name = 'gear 1',
-                  n_teeth = 10,
-                  inertia_moment = InertiaMoment(1, 'gcm^2'))
-gear_2 = SpurGear(name = 'gear 2',
-                  n_teeth = 80,
-                  inertia_moment = InertiaMoment(3100, 'gcm^2'))
-gear_3 = SpurGear(name = 'gear 3',
-                  n_teeth = 10,
-                  inertia_moment = InertiaMoment(4, 'gcm^2'))
-gear_4 = SpurGear(name = 'gear 4',
-                  n_teeth = 60,
-                  inertia_moment = InertiaMoment(5000, 'gcm^2'))
-gear_5 = SpurGear(name = 'gear 5',
-                  n_teeth = 10,
-                  inertia_moment = InertiaMoment(12, 'gcm^2'))
-gear_6 = SpurGear(name = 'gear 6',
-                  n_teeth = 50,
-                  inertia_moment = InertiaMoment(7600, 'gcm^2'))
+motor = DCMotor(
+    name='motor',
+    no_load_speed=AngularSpeed(15000, 'rpm'),
+    maximum_torque=Torque(10, 'mNm'),
+    inertia_moment=InertiaMoment(3, 'gcm^2')
+)
+flywheel = Flywheel(
+    name='flywheel',
+    inertia_moment=InertiaMoment(20, 'kgcm^2')
+)
+gear_1 = SpurGear(
+    name='gear 1',
+    n_teeth=10,
+    inertia_moment=InertiaMoment(1, 'gcm^2')
+)
+gear_2 = SpurGear(
+    name='gear 2',
+    n_teeth=80,
+    inertia_moment=InertiaMoment(3100, 'gcm^2')
+)
+gear_3 = SpurGear(
+    name='gear 3',
+    n_teeth=10,
+    inertia_moment=InertiaMoment(4, 'gcm^2')
+)
+gear_4 = SpurGear(
+    name='gear 4',
+    n_teeth=60,
+    inertia_moment=InertiaMoment(5000, 'gcm^2')
+)
+gear_5 = SpurGear(
+    name='gear 5',
+    n_teeth=10,
+    inertia_moment=InertiaMoment(12, 'gcm^2')
+)
+gear_6 = SpurGear(
+    name='gear 6',
+    n_teeth=50,
+    inertia_moment=InertiaMoment(7600, 'gcm^2')
+)
 ```
 
 See :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`,
@@ -57,19 +73,19 @@ See :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`,
 more details on instantiation parameters.  
 Then it is necessary to specify the connection types between the 
 components. We choose to study a non-ideal powertrain so, in order to 
-take into account power loss in matings due to friction, we specify a 
+take into account power loss in mating due to friction, we specify a 
 `$90\%$` gear mating efficiency:
 
 ```python
 from gearpy.utils import add_fixed_joint, add_gear_mating
 
-add_fixed_joint(master = motor, slave = flywheel)
-add_fixed_joint(master = flywheel, slave = gear_1)
-add_gear_mating(master = gear_1, slave = gear_2, efficiency = 0.9)
-add_fixed_joint(master = gear_2, slave = gear_3)
-add_gear_mating(master = gear_3, slave = gear_4, efficiency = 0.9)
-add_fixed_joint(master = gear_4, slave = gear_5)
-add_gear_mating(master = gear_5, slave = gear_6, efficiency = 0.9)
+add_fixed_joint(master=motor, slave=flywheel)
+add_fixed_joint(master=flywheel, slave=gear_1)
+add_gear_mating(master=gear_1, slave=gear_2, efficiency=0.9)
+add_fixed_joint(master=gear_2, slave=gear_3)
+add_gear_mating(master=gear_3, slave=gear_4, efficiency=0.9)
+add_fixed_joint(master=gear_4, slave=gear_5)
+add_gear_mating(master=gear_5, slave=gear_6, efficiency=0.9)
 ```
 
 See :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>` 
@@ -82,6 +98,7 @@ example simple, we can consider a constant load torque:
 def ext_torque(time, angular_position, angular_speed):
     return Torque(500, 'mNm')
 
+
 gear_6.external_torque = ext_torque
  ```
 
@@ -91,7 +108,7 @@ object:
 ```python
 from gearpy.powertrain import Powertrain
 
-powertrain = Powertrain(motor = motor)
+powertrain = Powertrain(motor=motor)
 ```
 
 See :py:class:`Powertrain <gearpy.powertrain.Powertrain>` for more 
@@ -119,9 +136,11 @@ are ready to run the simulation::
 from gearpy.units import TimeInterval
 from gearpy.solver import Solver
 
-solver = Solver(powertrain = powertrain)
-solver.run(time_discretization = TimeInterval(0.5, 'sec'), 
-           simulation_time = TimeInterval(20, 'sec'))
+solver = Solver(powertrain=powertrain)
+solver.run(
+    time_discretization=TimeInterval(0.5, 'sec'), 
+    simulation_time=TimeInterval(20, 'sec')
+)
 ```
 
 See :py:class:`Solver <gearpy.solver.Solver>` for more details.
@@ -133,7 +152,7 @@ We can get a snapshot of the system at a particular time of interest:
 ```python
 from gearpy.units import Time
 
-powertrain.snapshot(target_time = Time(10, 'sec'))
+powertrain.snapshot(target_time=Time(10, 'sec'))
 ```
 
 ```text
@@ -153,11 +172,13 @@ The default unit used for torques are not so convenient in this case, so
 we prefer to get results in a different unit:
 
 ```python
-powertrain.snapshot(target_time = Time(10, 'sec'),
-                    angular_position_unit = 'rot',
-                    torque_unit = 'mNm',
-                    driving_torque_unit = 'mNm',
-                    load_torque_unit = 'mNm')
+powertrain.snapshot(
+    target_time=Time(10, 'sec'),
+    angular_position_unit='rot',
+    torque_unit='mNm',
+    driving_torque_unit='mNm',
+    load_torque_unit='mNm'
+)
 ```
 
 ```text
@@ -186,21 +207,23 @@ We can get a more general view of the system by plotting the time
 variables of each element with respect to time:
 
 ```python
-powertrain.plot(figsize = (12, 9))
+powertrain.plot(figsize=(12, 9))
 ```
 
 ![](images/plot_1.png)
 
-This plot is pretty crowded and we are not interested in all time 
+This plot is pretty crowded, and we are not interested in all time 
 variables, so we can focus the plot only on interesting elements and 
 variables. We can also specify a more convenient unit to use when 
 plotting torques:
 
 ```python
-powertrain.plot(elements = ['gear 6', motor],
-                variables = ['torque', 'driving torque', 'angular speed', 'load torque'],
-                torque_unit = 'mNm',
-                figsize = (8, 6))
+powertrain.plot(
+    elements=['gear 6', motor],
+    variables=['torque', 'driving torque', 'angular speed', 'load torque'],
+    torque_unit='mNm',
+    figsize=(8, 6)
+)
 ```
 
 ![](images/plot_2.png)
@@ -218,8 +241,8 @@ to the right,
   
 We can see that at 10 seconds the angular speeds of *motor* and *gear 6* 
 are almost constant, confirming the insight previously mentioned by 
-analysing the time snapshot: at 10 seconds the system is almost in a 
+analyzing the time snapshot: at 10 seconds the system is almost in a 
 stationary state.  
 We can see that, as the time passes, the driving torque on *gear 6* 
-equals the constant load torque and, as a results, the net torque on the
+equals the constant load torque and, as a result, the net torque on the
 gear becomes close to zero.

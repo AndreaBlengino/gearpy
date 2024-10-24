@@ -14,16 +14,16 @@ After running the simulation, we can export the time variables of each
 rotating object in the powertrain with:
 
 ```python
-powertrain.export_time_variables(folder_path = 'data')
+powertrain.export_time_variables(folder_path='data')
 ```
 
 See 
 :py:meth:`Powertrain.export_time_variables <gearpy.powertrain.Powertrain.export_time_variables>` 
 for more details on method parameters.  
-and write the name of the folder in which to save the files, `'data'` in 
-this case. In that folder `gearpy` saves a file for each rotating object 
-in the powertrain, and it uses the name of the rotating object to name 
-the file.  
+Set `'folder_path'` to the name of the folder in which to save the
+files, `'data'` in this case. In that folder `gearpy` saves a file for
+each rotating object in the powertrain, and it uses the name of
+the rotating object to name the file.  
 We can open and analyze these file with [pandas](https://pandas.pydata.org),
 which is a dependency of `gearpy`, so it is already installed:
 
@@ -51,6 +51,6 @@ print(motor_data.head(11).to_string())
 10         5.0             4166.363812            1074.527928                       25.700699     0.000302             0.003159          0.002858    1
 ```
 
-We have printed only the first eleven rows of the file.  
+The code above prints only the first eleven rows of the file.  
 We can see that there is a column for each available time variable and 
 each row is a simulated time step.
