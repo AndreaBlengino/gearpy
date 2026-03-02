@@ -15,7 +15,6 @@ from gearpy.units import (
 )
 from gearpy.utils import StopCondition
 import numpy as np
-from typing import Optional
 
 
 NULL_ANGULAR_SPEED = AngularSpeed(0, 'rad/s')
@@ -81,8 +80,8 @@ class Solver:
         self,
         time_discretization: TimeInterval,
         simulation_time: TimeInterval,
-        motor_control: Optional[MotorControlBase] = None,
-        stop_condition: Optional[StopCondition] = None
+        motor_control: MotorControlBase | None = None,
+        stop_condition: StopCondition | None = None
     ) -> None:
         """It runs the powertrain simulation. \n
         The simulation is performed in several steps:
@@ -222,7 +221,7 @@ class Solver:
 
     def _compute_powertrain_variables(
         self,
-        motor_control: Optional[MotorControlBase]
+        motor_control: MotorControlBase | None
     ):
 
         self._compute_angular_position_and_speed()
@@ -265,7 +264,7 @@ class Solver:
 
     def _compute_motor_control(
         self,
-        motor_control: Optional[MotorControlBase]
+        motor_control: MotorControlBase | None
     ):
 
         if motor_control is not None:

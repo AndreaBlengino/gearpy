@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 from scipy.interpolate import interp1d
-from typing import Optional
 
 
 VARIABLES_SORT_ORDER = {
@@ -262,17 +261,17 @@ class Powertrain:
     def snapshot(
         self,
         target_time: Time,
-        variables: Optional[list[str]] = None,
-        angular_position_unit: Optional[str] = 'rad',
-        angular_speed_unit: Optional[str] = 'rad/s',
-        angular_acceleration_unit: Optional[str] = 'rad/s^2',
-        torque_unit: Optional[str] = 'Nm',
-        driving_torque_unit: Optional[str] = 'Nm',
-        load_torque_unit: Optional[str] = 'Nm',
-        force_unit: Optional[str] = 'N',
-        stress_unit: Optional[str] = 'MPa',
-        current_unit: Optional[str] = 'A',
-        print_data: Optional[bool] = True
+        variables: list[str] | None = None,
+        angular_position_unit: str | None = 'rad',
+        angular_speed_unit: str | None = 'rad/s',
+        angular_acceleration_unit: str | None = 'rad/s^2',
+        torque_unit: str | None = 'Nm',
+        driving_torque_unit: str | None = 'Nm',
+        load_torque_unit: str | None = 'Nm',
+        force_unit: str | None = 'N',
+        stress_unit: str | None = 'MPa',
+        current_unit: str | None = 'A',
+        print_data: bool | None = True
     ) -> pd.DataFrame:
         """It computes a snapshot of the time variables of the elements in the
         powertrain at the specified ``target_time``. \n
@@ -622,17 +621,17 @@ class Powertrain:
 
     def plot(
         self,
-        elements: Optional[list[RotatingObject | str]] = None,
-        variables: Optional[list[str]] = None,
-        angular_position_unit: Optional[str] = 'rad',
-        angular_speed_unit: Optional[str] = 'rad/s',
-        angular_acceleration_unit: Optional[str] = 'rad/s^2',
-        torque_unit: Optional[str] = 'Nm',
-        force_unit: Optional[str] = 'N',
-        stress_unit: Optional[str] = 'MPa',
-        current_unit: Optional[str] = 'A',
-        time_unit: Optional[str] = 'sec',
-        figsize: Optional[tuple] = None
+        elements: list[RotatingObject | str] | None = None,
+        variables: list[str] | None = None,
+        angular_position_unit: str | None = 'rad',
+        angular_speed_unit: str | None = 'rad/s',
+        angular_acceleration_unit: str | None = 'rad/s^2',
+        torque_unit: str | None = 'Nm',
+        force_unit: str | None = 'N',
+        stress_unit: str | None = 'MPa',
+        current_unit: str | None = 'A',
+        time_unit: str | None = 'sec',
+        figsize: tuple | None = None
     ) -> None:
         """It plots time variables for selected ``elements`` in the
         powertrain's :py:attr:`elements`. \n
@@ -1198,16 +1197,16 @@ class Powertrain:
     def export_time_variables(
         self,
         folder_path: str,
-        time_unit: Optional[str] = 'sec',
-        angular_position_unit: Optional[str] = 'rad',
-        angular_speed_unit: Optional[str] = 'rad/s',
-        angular_acceleration_unit: Optional[str] = 'rad/s^2',
-        torque_unit: Optional[str] = 'Nm',
-        driving_torque_unit: Optional[str] = 'Nm',
-        load_torque_unit: Optional[str] = 'Nm',
-        force_unit: Optional[str] = 'N',
-        stress_unit: Optional[str] = 'MPa',
-        current_unit: Optional[str] = 'A'
+        time_unit: str | None = 'sec',
+        angular_position_unit: str | None = 'rad',
+        angular_speed_unit: str | None = 'rad/s',
+        angular_acceleration_unit: str | None = 'rad/s^2',
+        torque_unit: str | None = 'Nm',
+        driving_torque_unit: str | None = 'Nm',
+        load_torque_unit: str | None = 'Nm',
+        force_unit: str | None = 'N',
+        stress_unit: str | None= 'MPa',
+        current_unit: str | None = 'A'
     ) -> None:
         """It exports the powertrain's :py:attr:`elements`' computed time
         variables to some files. \n

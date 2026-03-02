@@ -8,7 +8,6 @@ from gearpy.units import (
     UnitBase
 )
 from .mechanical_object_base import RotatingObject, MotorBase
-from typing import Optional
 
 
 class DCMotor(MotorBase):
@@ -77,8 +76,8 @@ class DCMotor(MotorBase):
         inertia_moment: InertiaMoment,
         no_load_speed: AngularSpeed,
         maximum_torque: Torque,
-        no_load_electric_current: Optional[Current] = None,
-        maximum_electric_current: Optional[Current] = None
+        no_load_electric_current: Current | None = None,
+        maximum_electric_current: Current | None = None
     ):
         super().__init__(name=name, inertia_moment=inertia_moment)
 
@@ -516,7 +515,7 @@ class DCMotor(MotorBase):
         )
 
     @property
-    def no_load_electric_current(self) -> Optional[Current]:
+    def no_load_electric_current(self) -> Current | None:
         """No load electric current absorbed by the DC motor. It must be an
         instance of :py:class:`Current <gearpy.units.units.Current>`. Its value
         must be positive or null and lower than
@@ -544,7 +543,7 @@ class DCMotor(MotorBase):
         return self.__no_load_electric_current
 
     @property
-    def maximum_electric_current(self) -> Optional[Current]:
+    def maximum_electric_current(self) -> Current | None:
         """Maximum electric current absorbed by the DC motor. It must be an
         instance of :py:class:`Current <gearpy.units.units.Current>`. Its value
         must be positive and greater than
@@ -703,7 +702,7 @@ class DCMotor(MotorBase):
             (self.__maximum_electric_current is not None)
 
     @property
-    def electric_current(self) -> Optional[Current]:
+    def electric_current(self) -> Current | None:
         """Electric current absorbed by the DC motor. It must be an instance of
         :py:class:`Current <gearpy.units.units.Current>`.
 

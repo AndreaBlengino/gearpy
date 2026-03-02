@@ -2,24 +2,23 @@ from gearpy.mechanical_objects import DCMotor
 from gearpy.units import Time
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from typing import Optional
 
 
 def dc_motor_characteristics_animation(
     motor: DCMotor,
     time: list[Time],
-    interval: Optional[float | int] = 200,
-    torque_speed_curve: Optional[bool] = True,
-    torque_current_curve: Optional[bool] = True,
-    angular_speed_unit: Optional[str] = 'rad/s',
-    torque_unit: Optional[str] = 'Nm',
-    current_unit: Optional[str] = 'A',
-    figsize: Optional[tuple] = None,
-    line_color: Optional[str] = None,
-    marker_color: Optional[str] = None,
-    marker_size: Optional[float | int] = None,
-    padding: Optional[float | int] = 0.1,
-    show: Optional[bool] = True
+    interval: float | int | None = 200,
+    torque_speed_curve: bool | None = True,
+    torque_current_curve: bool | None = True,
+    angular_speed_unit: str | None = 'rad/s',
+    torque_unit: str | None = 'Nm',
+    current_unit: str | None = 'A',
+    figsize: tuple | None = None,
+    line_color: str | None = None,
+    marker_color: str | None = None,
+    marker_size: float | int | None = None,
+    padding: float | int | None = 0.1,
+    show: bool | None = True
 ) -> FuncAnimation:
     """It generates an animation of a
     :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`
