@@ -9,7 +9,7 @@ class Timer:
     :py:attr:`start_time` : :py:class:`Time <gearpy.units.units.Time>`
         Start time after which the timer is active.
     :py:attr:`duration` : :py:class:`TimeInterval <gearpy.units.units.TimeInterval>`
-        Time duration of the timer, starting from :py:attr:`start_time`
+        Time duration of the timer, starting from :py:attr:`start_time`.
 
     Methods
     -------
@@ -60,7 +60,7 @@ class Timer:
         Returns
         -------
         :py:class:`TimeInterval <gearpy.units.units.TimeInterval>`
-            Time duration of the timer, starting from :py:attr:`start_time`
+            Time duration of the timer, starting from :py:attr:`start_time`.
 
         .. admonition:: Raises
            :class: warning
