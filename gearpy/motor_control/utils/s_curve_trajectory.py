@@ -8,6 +8,58 @@ import numpy as np
 
 
 class SCurveTrajectory:
+    r""":py:class:`SCurveTrajectory <gearpy.motor_control.utils.s_curve_trajectory.SCurveTrajectory>`
+    object.
+
+    It computes the S curve trajectory from the ``start_position`` to the
+    ``stop_position``.
+    The trajectory is divided into three parts:
+
+    - a constant acceleration part at ``maximum_acceleration``,
+    - a uniform velocity part at ``maximum_velocity``,
+    - a constant deceleration part at ``maximum_deceleration``.
+
+    The starting condition at the ``start_time`` are the ``start_position`` and
+    the ``start_velocity``, while the final condition is at the
+    ``stop_position`` and ``stop_velocity``.
+    The ``stop_position`` may also be lower than (but not equal to) the
+    ``start_position`` for backward motion.
+
+    Methods
+    -------
+    :py:meth:`compute`
+        It computes the angular position with respect to the given ``time``
+        instant, according to the S curve trajectory from the
+        ``start_position`` to the ``stop_position``.
+
+    .. admonition:: Raises
+       :class: warning
+
+       ``TypeError``
+           - If ``start_position`` is not an instance of
+             :py:class:`AngularPosition <gearpy.units.AngularPosition>`,
+           - if ``stop_position`` is not an instance of
+             :py:class:`AngularPosition <gearpy.units.AngularPosition>`,
+           - if ``maximum_velocity`` is not an instance of
+             :py:class:`AngularSpeed <gearpy.units.AngularSpeed>`,
+           - if ``maximum_acceleration`` is not an instance of
+             :py:class:`AngularAcceleration <gearpy.units.AngularAcceleration>`,
+           - if ``maximum_deceleration`` is not an instance of
+             :py:class:`AngularAcceleration <gearpy.units.AngularAcceleration>`,
+           - if ``start_velocity`` is not an instance of
+             :py:class:`AngularSpeed <gearpy.units.AngularSpeed>`,
+           - if ``stop_velocity`` is not an instance of
+             :py:class:`AngularSpeed <gearpy.units.AngularSpeed>`,
+           - if ``start_time`` is not an instance of
+             :py:class:`Time <gearpy.units.time>`.
+       ``ValueError``
+           - If ``start_position`` and ``stop_position`` are equal,
+           - if ``maximum_velocity`` is not positive,
+           - if ``maximum_acceleration`` is not positive,
+           - if ``maximum_deceleration`` is not positive,
+           - if ``start_velocity`` is geater than ``maximum_velocity``,
+           - if ``stop_velocity`` is greater than ``maximum_velocity``.
+    """
 
     def __init__(
         self,
@@ -208,6 +260,155 @@ class SCurveTrajectory:
         self.__start_time = start_time
 
     def compute(self, time: Time) -> AngularPosition:
+        r"""It computes the angular position with respect to the given ``time``
+        instant, according to the S curve trajectory from the
+        ``start_position`` to the ``stop_position``.
+
+        Parameters
+        ----------
+        ``time`` : :py:class:`Time <gearpy.units.units.Time>`
+            Specific instant of time in which to calculate the angular
+            position in accordance with the S curve.
+
+        Returns
+        -------
+        :py:class:`AngularPosition <gearpy.units.AngularPosition>`
+            Angular position according to S curve trajectory at the given
+            ``time``.
+
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               If ``time`` is not an instance of
+               :py:class:`Time <gearpy.units.units.Time>`.
+
+        .. admonition:: Notes
+            :class: tip
+
+            The input parameter ``time`` :math:`t` is compared to the S curve
+            trajectory parameters, to establish the motion regime at that time
+            instant. Five cases are be possibile:
+
+            1. :math:`t \lt t_0`:
+               The ``time`` :math:`t` instant preceeds the ``start_time``
+               :math:`t_0`. The motion regime is uniform velocity at
+               ``start_velocity`` :math:`\dot{\theta}_0`.
+               The angular position :math:`\theta` is computed as:
+
+               .. math::
+                   \theta = \dot{\theta}_0 t_l + \theta_0
+
+               where :math:`t_l = t - t_0`.
+
+            2. :math:`t_0 \le t \lt t_0 + t_A`:
+               The ``time`` :math:`t` instant is greater than the
+               ``start_time`` :math:`t_0`, but lower than the duration
+               :math:`t_0 + t_A`. The motion regime is uniform acceleration at
+               ``maximum_acceleration`` :math:`\ddot{\theta}_{A,max}`.
+               The angular position :math:`\theta` is computed as:
+
+               .. math::
+                   \theta = \frac{1}{2} \ddot{\theta}_{A,max} t^2_l +
+                   \dot{\theta}_0 t_l + \theta_0
+
+               where :math:`t_l = t - t_0`.
+
+            3. :math:`t_0 + t_A \le t \lt t_0 + t_A + t_U`
+               The ``time`` :math:`t` instant is greater than the duration
+               :math:`t_0 + t_A`, but lower than the duration
+               :math:`t_0 + t_A + t_U`. The motion regime is uniform velocity
+               at ``maximum_velocity`` :math:`\dot{\theta}_{max}`.
+               The angular position :math:`\theta` is computed as:
+
+               .. math::
+                   \theta = \dot{\theta}_{max} t_l + \theta_0 + \theta_A
+
+               where :math:`t_l = t - t_0 - t_A`.
+
+            4. :math:`t_0 + t_A + t_U \le t \lt t_1`
+               The ``time`` :math:`t` instant is greater than the duration
+               :math:`t_0 + t_A + t_U`, but lower than the duration
+               :math:`t_1`. The motion regime is uniform deceleration at
+               ``maximum_deceleration`` :math:`\ddot{\theta}_{D,max}`.
+               The angular position :math:`\theta` is computed as:
+
+               .. math::
+                   \theta = - \frac{1}{2} \ddot{\theta}_{D,max} t^2_l +
+                   \dot{\theta}_{max} t_l + \theta_0 + \theta_A + \theta_U
+
+               where :math:`t_l = t - t_0 - t_A - t_U`.
+
+            5. :math:`t \ge t_1`
+               The ``time`` :math:`t` instant is greater than the duration
+               :math:`t_1`. The motion regime is uniform velocity at
+               ``stop_velocity`` :math:`\dot{\theta}_1`.
+               The angular position :math:`\theta` is computed as:
+
+               .. math::
+                   \theta = \dot{\theta}_1 t_l + \theta_1
+
+               where :math:`t_l = t - t_0 - t_A - t_U - t_D`.
+
+            In some cases, the difference between ``stop_position``
+            :math:`\theta_1` and ``start_position`` :math:`\theta_0` is small
+            compared to the acceleration and deceleration distances
+            :math:`\theta_A` and :math:`\theta_D`. In that case, there is no
+            room for uniform velocity regime at ``maximum_velocity``
+            :math:`\dot{\theta}_{max}`, so the step 3 is skipped and the
+            ``maximum_velocity`` is not reached.
+
+            The acceleration duration :math:`t_A` is computed as:
+
+            .. math::
+                t_A = \frac{\dot{\theta}_{max} -
+                \dot{\theta}_0}{\ddot{\theta}_{A,max}}
+
+            The uniform duration :math:`t_U` is computed as:
+
+            .. math::
+                t_U = \frac{\theta_U}{\dot{\theta}_{max}}
+
+            The deceleration duration :math:`t_D` is computed as:
+
+            .. math::
+                t_D = \frac{\dot{\theta}_{max} -
+                \dot{\theta}_1}{\ddot{\theta}_{D,max}}
+
+            The acceleration distance :math:`\theta_A` is computed as:
+
+            .. math::
+                \theta_A = \frac{1}{2} \frac{\dot{\theta}_{max}^2 -
+                \dot{\theta}_0^2}{\ddot{\theta}_{A,max}}
+
+            The uniform distance :math:`\theta_U` is computed as:
+
+            .. math::
+                \theta_U = | \theta_1 - \theta_0 | - \theta_A - \theta_D
+
+            The deceleration distance :math:`\theta_D` is computed as:
+
+            .. math::
+                \theta_D = \frac{1}{2} \frac{\dot{\theta}_{max}^2 -
+                \dot{\theta}_1^2}{\ddot{\theta}_{D,max}}
+
+            The stop time is computed as:
+
+            .. math::
+                t_1 = t_0 + t_A + t_U + t_D
+
+            Here the list of the parameters used in the above equations:
+
+            - :math:`\theta` is the angular position,
+            - :math:`\dot{\theta}_{max}` is the ``maximum_velocity``,
+            - :math:`\ddot{\theta}_{A,max}` is the ``maximum_acceleration``,
+            - :math:`\ddot{\theta}_{D,max}` is the ``maximum_deceleration``,
+            - :math:`\theta_0` is the ``start_position``,
+            - :math:`\theta_1` is the ``stop_position``,
+            - :math:`\dot{\theta}_0` is the ``start_velocity``,
+            - :math:`\dot{\theta}_1` ``stop_velocity``,
+            - :math:`t_0` is the ``start_time``.
+        """
         if not isinstance(time, Time):
             raise TypeError(
                 f"Parameter 'time' must be an instance of {Time.__name__!r}.")
