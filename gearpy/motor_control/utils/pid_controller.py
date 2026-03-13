@@ -2,6 +2,35 @@ from gearpy.units import TimeInterval
 
 
 class PIDController:
+    """:py:class:`PIDController <gearpy.motor_control.utils.pid_controller.PIDController>`
+    object. \n
+    Proportional-integral-derivative controller which computes the reference
+    value, used to keep a variable under control with respect to a set value,
+    based on current value and control parameters.
+
+    Methods
+    -------
+    :py:meth:`compute`
+        It computes the reference value based on current error.
+    :py:meth:`reset`
+        It resets the stored cumulative error integral, used for integrative
+        part, and the previous error, used for derivative part.
+
+    .. admonition:: Raises
+       :class: warning
+
+       ``TypeError``
+           - If :py:attr:`Kp` is not a :py:class:`float` or an :py:class:`int`,
+           - if :py:attr:`Ki` is not a :py:class:`float` or an :py:class:`int`,
+           - if :py:attr:`Kd` is not a :py:class:`float` or an :py:class:`int`,
+           - if :py:attr:`clamping` is not a :py:class:`bool`,
+           - if :py:attr:`reference_min` is not a :py:class:`float` or an
+             :py:class:`int`,
+           - if :py:attr:`reference_max` is not a :py:class:`float` or an
+             :py:class:`int`.
+       ``ValueError``
+           If ``reference_min`` is lower than ``reference_max``.
+    """
 
     def __init__(
         self,
@@ -58,6 +87,67 @@ class PIDController:
         error: float | int,
         time_step: TimeInterval
     ) -> float | int:
+        r"""It computes the reference value based on current error.
+
+        Parameters
+        ----------
+        ``error`` : :py:class:`float` or :py:class:`int`
+            Current error.
+        ``time_step`` : :py:class:`Time <gearpy.units.units.TimeInterval>`
+            Time interval to be used for integrative and derivative parts.
+
+        Returns
+        -------
+        :py:class:`float` or :py:class:`int`
+            Reference value to be used for control.
+
+        .. admonition:: Raises
+           :class: warning
+
+           ``TypeError``
+               - If :py:attr:`error` is not a :py:class:`float` or an
+                 :py:class:`int`,
+               - if :py:attr:`time_step` is not an instance of
+                 :py:class:`Time <gearpy.units.units.TimeInterval>`.
+
+        .. admonition:: Notes
+            :class: tip
+
+            The reference value is computed as:
+
+            .. math::
+                u(t) = K_P e(t) + K_I \int_0^t e(\tau) d \tau + K_D
+                \frac{d e(t)}{d t}
+
+            where:
+
+            - :math:`u(t)` is the reference value,
+            - :math:`e(t)` is the current ``error``,
+            - :math:`K_P` is the proportional constant ``Kp``,
+            - :math:`K_I` is the integral constant ``Ki``,
+            - :math:`K_D` is the derivative constant ``Kd``.
+
+            The integral part is approximated with:
+
+            .. math::
+                \int_0^t e(\tau) d \tau \approx \frac{1}{2}(e_i + e_{i - 1}) dt
+
+            and the derivative part is approximated with:
+
+            .. math::
+                \frac{d e(t)}{d t} \approx \frac{e_i - e_{i - 1}}{dt}
+
+            where:
+
+            - :math:`e_i` is the current ``error``,
+            - :math:`e_{i - 1}` is the error at the previous time step,
+            - :math:`dt` is the ``time_step``.
+
+            If the reference value :math:`u(t)` exceeds the limits
+            ``reference_min`` or ``reference_max``, then it is saturated to
+            these values. In this case, if ``clamping`` is ``True``, then the
+            cumulative error is not updated (anti-windup).
+        """
         if not isinstance(error, float | int):
             raise TypeError("Parameter 'error' must be a float or an integer.")
 
@@ -92,5 +182,8 @@ class PIDController:
         return reference
 
     def reset(self) -> None:
+        """It resets the stored cumulative error integral, used for integrative
+        part, and the previous error, used for derivative part.
+        """
         self.__cumulative_error = 0
         self.__previous_error = 0
