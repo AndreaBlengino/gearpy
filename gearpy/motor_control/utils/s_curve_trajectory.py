@@ -8,9 +8,8 @@ import numpy as np
 
 
 class SCurveTrajectory:
-    r""":py:class:`SCurveTrajectory <gearpy.motor_control.utils.s_curve_trajectory.SCurveTrajectory>`
-    object.
-
+    """:py:class:`SCurveTrajectory <gearpy.motor_control.utils.s_curve_trajectory.SCurveTrajectory>`
+    object. \n
     It computes the S curve trajectory from the ``start_position`` to the
     ``stop_position``.
     The trajectory is divided into three parts:
@@ -19,18 +18,18 @@ class SCurveTrajectory:
     - a uniform velocity part at ``maximum_velocity``,
     - a constant deceleration part at ``maximum_deceleration``.
 
-    The starting condition at the ``start_time`` are the ``start_position`` and
-    the ``start_velocity``, while the final condition is at the
-    ``stop_position`` and ``stop_velocity``.
+    The starting conditions, at the ``start_time``, are the ``start_position``
+    and the ``start_velocity``; while the final conditions are the
+    ``stop_position`` and ``stop_velocity``. \n
     The ``stop_position`` may also be lower than (but not equal to) the
     ``start_position`` for backward motion.
 
     Methods
     -------
     :py:meth:`compute`
-        It computes the angular position with respect to the given ``time``
-        instant, according to the S curve trajectory from the
-        ``start_position`` to the ``stop_position``.
+        It computes the angular position at the given ``time`` instant,
+        according to the S curve trajectory from the ``start_position`` to the
+        ``stop_position``.
 
     .. admonition:: Raises
        :class: warning
@@ -51,7 +50,7 @@ class SCurveTrajectory:
            - if ``stop_velocity`` is not an instance of
              :py:class:`AngularSpeed <gearpy.units.AngularSpeed>`,
            - if ``start_time`` is not an instance of
-             :py:class:`Time <gearpy.units.time>`.
+             :py:class:`Time <gearpy.units.Time>`.
        ``ValueError``
            - If ``start_position`` and ``stop_position`` are equal,
            - if ``maximum_velocity`` is not positive,
@@ -260,9 +259,9 @@ class SCurveTrajectory:
         self.__start_time = start_time
 
     def compute(self, time: Time) -> AngularPosition:
-        r"""It computes the angular position with respect to the given ``time``
-        instant, according to the S curve trajectory from the
-        ``start_position`` to the ``stop_position``.
+        r"""It computes the angular position at the given ``time`` instant,
+        according to the S curve trajectory from the ``start_position`` to the
+        ``stop_position``.
 
         Parameters
         ----------
