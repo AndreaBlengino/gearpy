@@ -1,6 +1,8 @@
 __all__ = [
-    "SCurveTrajectory"
+    "SCurveTrajectory",
+    "PIDController",
 ]
 
 
 from .s_curve_trajectory import SCurveTrajectory
+from .pid_controller import PIDController
