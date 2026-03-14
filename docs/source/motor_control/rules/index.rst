@@ -13,6 +13,14 @@ rules
    :no-index:
 
 
+.. currentmodule:: gearpy.motor_control.rules.position_and_velocity_control
+.. autoclass:: PositionAndVelocityControl
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-index:
+
+
 .. currentmodule:: gearpy.motor_control.rules.reach_angular_position
 .. autoclass:: ReachAngularPosition
    :members:
@@ -48,6 +56,7 @@ rules
    :hidden:
 
    ConstantPWM/index
+   PositionAndVelocityControl/index
    ReachAngularPosition/index
    RuleBase/index
    StartLimitCurrent/index
