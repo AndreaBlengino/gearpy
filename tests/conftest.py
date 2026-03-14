@@ -46,11 +46,11 @@ from hypothesis.strategies import (
     shared,
     builds,
     characters,
-    one_of
+    one_of,
+    permutations
 )
 import numpy as np
 import os
-from random import shuffle
 
 
 basic_dc_motor_1 = DCMotor(
@@ -750,7 +750,7 @@ def solved_powertrains(draw):
     gears.extend(structural_spur_gear_set)
     gears.extend(non_structural_helical_gear_set)
     gears.extend(structural_helical_gear_set)
-    shuffle(gears)
+    gears = list(draw(permutations(gears)))
 
     gears = [element for pair in gears for element in pair]
     gears.append(gear_1)
