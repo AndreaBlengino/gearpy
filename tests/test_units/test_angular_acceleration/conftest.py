@@ -9,13 +9,13 @@ basic_angular_acceleration = AngularAcceleration(1, 'rad/s^2')
 
 
 @composite
-def angular_accelerations(draw):
+def angular_accelerations(draw, min_value=-1000, max_value=1000):
     value = draw(
         floats(
             allow_nan=False,
             allow_infinity=False,
-            min_value=-1000,
-            max_value=1000
+            min_value=min_value,
+            max_value=max_value
         )
     )
     unit = draw(
