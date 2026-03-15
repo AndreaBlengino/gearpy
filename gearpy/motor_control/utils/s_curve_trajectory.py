@@ -69,7 +69,7 @@ class SCurveTrajectory:
         maximum_deceleration: AngularAcceleration,
         start_velocity: AngularSpeed | None = None,
         stop_velocity: AngularSpeed | None = None,
-        start_time: Time | None = None,
+        start_time: Time | None = None
     ):
         if not isinstance(start_position, AngularPosition):
             raise TypeError(
