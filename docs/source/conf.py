@@ -3,11 +3,7 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import os
-import sys
 import subprocess
-
-sys.path.insert(0, os.path.abspath('../..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -27,9 +23,18 @@ release = subprocess.run(
 
 extensions = [
     'sphinx.ext.autodoc',
-    'm2r2',
+    'myst_parser',
     'sphinx.ext.intersphinx',
     'sphinx_copybutton'
+]
+
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".md": "markdown",
+}
+
+myst_enable_extensions = [
+    "dollarmath",
 ]
 
 templates_path = ['_templates']
@@ -52,3 +57,4 @@ add_module_names = False
 html_title = 'gearpy'
 copybutton_prompt_text = r">>> |\.\.\. |\$ "
 copybutton_prompt_is_regexp = True
+suppress_warnings = ["myst.header"]

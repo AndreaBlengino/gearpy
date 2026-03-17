@@ -28,4 +28,4 @@ gearpy documentation
    release_notes/index
 
 
-.. mdinclude:: ../../README.rst
+.. include:: ../../README.rst
