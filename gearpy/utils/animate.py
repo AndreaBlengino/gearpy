@@ -85,6 +85,9 @@ def dc_motor_characteristics_animation(
         points. It is expressed in percent points of
         the extreme point value. Default is ``0.1``, so it is taken 10% space
         around each characteristic extreme points.
+
+    .. versionadded:: 1.3.0
+
     ``title_decimals`` : :py:class:`int`, optional
         Number of decimals for time and PWM value reported in the title.
     ``show`` : :py:class:`bool`, optional

@@ -2,7 +2,9 @@ from gearpy.units import TimeInterval
 
 
 class PIDController:
-    """:py:class:`PIDController <gearpy.motor_control.utils.pid_controller.PIDController>`
+    """.. versionadded:: 1.3.0
+
+    :py:class:`PIDController <gearpy.motor_control.utils.pid_controller.PIDController>`
     object. \n
     Proportional-integral-derivative controller which computes the reference
     value, used to keep a variable under control with respect to a set value,

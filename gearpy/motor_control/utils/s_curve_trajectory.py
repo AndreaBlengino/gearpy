@@ -8,7 +8,9 @@ import numpy as np
 
 
 class SCurveTrajectory:
-    """:py:class:`SCurveTrajectory <gearpy.motor_control.utils.s_curve_trajectory.SCurveTrajectory>`
+    """.. versionadded:: 1.3.0
+
+    :py:class:`SCurveTrajectory <gearpy.motor_control.utils.s_curve_trajectory.SCurveTrajectory>`
     object. \n
     It computes the S curve trajectory from the ``start_position`` to the
     ``stop_position``.

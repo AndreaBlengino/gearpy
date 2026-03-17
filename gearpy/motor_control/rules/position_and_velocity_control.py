@@ -7,7 +7,9 @@ from gearpy.units import TimeInterval, AngularSpeed
 
 
 class PositionAndVelocityControl(RuleBase):
-    """:py:class:`PositionAndVelocityControl <gearpy.motor_control.rules.position_and_velocity_control.PositionAndVelocityControl>`
+    """.. versionadded:: 1.3.0
+
+    :py:class:`PositionAndVelocityControl <gearpy.motor_control.rules.position_and_velocity_control.PositionAndVelocityControl>`
     object. \n
     It can be used to force the angular position of a rotating object, tracked
     by the ``encoder``, to follow an S curve trajectory from a starting to a
