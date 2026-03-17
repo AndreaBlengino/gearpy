@@ -67,12 +67,12 @@ gear_6 = SpurGear(
 )
 ```
 
-See :py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` 
+See {py:class}`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` 
 for more details on instantiation parameters.  
 Structural analysis is also available for 
-:py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`
+{py:class}`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>`
 and 
-:py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
+{py:class}`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>`
 (bending stress only).  
 All gears are made in steel, which yield stress is 250 MPa.  
 The remaining set-up of the model stay the same.

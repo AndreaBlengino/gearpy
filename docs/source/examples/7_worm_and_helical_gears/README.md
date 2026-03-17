@@ -104,15 +104,15 @@ gear_4 = HelicalGear(
 )
 ```
 
-See :py:class:`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
-:py:class:`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>` 
+See {py:class}`WormGear <gearpy.mechanical_objects.worm_gear.WormGear>`,
+{py:class}`WormWheel <gearpy.mechanical_objects.worm_wheel.WormWheel>` 
 and 
-:py:class:`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` 
+{py:class}`HelicalGear <gearpy.mechanical_objects.helical_gear.HelicalGear>` 
 for more details on instantiation parameters.  
 Then it is necessary to specify the connection types between the 
 components. We choose to study a non-ideal powertrain so, in order to 
 take into account power loss in mating due to friction, we specify a 
-gear mating efficiency below `$100\%$` and a friction coefficient in the 
+gear mating efficiency below $100\%$ and a friction coefficient in the 
 worm gear mating:
 
 ```python
@@ -131,9 +131,9 @@ add_fixed_joint(master=gear_2, slave=gear_3)
 add_gear_mating(master=gear_3, slave=gear_4, efficiency=0.9)
 ```
 
-See :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`, 
-:py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>` and
-:py:func:`add_worm_gear_mating <gearpy.utils.relations.add_worm_gear_mating>`
+See {py:func}`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>`, 
+{py:func}`add_gear_mating <gearpy.utils.relations.add_gear_mating>` and
+{py:func}`add_worm_gear_mating <gearpy.utils.relations.add_worm_gear_mating>`
 for more details.  
 We have to define the external load applied to *gear 4*. To keep the 
 example simple, we can consider a constant load torque:

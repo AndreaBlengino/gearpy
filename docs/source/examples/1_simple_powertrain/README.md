@@ -67,14 +67,14 @@ gear_6 = SpurGear(
 )
 ```
 
-See :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`,
-:py:class:`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` and 
-:py:class:`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` for 
+See {py:class}`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`,
+{py:class}`Flywheel <gearpy.mechanical_objects.flywheel.Flywheel>` and 
+{py:class}`SpurGear <gearpy.mechanical_objects.spur_gear.SpurGear>` for 
 more details on instantiation parameters.  
 Then it is necessary to specify the connection types between the 
 components. We choose to study a non-ideal powertrain so, in order to 
 take into account power loss in mating due to friction, we specify a 
-`$90\%$` gear mating efficiency:
+$90\%$ gear mating efficiency:
 
 ```python
 from gearpy.utils import add_fixed_joint, add_gear_mating
@@ -88,8 +88,8 @@ add_fixed_joint(master=gear_4, slave=gear_5)
 add_gear_mating(master=gear_5, slave=gear_6, efficiency=0.9)
 ```
 
-See :py:func:`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>` 
-and :py:func:`add_gear_mating <gearpy.utils.relations.add_gear_mating>` 
+See {py:func}`add_fixed_joint <gearpy.utils.relations.add_fixed_joint>` 
+and {py:func}`add_gear_mating <gearpy.utils.relations.add_gear_mating>` 
 for more details.  
 We have to define the external load applied to *gear 6*. To keep the 
 example simple, we can consider a constant load torque:
@@ -111,7 +111,7 @@ from gearpy.powertrain import Powertrain
 powertrain = Powertrain(motor=motor)
 ```
 
-See :py:class:`Powertrain <gearpy.powertrain.Powertrain>` for more 
+See {py:class}`Powertrain <gearpy.powertrain.Powertrain>` for more 
 details on this class and its methods.
 
 ### Simulation Set Up
@@ -143,7 +143,7 @@ solver.run(
 )
 ```
 
-See :py:class:`Solver <gearpy.solver.Solver>` for more details.
+See {py:class}`Solver <gearpy.solver.Solver>` for more details.
 
 ### Results Analysis
 
@@ -195,7 +195,7 @@ gear 6                  6.442399               4.666229                        0
 ```
 
 See 
-:py:meth:`Powertrain.snapshot <gearpy.powertrain.Powertrain.snapshot>` 
+{py:meth}`Powertrain.snapshot <gearpy.powertrain.Powertrain.snapshot>` 
 for more details on method parameters.  
 Notice that the load torque applied on the *gear 6* is exactly the 
 constant external torque we defined beforehand.  
@@ -228,7 +228,7 @@ powertrain.plot(
 
 ![](images/plot_2.png)
 
-See :py:meth:`Powertrain.plot <gearpy.powertrain.Powertrain.plot>` for 
+See {py:meth}`Powertrain.plot <gearpy.powertrain.Powertrain.plot>` for 
 more details on method parameters.  
 Notice that we specified the elements either by the string name or by 
 instance name, both ways work. Also notice that the plot automatically 

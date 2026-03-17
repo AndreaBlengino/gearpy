@@ -25,7 +25,7 @@ motor = DCMotor(
 )
 ```
 
-See :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` for 
+See {py:class}`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>` for 
 more details on instantiation parameters.  
 The remaining set-up of the model stay the same.
 
