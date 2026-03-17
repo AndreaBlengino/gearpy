@@ -28,13 +28,13 @@ extensions = [
     'sphinx_copybutton'
 ]
 
-source_suffix = {
-    ".rst": "restructuredtext",
-    ".md": "markdown",
+sourse_suffix = {
+    '.rst': 'restrusturedtext',
+    '.md': 'markdown',
 }
 
 myst_enable_extensions = [
-    "dollarmath",
+    'dollarmath',
 ]
 
 templates_path = ['_templates']
@@ -57,4 +57,4 @@ add_module_names = False
 html_title = 'gearpy'
 copybutton_prompt_text = r">>> |\.\.\. |\$ "
 copybutton_prompt_is_regexp = True
-suppress_warnings = ["myst.header"]
+suppress_warnings = ['myst.header']
