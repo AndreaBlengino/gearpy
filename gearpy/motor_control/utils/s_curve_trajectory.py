@@ -446,7 +446,7 @@ class SCurveTrajectory:
                     self.__maximum_velocity.value*t_l +
                     self.__start_position.value +
                     self.__acceleration_distance.value +
-                    self.__uniform_distance.value ,
+                    self.__uniform_distance.value,
                 unit="rad",
             )
         else:
