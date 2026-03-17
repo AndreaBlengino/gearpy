@@ -15,6 +15,7 @@ from tests.test_units.test_angular_acceleration.conftest import \
 from tests.test_units.test_time.conftest import times
 
 
+@mark.motor_control
 class TestSCurveTrajectoryInit:
 
     @mark.genuine
@@ -96,6 +97,7 @@ class TestSCurveTrajectoryInit:
             SCurveTrajectory(**s_curve_trajectory_init_value_error)
 
 
+@mark.motor_control
 class TestSCurveTrajectoryCompute:
 
     @mark.genuine

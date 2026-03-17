@@ -5,6 +5,7 @@ from pytest import mark, raises
 from tests.test_units.test_time_interval.conftest import time_intervals
 
 
+@mark.motor_control
 class TestPIDControllerInit:
 
     @mark.genuine
@@ -66,6 +67,7 @@ class TestPIDControllerInit:
             PIDController(**pid_controller_init_value_error)
 
 
+@mark.motor_control
 class TestPIDControllerCompute:
 
     @mark.genuine
@@ -122,6 +124,7 @@ class TestPIDControllerCompute:
             pid.compute(**pid_controller_compute_type_error)
 
 
+@mark.motor_control
 class TestPIDControllerReset:
 
     @mark.genuine
