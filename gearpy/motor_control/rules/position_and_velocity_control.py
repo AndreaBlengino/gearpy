@@ -34,7 +34,7 @@ class PositionAndVelocityControl(RuleBase):
              :py:class:`PIDController <gearpy.motor_control.utils.pid_controller.PIDController>`,
            - if ``velocity_PID`` is not an instance of
              :py:class:`PIDController <gearpy.motor_control.utils.pid_controller.PIDController>`,
-           - if ``trajecotry`` is not an instance of
+           - if ``trajectory`` is not an instance of
              :py:class:`SCurveTrajectory <gearpy.motor_control.utils.s_curve_trajectory.SCurveTrajectory>`.
 
     .. admonition:: See Also
@@ -52,7 +52,7 @@ class PositionAndVelocityControl(RuleBase):
         powertrain: Powertrain,
         position_PID: PIDController,
         velocity_PID: PIDController,
-        trajecotry: SCurveTrajectory,
+        trajectory: SCurveTrajectory,
     ):
         super().__init__()
 
@@ -86,9 +86,9 @@ class PositionAndVelocityControl(RuleBase):
                 f"{PIDController.__name__!r}."
             )
 
-        if not isinstance(trajecotry, SCurveTrajectory):
+        if not isinstance(trajectory, SCurveTrajectory):
             raise TypeError(
-                f"Parameter 'trajecotry' must be an instance of "
+                f"Parameter 'trajectory' must be an instance of "
                 f"{SCurveTrajectory.__name__!r}."
             )
 
@@ -97,7 +97,7 @@ class PositionAndVelocityControl(RuleBase):
         self.__powertrain = powertrain
         self.__position_PID = position_PID
         self.__velocity_PID = velocity_PID
-        self.__trajectory = trajecotry
+        self.__trajectory = trajectory
 
     def apply(self) -> None | float | int:
         r"""It computes the ``pwm`` to apply to the ``powertrain``'s motor in
