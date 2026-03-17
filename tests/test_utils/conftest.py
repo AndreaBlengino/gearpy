@@ -483,6 +483,15 @@ dc_motor_characteristics_animation_type_error_16 = [
     {
         'motor': basic_powertrain.elements[0],
         'time': basic_powertrain.time,
+        'title_decimals': type_to_check
+    } for type_to_check in types_to_check
+    if not isinstance(type_to_check, int) and type_to_check is not None
+]
+
+dc_motor_characteristics_animation_type_error_17 = [
+    {
+        'motor': basic_powertrain.elements[0],
+        'time': basic_powertrain.time,
         'show': type_to_check
     } for type_to_check in types_to_check
     if not isinstance(type_to_check, int | bool)
@@ -506,7 +515,8 @@ dc_motor_characteristics_animation_type_error_16 = [
         *dc_motor_characteristics_animation_type_error_13,
         *dc_motor_characteristics_animation_type_error_14,
         *dc_motor_characteristics_animation_type_error_15,
-        *dc_motor_characteristics_animation_type_error_16
+        *dc_motor_characteristics_animation_type_error_16,
+        *dc_motor_characteristics_animation_type_error_17
     ]
 )
 def dc_motor_characteristics_animation_type_error(request):
@@ -536,6 +546,11 @@ def dc_motor_characteristics_animation_type_error(request):
             'motor': basic_powertrain.elements[0],
             'time': basic_powertrain.time,
             'figsize': (1, 2, 3)
+        },
+        {
+            'motor': basic_powertrain.elements[0],
+            'time': basic_powertrain.time,
+            'title_decimals': -1
         },
         {
             'motor': basic_powertrain.elements[0],
