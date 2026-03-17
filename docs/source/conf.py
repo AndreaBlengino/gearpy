@@ -10,7 +10,7 @@ import subprocess
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'gearpy'
-project_copyright = '2024, Andrea Blengino'
+project_copyright = '2024 - 2026, Andrea Blengino'
 author = 'Andrea Blengino'
 release = subprocess.run(
     'git describe --tags'.split(),
