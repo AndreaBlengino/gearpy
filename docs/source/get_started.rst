@@ -21,7 +21,7 @@ Dependencies
 
   Creates static, animated, and interactive visualizations in Python.
 
-- `numpy <https://numpy.org>`_ **>= 1.20** 
+- `numpy <https://numpy.org>`_ **>= 1.20**, but **not 2.4.0**
 
   Adds support for large, multidimensional arrays, matrices and 
   high-level mathematical functions to operate on these arrays.
