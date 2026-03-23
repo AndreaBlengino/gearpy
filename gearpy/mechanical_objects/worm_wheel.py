@@ -21,7 +21,7 @@ from .mechanical_object_base import (
 )
 from .mating_roles import MatingMaster, MatingSlave
 from .helical_gear import HelicalGear
-from typing import Callable, Optional
+from typing import Callable
 
 
 class WormWheel(HelicalGear):
@@ -119,8 +119,8 @@ class WormWheel(HelicalGear):
         inertia_moment: InertiaMoment,
         helix_angle: Angle,
         pressure_angle: Angle,
-        module: Optional[Length] = None,
-        face_width: Optional[Length] = None
+        module: Length | None = None,
+        face_width: Length | None = None
     ):
         super().__init__(
             name=name,
@@ -285,7 +285,7 @@ class WormWheel(HelicalGear):
         return self.__pressure_angle
 
     @property
-    def module(self) -> Optional[Length]:
+    def module(self) -> Length | None:
         """Unit of the gear teeth size. It must be an instance of
         :py:class:`Length <gearpy.units.units.Length>`. \n
         Once set at the worm wheel instantiation, it cannot be changed
@@ -306,7 +306,7 @@ class WormWheel(HelicalGear):
         return super().module
 
     @property
-    def reference_diameter(self) -> Optional[Length]:
+    def reference_diameter(self) -> Length | None:
         """Reference diameter of the gear. It must be an instance of
         :py:class:`Length <gearpy.units.units.Length>`. \n
         It is computed as the product of :py:attr:`n_teeth` times
@@ -321,7 +321,7 @@ class WormWheel(HelicalGear):
         return super().reference_diameter
 
     @property
-    def face_width(self) -> Optional[Length]:
+    def face_width(self) -> Length | None:
         """Face width of the gear. It must be an instance of
         :py:class:`Length <gearpy.units.units.Length>`.
 
@@ -340,7 +340,7 @@ class WormWheel(HelicalGear):
         return super().face_width
 
     @property
-    def lewis_factor(self) -> Optional[float]:
+    def lewis_factor(self) -> float | None:
         """Factor used to compute stresses on the gear tooth. \n
         It is a tabular value that depends on the :py:attr:`pressure_angle`.
 

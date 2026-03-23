@@ -18,7 +18,7 @@ powertrain.export_time_variables(folder_path='data')
 ```
 
 See 
-:py:meth:`Powertrain.export_time_variables <gearpy.powertrain.Powertrain.export_time_variables>` 
+{py:meth}`Powertrain.export_time_variables <gearpy.powertrain.Powertrain.export_time_variables>` 
 for more details on method parameters.  
 Set `'folder_path'` to the name of the folder in which to save the
 files, `'data'` in this case. In that folder `gearpy` saves a file for

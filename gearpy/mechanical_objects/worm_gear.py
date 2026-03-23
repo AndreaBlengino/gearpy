@@ -18,7 +18,7 @@ from .mechanical_object_base import (
     WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES,
     worm_gear_and_wheel_maximum_helix_angle_function
 )
-from typing import Callable, Optional
+from typing import Callable
 
 
 class WormGear(RotatingObject):
@@ -107,7 +107,7 @@ class WormGear(RotatingObject):
         inertia_moment: InertiaMoment,
         helix_angle: Angle,
         pressure_angle: Angle,
-        reference_diameter: Optional[Length] = None
+        reference_diameter: Length | None = None
     ):
         super().__init__(name=name, inertia_moment=inertia_moment)
 
@@ -292,7 +292,7 @@ class WormGear(RotatingObject):
         return self.__pressure_angle
 
     @property
-    def reference_diameter(self) -> Optional[Length]:
+    def reference_diameter(self) -> Length | None:
         """Reference diameter of the gear. It must be an instance of
         :py:class:`Length <gearpy.units.units.Length>`. \n
         Once set at the worm gear instantiation, it cannot be changed

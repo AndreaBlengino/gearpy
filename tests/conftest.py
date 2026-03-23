@@ -12,6 +12,7 @@ from gearpy.mechanical_objects.mechanical_object_base import (
     WORM_GEAR_AND_WHEEL_AVAILABLE_PRESSURE_ANGLES,
     WORM_GEAR_AND_WHEEL_DATA
 )
+from gearpy.motor_control.utils import SCurveTrajectory, PIDController
 from gearpy.sensors import (
     AbsoluteRotaryEncoder,
     Amperometer,
@@ -46,11 +47,11 @@ from hypothesis.strategies import (
     shared,
     builds,
     characters,
-    one_of
+    one_of,
+    permutations
 )
 import numpy as np
 import os
-from random import shuffle
 
 
 basic_dc_motor_1 = DCMotor(
@@ -206,6 +207,14 @@ basic_tachometer = Tachometer(target=basic_spur_gear_1)
 basic_amperometer = Amperometer(target=basic_dc_motor_2)
 basic_timer = Timer(start_time=Time(0, 'sec'), duration=TimeInterval(5, 'sec'))
 
+basic_s_trajectory = SCurveTrajectory(
+    start_position=AngularPosition(0, 'rad'),
+    stop_position=AngularPosition(1, 'rad'),
+    maximum_velocity=AngularSpeed(1, 'rad/s'),
+    maximum_acceleration=AngularAcceleration(1, 'rad/s^2'),
+    maximum_deceleration=AngularAcceleration(1, 'rad/s^2')
+)
+basic_pid = PIDController(Kp=1, Ki=1, Kd=1)
 
 types_to_check = [
     'string',
@@ -242,6 +251,8 @@ types_to_check = [
     basic_amperometer,
     basic_tachometer,
     basic_timer,
+    basic_s_trajectory,
+    basic_pid,
     basic_worm_gear_1,
     basic_worm_gear_2,
     basic_worm_wheel_1,
@@ -750,7 +761,7 @@ def solved_powertrains(draw):
     gears.extend(structural_spur_gear_set)
     gears.extend(non_structural_helical_gear_set)
     gears.extend(structural_helical_gear_set)
-    shuffle(gears)
+    gears = list(draw(permutations(gears)))
 
     gears = [element for pair in gears for element in pair]
     gears.append(gear_1)

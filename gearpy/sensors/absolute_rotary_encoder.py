@@ -1,7 +1,6 @@
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import AngularPosition
 from .sensor_base import SensorBase
-from typing import Optional
 
 
 class AbsoluteRotaryEncoder(SensorBase):
@@ -50,7 +49,7 @@ class AbsoluteRotaryEncoder(SensorBase):
 
     def get_value(
         self,
-        unit: Optional[str] = None
+        unit: str | None = None
     ) -> AngularPosition | float | int:
         """It gets the angular position of the :py:attr:`target` rotating
         object. \n

@@ -3,7 +3,6 @@ from gearpy.sensors import AbsoluteRotaryEncoder
 from gearpy.powertrain import Powertrain
 from gearpy.units import AngularPosition
 from gearpy.motor_control.rules.rules_base import RuleBase
-from typing import Optional
 from .utils import _compute_pwm_min
 
 
@@ -66,7 +65,7 @@ class StartProportionalToAngularPosition(RuleBase):
         powertrain: Powertrain,
         target_angular_position: AngularPosition,
         pwm_min_multiplier: float | int,
-        pwm_min: Optional[float] = None
+        pwm_min: float | None = None
     ):
         super().__init__()
 

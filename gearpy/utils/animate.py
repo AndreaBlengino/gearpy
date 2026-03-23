@@ -2,24 +2,24 @@ from gearpy.mechanical_objects import DCMotor
 from gearpy.units import Time
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from typing import Optional
 
 
 def dc_motor_characteristics_animation(
     motor: DCMotor,
     time: list[Time],
-    interval: Optional[float | int] = 200,
-    torque_speed_curve: Optional[bool] = True,
-    torque_current_curve: Optional[bool] = True,
-    angular_speed_unit: Optional[str] = 'rad/s',
-    torque_unit: Optional[str] = 'Nm',
-    current_unit: Optional[str] = 'A',
-    figsize: Optional[tuple] = None,
-    line_color: Optional[str] = None,
-    marker_color: Optional[str] = None,
-    marker_size: Optional[float | int] = None,
-    padding: Optional[float | int] = 0.1,
-    show: Optional[bool] = True
+    interval: float | int | None = 200,
+    torque_speed_curve: bool | None = True,
+    torque_current_curve: bool | None = True,
+    angular_speed_unit: str | None = 'rad/s',
+    torque_unit: str | None = 'Nm',
+    current_unit: str | None = 'A',
+    figsize: tuple | None = None,
+    line_color: str | None = None,
+    marker_color: str | None = None,
+    marker_size: float | int | None = None,
+    padding: float | int | None = 0.1,
+    title_decimals: int | None = 2,
+    show: bool | None = True
 ) -> FuncAnimation:
     """It generates an animation of a
     :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`
@@ -85,6 +85,11 @@ def dc_motor_characteristics_animation(
         points. It is expressed in percent points of
         the extreme point value. Default is ``0.1``, so it is taken 10% space
         around each characteristic extreme points.
+
+    .. versionadded:: 1.3.0
+
+    ``title_decimals`` : :py:class:`int`, optional
+        Number of decimals for time and PWM value reported in the title.
     ``show`` : :py:class:`bool`, optional
         Whether to show the animation. Default is ``True``.
 
@@ -111,6 +116,7 @@ def dc_motor_characteristics_animation(
            - if ``marker_size`` is not a :py:class:`float` or an
              :py:class:`int`,
            - if ``padding`` is not a :py:class:`float` or an :py:class:`int`,
+           - if ``title_decimals`` is not a :py:class:`int`,
            - if ``show`` is not a :py:class:`bool`.
        ``ValueError``
            - If ``time`` is an empty :py:class:`list`,
@@ -216,6 +222,14 @@ def dc_motor_characteristics_animation(
     if padding < 0:
         raise ValueError("Parameter 'padding' must be positive or null.")
 
+    if not isinstance(title_decimals, int):
+        raise TypeError("Parameter 'title_decimals' must be an integer.")
+
+    if title_decimals < 0:
+        raise ValueError(
+            "Parameter 'title_decimals' must be positive or null."
+        )
+
     if not isinstance(show, bool):
         raise TypeError("Parameter 'show' must be a bool.")
 
@@ -254,7 +268,7 @@ def dc_motor_characteristics_animation(
                     maximum_torque=motor_maximum_torque,
                     no_load_speed=motor_no_speed
                 )
-                title = f'time = {time[i]}'
+                title = f"tie = {time[i]:.{title_decimals}f}"
             else:
                 pwm = motor.time_variables['pwm'][i]
                 pwm_min = motor.no_load_electric_current / \
@@ -293,7 +307,8 @@ def dc_motor_characteristics_animation(
                             angular_speed_unit
                         ).value
                     )
-                title = f'time = {time[i]}      PWM = {pwm:.2f}'
+                title = f"time = {time[i]:.{title_decimals}f}      " \
+                        f"PWM = {pwm:.{title_decimals}f}"
 
             return torques, title
 
@@ -372,7 +387,8 @@ def dc_motor_characteristics_animation(
                     no_load_electric_current=-motor_no_load_electric_current,
                     maximum_electric_current=-motor_maximum_electric_current
                 )
-            title = f'time = {time[i]}      PWM = {pwm:.2f}'
+            title = f"time = {time[i]:.{title_decimals}f}      " \
+                    f"PWM = {pwm:.{title_decimals}f}"
 
             return torques, title
 

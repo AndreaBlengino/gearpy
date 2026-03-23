@@ -10,6 +10,7 @@ class RuleBase(ABC):
        :class: seealso
 
        :py:class:`ConstantPWM <gearpy.motor_control.rules.constant_pwm.ConstantPWM>` \n
+       :py:class:`PositionAndVelocityControl <gearpy.motor_control.rules.position_and_velocity_control.PositionAndVelocityControl>` \n
        :py:class:`ReachAngularPosition <gearpy.motor_control.rules.reach_angular_position.ReachAngularPosition>` \n
        :py:class:`StartLimitCurrent <gearpy.motor_control.rules.start_limit_current.StartLimitCurrent>` \n
        :py:class:`StartProportionalToAngularPosition <gearpy.motor_control.rules.start_proportional_to_angular_position.StartProportionalToAngularPosition>`

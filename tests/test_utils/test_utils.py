@@ -29,6 +29,7 @@ from matplotlib.animation import FuncAnimation
 from hypothesis import given, settings
 from hypothesis.strategies import (
     floats,
+    integers,
     one_of,
     sampled_from,
     booleans,
@@ -264,6 +265,10 @@ class TestDCMotorCharacteristicsAnimation:
             min_value=0.01,
             max_value=1
         ),
+        title_decimals=integers(
+            min_value=0,
+            max_value=10
+        ),
         show=booleans()
     )
     @settings(max_examples=10, deadline=None)
@@ -276,6 +281,7 @@ class TestDCMotorCharacteristicsAnimation:
         figsize,
         marker_size,
         padding,
+        title_decimals,
         show
     ):
         warnings.filterwarnings('ignore', category=UserWarning)
@@ -298,6 +304,7 @@ class TestDCMotorCharacteristicsAnimation:
                 figsize=figsize,
                 marker_size=marker_size,
                 padding=padding,
+                title_decimals=title_decimals,
                 show=show
             )
 

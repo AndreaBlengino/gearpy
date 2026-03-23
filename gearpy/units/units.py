@@ -1,6 +1,5 @@
 from __future__ import annotations
 from math import pi, sin, cos, tan
-from typing import Optional
 from .unit_base import UnitBase
 
 
@@ -208,7 +207,7 @@ class AngularPosition(UnitBase):
         else:
             return AngularPosition(value=target_value, unit=target_unit)
 
-    def sin(self, frequency: Optional[float | int] = 1/2/pi) -> float:
+    def sin(self, frequency: float | int | None = 1/2/pi) -> float:
         r"""It computes the sine of the angular position at a given frequency.
 
         Parameters
@@ -224,7 +223,7 @@ class AngularPosition(UnitBase):
         """
         return sin(2*pi*frequency*self.to('rad').value)
 
-    def cos(self, frequency: Optional[float | int] = 1/2/pi) -> float:
+    def cos(self, frequency: float | int | None = 1/2/pi) -> float:
         r"""It computes the cosine of the angular position at a given
         frequency.
 
@@ -241,7 +240,7 @@ class AngularPosition(UnitBase):
         """
         return cos(2*pi*frequency*self.to('rad').value)
 
-    def tan(self, frequency: Optional[float | int] = 1/2/pi) -> float:
+    def tan(self, frequency: float | int | None = 1/2/pi) -> float:
         r"""It computes the tangent of the angular position at a given
         frequency.
 
@@ -467,7 +466,7 @@ class Angle(AngularPosition):
         else:
             return Angle(value=converted.value, unit=converted.unit)
 
-    def sin(self, frequency: Optional[float | int] = 1/2/pi) -> float:
+    def sin(self, frequency: float | int | None = 1/2/pi) -> float:
         r"""It computes the sine of the angle at a given frequency.
 
         Parameters
@@ -483,7 +482,7 @@ class Angle(AngularPosition):
         """
         return super().sin(frequency=frequency)
 
-    def cos(self, frequency: Optional[float | int] = 1/2/pi) -> float:
+    def cos(self, frequency: float | int | None = 1/2/pi) -> float:
         r"""It computes the cosine of the angle at a given frequency.
 
         Parameters
@@ -499,7 +498,7 @@ class Angle(AngularPosition):
         """
         return super().cos(frequency=frequency)
 
-    def tan(self, frequency: Optional[float | int] = 1/2/pi) -> float:
+    def tan(self, frequency: float | int | None = 1/2/pi) -> float:
         r"""It computes the tangent of the angle at a given frequency.
 
         Parameters

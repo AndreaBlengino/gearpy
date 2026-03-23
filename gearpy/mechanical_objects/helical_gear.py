@@ -15,7 +15,7 @@ from math import sqrt, atan
 from .mechanical_object_base import RotatingObject, lewis_factor_function, Role
 from .mating_roles import MatingMaster, MatingSlave
 from .spur_gear import SpurGear
-from typing import Callable, Optional
+from typing import Callable
 
 
 class HelicalGear(SpurGear):
@@ -118,9 +118,9 @@ class HelicalGear(SpurGear):
         n_teeth: int,
         inertia_moment: InertiaMoment,
         helix_angle: Angle,
-        module: Optional[Length] = None,
-        face_width: Optional[Length] = None,
-        elastic_modulus: Optional[Stress] = None
+        module: Length | None = None,
+        face_width: Length | None = None,
+        elastic_modulus: Stress | None = None
     ):
         super().__init__(
             name=name,
@@ -263,7 +263,7 @@ class HelicalGear(SpurGear):
         return self.__helix_angle
 
     @property
-    def module(self) -> Optional[Length]:
+    def module(self) -> Length | None:
         """Unit of the gear teeth size. It must be an instance of
         :py:class:`Length <gearpy.units.units.Length>`. \n
         Once set at the helical gear instantiation, it cannot be changed
@@ -284,7 +284,7 @@ class HelicalGear(SpurGear):
         return super().module
 
     @property
-    def reference_diameter(self) -> Optional[Length]:
+    def reference_diameter(self) -> Length | None:
         """Reference diameter of the gear. It must be an instance of
         :py:class:`Length <gearpy.units.units.Length>`. \n
         It is computed as the product of :py:attr:`n_teeth` times
@@ -299,7 +299,7 @@ class HelicalGear(SpurGear):
         return super().reference_diameter
 
     @property
-    def face_width(self) -> Optional[Length]:
+    def face_width(self) -> Length | None:
         """Face width of the gear. It must be an instance of
         :py:class:`Length <gearpy.units.units.Length>`.
 
@@ -318,7 +318,7 @@ class HelicalGear(SpurGear):
         return super().face_width
 
     @property
-    def elastic_modulus(self) -> Optional[Stress]:
+    def elastic_modulus(self) -> Stress | None:
         """Elastic modulus of the material of the gear. It must be an instance
         of :py:class:`Stress <gearpy.units.units.Stress>`. It must be positive.
 
@@ -339,7 +339,7 @@ class HelicalGear(SpurGear):
         return super().elastic_modulus
 
     @property
-    def lewis_factor(self) -> Optional[float]:
+    def lewis_factor(self) -> float | None:
         """Factor used to compute stresses on the gear tooth. \n
         It is a tabular value that in general depends on the number of gear
         teeth, the pressure angle and the helix angle. In this case, the

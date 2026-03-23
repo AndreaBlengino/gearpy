@@ -14,3 +14,4 @@ motor_control
    PWMControl/index
    MotorControlBase/index
    rules/index
+   utils/index

@@ -30,9 +30,9 @@ class StartLimitCurrent(RuleBase):
        ``TypeError``
            - If ``encoder`` is not an instance of
              :py:class:`AbsoluteRotaryEncoder <gearpy.sensors.absolute_rotary_encoder.AbsoluteRotaryEncoder>`,
-           - If ``tachometer`` is not an instance of
+           - if ``tachometer`` is not an instance of
              :py:class:`Tachometer <gearpy.sensors.tachometer.Tachometer>`,
-           - If ``motor`` is not an instance of
+           - if ``motor`` is not an instance of
              :py:class:`DCMotor <gearpy.mechanical_objects.dc_motor.DCMotor>`,
            - if ``target_angular_position`` is not an instance of
              :py:class:`AngularPosition <gearpy.units.units.AngularPosition>`,
@@ -115,7 +115,8 @@ class StartLimitCurrent(RuleBase):
         -------
         :py:class:`float` or :py:class:`int` or :py:obj:`None`
             PWM value to apply to the ``motor`` in order to limit its absorbed
-            electric current to be lower or equal to ``limit_electric_current``
+            electric current to be lower or equal to
+            ``limit_electric_current``.
 
         .. admonition:: Notes
            :class: tip

@@ -2,23 +2,22 @@ from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import Time
 import pandas as pd
 import os
-from typing import Optional
 
 
 def export_time_variables(
     rotating_object: RotatingObject,
     file_path: str,
     time_array: list[Time],
-    time_unit: Optional[str] = 'sec',
-    angular_position_unit: Optional[str] = 'rad',
-    angular_speed_unit: Optional[str] = 'rad/s',
-    angular_acceleration_unit: Optional[str] = 'rad/s^2',
-    torque_unit: Optional[str] = 'Nm',
-    driving_torque_unit: Optional[str] = 'Nm',
-    load_torque_unit: Optional[str] = 'Nm',
-    force_unit: Optional[str] = 'N',
-    stress_unit: Optional[str] = 'MPa',
-    current_unit: Optional[str] = 'A'
+    time_unit: str | None = 'sec',
+    angular_position_unit: str | None = 'rad',
+    angular_speed_unit: str | None = 'rad/s',
+    angular_acceleration_unit: str | None = 'rad/s^2',
+    torque_unit: str | None = 'Nm',
+    driving_torque_unit: str | None = 'Nm',
+    load_torque_unit: str | None = 'Nm',
+    force_unit: str | None = 'N',
+    stress_unit: str | None = 'MPa',
+    current_unit: str | None = 'A'
 ) -> None:
     """It xports the computed time variables of a rotating object to a file. \n
     The exported file is a ``.csv`` file. The time variables are exported in a

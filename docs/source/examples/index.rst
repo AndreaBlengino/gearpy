@@ -15,3 +15,4 @@ Usage Examples
    9_stop_simulation/index
    10_time_variables_export/index
    11_external_torque_from_file/index
+   12_s_curve_trajectory/index

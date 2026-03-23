@@ -1,7 +1,6 @@
 from gearpy.mechanical_objects import RotatingObject
 from gearpy.units import AngularSpeed
 from .sensor_base import SensorBase
-from typing import Optional
 
 
 class Tachometer(SensorBase):
@@ -47,7 +46,7 @@ class Tachometer(SensorBase):
 
     def get_value(
         self,
-        unit: Optional[str] = None
+        unit: str | None = None
     ) -> AngularSpeed | float | int:
         """It gets the angular speed of the :py:attr:`target` rotating
         object. \n
