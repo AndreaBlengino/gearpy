@@ -1205,7 +1205,7 @@ class Powertrain:
         driving_torque_unit: str | None = 'Nm',
         load_torque_unit: str | None = 'Nm',
         force_unit: str | None = 'N',
-        stress_unit: str | None= 'MPa',
+        stress_unit: str | None = 'MPa',
         current_unit: str | None = 'A'
     ) -> None:
         """It exports the powertrain's :py:attr:`elements`' computed time
