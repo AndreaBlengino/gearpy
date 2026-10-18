@@ -46,10 +46,10 @@ doc = [
   "docutils==0.22.4"
 ]
 test = [
-  "coverage==7.13.5",
-  "hypothesis==6.151.9",
-  "pytest==9.0.2",
-  "pytest-cov==7.0.0",
+  "coverage==7.16.2",
+  "hypothesis==6.169.4",
+  "pytest==9.1.1",
+  "pytest-cov==7.1.0",
   "pytest-xdist==3.8.0",
 ]
 
