@@ -9,10 +9,10 @@ jobs:
         python-version: ["3.11", "3.12", "3.13", "3.14", "3.15"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -34,7 +34,7 @@ jobs:
 
       - name: Condition check
         if: env.packages_are_equal == 'false'
-        uses: actions/github-script@v3
+        uses: actions/github-script@v9
         with:
           script: |
               core.setFailed('Compiled package different from source package.')
@@ -51,7 +51,7 @@ jobs:
           python -m pytest --verbose --disable-pytest-warnings --cov=gearpy --cov-report=xml:windows_coverage.xml -nauto
 
       - name: Upload
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v7
         with:
           files: ./windows_coverage.xml
           token: ${{ secrets.CODECOV_TOKEN }}
