@@ -1,6 +1,6 @@
-from __future__ import annotations
 from abc import ABC, abstractmethod
 from math import fabs
+from typing import Self
 
 
 COMPARISON_TOLERANCE = 1e-12
@@ -50,7 +50,7 @@ class UnitBase(ABC):
     def __neg__(self):
         return self.__class__(-self.value, self.unit)
 
-    def __add__(self, other: UnitBase) -> None:
+    def __add__(self, other: Self) -> None:
         if not isinstance(other, self.__class__) and \
                 not issubclass(self.__class__, other.__class__):
             raise TypeError(
@@ -63,7 +63,7 @@ class UnitBase(ABC):
             unit=self.unit
         )
 
-    def __sub__(self, other: UnitBase) -> None:
+    def __sub__(self, other: Self) -> None:
         if not isinstance(other, self.__class__) and \
                 not issubclass(self.__class__, other.__class__):
             raise TypeError(
@@ -90,7 +90,7 @@ class UnitBase(ABC):
     def __rmul__(self, other: float | int) -> None: ...
 
     @abstractmethod
-    def __truediv__(self, other: UnitBase | float | int) -> None:
+    def __truediv__(self, other: Self | float | int) -> None:
         if not isinstance(other, UnitBase | float | int):
             raise TypeError(
                 f"It is not allowed to divide a Unit by a "
@@ -108,7 +108,7 @@ class UnitBase(ABC):
                     "It is not allowed to divide a Unit by zero."
                 )
 
-    def __eq__(self, other: UnitBase) -> None:
+    def __eq__(self, other: Self) -> None:
         if not isinstance(other, self.__class__) and \
                 not issubclass(self.__class__, other.__class__):
             raise TypeError(
@@ -123,7 +123,7 @@ class UnitBase(ABC):
                 self.value - other.to(self.unit).value
             ) < COMPARISON_TOLERANCE
 
-    def __ne__(self, other: UnitBase) -> None:
+    def __ne__(self, other: Self) -> None:
         if not isinstance(other, self.__class__) and \
                 not issubclass(self.__class__, other.__class__):
             raise TypeError(
@@ -138,7 +138,7 @@ class UnitBase(ABC):
                 self.value - other.to(self.unit).value
             ) > COMPARISON_TOLERANCE
 
-    def __gt__(self, other: UnitBase) -> None:
+    def __gt__(self, other: Self) -> None:
         if not isinstance(other, self.__class__) and \
                 not issubclass(self.__class__, other.__class__):
             raise TypeError(
@@ -153,7 +153,7 @@ class UnitBase(ABC):
                 self.unit
             ).value > COMPARISON_TOLERANCE
 
-    def __ge__(self, other: UnitBase) -> None:
+    def __ge__(self, other: Self) -> None:
         if not isinstance(other, self.__class__) and \
                 not issubclass(self.__class__, other.__class__):
             raise TypeError(
@@ -168,7 +168,7 @@ class UnitBase(ABC):
                 self.unit
             ).value >= -COMPARISON_TOLERANCE
 
-    def __lt__(self, other: UnitBase) -> None:
+    def __lt__(self, other: Self) -> None:
         if not isinstance(other, self.__class__) and \
                 not issubclass(self.__class__, other.__class__):
             raise TypeError(
@@ -183,7 +183,7 @@ class UnitBase(ABC):
                 self.unit
             ).value < -COMPARISON_TOLERANCE
 
-    def __le__(self, other: UnitBase) -> None:
+    def __le__(self, other: Self) -> None:
         if not isinstance(other, self.__class__) and \
                 not issubclass(self.__class__, other.__class__):
             raise TypeError(

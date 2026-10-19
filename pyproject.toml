@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gearpy"
 dynamic = ["version"]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
-  "matplotlib>=3.5,!=3.9.1",
-  "numpy>=1.20,!=2.4.0",
-  "pandas>=1.2",
-  "scipy>=1.6,!=1.11.0,!=1.14.0rc1",
+  "matplotlib>=3.6,!=3.9.1",
+  "numpy>=1.24,!=2.4.0",
+  "pandas>=2.0,!=3.0.4",
+  "scipy>=1.11.1,!=1.14.0rc1",
 ]
 authors = [
   {name = "Andrea Blengino", email = "ing.andrea.blengino@protonmail.com"},
@@ -20,19 +20,19 @@ maintainers = [
 ]
 description = "Python library for mechanical transmission analysis"
 readme = "README.rst"
-license = { file = "LICENSE" }
+license = "GPL-3.0-only"
+license-files = [ "LICENSE" ]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Education",
   "Intended Audience :: Manufacturing",
-  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Topic :: Scientific/Engineering"
 ]
 
@@ -40,16 +40,16 @@ classifiers = [
 [project.optional-dependencies]
 doc = [
   "furo==2025.12.19",
-  "myst-parser==5.0.0",
+  "myst-parser==5.1.0",
   "sphinx==9.1.0",
   "sphinx-copybutton==0.5.2",
   "docutils==0.22.4"
 ]
 test = [
-  "coverage==7.13.5",
-  "hypothesis==6.151.9",
-  "pytest==9.0.2",
-  "pytest-cov==7.0.0",
+  "coverage==7.16.2",
+  "hypothesis==6.169.4",
+  "pytest==9.1.1",
+  "pytest-cov==7.1.0",
   "pytest-xdist==3.8.0",
 ]
 

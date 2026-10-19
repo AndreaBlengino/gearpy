@@ -2,17 +2,17 @@ name: Windows Tests
 on: [push, pull_request]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest]
-        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.11", "3.12", "3.13", "3.14", "3.15"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -25,33 +25,79 @@ jobs:
           python -m build --wheel
 
       - name: Package differences computation
+        shell: bash
         run: |
-          if [[ $(diff -r ./gearpy ./build/lib/gearpy | grep -v __pycache__ | wc -m) == 0 ]]; then 
-               echo "packages_are_equal=true" >> $GITHUB_ENV
+          if [ ! -d ./gearpy ] || [ ! -d ./build/lib/gearpy ]; then
+            echo "ERROR: Source or build directory does not exist."
+            exit 1
+          fi
+
+          set +e
+          diff_status=0
+
+          while IFS= read -r -d '' file; do
+            relative_path="${file#./gearpy/}"
+            build_file="./build/lib/gearpy/$relative_path"
+
+            if [ ! -f "$build_file" ]; then
+              echo "Missing in build: $relative_path"
+              diff_status=1
+              continue
+            fi
+
+            if ! cmp -s "$file" "$build_file"; then
+              echo "Different: $relative_path"
+              diff_status=1
+            fi
+          done < <(find ./gearpy -type f ! -path '*/__pycache__/*' ! -name '*.pyc' -print0)
+
+          while IFS= read -r -d '' file; do
+            relative_path="${file#./build/lib/gearpy/}"
+            source_file="./gearpy/$relative_path"
+
+            if [ ! -f "$source_file" ]; then
+              echo "Extra in build: $relative_path"
+              diff_status=1
+            fi
+          done < <(find ./build/lib/gearpy -type f ! -path '*/__pycache__/*' ! -name '*.pyc' -print0)
+
+          set -e
+
+          if [ "$diff_status" -eq 0 ]; then
+            echo "packages_are_equal=true" >> "$GITHUB_ENV"
+            echo "Source and build packages are identical."
           else
-               echo "packages_are_equal=false" >> $GITHUB_ENV
+            echo "packages_are_equal=false" >> "$GITHUB_ENV"
+            echo "Source and build packages differ."
           fi
 
       - name: Condition check
         if: env.packages_are_equal == 'false'
-        uses: actions/github-script@v3
+        uses: actions/github-script@v9
         with:
           script: |
-              core.setFailed('Compiled package different from source package.')
+            core.setFailed('Compiled package different from source package.')
 
       - name: Install build package
         run: |
-          pip install .[test]
-
-      - name: Fetch
-        uses: actions/checkout@master
+          pip install ".[test]"
 
       - name: Run tests
+        env:
+          MPLBACKEND: Agg
+        shell: bash
         run: |
-          python -m pytest --verbose --disable-pytest-warnings --cov=gearpy --cov-report=xml:windows_coverage.xml -nauto
+          python -m pytest \
+            --verbose \
+            --disable-pytest-warnings \
+            --cov=gearpy \
+            --cov-report=xml:windows_coverage.xml \
+            --durations=20 \
+            -n 0
 
       - name: Upload
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v7
         with:
           files: ./windows_coverage.xml
           token: ${{ secrets.CODECOV_TOKEN }}
+

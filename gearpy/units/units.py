@@ -1,6 +1,7 @@
 from __future__ import annotations
 from math import pi, sin, cos, tan
 from .unit_base import UnitBase
+from typing import Self
 
 
 class AngularPosition(UnitBase):
@@ -47,7 +48,7 @@ class AngularPosition(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: float | int) -> AngularPosition:
+    def __mul__(self, other: float | int) -> Self:
         super().__mul__(other=other)
 
         if not isinstance(other, float | int):
@@ -58,7 +59,7 @@ class AngularPosition(UnitBase):
 
         return AngularPosition(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(self, other: float | int) -> AngularPosition:
+    def __rmul__(self, other: float | int) -> Self:
         super().__rmul__(other=other)
 
         if not isinstance(other, float | int):
@@ -69,10 +70,7 @@ class AngularPosition(UnitBase):
 
         return AngularPosition(value=self.__value*other, unit=self.__unit)
 
-    def __truediv__(
-        self,
-        other: AngularPosition | float | int
-    ) -> AngularPosition | float:
+    def __truediv__(self, other: Self | float | int) -> Self | float:
         super().__truediv__(other=other)
 
         if not isinstance(other, AngularPosition | float | int):
@@ -131,7 +129,7 @@ class AngularPosition(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> AngularPosition:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -290,10 +288,7 @@ class Angle(AngularPosition):
         self.__value = value
         self.__unit = unit
 
-    def __add__(
-        self,
-        other: AngularPosition | Angle
-    ) -> AngularPosition | Angle:
+    def __add__(self, other: AngularPosition | Self) -> AngularPosition | Self:
         super().__add__(other=other)
 
         if isinstance(other, Angle):
@@ -307,10 +302,7 @@ class Angle(AngularPosition):
                 unit=self.__unit
             )
 
-    def __sub__(
-        self,
-        other: AngularPosition | Angle
-    ) -> AngularPosition | Angle:
+    def __sub__(self, other: AngularPosition | Self) -> AngularPosition | Self:
         super().__sub__(other=other)
 
         if isinstance(other, Angle):
@@ -324,7 +316,7 @@ class Angle(AngularPosition):
                 unit=self.__unit
             )
 
-    def __mul__(self, other: float | int) -> Angle:
+    def __mul__(self, other: float | int) -> Self:
         super().__mul__(other=other)
 
         if other < 0:
@@ -334,7 +326,7 @@ class Angle(AngularPosition):
 
         return Angle(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(self, other: float | int) -> Angle:
+    def __rmul__(self, other: float | int) -> Self:
         super().__rmul__(other=other)
 
         if other < 0:
@@ -402,7 +394,7 @@ class Angle(AngularPosition):
         """
         return super().unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> Angle:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -556,10 +548,7 @@ class AngularSpeed(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(
-        self,
-        other: Time | float | int
-    ) -> AngularPosition | AngularSpeed:
+    def __mul__(self, other: Time | float | int) -> AngularPosition | Self:
         super().__mul__(other=other)
 
         if not isinstance(other, Time | float | int):
@@ -576,10 +565,7 @@ class AngularSpeed(UnitBase):
         else:
             return AngularSpeed(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(
-        self,
-        other: Time | float | int
-    ) -> AngularPosition | AngularSpeed:
+    def __rmul__(self, other: Time | float | int) -> AngularPosition | Self:
         super().__rmul__(other=other)
 
         if not isinstance(other, Time | float | int):
@@ -596,10 +582,7 @@ class AngularSpeed(UnitBase):
         else:
             return AngularSpeed(value=self.__value*other, unit=self.__unit)
 
-    def __truediv__(
-        self,
-        other: AngularSpeed | float | int
-    ) -> AngularSpeed | float:
+    def __truediv__(self, other: Self | float | int) -> Self | float:
         super().__truediv__(other=other)
 
         if not isinstance(other, AngularSpeed | float | int):
@@ -663,7 +646,7 @@ class AngularSpeed(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> AngularSpeed:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -778,10 +761,7 @@ class AngularAcceleration(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(
-        self,
-        other: Time | float | int
-    ) -> AngularAcceleration | AngularSpeed:
+    def __mul__(self, other: Time | float | int) -> Self | AngularSpeed:
         super().__mul__(other=other)
 
         if not isinstance(other, Time | float | int):
@@ -801,10 +781,7 @@ class AngularAcceleration(UnitBase):
                 unit=self.__unit
             )
 
-    def __rmul__(
-        self,
-        other: Time | float | int
-    ) -> AngularAcceleration | AngularSpeed:
+    def __rmul__(self, other: Time | float | int) -> Self | AngularSpeed:
         super().__rmul__(other=other)
 
         if not isinstance(other, Time | float | int):
@@ -824,10 +801,7 @@ class AngularAcceleration(UnitBase):
                 unit=self.__unit
             )
 
-    def __truediv__(
-        self,
-        other: AngularAcceleration | float | int
-    ) -> AngularAcceleration | float:
+    def __truediv__(self, other: Self | float | int) -> Self | float:
         super().__truediv__(other=other)
 
         if not isinstance(other, AngularAcceleration | float | int):
@@ -887,11 +861,7 @@ class AngularAcceleration(UnitBase):
         """
         return self.__unit
 
-    def to(
-        self,
-        target_unit: str,
-        inplace: bool = False
-    ) -> AngularAcceleration:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -1013,7 +983,7 @@ class InertiaMoment(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: float | int) -> InertiaMoment:
+    def __mul__(self, other: float | int) -> Self:
         super().__mul__(other=other)
 
         if not isinstance(other, float | int):
@@ -1030,7 +1000,7 @@ class InertiaMoment(UnitBase):
 
         return InertiaMoment(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(self, other: float | int) -> InertiaMoment:
+    def __rmul__(self, other: float | int) -> Self:
         super().__rmul__(other=other)
 
         if not isinstance(other, float | int):
@@ -1047,10 +1017,7 @@ class InertiaMoment(UnitBase):
 
         return InertiaMoment(value=self.__value*other, unit=self.__unit)
 
-    def __truediv__(
-        self,
-        other: InertiaMoment | float | int
-    ) -> InertiaMoment | float:
+    def __truediv__(self, other: Self | float | int) -> Self | float:
         super().__truediv__(other=other)
 
         if not isinstance(other, InertiaMoment | float | int):
@@ -1114,7 +1081,7 @@ class InertiaMoment(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> InertiaMoment:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -1241,7 +1208,7 @@ class Torque(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: float | int) -> Torque:
+    def __mul__(self, other: float | int) -> Self:
         super().__mul__(other=other)
 
         if not isinstance(other, float | int):
@@ -1252,7 +1219,7 @@ class Torque(UnitBase):
 
         return Torque(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(self, other: float | int) -> Torque:
+    def __rmul__(self, other: float | int) -> Self:
         super().__rmul__(other=other)
 
         if not isinstance(other, float | int):
@@ -1265,8 +1232,8 @@ class Torque(UnitBase):
 
     def __truediv__(
         self,
-        other: InertiaMoment | Length | Torque | float | int
-    ) -> AngularAcceleration | Force | float | Torque:
+        other: InertiaMoment | Length | Self | float | int
+    ) -> AngularAcceleration | Force | float | Self:
         super().__truediv__(other=other)
 
         if not isinstance(
@@ -1353,7 +1320,7 @@ class Torque(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> Torque:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -1470,7 +1437,7 @@ class Time(UnitBase):
     def __mul__(
         self,
         other: AngularAcceleration | AngularSpeed | float | int
-    ) -> AngularPosition | AngularSpeed | Time:
+    ) -> AngularPosition | AngularSpeed | Self:
         super().__mul__(other=other)
 
         if not isinstance(
@@ -1498,7 +1465,7 @@ class Time(UnitBase):
     def __rmul__(
         self,
         other: AngularAcceleration | AngularSpeed | float | int
-    ) -> AngularPosition | AngularSpeed | Time:
+    ) -> AngularPosition | AngularSpeed | Self:
         super().__rmul__(other=other)
 
         if not isinstance(
@@ -1523,7 +1490,7 @@ class Time(UnitBase):
         else:
             return Time(value=self.__value*other, unit=self.__unit)
 
-    def __truediv__(self, other: Time | float | int) -> Time | float:
+    def __truediv__(self, other: Self | float | int) -> Self | float:
         super().__truediv__(other=other)
 
         if not isinstance(other, Time | float | int):
@@ -1581,7 +1548,7 @@ class Time(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> Time:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -1685,7 +1652,7 @@ class TimeInterval(Time):
         self.__value = value
         self.__unit = unit
 
-    def __add__(self, other: Time | TimeInterval) -> Time | TimeInterval:
+    def __add__(self, other: Time | Self) -> Time | Self:
         super().__add__(other=other)
 
         if isinstance(other, TimeInterval):
@@ -1699,7 +1666,7 @@ class TimeInterval(Time):
                 unit=self.__unit
             )
 
-    def __sub__(self, other: Time | TimeInterval) -> Time | TimeInterval:
+    def __sub__(self, other: Time | Self) -> Time | Self:
         super().__sub__(other=other)
 
         if isinstance(other, TimeInterval):
@@ -1713,7 +1680,7 @@ class TimeInterval(Time):
                 unit=self.__unit
             )
 
-    def __mul__(self, other: float | int) -> TimeInterval:
+    def __mul__(self, other: float | int) -> Self:
         super().__mul__(other=other)
 
         if other <= 0:
@@ -1724,7 +1691,7 @@ class TimeInterval(Time):
 
         return TimeInterval(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(self, other: float | int) -> TimeInterval:
+    def __rmul__(self, other: float | int) -> Self:
         super().__rmul__(other=other)
 
         if other <= 0:
@@ -1789,7 +1756,7 @@ class TimeInterval(Time):
         """
         return super().unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> TimeInterval:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -1893,7 +1860,7 @@ class Length(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: Length | float | int) -> Surface | Length:
+    def __mul__(self, other: Self | float | int) -> Surface | Self:
         super().__mul__(other=other)
 
         if not isinstance(other, Length | float | int):
@@ -1910,7 +1877,7 @@ class Length(UnitBase):
         else:
             return Length(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(self, other: float | int) -> Length:
+    def __rmul__(self, other: float | int) -> Self:
         super().__rmul__(other=other)
 
         if not isinstance(other, float | int):
@@ -1921,7 +1888,7 @@ class Length(UnitBase):
 
         return Length(value=self.__value*other, unit=self.__unit)
 
-    def __truediv__(self, other: Length | float | int) -> Length | float:
+    def __truediv__(self, other: Self | float | int) -> Self | float:
         super().__truediv__(other=other)
 
         if not isinstance(other, Length | float | int):
@@ -1981,7 +1948,7 @@ class Length(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> Length:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -2097,7 +2064,7 @@ class Surface(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: float | int) -> Surface:
+    def __mul__(self, other: float | int) -> Self:
         super().__mul__(other=other)
 
         if not isinstance(other, float | int):
@@ -2108,7 +2075,7 @@ class Surface(UnitBase):
 
         return Surface(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(self, other: float | int) -> Surface:
+    def __rmul__(self, other: float | int) -> Self:
         super().__rmul__(other=other)
 
         if not isinstance(other, float | int):
@@ -2119,7 +2086,7 @@ class Surface(UnitBase):
 
         return Surface(value=self.__value*other, unit=self.__unit)
 
-    def __truediv__(self, other: Surface | float | int) -> Surface | float:
+    def __truediv__(self, other: Self | float | int) -> Self | float:
         super().__truediv__(other=other)
 
         if not isinstance(other, Surface | float | int):
@@ -2179,7 +2146,7 @@ class Surface(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> Surface:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -2294,7 +2261,7 @@ class Force(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: float | int) -> Force:
+    def __mul__(self, other: float | int) -> Self:
         super().__mul__(other=other)
 
         if not isinstance(other, float | int):
@@ -2305,7 +2272,7 @@ class Force(UnitBase):
 
         return Force(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(self, other: float | int) -> Force:
+    def __rmul__(self, other: float | int) -> Self:
         super().__rmul__(other=other)
 
         if not isinstance(other, float | int):
@@ -2318,8 +2285,8 @@ class Force(UnitBase):
 
     def __truediv__(
         self,
-        other: Force | Surface | float | int
-    ) -> Force | Stress | float:
+        other: Self | Surface | float | int
+    ) -> Self | Stress | float:
         super().__truediv__(other=other)
 
         if not isinstance(other, Force | Surface | float | int):
@@ -2383,7 +2350,7 @@ class Force(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> Force:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -2496,7 +2463,7 @@ class Stress(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: float | int) -> Stress:
+    def __mul__(self, other: float | int) -> Self:
         super().__mul__(other=other)
 
         if not isinstance(other, float | int):
@@ -2507,7 +2474,7 @@ class Stress(UnitBase):
 
         return Stress(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(self, other: float | int) -> Stress:
+    def __rmul__(self, other: float | int) -> Self:
         super().__rmul__(other=other)
 
         if not isinstance(other, float | int):
@@ -2518,7 +2485,7 @@ class Stress(UnitBase):
 
         return Stress(value=self.__value*other, unit=self.__unit)
 
-    def __truediv__(self, other: Stress | float | int) -> Stress | float:
+    def __truediv__(self, other: Self | float | int) -> Self | float:
         super().__truediv__(other=other)
 
         if not isinstance(other, Stress | float | int):
@@ -2576,7 +2543,7 @@ class Stress(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> Stress:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
@@ -2688,7 +2655,7 @@ class Current(UnitBase):
         self.__value = value
         self.__unit = unit
 
-    def __mul__(self, other: float | int) -> Current:
+    def __mul__(self, other: float | int) -> Self:
         super().__mul__(other=other)
 
         if not isinstance(other, float | int):
@@ -2699,7 +2666,7 @@ class Current(UnitBase):
 
         return Current(value=self.__value*other, unit=self.__unit)
 
-    def __rmul__(self, other: float | int) -> Current:
+    def __rmul__(self, other: float | int) -> Self:
         super().__rmul__(other=other)
 
         if not isinstance(other, float | int):
@@ -2710,7 +2677,7 @@ class Current(UnitBase):
 
         return Current(value=self.__value*other, unit=self.__unit)
 
-    def __truediv__(self, other: Current | float | int) -> Current | float:
+    def __truediv__(self, other: Self | float | int) -> Self | float:
         super().__truediv__(other=other)
 
         if not isinstance(other, Current | float | int):
@@ -2767,7 +2734,7 @@ class Current(UnitBase):
         """
         return self.__unit
 
-    def to(self, target_unit: str, inplace: bool = False) -> Current:
+    def to(self, target_unit: str, inplace: bool = False) -> Self:
         """It converts actual :py:attr:`value` to a new value computed using
         ``target_unit`` as the reference unit of measurement. \n
         If ``inplace`` is ``True``, it overrides actual :py:attr:`value` and
